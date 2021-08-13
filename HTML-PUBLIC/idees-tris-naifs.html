@@ -332,7 +332,7 @@ padding: 0.5em;
 <li><a href="#motivation"><span class="toc-section-number">1</span> Motivation</a></li>
 <li><a href="#le-tri-par-sélection"><span class="toc-section-number">2</span> Le tri par sélection</a><ul>
 <li><a href="#début-didée-le-plus-petit-va-au-début"><span class="toc-section-number">2.1</span> Début d’idée : le plus petit va au début</a></li>
-<li><a href="#échange-pour-ne-pas-perdre-les-valeurs"><span class="toc-section-number">2.2</span> Échange pour ne pas perdre les valeurs</a></li>
+<li><a href="#échanger-pour-ne-pas-perdre-les-valeurs"><span class="toc-section-number">2.2</span> Échanger pour ne pas perdre les valeurs</a></li>
 <li><a href="#mais-où-est-le-minimum"><span class="toc-section-number">2.3</span> Mais où est le minimum ?</a></li>
 <li><a href="#généraliser-aux-suivants"><span class="toc-section-number">2.4</span> Généraliser aux suivants</a></li>
 <li><a href="#algorithme-général"><span class="toc-section-number">2.5</span> Algorithme général</a></li>
@@ -359,18 +359,24 @@ padding: 0.5em;
 </nav>
 <p><img src="data:image/png;base64,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" /></p>
 <p>Ce texte fait partie d’une petite <a href="index.html">collection de notes</a> mise à disposition selon les termes de la <a href="http://creativecommons.org/licenses/by-nc-sa/2.0/fr/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France</a>.</p>
+<ul>
+<li>Les notes sont publiées dans <a href="https://www.mbillaud.fr/notes/" class="uri">https://www.mbillaud.fr/notes/</a></li>
+<li>Sources dans <a href="https://github.com/MichelBillaud/notes-diverses" class="uri">https://github.com/MichelBillaud/notes-diverses</a></li>
+</ul>
 <h1 id="motivation"><span class="header-section-number">1</span> Motivation</h1>
-<p>Voir d’où viennent les idées pour les algorithmes de tris naïfs qu’on présente souvent en premier aux débutants.</p>
-<p>Dans tout ce qui suit, on suppose qu’on veut ordonner un tableau en ordre croissant.</p>
+<p>Come exemple d’algorithmes, on présente souvent aux débutants des tris “naïfs” de tableau. On les appelle ainsi parce qu’ils sont simples, à défaut d’être efficaces, et se programment en quelques lignes.</p>
+<p>Ici on essaie d’expliquer sur quelles bases ces algorithmes ont été conçus.</p>
+<p>Dans tout ce qui suit, on suppose qu’on veut ordonner un tableau de nombres en ordre croissant.</p>
 <h1 id="le-tri-par-sélection"><span class="header-section-number">2</span> Le tri par sélection</h1>
-<p>Avant d’en arriver là, on est certainement passé par un exercice classique : l’écriture d’une fonction pour trouver <strong>la plus petite</strong> (ou la plus grande) valeur contenue dans un tableau. (Voir code en annexe).</p>
+<p>Avant d’en arriver aux algorithmes de tri, on est certainement passé par un exercice classique : l’écriture d’une fonction pour trouver <strong>la plus petite</strong> (ou la plus grande) valeur contenue dans un tableau. (Voir code en annexe).</p>
+<p>C’est le point de départ de ce tri.</p>
 <h2 id="début-didée-le-plus-petit-va-au-début"><span class="header-section-number">2.1</span> Début d’idée : le plus petit va au début</h2>
 <p>L’idée, c’est que si un tableau contient au départ des valeurs</p>
 <pre><code> 0    1    2    3    4    5
 +----+----+----+----+----+----+  au départ
 | 66 | 22 | 33 | 11 | 55 | 44 |
 +----+----+----+----+----+----+</code></pre>
-<p>à la fin, la <strong>première case</strong> sera occupée par <strong>la plus petite valeur</strong> :</p>
+<p>à la fin, la <strong>première case</strong> devra être occupée par <strong>la plus petite valeur</strong> :</p>
 <pre><code>+----+----+----+----+----+----+  à la fin
 | 11 | __ | __ | __ | __ | __ |
 +----+----+----+----+----+----+</code></pre>
@@ -378,9 +384,13 @@ padding: 0.5em;
 <li>Trouver la plus petite valeur : on sait faire.</li>
 <li>Et ensuite, il n’y aura plus qu’à faire pareil pour le second (le plus petit du reste), le troisième etc.</li>
 </ul>
-<h2 id="échange-pour-ne-pas-perdre-les-valeurs"><span class="header-section-number">2.2</span> Échange pour ne pas perdre les valeurs</h2>
-<p>Un petit souci : ne pas perdre la valeur 66 qui occupait la première case.</p>
-<p>Pour cela, une idée simple est de la placer dans la case qui a été libérée par la valeur 11. On aura donc réalisé un <strong>échange</strong>, dans le tableau, entre la position 0 et la position où se trouve le minimum :</p>
+<h2 id="échanger-pour-ne-pas-perdre-les-valeurs"><span class="header-section-number">2.2</span> Échanger pour ne pas perdre les valeurs</h2>
+<p>Un petit souci : ne pas perdre la valeur <code>66</code> qui occupait la première case.</p>
+<p>Pour cela, on a l’idée naturelle de la placer dans la case qui a été libérée par la valeur <code>11</code>. On aura donc réalisé un <strong>échange</strong>, dans le tableau, entre</p>
+<ul>
+<li>la position <code>0</code>,</li>
+<li>et la position où se trouve le minimum :</li>
+</ul>
 <pre><code> 0    1    2    3    4    5
 +----+----+----+----+----+----+  au départ
 | 66 | 22 | 33 | 11 | 55 | 44 |

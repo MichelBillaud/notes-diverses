@@ -11,10 +11,17 @@ Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes
 Conditions 2.0
 France](http://creativecommons.org/licenses/by-nc-sa/2.0/fr/).
 
+- Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
+- Sources dans <https://github.com/MichelBillaud/notes-diverses>
+
+# Le problème 
 
 Ces exercices sont souvent proposés aux débutants dans les tutoriels,
 pour l'apprentissage des fonctions et des tableaux. Le problème, c'est
 qu'ils sont souvent très mal posés. 
+
+Voir par exemple celui d'OpenClassrooms, ex-Site du Zero. <https://openclassrooms.com/fr/courses/19980-apprenez-a-programmer-en-c>
+
 
 - Dans une première partie, on rappelle le texte des exercices, en
 essayant de les poser correctement.
@@ -29,11 +36,12 @@ et comment ils sont souvent mal posés.
 Ils sont ici énoncés en C, il est facile de les transposer dans
 d'autres langages.
 
-Contexte de l'exercice : le débutant
+**Contexte** de l'exercice : le débutant
 
 - sait faire lire/afficher des données,
 - connait les bases sur un tableau (déclaration, indiçage),
-- a vu la notion de boucle sur un intervalle (et parcours séquentiel d'un tableau),
+- a vu la notion de boucle sur un intervalle (et parcours séquentiel
+  d'un tableau),
 - a eu un exposé sur les fonctions (appel, retour, passage de
   paramètres).
 
@@ -70,7 +78,7 @@ int main()
 }
 ~~~
 
-complèté par la fonction demandée, devrait afficher :
+complété par la fonction demandée, devrait afficher :
 
 ~~~
 Tests somme:
@@ -133,8 +141,8 @@ de remarquer les erreurs de début ou fin de boucle.
 
 - Exercice proposé sur un  **tableau d'entiers**, sans indiquer que
 le résultat attendu est un flottant.
-- Oblige à disgresser
-  sur les problèmes de conversion d'entier à réel.
+- Oblige à digresser sur les problèmes de conversion d'entier à
+  réel. Ce n'est pas inintéressant, mais ce n'est pas le sujet.
 - Oubli d'insister sur l'emploi de la fonction `somme_tableau` déjà
   écrite. Le débutant s'imagine souvent que le but de l'exercice est
   d'écrire une **variante** du code existant (de la même façon qu'on

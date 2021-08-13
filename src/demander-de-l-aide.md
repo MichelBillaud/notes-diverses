@@ -11,6 +11,11 @@ Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes
 Conditions 2.0
 France](http://creativecommons.org/licenses/by-nc-sa/2.0/fr/).
 
+- Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
+- Sources dans <https://github.com/MichelBillaud/notes-diverses>
+
+
+# Le problème
 
 Vous travaillez sur un exercice ou un projet de programmation.
 Ça ne marche pas. Vous ne voyez pas pourquoi. Vous voudriez 
@@ -98,8 +103,8 @@ Le code que vous fournissez doit toujours être **parfaitement
 indenté**, parce qu'une mauvaise indentation handicape la lecture,
 donc la recherche et la correction des erreurs.
 
-- netbeans : shift-alt-F
-- visual studio code : shift-controle-I
+- netbeans : `shift-alt-F`
+- visual studio code : `shift-controle-I`
 
 
 # Description d'un problème d'exécution
@@ -138,7 +143,7 @@ de messages d'avertissement.
 
 N'oubliez pas que les enseignant-e-s sont là pour vous pousser vers
 une **démarche de travail correcte**, qui vous permettra d'être
-autonomes. Donc à moins d'être pressés de se débarasser de vous et
+autonomes. Donc à moins d'être pressés de se débarrasser de vous et
 d'être sûr de ne plus jamais vous revoir - ils ne vont pas vous
 répondre directement "remplacez `int` par `double` ligne 6".
 

@@ -1,6 +1,6 @@
 % Notes diverses
 % Michel Billaud (`michel.billaud@u-bordeaux.fr`, `michel.billaud@laposte.net`)
-% 30 mai 2020
+% 13 août 2021
 
 
 
@@ -13,6 +13,8 @@ Cette collection de notes est mise à disposition selon les termes de la
 Pas d’Utilisation Commerciale - 
 Partage dans les Mêmes Conditions 2.0 France](http://creativecommons.org/licenses/by-nc-sa/2.0/fr/).
 
+- Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
+- Sources dans <https://github.com/MichelBillaud/notes-diverses>
 
 # Vi, comment s'en sortir ? (et l'utiliser un peu)
 

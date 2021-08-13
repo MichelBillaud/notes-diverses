@@ -1,0 +1,3 @@
+- Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
+- Sources dans <https://github.com/MichelBillaud/notes-diverses>
+

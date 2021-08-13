@@ -1,4 +1,4 @@
-% Développer à parti des tests
+% Développer à partir des tests
 % Michel Billaud (michel.billaud@u-bordeaux.fr,  michel.billaud@laposte.net)
 % 8 juin 2020
 
@@ -10,6 +10,9 @@ Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes
 Conditions 2.0
 France](http://creativecommons.org/licenses/by-nc-sa/2.0/fr/).
 
+
+- Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
+- Sources dans <https://github.com/MichelBillaud/notes-diverses>
 
 
 # Un exercice
@@ -27,7 +30,7 @@ code qui ne va probablement pas marcher du premier coup.
 Vous allez compiler le code, essayer quelques exemples. Il y en aura
 un qui ne marche pas. Vous allez chercher à corriger votre code.  Puis
 réessayer. Il y aura d'autres erreurs. Rapidement, vous allez vite en
-avoir assez, et vous contenter d'un ou deux essais pour décioder que
+avoir assez, et vous contenter d'un ou deux essais pour décider que
 ça marche.
 
 Mais avec toutes ces modifications, il se peut qu'un test qui passait
@@ -38,12 +41,17 @@ plus.
 
 # Automatiser les tests
 
-est une solution intéressante. Vous écrivez les tests sous forme de
-code **dès le début**, et vous les faites exécuter systématiquement.
+Autiomatiser, c'est une solution intéressante. L'idée : 
 
-Exemple, la chaine de caractères "abc" est une bonne base pour vérifier
-que ça fonctionne avec un caractère en premiere position (a), en dernière position (c), ailleurs (b) ou pas du tout (x). Ca vous fait 4 tests intéressants, 
-qu'il faudrait faire tourner à chaque fois.
+1. vous écrivez les tests sous forme de code **dès le début**,
+2. ensuite, vous les faites exécuter **systématiquement** chaque fois que
+vous modifiez votre programme.
+
+Exemple, la chaine de caractères `"abc"` est une bonne base pour
+vérifier que ça fonctionne avec un caractère en premiere position
+(`'a'`), en dernière position (`'c'`), ailleurs (`'b'`) ou pas du tout
+(`'x'`). Ca vous fait 4 tests intéressants, qu'il faudrait faire tourner
+à chaque fois.
 
 
 # Le lancement des tests

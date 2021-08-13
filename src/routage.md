@@ -10,6 +10,10 @@ Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes
 Conditions 2.0
 France](http://creativecommons.org/licenses/by-nc-sa/2.0/fr/).
 
+- Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
+- Sources dans <https://github.com/MichelBillaud/notes-diverses>
+
+
 
 # Interconnexion de réseaux
 
@@ -40,11 +44,10 @@ Quand chez vous ordinateur portable, connecté en wifi, veut consulter
 un site web quelque part, 
 
 - il émet sa requête HTTP dans un **paquet contenu dans une trame Wifi** à
-  la norme IEEE 802.11.
+  la norme IEEE 802.11 ;
 - cette trame 802.11 est reçue par votre "Box", qui en extrait le paquet à
 transmettre, et le réexpédie en l'emballant **dans une trame ADSL**
-vers le DSLAM (équipement du fournisseur). Ou des trames GPON si vous
-êtes raccordé par fibre optique.
+vers le DSLAM (équipement du fournisseur)[^1]
 - etc.
 
 
@@ -70,7 +73,7 @@ Pour le réseau Internet, on utilise deux types d'adresses :
 
 - les adresses IPv4, qui sont sur 32 bits (4 octets), et que vous
   voyez généralement sous la forme "décimale pointée", comme
-  192.168.1.32  (chaque nombre décimal, entre 0 et 255, code un octet).
+  `192.168.1.32`  (chaque nombre décimal, entre 0 et 255, code un octet).
   
 - les adresses IPv6, sur 128 bits (16 octets), exprimées sous forme de
 8 nombres hexadécimaux (chaque nombre, entre `0000` et `ffff`,
@@ -248,9 +251,7 @@ reliés au même réseau physique avec des adresses IP du même réseau
 logique.
 - Pour communiquer avec les autres machines, il faut passer par le routeur 1.
 
-Donc on peut le configurer
-
-ainsi
+Donc on peut configurer ainsi l'ordinateur PC1 :
 
 ~~~
 ip addr  add 10.0.1.33/24 dev eth0
@@ -271,7 +272,7 @@ ip addr  add 10.0.0.1/24   dev eth1
 ~~~
 
 Il faut ajouter une route pour indiquer que les paquets destinés
-au réseau des serveurs doivent passer par le routeur2
+au réseau des serveurs doivent passer par le routeur2 :
 
 ~~~
 ip route add 10.0.2.0/24   via 10.0.0.2
@@ -294,13 +295,13 @@ ip route add default  via 10.0.0.254
 
 # Table de routage, stratégie
 
-Pour retransmettre un paquet vers une destination dont elle connait
+Pour retransmettre un paquet vers une destination dont elle connaît
 l'adresse IP, une machine 
 
 - consulte les configurations des interfaces et les routes,
 - retient la route **la plus spécifique**.
 
-**Exemple** : le routeur 1 doit envoyer un paquet à 10.0.2.45
+**Exemple** : le routeur 1 doit envoyer un paquet à `10.0.2.45`.
 
 Dans sa **table de routage**, il a les informations suivantes :
 
@@ -341,15 +342,15 @@ Le calcul est un peu plus sportif quand la longueur de préfixe n'est
 sont pas multiple de 8, parce que le partage en adresse de
 sous-réseau/adresse d'hôte se fait à l'intérieur d'un octet.
 
-En pratique, pour vous aider, écrivez les 9 octets qui ont des 1 à
-gauche et des 0 à droite
+En pratique, pour vous aider, écrivez les valeurs décimales des 9
+octets qui ont des 1 à gauche et des 0 à droite
 
-~~~
- binaire  décimal        binaire  décimal       binaire  décimal
-00000000     0           11100000               11111100
-10000000   128           11110000               11111110    254
-11000000                 11111000               11111111    255
-~~~
+
+| binaire  | décimal | binaire  | décimal | binaire  | décimal |   
+|----------|---------|----------|---------|----------|---------|
+| 00000000 | 0       | 11100000 |         | 11111100 |         |   
+| 10000000 | 128     | 11110000 |         | 11111110 | 254     |   
+| 11000000 |         | 11111000 |         | 11111111 | 255     |   
 
 
 **Exemple** : quelles adresses sont dans le sous-réseau `10.11.12.0/22`  ?
@@ -441,3 +442,4 @@ excède une certaine limite (quelques dizaines).
 
 
 
+[^1]: Ou des trames GPON si vous êtes connecté par fibre optique.

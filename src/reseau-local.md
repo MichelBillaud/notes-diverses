@@ -13,6 +13,9 @@ Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes
 Conditions 2.0
 France](http://creativecommons.org/licenses/by-nc-sa/2.0/fr/).
 
+- Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
+- Sources dans <https://github.com/MichelBillaud/notes-diverses>
+
 
 # Le problème 
 
@@ -37,12 +40,12 @@ dans une **trame**.
 
 Une trame, c'est une suite d'octets qui contient
 
-- la "charge utile" (le message),
+- la "charge utile" (le message, les données à transmettre),
 - l'adresse du destinataire,
 - l'adresse de l'expéditeur.
 
 Ici on parle d'**adresses physiques**. Les cartes réseau utilisent
-habituellement des "adresses MAC" (Media Access Control) de 6 octets
+habituellement des "adresses MAC" (*Media Access Control*) de 6 octets
 (48 bits) notée en hexadécimal sous la forme `f4:8e:38:de:f3:d6`.
 
 
@@ -85,13 +88,14 @@ annexe "fonctionnement d'un commutateur".
 
 3. Quand la carte réseau de l'ordinateur de Bob la reçoit :
 
-- elle constate que la trame lui est destinée (avec le numéro MAC destinataire), on dit alors qu'elle **accepte** la trame.
-- elle signale l'arrivée de la trame au système d'exploitation (émission
-d'une interruption).
-- le système d'exploitation s'en occupe (traitement par le pilote de la carte
-réseau).
+- elle constate que la trame lui est destinée (avec le numéro MAC
+  destinataire), on dit alors qu'elle **accepte** la trame.
+- elle signale l'arrivée de la trame au système d'exploitation
+(émission d'une interruption).
+- le système d'exploitation s'en occupe (traitement par le pilote de
+la carte réseau).
 
-4. Par contre, la carte réseau de Charlie, en mode normal
+4. Par contre, la carte réseau de Charlie, en mode normal :
 
 - constate que la trame ne lui est pas destinée (numéro MAC différent)
 - et l'ignore.
@@ -116,10 +120,9 @@ fréquente pendant les travaux pratiques pour comprendre ce qui se passe.
 
 # A qui dois-je écrire ? Protocole de résolution d'adresse.
 
-Pour que ça fonctionne, il faut que 
-chaque machine connaisse les adresses MAC de ses interlocuteurs.
-C'est difficilement gérable (administrativement) sur un vrai
-réseau.
+Pour que ça fonctionne, il faut que chaque machine connaisse les
+adresses MAC de ses interlocuteurs.  C'est difficilement gérable
+(administrativement) sur un vrai réseau.
 
 On adopte donc un autre dispositif : chaque machine a un "identifiant"
 connu publiquement.  Ici on va dire que c'est son nom, pour

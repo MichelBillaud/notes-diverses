@@ -1,6 +1,6 @@
 % Bases Markdown
 % Michel Billaud (michel.billaud@u-bordeaux.fr,  michel.billaud@laposte.net)
-% 12 juin 2020
+% 13 juin 2020
 
 
 ![](https://i.creativecommons.org/l/by-nc-sa/2.0/fr/88x31.png)
@@ -11,6 +11,9 @@ Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes
 Conditions 2.0
 France](http://creativecommons.org/licenses/by-nc-sa/2.0/fr/).
 
+- Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
+- Sources dans <https://github.com/MichelBillaud/notes-diverses>
+
 
 # Structure d'un document
 
@@ -20,7 +23,7 @@ suivie par un texte structuré.
 ## Entête du document
 
 Les lignes de l'entête commencent par le caractère "pourcent", et 
-donnent le titre, l'auteur et la date.
+donnent - dans cet ordre - le titre, l'auteur et la date.
 
 **Exemple**
 
@@ -80,7 +83,8 @@ précéder d'un *antislash* `\`.
 
 ## Listes à puces
 
-Chaque élément commence par un tiret. Sous-listes décalées.
+Chaque élément commence par un tiret. Les sous-listes sont décalées
+vers la droite.
 
 ~~~markdown
 - France
@@ -120,6 +124,7 @@ Un bloc de code est encadré par des lignes "`~~~`".
 Le nom du langage permet la colorisation des mots-clés.
 
 **Par exemple :**
+
 ```markdown
 ~~~java
 int en_couleur () {

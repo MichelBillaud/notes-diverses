@@ -6,3 +6,6 @@ Ce texte fait partie d'une petite [collection de notes](index.html) mise à disp
 Pas d’Utilisation Commerciale - 
 Partage dans les Mêmes Conditions 2.0 France](http://creativecommons.org/licenses/by-nc-sa/2.0/fr/).
 
+- Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
+- Sources dans <https://github.com/MichelBillaud/notes-diverses>
+

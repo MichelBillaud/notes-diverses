@@ -13,21 +13,31 @@ Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes
 Conditions 2.0
 France](http://creativecommons.org/licenses/by-nc-sa/2.0/fr/).
  
+- Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
+- Sources dans <https://github.com/MichelBillaud/notes-diverses>
 
-# Motivation
 
-Voir d'où viennent les idées pour les algorithmes de tris naïfs qu'on
-présente souvent en premier aux débutants.
+# Motivation 
 
-Dans tout ce qui suit, on suppose qu'on veut ordonner un tableau en ordre
+Come exemple d'algorithmes, on présente souvent aux débutants des tris
+"naïfs" de tableau.  On les appelle ainsi parce qu'ils sont simples,
+à défaut d'être efficaces, et se programment en quelques lignes.
+
+Ici on essaie d'expliquer sur quelles bases ces algorithmes ont été conçus.
+
+
+Dans tout ce qui suit, on suppose qu'on veut ordonner un tableau de nombres en ordre
 croissant.
 
 
 # Le tri par sélection
 
-Avant d'en arriver là, on est certainement passé par un exercice
-classique : l'écriture d'une fonction pour trouver **la plus petite** (ou
-la plus grande) valeur contenue dans un tableau. (Voir code en annexe).
+Avant d'en arriver aux algorithmes de tri, on est certainement passé
+par un exercice classique : l'écriture d'une fonction pour trouver
+**la plus petite** (ou la plus grande) valeur contenue dans un
+tableau. (Voir code en annexe).
+
+C'est le point de départ de ce tri.
 
 
 ## Début d'idée : le plus petit va au début
@@ -41,7 +51,8 @@ L'idée, c'est que si un tableau contient au départ des valeurs
 +----+----+----+----+----+----+
 ~~~
 
-à la fin, la **première case** sera occupée par **la plus petite valeur** :
+à la fin, la **première case** devra être occupée par **la plus petite
+valeur** :
 
 ~~~
 +----+----+----+----+----+----+  à la fin
@@ -53,12 +64,16 @@ L'idée, c'est que si un tableau contient au départ des valeurs
 - Et ensuite, il n'y aura plus qu'à faire pareil pour le second (le
 plus petit du reste), le troisième etc.
 
-## Échange pour ne pas perdre les valeurs
+## Échanger pour ne pas perdre les valeurs
 
-Un petit souci : ne pas perdre la valeur 66 qui occupait la première case.
+Un petit souci : ne pas perdre la valeur `66` qui occupait la première case.
 
-Pour cela, une idée simple est de la placer dans la case qui a été libérée par la valeur 11.
-On aura donc réalisé un **échange**, dans le tableau, entre la position 0 et la position où se trouve le minimum :
+Pour cela, on a l'idée naturelle de la placer dans la case qui a été
+libérée par la valeur `11`.  On aura donc réalisé un **échange**, dans
+le tableau, entre
+
+- la position `0`,
+- et la position où se trouve le minimum :
 
 ~~~
  0    1    2    3    4    5

@@ -54,13 +54,13 @@ Routing* (CIDR), présentée en 1993 dans la RFC 1518 pour IPv4. Exemple
 
 ## Types d'adresses
 
-| Préfixe | Type |	Description |          
-| --------| ------------|----------|
-| `::/8`  | 	Adresses réservées | |
-| `2000::/3`  | 	Adresses unicast routables sur Internet | |
-| `fc00::/7`  | 	Adresses locales uniques | |
-| `fe80::/10`  | 	Adresses locales lien 	| Envoi individuel sur liaison locale | 
-| `ff00::/8`  | 	Adresses multicast 	| Diffusion groupée.   |
+| Préfixe     | Type                                    | Description                         |
+|-------------|-----------------------------------------|-------------------------------------|
+| `::/8`      | Adresses réservées                      |                                     |
+| `2000::/3`  | Adresses unicast routables sur Internet |                                     |
+| `fc00::/7`  | Adresses locales uniques                |                                     |
+| `fe80::/10` | Adresses locales lien                   | Envoi individuel sur liaison locale |
+| `ff00::/8`  | Adresses multicast                      | Diffusion groupée.                  |
 
 ### Adresses réservées `0::/8`
 

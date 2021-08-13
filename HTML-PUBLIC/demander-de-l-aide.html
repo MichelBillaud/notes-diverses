@@ -329,18 +329,24 @@ padding: 0.5em;
 </header>
 <nav id="TOC">
 <ul>
-<li><a href="#catégorie-de-problème"><span class="toc-section-number">1</span> Catégorie de problème</a></li>
-<li><a href="#problème-de-compilation"><span class="toc-section-number">2</span> Problème de compilation</a></li>
-<li><a href="#fournir-un-code-lisible"><span class="toc-section-number">3</span> Fournir un code lisible</a></li>
-<li><a href="#description-dun-problème-dexécution"><span class="toc-section-number">4</span> Description d’un problème d’exécution</a></li>
-<li><a href="#problème-dexécution-utilisez-le-compilateur"><span class="toc-section-number">5</span> Problème d’exécution : utilisez le compilateur</a></li>
-<li><a href="#scénario-derreur-minimal"><span class="toc-section-number">6</span> Scénario d’erreur minimal</a></li>
+<li><a href="#le-problème"><span class="toc-section-number">1</span> Le problème</a></li>
+<li><a href="#catégorie-de-problème"><span class="toc-section-number">2</span> Catégorie de problème</a></li>
+<li><a href="#problème-de-compilation"><span class="toc-section-number">3</span> Problème de compilation</a></li>
+<li><a href="#fournir-un-code-lisible"><span class="toc-section-number">4</span> Fournir un code lisible</a></li>
+<li><a href="#description-dun-problème-dexécution"><span class="toc-section-number">5</span> Description d’un problème d’exécution</a></li>
+<li><a href="#problème-dexécution-utilisez-le-compilateur"><span class="toc-section-number">6</span> Problème d’exécution : utilisez le compilateur</a></li>
+<li><a href="#scénario-derreur-minimal"><span class="toc-section-number">7</span> Scénario d’erreur minimal</a></li>
 </ul>
 </nav>
 <p><img src="data:image/png;base64,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" /> Ce texte fait partie d’une petite <a href="index.html">collection de notes</a> mise à disposition selon les termes de la <a href="http://creativecommons.org/licenses/by-nc-sa/2.0/fr/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France</a>.</p>
+<ul>
+<li>Les notes sont publiées dans <a href="https://www.mbillaud.fr/notes/" class="uri">https://www.mbillaud.fr/notes/</a></li>
+<li>Sources dans <a href="https://github.com/MichelBillaud/notes-diverses" class="uri">https://github.com/MichelBillaud/notes-diverses</a></li>
+</ul>
+<h1 id="le-problème"><span class="header-section-number">1</span> Le problème</h1>
 <p>Vous travaillez sur un exercice ou un projet de programmation. Ça ne marche pas. Vous ne voyez pas pourquoi. Vous voudriez demandez l’aide de quelqu’un. Bonne idée.</p>
 <p>Il ne reste plus qu’à lui écrire. Mais, faute d’être extra-lucide, il/elle ne pourra vous aider qu’à partir des éléments que vous lui fournissez.</p>
-<h1 id="catégorie-de-problème"><span class="header-section-number">1</span> Catégorie de problème</h1>
+<h1 id="catégorie-de-problème"><span class="header-section-number">2</span> Catégorie de problème</h1>
 <p>Si vous débutez, vous affrontez de nombreux problèmes à la fois. C’est normal.</p>
 <p>Donc commencez par préciser clairement si il s’agit</p>
 <ul>
@@ -348,7 +354,7 @@ padding: 0.5em;
 <li>d’un problème d’<strong>exécution</strong> (ça ne marche pas comme vous voulez),</li>
 <li>ou d’un problème de <strong>conception</strong> (vous ne voyez pas comment faire telle ou telle chose.</li>
 </ul>
-<h1 id="problème-de-compilation"><span class="header-section-number">2</span> Problème de compilation</h1>
+<h1 id="problème-de-compilation"><span class="header-section-number">3</span> Problème de compilation</h1>
 <p>Vous avez tapé du code source, vous lancez la compilation, il y a un message (en rouge, d’habitude) qui dit qu’il y a un problème.</p>
 <p>Pour avoir de l’aide à ce sujet, il faut que vous montriez au moins :</p>
 <ul>
@@ -389,13 +395,13 @@ but argument 2 has type ‘int’ [-Wformat=]
 <ol start="4" type="1">
 <li>C’est la faute à Linux. Je vais réinstaller Windows.</li>
 </ol>
-<h1 id="fournir-un-code-lisible"><span class="header-section-number">3</span> Fournir un code lisible</h1>
+<h1 id="fournir-un-code-lisible"><span class="header-section-number">4</span> Fournir un code lisible</h1>
 <p>Le code que vous fournissez doit toujours être <strong>parfaitement indenté</strong>, parce qu’une mauvaise indentation handicape la lecture, donc la recherche et la correction des erreurs.</p>
 <ul>
-<li>netbeans : shift-alt-F</li>
-<li>visual studio code : shift-controle-I</li>
+<li>netbeans : <code>shift-alt-F</code></li>
+<li>visual studio code : <code>shift-controle-I</code></li>
 </ul>
-<h1 id="description-dun-problème-dexécution"><span class="header-section-number">4</span> Description d’un problème d’exécution</h1>
+<h1 id="description-dun-problème-dexécution"><span class="header-section-number">5</span> Description d’un problème d’exécution</h1>
 <p>La compilation de votre code source s’est apparemment bien passée, mais “ça ne marche pas”.</p>
 <p>Ce n’est pas une description suffisante.</p>
 <ul>
@@ -420,16 +426,16 @@ but argument 2 has type ‘int’ [-Wformat=]
 <pre><code>$ ./a.out 
 pi = 0.000000</code></pre>
 <p><strong>La réponse</strong> : sur cet exemple, on vous suggèrera de commencer par <strong>recompiler le programme</strong> avec les options qui produisent un maximum de messages d’avertissement.</p>
-<p>N’oubliez pas que les enseignant-e-s sont là pour vous pousser vers une <strong>démarche de travail correcte</strong>, qui vous permettra d’être autonomes. Donc à moins d’être pressés de se débarasser de vous et d’être sûr de ne plus jamais vous revoir - ils ne vont pas vous répondre directement “remplacez <code>int</code> par <code>double</code> ligne 6”.</p>
+<p>N’oubliez pas que les enseignant-e-s sont là pour vous pousser vers une <strong>démarche de travail correcte</strong>, qui vous permettra d’être autonomes. Donc à moins d’être pressés de se débarrasser de vous et d’être sûr de ne plus jamais vous revoir - ils ne vont pas vous répondre directement “remplacez <code>int</code> par <code>double</code> ligne 6”.</p>
 <p>En fait, vos enseignants ont le <em>devoir</em> de se montrer si exaspérants à vous retourner des questions au lieu de répondre, que vous préfériez vous les poser tout seul directement. C’est un métier sympa, en fait.</p>
-<h1 id="problème-dexécution-utilisez-le-compilateur"><span class="header-section-number">5</span> Problème d’exécution : utilisez le compilateur</h1>
+<h1 id="problème-dexécution-utilisez-le-compilateur"><span class="header-section-number">6</span> Problème d’exécution : utilisez le compilateur</h1>
 <p>Si vous aviez utilisé les options de compilation recommandées, le compilateur vous aurait signalé des problèmes dans votre code.</p>
 <p>Donc :</p>
 <ul>
 <li>compilez <strong>toujours</strong> avec les options qui produisent le <strong>maximum</strong> de messages d’avertissement (En C ou C++, <code>-Wall -Wextra</code>, par exemple).</li>
 <li>tant que vous ne les avez pas <strong>toutes</strong> corrigées, inutile de lancer l’exécution.</li>
 </ul>
-<h1 id="scénario-derreur-minimal"><span class="header-section-number">6</span> Scénario d’erreur minimal</h1>
+<h1 id="scénario-derreur-minimal"><span class="header-section-number">7</span> Scénario d’erreur minimal</h1>
 <p>On a vu qu’il fallait fournir un <strong>scénario d’erreur</strong> pour décrire l’erreur.</p>
 <p>Ce scénario d’erreur doit être le <strong>plus petit possible</strong>. Si votre programme qui afficher un tableau de nombres dans l’ordre croissant ne marche pas sur un exemple à 10 éléments, cherchez <strong>activement</strong> des exemples plus petits. Il est assez probable qu’on puisse trouver un tableau à 2 ou 3 éléments pour lequel ça ne marche pas (voire un seul !).</p>
 <p>Intérêt double :</p>
