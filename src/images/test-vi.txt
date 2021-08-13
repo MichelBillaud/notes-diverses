@@ -1,0 +1,11 @@
+Ceci est un premier test
+avec l'éditeur vi.
+
+Remarquez que: 
+
+- la dernière ligne indique l'état 
+    - mode, ou résultat de la dernière commande
+    - ligne et colonne du curseur
+- le curseur est matérialisé par un bloc clignotant
+- des "tildes" marquent la fin du texte
+

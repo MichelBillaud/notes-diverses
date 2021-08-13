@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Michel Billaud (michel.billaud@u-bordeaux.fr, michel.billaud@laposte.net)" />
+  <title>Adresses IPv4</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">a.sourceLine {
+display: inline-block;
+line-height: 1.25;
+}
+a.sourceLine {
+pointer-events: none;
+color: inherit;
+text-decoration: inherit;
+}
+a.sourceLine:empty {
+height: 1.2em;
+}
+.sourceCode {
+overflow: visible;
+}
+code.sourceCode {
+white-space: pre;
+position: relative;
+}
+div.sourceCode {
+margin: 1em 0;
+}
+pre.sourceCode {
+margin: 0;
+}
+@media screen {
+div.sourceCode {
+overflow: auto;
+}
+}
+@media print {
+code.sourceCode {
+white-space: pre-wrap;
+}
+a.sourceLine {
+text-indent: -1em;
+padding-left: 1em;
+}
+}
+pre.numberSource a.sourceLine {
+position: relative;
+left: -4em;
+}
+pre.numberSource a.sourceLine::before {
+content: attr(title);
+position: relative;
+left: -1em;
+text-align: right;
+vertical-align: baseline;
+border: none;
+pointer-events: all;
+display: inline-block;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+padding: 0 4px;
+width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource {
+margin-left: 3em;
+border-left: 1px solid #aaaaaa;
+padding-left: 4px;
+}
+div.sourceCode {}
+@media screen {
+a.sourceLine::before {
+text-decoration: underline;
+}
+}
+code span.al {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.an {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.at {
+color: #7d9029;
+}
+
+code span.bn {
+color: #40a070;
+}
+
+code span.bu {}
+
+code span.cf {
+color: #007020;
+font-weight: bold;
+}
+
+code span.ch {
+color: #4070a0;
+}
+
+code span.cn {
+color: #880000;
+}
+
+code span.co {
+color: #60a0b0;
+font-style: italic;
+}
+
+code span.cv {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.do {
+color: #ba2121;
+font-style: italic;
+}
+
+code span.dt {
+color: #902000;
+}
+
+code span.dv {
+color: #40a070;
+}
+
+code span.er {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.ex {}
+
+code span.fl {
+color: #40a070;
+}
+
+code span.fu {
+color: #06287e;
+}
+
+code span.im {}
+
+code span.in {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.kw {
+color: #007020;
+font-weight: bold;
+}
+
+code span.op {
+color: #666666;
+}
+
+code span.ot {
+color: #007020;
+}
+
+code span.pp {
+color: #bc7a00;
+}
+
+code span.sc {
+color: #4070a0;
+}
+
+code span.ss {
+color: #bb6688;
+}
+
+code span.st {
+color: #4070a0;
+}
+
+code span.va {
+color: #19177c;
+}
+
+code span.vs {
+color: #4070a0;
+}
+
+code span.wa {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+
+:root {
+--title-color: #202080;
+--source-bg-color: rgb(240, 240, 255);
+}
+h1, h2, h3, h4, h5, h6 {
+border-bottom: solid 1px silver;
+color: var(--title-color);
+}
+body {
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div.sourceCode {
+background-color: var(--source-bg-color);
+padding: 1em;
+}
+#TOC {
+padding: 0.5em;
+border: solid 1px silver;
+}
+#TOC ul {
+list-style-type: none;
+padding-left: 1em;
+}
+nav:before {
+text-indent: 2em;
+content: "Sommaire";
+color: var(--title-color);
+font-weight: bold;
+font-size: large;
+}
+#TOC a {
+text-decoration: none;
+}
+header {
+text-align: center;
+}
+.title {
+}
+.author, .date {
+font-style: italic;
+}
+table, th, td {
+border-collapse: collapse;
+border: solid black 1px;
+padding: 0.5em;
+}
+</style>
+</head>
+<body>
+<header>
+<h1 class="title">Adresses IPv4</h1>
+<p class="author">Michel Billaud (michel.billaud@u-bordeaux.fr, michel.billaud@laposte.net)</p>
+<p class="date">18 juin 2020</p>
+</header>
+<nav id="TOC">
+<ul>
+<li><a href="#adresses-ipv4."><span class="toc-section-number">1</span> Adresses IPv4.</a></li>
+<li><a href="#préfixe"><span class="toc-section-number">2</span> Préfixe</a></li>
+<li><a href="#exercices"><span class="toc-section-number">3</span> Exercices</a></li>
+<li><a href="#masque"><span class="toc-section-number">4</span> Masque</a></li>
+</ul>
+</nav>
+<h1 id="adresses-ipv4."><span class="header-section-number">1</span> Adresses IPv4.</h1>
+<p>Les adresses IPv4 sont des nombres codés sur 32 bits, soit 4 octets.</p>
+<p>On les exprime habituellement sous forme décimale pointée, chacun des 4 octets étant traduit en décimal sous forme d’un nombre de 0 à 255.</p>
+<p><strong>Exemple</strong> : adresse IPv4 <code>10.22.33.44</code> sous forme décimale pointée, correspond à <code>10*256*256*256 + 22*256*256 + 33*256 + 44</code> en décimal.</p>
+<h1 id="préfixe"><span class="header-section-number">2</span> Préfixe</h1>
+<p>Un <strong>sous-réseau logique</strong> est un ensemble d’adresses qui “commencent pareil”, par un <strong>préfixe</strong> commun, sur un certain nombre de bits.</p>
+<p>Par exemple, les adresses <code>10.22.33.44</code> et <code>10.22.55.66</code> appartiennent au même sous-réseau de préfixe <code>10.22</code> (sur deux octets, donc de longueur 16 bits).</p>
+<p>Par contre, elles sont sur des sous-réseaux différents si on considère des préfixes de 24 bits.</p>
+<p>Une adresse appartient donc à plusieurs sous-réseaux correspondant à des préfixes de tailles différentes.</p>
+<p>Manière moderne de noter les sous-réseaux : <code>10.22.0.0/16</code>. La première adresse (obtenue en complétant le préfixe par des zéros), suivi par une barre et le nombre de bits du préfixe.</p>
+<h1 id="exercices"><span class="header-section-number">3</span> Exercices</h1>
+<p><strong>Exercice 1</strong></p>
+<ul>
+<li>Quel est le plus petit sous-réseau qui contient à la fois <code>10.22.33.44</code> et <code>10.22.55.66</code> ?</li>
+<li>Quelles sont sa première et sa dernière addresse ?</li>
+</ul>
+<p><strong>Exercice 2</strong></p>
+<ul>
+<li>Montrez que si deux réseaux ont des adresses communes, alors l’un des deux est inclus dans l’autre.</li>
+</ul>
+<p><strong>Exercice 3</strong></p>
+<p>Soit l’adresse <code>10.22.33.44</code></p>
+<ul>
+<li>si le préfixe considéré est de 8 bits, à quel sous-réseau appartient-elle ?</li>
+<li>quelles sont les premières et dernières adresses de ce sous-réseau ?</li>
+<li>combien contient-il d’adresses ?</li>
+<li>Mêmes questions pour des préfixes de 16, 20 et 24 bits.</li>
+</ul>
+<h1 id="masque"><span class="header-section-number">4</span> Masque</h1>
+<p>Ancienne manière d’indiquer le découpage d’une adresse IPv4 entre numéro de réseau (préfixe) et numéro d’hôte. Exemple, dans une commande de configuration d’interface :</p>
+<pre><code>ifconfig eth0 10.22.33.44 netmask 255.0.0.0 up</code></pre>
+<p>Le <strong>masque</strong> est en notation décimale pointée. La position du préfixe est indiquée par les bits à 1 du masque (qui sont à gauche).</p>
+<p>Exemple, le masque <code>255.0.0.0</code> s’écrit en binaire <code>11111111 00000000 00000000 00000000</code> et correspond à <code>/8</code>, puisque les 8 premiers bits sont à 1.</p>
+<p>La commande ci-dessus peut donc aussi s’écrire (avec profit)</p>
+<pre><code>ifconfig eth0 10.22.33.44/8 up</code></pre>
+<p>Pour le calcul dans l’autre sens : <code>/28</code> correspond au masque binaire <code>11111111 11111111 11111111 11110000</code> soit <code>255.255.255.240</code>.</p>
+<table>
+<thead>
+<tr class="header">
+<th>poids</th>
+<th>128</th>
+<th>64</th>
+<th>32</th>
+<th>16</th>
+<th>8</th>
+<th>4</th>
+<th>2</th>
+<th>1</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>bits</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>128 + 64 + 32 + 16 = 240</p>
+<p><strong>Exercice</strong></p>
+<ul>
+<li>Calculez les masques correspondant à <code>/16</code>, <code>/17</code>, … <code>/24</code>.</li>
+</ul>
+</body>
+</html>

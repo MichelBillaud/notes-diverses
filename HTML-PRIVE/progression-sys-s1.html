@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Michel Billaud (michel.billaud@u-bordeaux.fr, michel.billaud@laposte.net)" />
+  <title>Progression enseignement système S1</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">a.sourceLine {
+display: inline-block;
+line-height: 1.25;
+}
+a.sourceLine {
+pointer-events: none;
+color: inherit;
+text-decoration: inherit;
+}
+a.sourceLine:empty {
+height: 1.2em;
+}
+.sourceCode {
+overflow: visible;
+}
+code.sourceCode {
+white-space: pre;
+position: relative;
+}
+div.sourceCode {
+margin: 1em 0;
+}
+pre.sourceCode {
+margin: 0;
+}
+@media screen {
+div.sourceCode {
+overflow: auto;
+}
+}
+@media print {
+code.sourceCode {
+white-space: pre-wrap;
+}
+a.sourceLine {
+text-indent: -1em;
+padding-left: 1em;
+}
+}
+pre.numberSource a.sourceLine {
+position: relative;
+left: -4em;
+}
+pre.numberSource a.sourceLine::before {
+content: attr(title);
+position: relative;
+left: -1em;
+text-align: right;
+vertical-align: baseline;
+border: none;
+pointer-events: all;
+display: inline-block;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+padding: 0 4px;
+width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource {
+margin-left: 3em;
+border-left: 1px solid #aaaaaa;
+padding-left: 4px;
+}
+div.sourceCode {}
+@media screen {
+a.sourceLine::before {
+text-decoration: underline;
+}
+}
+code span.al {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.an {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.at {
+color: #7d9029;
+}
+
+code span.bn {
+color: #40a070;
+}
+
+code span.bu {}
+
+code span.cf {
+color: #007020;
+font-weight: bold;
+}
+
+code span.ch {
+color: #4070a0;
+}
+
+code span.cn {
+color: #880000;
+}
+
+code span.co {
+color: #60a0b0;
+font-style: italic;
+}
+
+code span.cv {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.do {
+color: #ba2121;
+font-style: italic;
+}
+
+code span.dt {
+color: #902000;
+}
+
+code span.dv {
+color: #40a070;
+}
+
+code span.er {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.ex {}
+
+code span.fl {
+color: #40a070;
+}
+
+code span.fu {
+color: #06287e;
+}
+
+code span.im {}
+
+code span.in {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.kw {
+color: #007020;
+font-weight: bold;
+}
+
+code span.op {
+color: #666666;
+}
+
+code span.ot {
+color: #007020;
+}
+
+code span.pp {
+color: #bc7a00;
+}
+
+code span.sc {
+color: #4070a0;
+}
+
+code span.ss {
+color: #bb6688;
+}
+
+code span.st {
+color: #4070a0;
+}
+
+code span.va {
+color: #19177c;
+}
+
+code span.vs {
+color: #4070a0;
+}
+
+code span.wa {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+
+:root {
+--title-color: #202080;
+--source-bg-color: rgb(240, 240, 255);
+}
+h1, h2, h3, h4, h5, h6 {
+border-bottom: solid 1px silver;
+color: var(--title-color);
+}
+body {
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div.sourceCode {
+background-color: var(--source-bg-color);
+padding: 1em;
+}
+#TOC {
+padding: 0.5em;
+border: solid 1px silver;
+}
+#TOC ul {
+list-style-type: none;
+padding-left: 1em;
+}
+nav:before {
+text-indent: 2em;
+content: "Sommaire";
+color: var(--title-color);
+font-weight: bold;
+font-size: large;
+}
+#TOC a {
+text-decoration: none;
+}
+header {
+text-align: center;
+}
+.title {
+}
+.author, .date {
+font-style: italic;
+}
+table, th, td {
+border-collapse: collapse;
+border: solid black 1px;
+padding: 0.5em;
+}
+</style>
+</head>
+<body>
+<header>
+<h1 class="title">Progression enseignement système S1</h1>
+<p class="author">Michel Billaud (michel.billaud@u-bordeaux.fr, michel.billaud@laposte.net)</p>
+<p class="date">13 juin 2020</p>
+</header>
+<nav id="TOC">
+<ul>
+<li><a href="#choix-quels-exemples-pour-commencer"><span class="toc-section-number">1</span> Choix : quels exemples pour commencer</a></li>
+<li><a href="#étape-commandes-options-paramètres"><span class="toc-section-number">2</span> Étape : Commandes, options, paramètres</a></li>
+<li><a href="#étape-commande-ls"><span class="toc-section-number">3</span> Étape : commande <code>ls</code></a></li>
+<li><a href="#étape-afficher-ce-quil-y-a-dans-un-fichier-texte"><span class="toc-section-number">4</span> Étape : afficher ce qu’il y a dans un fichier texte</a></li>
+<li><a href="#étape-éditer-un-fichier-de-commandes"><span class="toc-section-number">5</span> Étape : éditer un fichier de commandes</a><ul>
+<li><a href="#frappe-dun-petit-texte"><span class="toc-section-number">5.1</span> Frappe d’un petit texte,</a></li>
+<li><a href="#exécution-du-script"><span class="toc-section-number">5.2</span> Exécution du script</a></li>
+<li><a href="#modification"><span class="toc-section-number">5.3</span> Modification</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="choix-quels-exemples-pour-commencer"><span class="header-section-number">1</span> Choix : quels exemples pour commencer</h1>
+<p><strong>Problématique :</strong> trouver une motivation plausible (pour les étudiants) pour employer des fichiers textes et des commandes en ligne.</p>
+<p><strong>Exemples traditionnels :</strong> - code source d’un hello world (édition compilation exécution) - source HTML (édition visualisation)</p>
+<p><strong>Problèmes avec ces exemples :</strong></p>
+<ul>
+<li>code source : introduit beaucoup de considérations annexes hors sujet si langage non immédiatement utilisé.</li>
+<li>HTML : nécessité environnement graphique pour visualiser.</li>
+</ul>
+<p><strong>Alternative: </strong></p>
+<ul>
+<li>fichiers de commandes</li>
+</ul>
+<h1 id="étape-commandes-options-paramètres"><span class="header-section-number">2</span> Étape : Commandes, options, paramètres</h1>
+<p>Interaction par commandes. Quelques exemples (à travailler).</p>
+<ul>
+<li><code>date</code></li>
+<li><code>date -d Friday</code> (<strong>options</strong>)</li>
+<li><code>date --help</code></li>
+<li><code>echo &quot;Hello, world&quot;</code> (<strong>paramètre</strong>)</li>
+</ul>
+<p>pour sortir :</p>
+<ul>
+<li><code>exit</code></li>
+</ul>
+<h1 id="étape-commande-ls"><span class="header-section-number">3</span> Étape : commande <code>ls</code></h1>
+<p>Pour voir ce qu’il y a dans un répertoire (simplification)</p>
+<ul>
+<li><code>ls</code> pour voir les fichiers présents,</li>
+<li><code>ls -l</code> pour avoir des détails (<strong>option</strong>)</li>
+<li><code>ls -l Bibliotheque</code> (paramètre : chemin d’accès relatif)</li>
+<li><code>ls Bibliotheque/M1101-Systeme</code></li>
+</ul>
+<p><strong>Trucs :</strong></p>
+<ul>
+<li>autocomplétion par TAB.</li>
+<li>historique/édition de la ligne de commande (flèches)</li>
+</ul>
+<h1 id="étape-afficher-ce-quil-y-a-dans-un-fichier-texte"><span class="header-section-number">4</span> Étape : afficher ce qu’il y a dans un fichier texte</h1>
+<p>Différence entre <code>cat</code> et <code>less</code>.</p>
+<h1 id="étape-éditer-un-fichier-de-commandes"><span class="header-section-number">5</span> Étape : éditer un fichier de commandes</h1>
+<h2 id="frappe-dun-petit-texte"><span class="header-section-number">5.1</span> Frappe d’un petit texte,</h2>
+<ol type="1">
+<li>Taper un petit texte dans un fichier nommé <code>essai.sh</code></li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><a class="sourceLine" id="cb1-1" title="1"><span class="bu">echo</span> -n <span class="st">&quot;Il est &quot;</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="fu">date</span> +%T</a></code></pre></div>
+<p>Éditeur texte à déterminer (<code>nano</code>, <code>vi</code>, …)</p>
+<h2 id="exécution-du-script"><span class="header-section-number">5.2</span> Exécution du script</h2>
+<p>On appelle <code>script</code> un fichier qui contient une suite de commandes.</p>
+<ol start="2" type="1">
+<li>Le faire exécuter</li>
+</ol>
+<pre><code>bash essai.sh</code></pre>
+<h2 id="modification"><span class="header-section-number">5.3</span> Modification</h2>
+<p>Intérêt : on veut faire une réunion en visio avec des gens aux 4 coins de la planète.</p>
+<p>Idées :</p>
+<ol type="1">
+<li>On ne va calculer les heures de tête, puisqu’on a une commande qui le fait</li>
+</ol>
+<pre><code>TZ=Asia/Tokyo date +%T</code></pre>
+<p>La commande <code>date</code> est précédée par une indication de la TimeZone (fuseau horaire) à utiliser.</p>
+<ol start="2" type="1">
+<li>On met les commandes dans un fichier, et on n’aura plus besoin de les relancer</li>
+</ol>
+<p>Modèle:</p>
+<pre><code>echo -n &quot;Pour Marcel à Tokyo il est &quot;
+TZ=Asia/Tokyo date +%T</code></pre>
+<p>À faire : complétez le script faites afficher les heures pour quelques personnes que vous connaissez à l’étranger</p>
+<p>Indication : la commande <code>ls /usr/share/zoneinfo/right/</code> vous montre les fuseaux connus, par continents/pays.</p>
+</body>
+</html>

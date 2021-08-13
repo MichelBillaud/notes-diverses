@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Michel Billaud (michel.billaud@u-bordeaux.fr, michel.billaud@laposte.net)" />
+  <title>Idées à la base des algorithmes de tris naïfs</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">a.sourceLine {
+display: inline-block;
+line-height: 1.25;
+}
+a.sourceLine {
+pointer-events: none;
+color: inherit;
+text-decoration: inherit;
+}
+a.sourceLine:empty {
+height: 1.2em;
+}
+.sourceCode {
+overflow: visible;
+}
+code.sourceCode {
+white-space: pre;
+position: relative;
+}
+div.sourceCode {
+margin: 1em 0;
+}
+pre.sourceCode {
+margin: 0;
+}
+@media screen {
+div.sourceCode {
+overflow: auto;
+}
+}
+@media print {
+code.sourceCode {
+white-space: pre-wrap;
+}
+a.sourceLine {
+text-indent: -1em;
+padding-left: 1em;
+}
+}
+pre.numberSource a.sourceLine {
+position: relative;
+left: -4em;
+}
+pre.numberSource a.sourceLine::before {
+content: attr(title);
+position: relative;
+left: -1em;
+text-align: right;
+vertical-align: baseline;
+border: none;
+pointer-events: all;
+display: inline-block;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+padding: 0 4px;
+width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource {
+margin-left: 3em;
+border-left: 1px solid #aaaaaa;
+padding-left: 4px;
+}
+div.sourceCode {}
+@media screen {
+a.sourceLine::before {
+text-decoration: underline;
+}
+}
+code span.al {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.an {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.at {
+color: #7d9029;
+}
+
+code span.bn {
+color: #40a070;
+}
+
+code span.bu {}
+
+code span.cf {
+color: #007020;
+font-weight: bold;
+}
+
+code span.ch {
+color: #4070a0;
+}
+
+code span.cn {
+color: #880000;
+}
+
+code span.co {
+color: #60a0b0;
+font-style: italic;
+}
+
+code span.cv {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.do {
+color: #ba2121;
+font-style: italic;
+}
+
+code span.dt {
+color: #902000;
+}
+
+code span.dv {
+color: #40a070;
+}
+
+code span.er {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.ex {}
+
+code span.fl {
+color: #40a070;
+}
+
+code span.fu {
+color: #06287e;
+}
+
+code span.im {}
+
+code span.in {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.kw {
+color: #007020;
+font-weight: bold;
+}
+
+code span.op {
+color: #666666;
+}
+
+code span.ot {
+color: #007020;
+}
+
+code span.pp {
+color: #bc7a00;
+}
+
+code span.sc {
+color: #4070a0;
+}
+
+code span.ss {
+color: #bb6688;
+}
+
+code span.st {
+color: #4070a0;
+}
+
+code span.va {
+color: #19177c;
+}
+
+code span.vs {
+color: #4070a0;
+}
+
+code span.wa {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+
+:root {
+--title-color: #202080;
+--source-bg-color: rgb(240, 240, 255);
+}
+h1, h2, h3, h4, h5, h6 {
+border-bottom: solid 1px silver;
+color: var(--title-color);
+}
+body {
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div.sourceCode {
+background-color: var(--source-bg-color);
+padding: 1em;
+}
+#TOC {
+padding: 0.5em;
+border: solid 1px silver;
+}
+#TOC ul {
+list-style-type: none;
+padding-left: 1em;
+}
+nav:before {
+text-indent: 2em;
+content: "Sommaire";
+color: var(--title-color);
+font-weight: bold;
+font-size: large;
+}
+#TOC a {
+text-decoration: none;
+}
+header {
+text-align: center;
+}
+.title {
+}
+.author, .date {
+font-style: italic;
+}
+table, th, td {
+border-collapse: collapse;
+border: solid black 1px;
+padding: 0.5em;
+}
+</style>
+</head>
+<body>
+<header>
+<h1 class="title">Idées à la base des algorithmes de tris naïfs</h1>
+<p class="author">Michel Billaud (<code>michel.billaud@u-bordeaux.fr</code>, <code>michel.billaud@laposte.net</code>)</p>
+<p class="date">30 mai 2020</p>
+</header>
+<nav id="TOC">
+<ul>
+<li><a href="#motivation"><span class="toc-section-number">1</span> Motivation</a></li>
+<li><a href="#le-tri-par-sélection"><span class="toc-section-number">2</span> Le tri par sélection</a><ul>
+<li><a href="#début-didée-le-plus-petit-va-au-début"><span class="toc-section-number">2.1</span> Début d’idée : le plus petit va au début</a></li>
+<li><a href="#échange-pour-ne-pas-perdre-les-valeurs"><span class="toc-section-number">2.2</span> Échange pour ne pas perdre les valeurs</a></li>
+<li><a href="#mais-où-est-le-minimum"><span class="toc-section-number">2.3</span> Mais où est le minimum ?</a></li>
+<li><a href="#généraliser-aux-suivants"><span class="toc-section-number">2.4</span> Généraliser aux suivants</a></li>
+<li><a href="#algorithme-général"><span class="toc-section-number">2.5</span> Algorithme général</a></li>
+</ul></li>
+<li><a href="#le-tri-par-échanges-successifs"><span class="toc-section-number">3</span> Le tri par échanges successifs</a></li>
+<li><a href="#le-tri-par-insertion"><span class="toc-section-number">4</span> Le tri par insertion</a><ul>
+<li><a href="#lalgorithme-général"><span class="toc-section-number">4.1</span> L’algorithme général</a></li>
+<li><a href="#linsertion"><span class="toc-section-number">4.2</span> L’insertion</a></li>
+<li><a href="#algorithme-complet"><span class="toc-section-number">4.3</span> Algorithme complet</a></li>
+<li><a href="#insertion-améliorée-décalage"><span class="toc-section-number">4.4</span> Insertion améliorée : décalage</a></li>
+</ul></li>
+<li><a href="#le-tri-à-bulles"><span class="toc-section-number">5</span> Le tri à bulles</a><ul>
+<li><a href="#de-la-vérification-à-la-rectification"><span class="toc-section-number">5.1</span> De la vérification à la rectification</a></li>
+<li><a href="#variantes-du-tri-à-bulles"><span class="toc-section-number">5.2</span> Variantes du tri à bulles</a></li>
+<li><a href="#optimisation"><span class="toc-section-number">5.3</span> Optimisation</a></li>
+</ul></li>
+<li><a href="#annexes"><span class="toc-section-number">6</span> Annexes</a><ul>
+<li><a href="#recherche-de-la-plus-petite-valeur-dun-tableau"><span class="toc-section-number">6.1</span> Recherche de la plus petite valeur d’un tableau</a></li>
+<li><a href="#échange-de-deux-éléments-dans-un-tableau"><span class="toc-section-number">6.2</span> Échange de deux éléments dans un tableau</a></li>
+<li><a href="#recherche-de-la-position-de-la-plus-petite-valeur"><span class="toc-section-number">6.3</span> Recherche de la position de la plus petite valeur</a></li>
+<li><a href="#tester-si-un-tableau-est-en-ordre-croissant"><span class="toc-section-number">6.4</span> Tester si un tableau est en ordre croissant</a></li>
+</ul></li>
+</ul>
+</nav>
+<p><img src="data:image/png;base64,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" /></p>
+<p>Ce texte fait partie d’une petite <a href="index.html">collection de notes</a> mise à disposition selon les termes de la <a href="http://creativecommons.org/licenses/by-nc-sa/2.0/fr/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France</a>.</p>
+<h1 id="motivation"><span class="header-section-number">1</span> Motivation</h1>
+<p>Voir d’où viennent les idées pour les algorithmes de tris naïfs qu’on présente souvent en premier aux débutants.</p>
+<p>Dans tout ce qui suit, on suppose qu’on veut ordonner un tableau en ordre croissant.</p>
+<h1 id="le-tri-par-sélection"><span class="header-section-number">2</span> Le tri par sélection</h1>
+<p>Avant d’en arriver là, on est certainement passé par un exercice classique : l’écriture d’une fonction pour trouver <strong>la plus petite</strong> (ou la plus grande) valeur contenue dans un tableau. (Voir code en annexe).</p>
+<h2 id="début-didée-le-plus-petit-va-au-début"><span class="header-section-number">2.1</span> Début d’idée : le plus petit va au début</h2>
+<p>L’idée, c’est que si un tableau contient au départ des valeurs</p>
+<pre><code> 0    1    2    3    4    5
++----+----+----+----+----+----+  au départ
+| 66 | 22 | 33 | 11 | 55 | 44 |
++----+----+----+----+----+----+</code></pre>
+<p>à la fin, la <strong>première case</strong> sera occupée par <strong>la plus petite valeur</strong> :</p>
+<pre><code>+----+----+----+----+----+----+  à la fin
+| 11 | __ | __ | __ | __ | __ |
++----+----+----+----+----+----+</code></pre>
+<ul>
+<li>Trouver la plus petite valeur : on sait faire.</li>
+<li>Et ensuite, il n’y aura plus qu’à faire pareil pour le second (le plus petit du reste), le troisième etc.</li>
+</ul>
+<h2 id="échange-pour-ne-pas-perdre-les-valeurs"><span class="header-section-number">2.2</span> Échange pour ne pas perdre les valeurs</h2>
+<p>Un petit souci : ne pas perdre la valeur 66 qui occupait la première case.</p>
+<p>Pour cela, une idée simple est de la placer dans la case qui a été libérée par la valeur 11. On aura donc réalisé un <strong>échange</strong>, dans le tableau, entre la position 0 et la position où se trouve le minimum :</p>
+<pre><code> 0    1    2    3    4    5
++----+----+----+----+----+----+  au départ
+| 66 | 22 | 33 | 11 | 55 | 44 |
++----+----+----+----+----+----+
+
++----+----+----+----+----+----+  après échange des positions 0 et 3
+| 11 | 22 | 33 | 66 | 55 | 44 |
++----+----+----+----+----+----+</code></pre>
+<h2 id="mais-où-est-le-minimum"><span class="header-section-number">2.3</span> Mais où est le minimum ?</h2>
+<p>Qui plus est, il faut adapter la fonction de recherche, parce qu’on a besoin de sa <strong>position</strong> dans le tableau.</p>
+<pre><code>Pour placer le premier élément :
+- chercher la position p de la plus petite valeur
+- échanger les contenus des positions 0 et p</code></pre>
+<h2 id="généraliser-aux-suivants"><span class="header-section-number">2.4</span> Généraliser aux suivants</h2>
+<p>L’idée c’est de faire la même chose pour le second élément. Mais cette fois-ci, on cherchera la plus petite valeur <strong>à partir de la position 1</strong>, et non 0. Pour le troisième, on partira de la position 2. Etc.</p>
+<p>Il faut donc généraliser la fonction de recherche pour qu’elle commence à une certaine <strong>position de départ</strong>, qui n’est pas toujours 0.</p>
+<p>À faire : modifier le code de la fonction pour qu’elle tienne compte de ce paramètre supplémentaire :</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb5-1" title="1"><span class="dt">int</span> position_minimum(<span class="dt">int</span> depart, <span class="dt">int</span> taille, <span class="dt">int</span> tableau[]) </a>
+<a class="sourceLine" id="cb5-2" title="2">{</a>
+<a class="sourceLine" id="cb5-3" title="3">    ...</a>
+<a class="sourceLine" id="cb5-4" title="4">}</a></code></pre></div>
+<p>Les deux nombres <code>depart</code>, <code>taille</code> fournissent un <em>intervalle de recherche</em> dans le tableau. C’est un intervalle “semi-ouvert” qui contient <code>depart</code> mais pas <code>taille</code>.</p>
+<h2 id="algorithme-général"><span class="header-section-number">2.5</span> Algorithme général</h2>
+<p>L’algorithme général consiste à placer successivement les bonnes valeurs aux positions 0, 1, jusqu’à <code>taille-1</code> :</p>
+<pre><code>pour i de 0 à taille-1 {
+   placer la bonne valeur à la position i
+}</code></pre>
+<p>Détaillons : pour placer la bonne valeur, il faut trouver sa position, puis échanger</p>
+<pre><code>pour i de 0 à taille-1 {
+   trouver la position p de la plus petite valeur
+           de l'intervalle i .. taille (non compris)
+   échanger les contenus des positions i et p
+}</code></pre>
+<p><strong>Une remarque</strong> comme on procède par échanges, si on a placé les taille-1 premiers éléments, le dernier est arrivé à sa place. On peut donc s’arrêter à l’avant dernier.</p>
+<h1 id="le-tri-par-échanges-successifs"><span class="header-section-number">3</span> Le tri par échanges successifs</h1>
+<p>L’idée est très voisine du tri par sélection :</p>
+<ul>
+<li>on veut remplir la première case avec la plus petit valeur ;</li>
+<li>pour cela, on parcourt le tableau, et si on trouve une valeur plus petite que ce qu’on a dans la première case, on fait un échange.</li>
+<li>donc, à la fin, la première case contiendra la plus petite valeur.</li>
+</ul>
+<pre><code>pour i de 1 taille - 1 {
+   si tableau[i] &lt; tableau[0] {
+      échanger les contenus des positions 0 et i;
+   }
+}</code></pre>
+<p>Ensuite, il faut faire la même chose pour les positions 1, 2, etc.</p>
+<p>Comme pour le précédent, la boucle extérieure met définitivement les valeurs à leur place (on ne touche plus jamais à la position 0 après le premier tour).</p>
+<h1 id="le-tri-par-insertion"><span class="header-section-number">4</span> Le tri par insertion</h1>
+<p>L’idée est différente : on insère les éléments un à un, dans une <strong>séquence ordonnée</strong> située au début du tableau.</p>
+<h2 id="lalgorithme-général"><span class="header-section-number">4.1</span> L’algorithme général</h2>
+<p>On place successivement les éléments :</p>
+<pre><code>pour i de 0 à taille - 1 {
+   insérer l'élément qui est en position i
+}</code></pre>
+<p>Illustration :</p>
+<pre><code> 0    1    2    3    4    5
++----+----+----+----+----+----+ le tableau
+| 66 | 22 | 33 | 11 | 55 | 44 |
++----+----+----+----+----+----+
+
++----+----+----+----+----+----+ la séquence, au départ
+|    |    |    |    |    |    |
++----+----+----+----+----+----+ insérer 66
+| 66 |    |    |    |    |    |
++----+----+----+----+----+----+ insérer 22
+| 22 | 66 |    |    |    |    |
++----+----+----+----+----+----+ insérer 33
+| 22 | 33 | 66 |    |    |    |
++----+----+----+----+----+----+ insérer 11
+ ...</code></pre>
+<ul>
+<li>pour placer 22, on l’a échangé avec l’élément qui est à sa gauche
+<ol start="66" type="1">
+<li>qui est plus grand. Et on est arrivé au bord, donc on s’est arrêté.</li>
+</ol></li>
+<li>Pour placer le 33, on l’a échangé avec l’élément de gauche (66). Et comme 22 est plus petit, on s’est arrêté là.</li>
+<li>pour placer 11, on échangera avec 66, 33, et 22.</li>
+</ul>
+<h2 id="linsertion"><span class="header-section-number">4.2</span> L’insertion</h2>
+<p>En première approche, pour insérer un élément en position <code>p</code>, sachant que ce qui est à gauche est déjà ordonné</p>
+<ul>
+<li>on compare avec ce qui est à gauche (en position <code>p-1</code>)</li>
+<li>si besoin est, on échange, et on recommence en position <code>p-1</code>.</li>
+</ul>
+<p>L’expression “si besoin est” veut dire - si on n’est pas arrivé en position 0 (le bord du tableau) - si ce qui est à gauche est plus grand</p>
+<p>Pour insérer en position p :</p>
+<pre><code>q = p
+tant que q &gt; 0 et tableau[q] &gt; tableau[p] 
+faire {
+    échanger les contenus des positions q et q-1
+    q = q - 1
+}</code></pre>
+<h2 id="algorithme-complet"><span class="header-section-number">4.3</span> Algorithme complet</h2>
+<p>En intégrant les deux boucles</p>
+<pre><code>pour p de 0 à taille -1 faire {
+    q = p
+    tant que q &gt; 0 et tableau[q] &gt; tableau[p] 
+    faire {
+        échanger les contenus des positions q et q-1
+        q = q - 1
+    }
+}</code></pre>
+<h2 id="insertion-améliorée-décalage"><span class="header-section-number">4.4</span> Insertion améliorée : décalage</h2>
+<p>On peut améliorer un peu</p>
+<ul>
+<li>on partant de la position 1 (puisque une séquence d’un seul élément est déjà ordonnée),</li>
+<li>en remplaçant les échanges par des décalages.</li>
+</ul>
+<p>Exemple et illustration : quand on veut insérer 11 dans la séquence qui contient 22, 33 et 66 : on met de côté la valeur 11 dans une variable temporaire.</p>
+<pre><code> 0    1    2    3 q                    temp
++----+----+----+----+----+----+       +----+
+| 22 | 33 | 66 | 11 |    |    |       | 11 |
++----+----+----+----+----+----+       +----+</code></pre>
+<p>Le 66 n’étant pas à la bonne place, on le décale à la place du 11</p>
+<pre><code>                 q
++----+----+----+----+----+----+       +----+
+| 22 | 33 | 66 | 66 |    |    |       | 11 |
++----+----+----+----+----+----+       +----+</code></pre>
+<p>pareil pour le 33 et le 22</p>
+<pre><code>            q
++----+----+----+----+----+----+       +----+
+| 22 | 33 | 66 | 66 |    |    |       | 11 |
++----+----+----+----+----+----+       +----+
+
+       q    
++----+----+----+----+----+----+       +----+
+| 22 | 22 | 66 | 66 |    |    |       | 11 |
++----+----+----+----+----+----+       +----+</code></pre>
+<p>Et comme on a fini de décaler (ici parce qu’on est arrivé au bord), il ne reste plus qu’à recaser le 11</p>
+<pre><code> q    
++----+----+----+----+----+----+       +----+
+| 11 | 22 | 66 | 66 |    |    |       | 11 |
++----+----+----+----+----+----+       +----+</code></pre>
+<p><strong>Exercice</strong></p>
+<ul>
+<li>écrire les deux variantes du tri par insertion</li>
+<li>comparer les temps d’exécution.</li>
+</ul>
+<h1 id="le-tri-à-bulles"><span class="header-section-number">5</span> Le tri à bulles</h1>
+<p>L’idée du tri à bulles vient de l’équivalence de deux définitions de ce qu’est un tableau <code>t</code> ordonné (dans l’ordre croissant)</p>
+<ol type="1">
+<li>pour tous i et j, si <code>t[i] &lt; t[j]</code> alors <code>i &lt; j</code></li>
+<li>pour tout i, <code>t[i-1] &lt; t[i]</code></li>
+</ol>
+<p>La quantification correcte des indices est laissée au lecteur.</p>
+<p>La première définition est “globale” : les cases que l’on compare peuvent être n’importe où. La seconde est locale, c’est un critère sur des cases voisines.</p>
+<h2 id="de-la-vérification-à-la-rectification"><span class="header-section-number">5.1</span> De la vérification à la rectification</h2>
+<p>Vérifier si un tableau est ordonné est donc plus facile en se basant sur la seconde définition : on parcourt le tableau, et on vérifie que chaque élément est en bon ordre avec son voisin.</p>
+<p>Ce qui amène à une idée pour le tri : si deux voisins ne sont pas dans le bon ordre, on arrange ça en les permutant.</p>
+<pre><code> 0    1    2    3    4    5
++----+----+----+----+----+----+  au départ
+| 66 | 22 | 33 | 11 | 55 | 44 |
++----+----+----+----+----+----+  
+| 22 | 66 | 33 | 11 | 55 | 44 |
++----+----+----+----+----+----+  
+| 22 | 33 | 11 | 66 | 55 | 44 |
++----+----+----+----+----+----+
+| 22 | 33 | 11 | 55 | 66 | 44 |
++----+----+----+----+----+----+
+| 22 | 33 | 11 | 55 | 44 | 66 |
++----+----+----+----+----+----+</code></pre>
+<p>remarquez que</p>
+<ul>
+<li>ça n’a pas complètement trié le tableau</li>
+<li>mais maintenant, l’élément le plus grand (66) est arrivé à sa place définitive : à la fin du tableau</li>
+</ul>
+<p>Si on refait un passage, le 55 arrivera en avant-dernier, d’où il ne devrait plus bouger ensuite, et les autres éléments se seront rapprochés de leurs positions définitives.</p>
+<h2 id="variantes-du-tri-à-bulles"><span class="header-section-number">5.2</span> Variantes du tri à bulles</h2>
+<p>En faisant plusieurs passages, de plus en plus courts, on finit donc par ordonner le tableau.</p>
+<p>À partir de là, on peut construire plusieurs variantes du tri à bulles</p>
+<ol type="1">
+<li>faire autant de passages qu’il y a d’éléments (moins 1 pour les raisons habituelles),</li>
+</ol>
+<p>La version classique (la plus mauvaise !)</p>
+<pre><code>pour i de taille à 1 (en descendant) {
+   pour j de 1 à i-1 {
+      si tableau[i] &gt; tableau[j] {
+          échanger les positions i et j
+      }
+  }
+}</code></pre>
+<p>C’est la plus mauvaise parce qu’elle effectue le même nombre de comparaisons indépendamment du fait que le tableau soit déjà ordonné ou pas.</p>
+<ol start="2" type="1">
+<li>faire des passages tant qu’il y eu des échanges.</li>
+</ol>
+<p>Dans ce cas, le premier passage sert à constater que le tableau est déjà ordonné, et le travail s’arrête là.</p>
+<h2 id="optimisation"><span class="header-section-number">5.3</span> Optimisation</h2>
+<p>D’autres optimisations complémentaires sont possibles :</p>
+<ul>
+<li>faire commencer/finir un passage là où le passage précédent a commencé/terminé de faire des échanges.</li>
+</ul>
+<h1 id="annexes"><span class="header-section-number">6</span> Annexes</h1>
+<h2 id="recherche-de-la-plus-petite-valeur-dun-tableau"><span class="header-section-number">6.1</span> Recherche de la plus petite valeur d’un tableau</h2>
+<p>En C, ce serait quelque chose comme</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb19-1" title="1"><span class="dt">int</span> plus_petite_valeur(<span class="dt">int</span> taille, <span class="dt">int</span> tableau[]) </a>
+<a class="sourceLine" id="cb19-2" title="2">{</a>
+<a class="sourceLine" id="cb19-3" title="3">   <span class="dt">int</span> minimum = tableau[<span class="dv">0</span>];</a>
+<a class="sourceLine" id="cb19-4" title="4">   <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">1</span>; i &lt; taille; i++) {</a>
+<a class="sourceLine" id="cb19-5" title="5">       <span class="cf">if</span> (tableau[i] &lt; minimum) {</a>
+<a class="sourceLine" id="cb19-6" title="6">          minimum = tableau[i];</a>
+<a class="sourceLine" id="cb19-7" title="7">       }</a>
+<a class="sourceLine" id="cb19-8" title="8">   }</a>
+<a class="sourceLine" id="cb19-9" title="9">   <span class="cf">return</span> minimum;</a>
+<a class="sourceLine" id="cb19-10" title="10">}</a></code></pre></div>
+<p><strong>Questions :</strong></p>
+<ul>
+<li>pourquoi ne commence-t-on pas avec <code>int minimum = 0</code> ?</li>
+<li>que se passerait-il si la boucle <code>for</code> commençait à 0 ?</li>
+</ul>
+<h2 id="échange-de-deux-éléments-dans-un-tableau"><span class="header-section-number">6.2</span> Échange de deux éléments dans un tableau</h2>
+<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb20-1" title="1"><span class="dt">void</span> echanger(<span class="dt">int</span> position1, <span class="dt">int</span> position2, <span class="dt">int</span> tableau[])</a>
+<a class="sourceLine" id="cb20-2" title="2">{</a>
+<a class="sourceLine" id="cb20-3" title="3">    <span class="dt">int</span> temporaire = tableau[position1];</a>
+<a class="sourceLine" id="cb20-4" title="4">    tableau[position1] = tableau[position2];</a>
+<a class="sourceLine" id="cb20-5" title="5">    tableau[position2] = temporaire;</a>
+<a class="sourceLine" id="cb20-6" title="6">}</a></code></pre></div>
+<h2 id="recherche-de-la-position-de-la-plus-petite-valeur"><span class="header-section-number">6.3</span> Recherche de la position de la plus petite valeur</h2>
+<p>À comparer avec le recherche de la plus petite valeur.</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb21-1" title="1"><span class="dt">int</span> position_minimum(<span class="dt">int</span> taille, <span class="dt">int</span> tableau[]) </a>
+<a class="sourceLine" id="cb21-2" title="2">{</a>
+<a class="sourceLine" id="cb21-3" title="3">    <span class="dt">int</span> position = <span class="dv">0</span>;</a>
+<a class="sourceLine" id="cb21-4" title="4">    <span class="dt">int</span> minimum = tableau[<span class="dv">0</span>];</a>
+<a class="sourceLine" id="cb21-5" title="5">    <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">1</span>; i &lt; taille; i++) {</a>
+<a class="sourceLine" id="cb21-6" title="6">       <span class="cf">if</span> (tableau[i] &lt; minimum) {</a>
+<a class="sourceLine" id="cb21-7" title="7">          position = i;</a>
+<a class="sourceLine" id="cb21-8" title="8">          minimum = tableau[i];</a>
+<a class="sourceLine" id="cb21-9" title="9">          </a>
+<a class="sourceLine" id="cb21-10" title="10">       }</a>
+<a class="sourceLine" id="cb21-11" title="11">   }</a>
+<a class="sourceLine" id="cb21-12" title="12">   <span class="cf">return</span> position;</a>
+<a class="sourceLine" id="cb21-13" title="13">}</a></code></pre></div>
+<h2 id="tester-si-un-tableau-est-en-ordre-croissant"><span class="header-section-number">6.4</span> Tester si un tableau est en ordre croissant</h2>
+<div class="sourceCode" id="cb22"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb22-1" title="1"><span class="dt">bool</span> en_ordre_croissant(<span class="dt">int</span> taille, <span class="dt">int</span> tableau[])</a>
+<a class="sourceLine" id="cb22-2" title="2">{</a>
+<a class="sourceLine" id="cb22-3" title="3">    <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">1</span>; i &lt; taille; i++) {</a>
+<a class="sourceLine" id="cb22-4" title="4">       <span class="cf">if</span> (tableau[i<span class="dv">-1</span>] &gt; tableau[i]) {  </a>
+<a class="sourceLine" id="cb22-5" title="5">          <span class="cf">return</span> false;      <span class="co">// on a trouvé un contre-exemple</span></a>
+<a class="sourceLine" id="cb22-6" title="6">       }</a>
+<a class="sourceLine" id="cb22-7" title="7">    }</a>
+<a class="sourceLine" id="cb22-8" title="8">    <span class="cf">return</span> true;</a>
+<a class="sourceLine" id="cb22-9" title="9">}</a></code></pre></div>
+<p>Question : pourquoi on ne commence pas à 0 ?</p>
+</body>
+</html>

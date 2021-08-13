@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Michel Billaud (michel.billaud@u-bordeaux.fr, michel.billaud@laposte.net)" />
+  <title>Utilisation filius</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">a.sourceLine {
+display: inline-block;
+line-height: 1.25;
+}
+a.sourceLine {
+pointer-events: none;
+color: inherit;
+text-decoration: inherit;
+}
+a.sourceLine:empty {
+height: 1.2em;
+}
+.sourceCode {
+overflow: visible;
+}
+code.sourceCode {
+white-space: pre;
+position: relative;
+}
+div.sourceCode {
+margin: 1em 0;
+}
+pre.sourceCode {
+margin: 0;
+}
+@media screen {
+div.sourceCode {
+overflow: auto;
+}
+}
+@media print {
+code.sourceCode {
+white-space: pre-wrap;
+}
+a.sourceLine {
+text-indent: -1em;
+padding-left: 1em;
+}
+}
+pre.numberSource a.sourceLine {
+position: relative;
+left: -4em;
+}
+pre.numberSource a.sourceLine::before {
+content: attr(title);
+position: relative;
+left: -1em;
+text-align: right;
+vertical-align: baseline;
+border: none;
+pointer-events: all;
+display: inline-block;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+padding: 0 4px;
+width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource {
+margin-left: 3em;
+border-left: 1px solid #aaaaaa;
+padding-left: 4px;
+}
+div.sourceCode {}
+@media screen {
+a.sourceLine::before {
+text-decoration: underline;
+}
+}
+code span.al {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.an {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.at {
+color: #7d9029;
+}
+
+code span.bn {
+color: #40a070;
+}
+
+code span.bu {}
+
+code span.cf {
+color: #007020;
+font-weight: bold;
+}
+
+code span.ch {
+color: #4070a0;
+}
+
+code span.cn {
+color: #880000;
+}
+
+code span.co {
+color: #60a0b0;
+font-style: italic;
+}
+
+code span.cv {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.do {
+color: #ba2121;
+font-style: italic;
+}
+
+code span.dt {
+color: #902000;
+}
+
+code span.dv {
+color: #40a070;
+}
+
+code span.er {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.ex {}
+
+code span.fl {
+color: #40a070;
+}
+
+code span.fu {
+color: #06287e;
+}
+
+code span.im {}
+
+code span.in {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.kw {
+color: #007020;
+font-weight: bold;
+}
+
+code span.op {
+color: #666666;
+}
+
+code span.ot {
+color: #007020;
+}
+
+code span.pp {
+color: #bc7a00;
+}
+
+code span.sc {
+color: #4070a0;
+}
+
+code span.ss {
+color: #bb6688;
+}
+
+code span.st {
+color: #4070a0;
+}
+
+code span.va {
+color: #19177c;
+}
+
+code span.vs {
+color: #4070a0;
+}
+
+code span.wa {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+
+:root {
+--title-color: #202080;
+--source-bg-color: rgb(240, 240, 255);
+}
+h1, h2, h3, h4, h5, h6 {
+border-bottom: solid 1px silver;
+color: var(--title-color);
+}
+body {
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div.sourceCode {
+background-color: var(--source-bg-color);
+padding: 1em;
+}
+#TOC {
+padding: 0.5em;
+border: solid 1px silver;
+}
+#TOC ul {
+list-style-type: none;
+padding-left: 1em;
+}
+nav:before {
+text-indent: 2em;
+content: "Sommaire";
+color: var(--title-color);
+font-weight: bold;
+font-size: large;
+}
+#TOC a {
+text-decoration: none;
+}
+header {
+text-align: center;
+}
+.title {
+}
+.author, .date {
+font-style: italic;
+}
+table, th, td {
+border-collapse: collapse;
+border: solid black 1px;
+padding: 0.5em;
+}
+</style>
+</head>
+<body>
+<header>
+<h1 class="title">Utilisation filius</h1>
+<p class="author">Michel Billaud (michel.billaud@u-bordeaux.fr, michel.billaud@laposte.net)</p>
+<p class="date">1er Juillet 2020</p>
+</header>
+<nav id="TOC">
+<ul>
+<li><a href="#objets"><span class="toc-section-number">1</span> Objets</a><ul>
+<li><a href="#le-code-principal"><span class="toc-section-number">1.1</span> Le code principal</a></li>
+<li><a href="#la-classe-button"><span class="toc-section-number">1.2</span> La classe <code>Button</code></a></li>
+<li><a href="#interface-de-programmation-vs.implémentation"><span class="toc-section-number">1.3</span> Interface de programmation vs. implémentation</a></li>
+<li><a href="#modificateurs-daccès"><span class="toc-section-number">1.4</span> Modificateurs d’accès</a></li>
+<li><a href="#méthodes-à-usage-interne"><span class="toc-section-number">1.5</span> Méthodes à usage interne</a></li>
+<li><a href="#la-référence-this"><span class="toc-section-number">1.6</span> La référence <code>this</code></a></li>
+<li><a href="#résumé-terminologie"><span class="toc-section-number">1.7</span> Résumé, Terminologie</a></li>
+</ul></li>
+<li><a href="#interfaces-et-polymorphisme"><span class="toc-section-number">2</span> Interfaces et polymorphisme</a><ul>
+<li><a href="#un-exemple-concret"><span class="toc-section-number">2.1</span> Un exemple concret</a><ul>
+<li><a href="#affichage-des-déléments"><span class="toc-section-number">2.1.1</span> Affichage des d’éléments</a></li>
+<li><a href="#ajout-dun-élément"><span class="toc-section-number">2.1.2</span> Ajout d’un élément</a></li>
+<li><a href="#déclaration-dinterface"><span class="toc-section-number">2.1.3</span> Déclaration d’interface</a></li>
+</ul></li>
+<li><a href="#implémentations"><span class="toc-section-number">2.2</span> Implémentations</a></li>
+<li><a href="#le-polymorphisme"><span class="toc-section-number">2.3</span> Le polymorphisme</a></li>
+<li><a href="#résumé"><span class="toc-section-number">2.4</span> Résumé</a></li>
+<li><a href="#compléments"><span class="toc-section-number">2.5</span> Compléments</a></li>
+<li><a href="#travail"><span class="toc-section-number">2.6</span> Travail</a></li>
+</ul></li>
+<li><a href="#héritage"><span class="toc-section-number">3</span> Héritage</a></li>
+</ul>
+</nav>
+<h1 id="objets"><span class="header-section-number">1</span> Objets</h1>
+<p>Partons d’un exemple concret.</p>
+<p>Le programme ci-dessous (écrit en Processing) fait afficher 3 boutons marqués “Plus”, “Moins” et “Quitter”, ainsi qu’un compteur. Quand on clique sur “Plus” ou “Moins”, la valeur du compteur change.</p>
+<h2 id="le-code-principal"><span class="header-section-number">1.1</span> Le code principal</h2>
+<p>Le code principal est le suivant :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb1-1" title="1"><span class="co">/*</span></a>
+<a class="sourceLine" id="cb1-2" title="2"><span class="co"> * Introduction programmation orientés objets</span></a>
+<a class="sourceLine" id="cb1-3" title="3"><span class="co"> */</span></a>
+<a class="sourceLine" id="cb1-4" title="4"></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="co">// variables globales ------------------------------------------------</span></a>
+<a class="sourceLine" id="cb1-6" title="6"></a>
+<a class="sourceLine" id="cb1-7" title="7"><span class="bu">Button</span> incButton  = <span class="kw">new</span> <span class="bu">Button</span>(<span class="dv">400</span>, <span class="dv">100</span>, <span class="st">&quot;Plus&quot;</span>,    <span class="fu">color</span>(<span class="dv">255</span>, <span class="dv">128</span>, <span class="dv">0</span>));</a>
+<a class="sourceLine" id="cb1-8" title="8"><span class="bu">Button</span> decButton  = <span class="kw">new</span> <span class="bu">Button</span>(<span class="dv">400</span>, <span class="dv">200</span>, <span class="st">&quot;Moins&quot;</span>,   <span class="fu">color</span>(  <span class="dv">0</span>, <span class="dv">128</span>, <span class="dv">0</span>));</a>
+<a class="sourceLine" id="cb1-9" title="9"><span class="bu">Button</span> quitButton = <span class="kw">new</span> <span class="bu">Button</span>(<span class="dv">400</span>, <span class="dv">300</span>, <span class="st">&quot;Quitter&quot;</span>, <span class="fu">color</span>(<span class="dv">128</span>,   <span class="dv">0</span>, <span class="dv">0</span>));</a>
+<a class="sourceLine" id="cb1-10" title="10"></a>
+<a class="sourceLine" id="cb1-11" title="11"><span class="dt">int</span> counter = <span class="dv">0</span>;</a>
+<a class="sourceLine" id="cb1-12" title="12"></a>
+<a class="sourceLine" id="cb1-13" title="13"><span class="co">// -------------------------------------------------------------------</span></a>
+<a class="sourceLine" id="cb1-14" title="14"></a>
+<a class="sourceLine" id="cb1-15" title="15"><span class="dt">void</span> <span class="fu">setup</span>() </a>
+<a class="sourceLine" id="cb1-16" title="16">{</a>
+<a class="sourceLine" id="cb1-17" title="17">  <span class="fu">size</span>(<span class="dv">600</span>, <span class="dv">400</span>);</a>
+<a class="sourceLine" id="cb1-18" title="18">}</a>
+<a class="sourceLine" id="cb1-19" title="19"></a>
+<a class="sourceLine" id="cb1-20" title="20"><span class="dt">void</span> <span class="fu">drawCounter</span>() </a>
+<a class="sourceLine" id="cb1-21" title="21">{</a>
+<a class="sourceLine" id="cb1-22" title="22">  <span class="fu">textSize</span>(<span class="dv">64</span>);</a>
+<a class="sourceLine" id="cb1-23" title="23">  <span class="fu">fill</span>(<span class="dv">255</span>);</a>
+<a class="sourceLine" id="cb1-24" title="24">  <span class="fu">text</span>(counter, <span class="dv">200</span>, <span class="dv">200</span>);</a>
+<a class="sourceLine" id="cb1-25" title="25">}</a>
+<a class="sourceLine" id="cb1-26" title="26"></a>
+<a class="sourceLine" id="cb1-27" title="27"><span class="dt">void</span> <span class="fu">mousePressed</span>() </a>
+<a class="sourceLine" id="cb1-28" title="28">{</a>
+<a class="sourceLine" id="cb1-29" title="29">  <span class="kw">if</span> (incButton.<span class="fu">contains</span>(mouseX, mouseY)) {</a>
+<a class="sourceLine" id="cb1-30" title="30">    counter += <span class="dv">1</span>;</a>
+<a class="sourceLine" id="cb1-31" title="31">  } <span class="kw">else</span> <span class="kw">if</span> (decButton.<span class="fu">contains</span>(mouseX, mouseY)) {</a>
+<a class="sourceLine" id="cb1-32" title="32">    counter -= <span class="dv">1</span>;</a>
+<a class="sourceLine" id="cb1-33" title="33">  } <span class="kw">else</span> <span class="kw">if</span> (quitButton.<span class="fu">contains</span>(mouseX, mouseY)) {</a>
+<a class="sourceLine" id="cb1-34" title="34">    <span class="fu">exit</span>();</a>
+<a class="sourceLine" id="cb1-35" title="35">  }</a>
+<a class="sourceLine" id="cb1-36" title="36">}</a>
+<a class="sourceLine" id="cb1-37" title="37"></a>
+<a class="sourceLine" id="cb1-38" title="38"><span class="dt">void</span> <span class="fu">draw</span>() </a>
+<a class="sourceLine" id="cb1-39" title="39">{</a>
+<a class="sourceLine" id="cb1-40" title="40">  <span class="fu">background</span>(<span class="dv">0</span>);</a>
+<a class="sourceLine" id="cb1-41" title="41">  incButton.<span class="fu">draw</span>();</a>
+<a class="sourceLine" id="cb1-42" title="42">  decButton.<span class="fu">draw</span>();</a>
+<a class="sourceLine" id="cb1-43" title="43">  quitButton.<span class="fu">draw</span>();</a>
+<a class="sourceLine" id="cb1-44" title="44">  <span class="fu">drawCounter</span>();</a>
+<a class="sourceLine" id="cb1-45" title="45">}</a></code></pre></div>
+<p>on y voit que les “Buttons” sont</p>
+<ul>
+<li>créés par un appel à <code>new</code>, avec leurs paramètres spécifiques (position, texte, couleur)</li>
+<li>utilisés par l’intermédiaire de leurs <strong>méthodes</strong>
+<ul>
+<li><code>draw()</code> qui les fait se dessiner,</li>
+<li><code>contains</code> qui leur demande si ils contiennent une position.</li>
+</ul></li>
+</ul>
+<p><strong>Notation :</strong> pour demander à <code>Button</code> référencé par une <em>variable</em> d’exécuter <em>action</em>, on utilise la syntaxe <em>variable.action(paramètres)</em> que vous avez déjà rencontrée.</p>
+<h2 id="la-classe-button"><span class="header-section-number">1.2</span> La classe <code>Button</code></h2>
+<p>Les boutons sont matérialisés par 3 variables <code>incButton</code>, <code>decButton</code> et <code>quitButton</code> de type <code>Button</code>.</p>
+<p>Ce type <code>Button</code> ne fait pas partie de la bibliothèque de Processing, mais est défini par le programmeur d’application lui-même.</p>
+<p>Ce type est décrit par la <strong>classe</strong> <code>Button</code> :</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb2-1" title="1">**</a>
+<a class="sourceLine" id="cb2-2" title="2"> * Un bouton apparait sous forme d'un texte dans une boite de couleur.</a>
+<a class="sourceLine" id="cb2-3" title="3"> * La boite est de taille fixe.</a>
+<a class="sourceLine" id="cb2-4" title="4"> */</a>
+<a class="sourceLine" id="cb2-5" title="5"></a>
+<a class="sourceLine" id="cb2-6" title="6"><span class="kw">class</span> <span class="bu">Button</span> </a>
+<a class="sourceLine" id="cb2-7" title="7">{</a>
+<a class="sourceLine" id="cb2-8" title="8">  <span class="dt">final</span> <span class="dt">float</span> WIDTH = <span class="fl">100.</span><span class="dv">0</span>;</a>
+<a class="sourceLine" id="cb2-9" title="9">  <span class="dt">final</span> <span class="dt">float</span> HEIGHT = <span class="fl">50.</span><span class="dv">0</span>;</a>
+<a class="sourceLine" id="cb2-10" title="10"></a>
+<a class="sourceLine" id="cb2-11" title="11">  <span class="dt">float</span>  x, y;</a>
+<a class="sourceLine" id="cb2-12" title="12">  <span class="bu">String</span> label;</a>
+<a class="sourceLine" id="cb2-13" title="13">  color  c;</a>
+<a class="sourceLine" id="cb2-14" title="14"></a>
+<a class="sourceLine" id="cb2-15" title="15">  <span class="co">/**</span></a>
+<a class="sourceLine" id="cb2-16" title="16">   <span class="co">*</span> Constructeur<span class="co">.</span></a>
+<a class="sourceLine" id="cb2-17" title="17">   <span class="co">*/</span></a>
+<a class="sourceLine" id="cb2-18" title="18">  <span class="bu">Button</span>(<span class="dt">float</span> anX, <span class="dt">float</span> anY, <span class="bu">String</span> aLabel, color aColor) {</a>
+<a class="sourceLine" id="cb2-19" title="19">    x     = anX;</a>
+<a class="sourceLine" id="cb2-20" title="20">    y     = anY;</a>
+<a class="sourceLine" id="cb2-21" title="21">    label = aLabel;</a>
+<a class="sourceLine" id="cb2-22" title="22">    c     = aColor;</a>
+<a class="sourceLine" id="cb2-23" title="23">  }</a>
+<a class="sourceLine" id="cb2-24" title="24"></a>
+<a class="sourceLine" id="cb2-25" title="25">  <span class="co">/**</span></a>
+<a class="sourceLine" id="cb2-26" title="26">   <span class="co">*</span> Dessine<span class="co">-</span>moi un bouton <span class="co">(</span>lol<span class="co">).</span></a>
+<a class="sourceLine" id="cb2-27" title="27">   <span class="co">*/</span></a>
+<a class="sourceLine" id="cb2-28" title="28">  <span class="dt">void</span> <span class="fu">draw</span>() {</a>
+<a class="sourceLine" id="cb2-29" title="29">    <span class="fu">fill</span>(c);</a>
+<a class="sourceLine" id="cb2-30" title="30">    <span class="fu">rect</span>(x, y, WIDTH, HEIGHT);</a>
+<a class="sourceLine" id="cb2-31" title="31">    <span class="fu">fill</span>(<span class="dv">255</span>);</a>
+<a class="sourceLine" id="cb2-32" title="32">    <span class="fu">textSize</span>(<span class="dv">20</span>);</a>
+<a class="sourceLine" id="cb2-33" title="33">    <span class="fu">textAlign</span>(CENTER, CENTER);</a>
+<a class="sourceLine" id="cb2-34" title="34">    <span class="fu">text</span>(label, x + WIDTH/<span class="dv">2</span>, y + HEIGHT/<span class="dv">2</span>);</a>
+<a class="sourceLine" id="cb2-35" title="35">  }</a>
+<a class="sourceLine" id="cb2-36" title="36"></a>
+<a class="sourceLine" id="cb2-37" title="37">  <span class="dt">boolean</span> <span class="fu">contains</span>(<span class="dt">float</span> mx, <span class="dt">float</span> my) {</a>
+<a class="sourceLine" id="cb2-38" title="38">    <span class="kw">return</span> (x &lt;= mx) &amp;&amp; (mx &lt;= x + WIDTH)</a>
+<a class="sourceLine" id="cb2-39" title="39">      &amp;&amp; (y &lt;= my) &amp;&amp; (my &lt;= y + HEIGHT);</a>
+<a class="sourceLine" id="cb2-40" title="40">  }</a>
+<a class="sourceLine" id="cb2-41" title="41">}</a></code></pre></div>
+<p>Cette classe contient essentiellement</p>
+<ul>
+<li>la déclaration des <strong>attributs</strong> (variables et constantes) qui font partie du bouton,</li>
+<li>un <strong>constructeur</strong> qui indique comment les variables sont initialisées par l’appel à <code>new</code>,</li>
+<li>les <strong>méthodes</strong> (fonctions) que l’on peut demander à un bouton d’exécuter.</li>
+</ul>
+<p><strong>Remarque :</strong> une <em>méthode</em> indique comment un <code>Button</code> exécute une action. Les instructions de la méthode ont accès aux attributs de l’objet. Par exemple, dans <code>contains</code>, on compare une position <em>(mx,my)</em> avec sa position <em>(x,y)</em> et ses dimensions <em>(WIDTH, HEIGHT)</em>.</p>
+<h2 id="interface-de-programmation-vs.implémentation"><span class="header-section-number">1.3</span> Interface de programmation vs. implémentation</h2>
+<p>Lors de la conception d’un programme, lorsqu’on introduit une classe, la question importante est de savoir ce que le “programmeur d’application” va faire de cette classe.</p>
+<p>Ici, pour un <code>Button</code>, on va</p>
+<ul>
+<li>le créer avec certaines caractéristiques (position, texte, couleur),</li>
+<li>le faire se dessiner,</li>
+<li>lui demander si un point est situé dans son rectangle.</li>
+</ul>
+<p>Nous avons donc un constructeur et deux méthodes qui constituent <strong>l’interface d’utilisation</strong> (ou de programmation, API)de la classe.</p>
+<p>D’un autre côté, la classe contient l’<strong>implémentation</strong>, c’est-à-dire les <em>détails internes</em> de réalisation d’un bouton, sous la forme</p>
+<ul>
+<li>d’attributs qui servent à mémoriser les informations relatives à un <code>Button</code>,</li>
+<li>des méthodes avec leur code.</li>
+</ul>
+<h2 id="modificateurs-daccès"><span class="header-section-number">1.4</span> Modificateurs d’accès</h2>
+<p>On a tout intérêt différencier explicitement ce qui fait partie de l’interface &quot;public de ce qui à usage interne de l’objet. On ajoute des *modificateurs d’accès&quot;. Exemple :</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">class</span> <span class="bu">Button</span> </a>
+<a class="sourceLine" id="cb3-2" title="2">{</a>
+<a class="sourceLine" id="cb3-3" title="3">  <span class="co">// ...</span></a>
+<a class="sourceLine" id="cb3-4" title="4">  <span class="kw">private</span> <span class="dt">float</span>  x, y;</a>
+<a class="sourceLine" id="cb3-5" title="5">  <span class="kw">private</span> <span class="bu">String</span> label;</a>
+<a class="sourceLine" id="cb3-6" title="6"></a>
+<a class="sourceLine" id="cb3-7" title="7">  <span class="kw">public</span> <span class="bu">Button</span>(<span class="dt">float</span> anX, <span class="dt">float</span> anY, <span class="bu">String</span> aLabel, color aColor) {</a>
+<a class="sourceLine" id="cb3-8" title="8">    ...</a>
+<a class="sourceLine" id="cb3-9" title="9">  }</a>
+<a class="sourceLine" id="cb3-10" title="10"></a>
+<a class="sourceLine" id="cb3-11" title="11">  <span class="kw">public</span> <span class="dt">void</span> <span class="fu">draw</span>() {</a>
+<a class="sourceLine" id="cb3-12" title="12">    ...</a>
+<a class="sourceLine" id="cb3-13" title="13">  }</a>
+<a class="sourceLine" id="cb3-14" title="14">  </a>
+<a class="sourceLine" id="cb3-15" title="15">  <span class="kw">public</span> <span class="dt">boolean</span> <span class="fu">contains</span>(<span class="dt">float</span> mx, <span class="dt">float</span> my) {</a>
+<a class="sourceLine" id="cb3-16" title="16">    ...</a>
+<a class="sourceLine" id="cb3-17" title="17">  }</a>
+<a class="sourceLine" id="cb3-18" title="18">}</a></code></pre></div>
+<p>Le mot-clé <code>private</code> signifie “accessible seulement depuis le code de la classe”.</p>
+<p>Le compilateur refusera alors - avec raison - qu’on écrive</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb4-1" title="1">quitButton.<span class="fu">label</span> = <span class="st">&quot;Bye&quot;</span>;     <span class="co">// pas possible</span></a></code></pre></div>
+<p>pour modifier directement le <code>label</code> d’un bouton, puisque nous nous le sommes interdit.</p>
+<p>Les modificateurs d’accès sont un mécanisme de <strong>protection</strong> du programmeur contre une utilisation incorrecte de la classe.</p>
+<h2 id="méthodes-à-usage-interne"><span class="header-section-number">1.5</span> Méthodes à usage interne</h2>
+<p>Pour une meilleure qualité de programmation, la méthode <code>Button::draw()</code> pourrait se décomposer :</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">public</span> <span class="dt">void</span> <span class="fu">draw</span>() {</a>
+<a class="sourceLine" id="cb5-2" title="2">    <span class="fu">drawBackground</span>();</a>
+<a class="sourceLine" id="cb5-3" title="3">    <span class="fu">drawLabel</span>();</a>
+<a class="sourceLine" id="cb5-4" title="4">}</a>
+<a class="sourceLine" id="cb5-5" title="5"></a>
+<a class="sourceLine" id="cb5-6" title="6"><span class="kw">private</span> <span class="dt">void</span> <span class="fu">drawBackground</span>() {</a>
+<a class="sourceLine" id="cb5-7" title="7">    <span class="fu">fill</span>(c);</a>
+<a class="sourceLine" id="cb5-8" title="8">    <span class="fu">rect</span>(x, y, WIDTH, HEIGHT);</a>
+<a class="sourceLine" id="cb5-9" title="9">}</a>
+<a class="sourceLine" id="cb5-10" title="10"></a>
+<a class="sourceLine" id="cb5-11" title="11"><span class="kw">private</span> <span class="dt">void</span> <span class="fu">drawLabel</span>() {</a>
+<a class="sourceLine" id="cb5-12" title="12">    <span class="fu">fill</span>(<span class="dv">255</span>);</a>
+<a class="sourceLine" id="cb5-13" title="13">    <span class="fu">textSize</span>(<span class="dv">20</span>);</a>
+<a class="sourceLine" id="cb5-14" title="14">    <span class="fu">textAlign</span>(CENTER, CENTER);</a>
+<a class="sourceLine" id="cb5-15" title="15">    <span class="fu">text</span>(label, x + WIDTH/<span class="dv">2</span>, y + HEIGHT/<span class="dv">2</span>);</a>
+<a class="sourceLine" id="cb5-16" title="16">}</a></code></pre></div>
+<p>Les deux méthodes auxiliaires n’étant pas destinées à être appelées de l’extérieur, on les déclare donc <code>private</code>. Elles sont invoqués directement depuis <code>draw()</code>, et exécutées par la même instance.</p>
+<h2 id="la-référence-this"><span class="header-section-number">1.6</span> La référence <code>this</code></h2>
+<p>Dans le code des méthodes, le mot-clé <code>this</code> est une référence vers l’instance qui exécute la méthode (<em>this object</em>) :</p>
+<ol type="1">
+<li>On aurait pu écrire, avec le même effet</li>
+</ol>
+<div class="sourceCode" id="cb6"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">public</span> <span class="dt">void</span> <span class="fu">draw</span>() {</a>
+<a class="sourceLine" id="cb6-2" title="2">   <span class="kw">this</span>.<span class="fu">drawBackground</span>();</a>
+<a class="sourceLine" id="cb6-3" title="3">   <span class="kw">this</span>.<span class="fu">drawLabel</span>();</a>
+<a class="sourceLine" id="cb6-4" title="4">}</a></code></pre></div>
+<p>mais c’est inutile dans ce cas. On ne le fait donc pas.</p>
+<ol start="2" type="1">
+<li>En revanche, on emploie souvent <code>this</code> dans les constructeurs, pour initialiser des attributs à partir de paramètres qui ont le même nom. Exemple</li>
+</ol>
+<div class="sourceCode" id="cb7"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb7-1" title="1">  <span class="bu">Button</span>(<span class="dt">float</span> x, <span class="dt">float</span> y, <span class="bu">String</span> label, color c) {</a>
+<a class="sourceLine" id="cb7-2" title="2">    <span class="kw">this</span>.<span class="fu">x</span>     = x;</a>
+<a class="sourceLine" id="cb7-3" title="3">    <span class="kw">this</span>.<span class="fu">y</span>     = y;</a>
+<a class="sourceLine" id="cb7-4" title="4">    <span class="kw">this</span>.<span class="fu">label</span> = label</a>
+<a class="sourceLine" id="cb7-5" title="5">    <span class="kw">this</span>.<span class="fu">c</span>     = c;</a></code></pre></div>
+<p>En effet, si un paramètre et un attribut portent le même nom, le <code>this</code> lève l’ambiguité.</p>
+<h2 id="résumé-terminologie"><span class="header-section-number">1.7</span> Résumé, Terminologie</h2>
+<p>En Java il y a les données de <em>types natifs</em> prédéfinis (<code>int</code>, <code>boolean</code>, <code>char</code>, <code>double</code>, …), les tableaux, et les objets.</p>
+<ol type="1">
+<li><p>Un <strong>objet</strong> est une entité qui regroupe des variables (<strong>attributs</strong>) et du code (les <strong>méthodes</strong> qu’on peut lui appliquer).</p></li>
+<li><p>Une <strong>classe</strong> est une déclaration de type pour des objets, qu’on appelle <strong>instances</strong> de la classe.</p></li>
+<li><p>Une classe contient la liste de déclarations des attributs et des méthodes, ainsi que des constructeurs.</p></li>
+<li><p>Les constructeurs servent à donner un état initial à une objet.</p></li>
+<li><p>Le code des méthodes a accès aux attributs et méthodes définis dans la classe (exemple: les coordonnées et les dimensions dans <code>contains</code>).</p></li>
+<li><p>Une classe est aussi une déclaration de type pour des <strong>variables</strong>, qui peuvent contenir une <strong>référence</strong> à une instance, ou la valeur spéciale <code>null</code>.</p></li>
+<li><p>Pour demander à un objet référencé par une variable (invocation d’une méthode), on utilise la syntaxe <em>variable.methode(paramètres)</em>.</p></li>
+<li><p>Dans une méthode, le mot-clé <code>this</code> est une référence à l’instance elle-même. On l’omet généralement quand il n’y a pas d’ambiguité, tant commme “préfixe” pour les attributs, ou comme “sujet” pour l’invocation d’une méthode.</p></li>
+<li><p>Le modificateur d’accès <code>private</code> permettent de limiter l’accès à des détails considérés comme “internes à la classe”.</p></li>
+</ol>
+<h1 id="interfaces-et-polymorphisme"><span class="header-section-number">2</span> Interfaces et polymorphisme</h1>
+<h2 id="un-exemple-concret"><span class="header-section-number">2.1</span> Un exemple concret</h2>
+<p>Le programme <em>Processing</em> suivant fait afficher des “éléments”. De nouveaux éléments (ronds, carrés) seront ajoutés en cliquant sur la fenêtre.</p>
+<h3 id="affichage-des-déléments"><span class="header-section-number">2.1.1</span> Affichage des d’éléments</h3>
+<p>Nous disposons d’un <code>ArrayList</code> d’éléments, déclaré ainsi</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb8-1" title="1"><span class="bu">ArrayList</span>&lt;<span class="bu">Element</span>&gt; elements = <span class="kw">new</span> <span class="bu">ArrayList</span>&lt;<span class="bu">Element</span>&gt;();</a></code></pre></div>
+<p>et l’affichage se fait par une boucle, qui appelle le méthode <code>paint</code> de chaque élément :</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb9-1" title="1"><span class="dt">void</span> <span class="fu">setup</span>()</a>
+<a class="sourceLine" id="cb9-2" title="2">{</a>
+<a class="sourceLine" id="cb9-3" title="3">  <span class="fu">size</span>(<span class="dv">300</span>, <span class="dv">200</span>);</a>
+<a class="sourceLine" id="cb9-4" title="4">}</a>
+<a class="sourceLine" id="cb9-5" title="5"></a>
+<a class="sourceLine" id="cb9-6" title="6"><span class="dt">void</span> <span class="fu">draw</span>() </a>
+<a class="sourceLine" id="cb9-7" title="7">{</a>
+<a class="sourceLine" id="cb9-8" title="8">  <span class="fu">background</span>(<span class="dv">0</span>);</a>
+<a class="sourceLine" id="cb9-9" title="9">  <span class="kw">for</span> (<span class="bu">Element</span> e : elements) {</a>
+<a class="sourceLine" id="cb9-10" title="10">    e.<span class="fu">paint</span>();</a>
+<a class="sourceLine" id="cb9-11" title="11">  }</a>
+<a class="sourceLine" id="cb9-12" title="12">}</a></code></pre></div>
+<p>La méthode <code>paint()</code> fait donc partie de l’API (interface de programmation) du type <code>Element</code> (qui sera déclaré plus loin).</p>
+<h3 id="ajout-dun-élément"><span class="header-section-number">2.1.2</span> Ajout d’un élément</h3>
+<p>De nouveaux éléments sont ajoutés dans l’<code>ArrayList</code> en cliquant sur la fenêtre.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb10-1" title="1"><span class="dt">void</span> <span class="fu">mousePressed</span>() {</a>
+<a class="sourceLine" id="cb10-2" title="2">  <span class="kw">if</span> (mouseButton == LEFT) {</a>
+<a class="sourceLine" id="cb10-3" title="3">    elements.<span class="fu">add</span>(<span class="kw">new</span> <span class="fu">Circle</span>(mouseX, mouseY));</a>
+<a class="sourceLine" id="cb10-4" title="4">  } <span class="kw">else</span> {</a>
+<a class="sourceLine" id="cb10-5" title="5">    elements.<span class="fu">add</span>(<span class="kw">new</span> <span class="fu">Square</span>(mouseX, mouseY));</a>
+<a class="sourceLine" id="cb10-6" title="6">  }</a>
+<a class="sourceLine" id="cb10-7" title="7">}</a></code></pre></div>
+<p>remarquez</p>
+<ol type="1">
+<li>que ce sont des instances de classes différentes (<code>Circle</code> et <code>Square</code>),</li>
+<li>que ces instances sont référencées par un tableau d’<code>Element</code></li>
+</ol>
+<p>Il y a donc une certaine <em>compatibilité</em> entre les types <code>Circle</code>, <code>Square</code> et <code>Element</code>.</p>
+<h3 id="déclaration-dinterface"><span class="header-section-number">2.1.3</span> Déclaration d’interface</h3>
+<p>Le type <code>Element</code> est déclaré comme suit</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb11-1" title="1"><span class="kw">interface</span> <span class="bu">Element</span> {</a>
+<a class="sourceLine" id="cb11-2" title="2">  <span class="dt">void</span> <span class="fu">paint</span>();</a>
+<a class="sourceLine" id="cb11-3" title="3">}</a></code></pre></div>
+<p>c’est une *déclaration d’interface<strong> (au sens Java), c’est-à-dire une liste de prototypes de méthodes qui devront être présentes dans les classes qui déclarent </strong>implémenter** cette interface.</p>
+<p>Autrement dit : tout <code>Element</code> aura une méthode <code>paint()</code>.</p>
+<p><strong>Rappel</strong> : un prototype de méthode, c’est l’entête de la méthode, avec son type de retour, son nom, la déclaration des paramètres (et des exceptions qu’elle peut lever).</p>
+<h2 id="implémentations"><span class="header-section-number">2.2</span> Implémentations</h2>
+<p>Toute classe qui implémente cette interface doit</p>
+<ul>
+<li>le déclarer dans son entête (mot-clé <code>implements</code>),</li>
+<li>définir les méthodes de l’interface, de la manière qui convient (la méthode <code>paint()</code> de <code>Circle</code> tracera un rond).</li>
+</ul>
+<p>C’est ce qu’on retrouve dans</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb12-1" title="1"><span class="kw">class</span> Circle <span class="kw">implements</span> <span class="bu">Element</span></a>
+<a class="sourceLine" id="cb12-2" title="2">{</a>
+<a class="sourceLine" id="cb12-3" title="3">  <span class="dt">float</span> x, y;</a>
+<a class="sourceLine" id="cb12-4" title="4">  <span class="fu">Circle</span>(<span class="dt">float</span> x, <span class="dt">float</span> y) {</a>
+<a class="sourceLine" id="cb12-5" title="5">    <span class="kw">this</span>.<span class="fu">x</span> = x;</a>
+<a class="sourceLine" id="cb12-6" title="6">    <span class="kw">this</span>.<span class="fu">y</span> = y;</a>
+<a class="sourceLine" id="cb12-7" title="7">  }</a>
+<a class="sourceLine" id="cb12-8" title="8">  <span class="at">@Override</span></a>
+<a class="sourceLine" id="cb12-9" title="9">  <span class="dt">void</span> <span class="fu">paint</span>() {              <span class="co">// trace un rond rouge</span></a>
+<a class="sourceLine" id="cb12-10" title="10">    <span class="fu">fill</span>(<span class="dv">255</span>, <span class="dv">0</span>, <span class="dv">0</span>);</a>
+<a class="sourceLine" id="cb12-11" title="11">    <span class="fu">ellipse</span>(x, y, <span class="dv">20</span>, <span class="dv">20</span>);</a>
+<a class="sourceLine" id="cb12-12" title="12">  }</a>
+<a class="sourceLine" id="cb12-13" title="13">}</a>
+<a class="sourceLine" id="cb12-14" title="14"></a>
+<a class="sourceLine" id="cb12-15" title="15"><span class="kw">class</span> Square <span class="kw">implements</span> <span class="bu">Element</span> </a>
+<a class="sourceLine" id="cb12-16" title="16">{</a>
+<a class="sourceLine" id="cb12-17" title="17">  <span class="dt">float</span> x, y;</a>
+<a class="sourceLine" id="cb12-18" title="18">  <span class="fu">Square</span>(<span class="dt">float</span> x, <span class="dt">float</span> y) {</a>
+<a class="sourceLine" id="cb12-19" title="19">    <span class="kw">this</span>.<span class="fu">x</span> = x;</a>
+<a class="sourceLine" id="cb12-20" title="20">    <span class="kw">this</span>.<span class="fu">y</span> = y;</a>
+<a class="sourceLine" id="cb12-21" title="21">  }</a>
+<a class="sourceLine" id="cb12-22" title="22">  <span class="at">@Override</span></a>
+<a class="sourceLine" id="cb12-23" title="23">  <span class="dt">void</span> <span class="fu">paint</span>() {          <span class="co">// trace un carré jaune</span></a>
+<a class="sourceLine" id="cb12-24" title="24">    <span class="fu">fill</span>(<span class="dv">255</span>, <span class="dv">255</span>, <span class="dv">0</span>);   </a>
+<a class="sourceLine" id="cb12-25" title="25">    <span class="fu">rectMode</span>(CENTER);     <span class="co">// centrage</span></a>
+<a class="sourceLine" id="cb12-26" title="26">    <span class="fu">rect</span>(x, y, <span class="dv">20</span>, <span class="dv">20</span>);</a>
+<a class="sourceLine" id="cb12-27" title="27">  }</a>
+<a class="sourceLine" id="cb12-28" title="28">}</a></code></pre></div>
+<p>(l’annotation <code>@Override</code>, facultative dans les vieilles versions de java, est fortement conseillée)</p>
+<h2 id="le-polymorphisme"><span class="header-section-number">2.3</span> Le polymorphisme</h2>
+<p>L’introduction de l’interface <code>Element</code> rend le code <strong>polymorphe</strong></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb13-1" title="1"><span class="bu">ArrayList</span>&lt;<span class="bu">Element</span>&gt; elements = <span class="kw">new</span> <span class="bu">ArrayList</span>&lt;<span class="bu">Element</span>&gt;();</a>
+<a class="sourceLine" id="cb13-2" title="2"></a>
+<a class="sourceLine" id="cb13-3" title="3"><span class="dt">void</span> <span class="fu">draw</span>() </a>
+<a class="sourceLine" id="cb13-4" title="4">{</a>
+<a class="sourceLine" id="cb13-5" title="5">  <span class="fu">background</span>(<span class="dv">0</span>);</a>
+<a class="sourceLine" id="cb13-6" title="6">  <span class="kw">for</span> (<span class="bu">Element</span> e : elements) {</a>
+<a class="sourceLine" id="cb13-7" title="7">    e.<span class="fu">paint</span>();</a>
+<a class="sourceLine" id="cb13-8" title="8">  }</a>
+<a class="sourceLine" id="cb13-9" title="9">}</a></code></pre></div>
+<p>il est indépendant du type effectif des objets qui sont dans l’arraylist <code>elements</code>. Du coup, le code est facilement extensible : on peut introduire des types supplémentaires (<code>Triangle</code>, …) sans avoir à toucher cette partie du code.</p>
+<p>Dans la boucle, l’invocation <code>e.paint()</code> fera exécuter le code de la méthode <code>paint</code> qui convient à l’objet référencé par <code>e</code>.</p>
+<p>Le <strong>polymorphisme</strong>, c’est la possibilité d’utiliser la même interface indifféremment sur des objets de types différents. Les objets manipulés peuvent prendre plusieurs (grec : poly) formes.</p>
+<h2 id="résumé"><span class="header-section-number">2.4</span> Résumé</h2>
+<ul>
+<li>une déclaration d’<code>interface</code> définit un <strong>type</strong> pour des variables,</li>
+<li>elle contient une liste de prototypes de <code>méthodes</code>, sans les instructions.</li>
+<li>une interface n’est pas une classe, on ne peut pas en créer des instances par <code>new</code>,</li>
+<li>les variables feront référence à des objets, instances de classes qui <em>implémentent</em> l’interface,</li>
+<li>il peut y avoir plusieurs classes, c’est le <strong>polymorphisme</strong></li>
+<li>les classes spécifient (mot-clé <code>implements</code>) les interfaces qu’elles implémentent, et définissent leurs méthodes de la manière qui leur est spécifique.</li>
+</ul>
+<p>L’utilisation d’interfaces pour séparer</p>
+<ul>
+<li>la définition d’une liste de fonctionnalités attendues</li>
+<li>la réalisation de ces fonctionnalités (implémentation)</li>
+</ul>
+<p>permet de d’écrire du code polymorphe, dans lequel les données sont traitées sans avoir à connaître leur type concret, ce qui facilite ensuite l’extension du code.</p>
+<h2 id="compléments"><span class="header-section-number">2.5</span> Compléments</h2>
+<ol type="1">
+<li>une classe peut implémenter plusieurs interfaces. Exemple</li>
+</ol>
+<div class="sourceCode" id="cb14"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb14-1" title="1"><span class="kw">interface</span> Drawable {</a>
+<a class="sourceLine" id="cb14-2" title="2">   <span class="dt">void</span> <span class="fu">draw</span>();</a>
+<a class="sourceLine" id="cb14-3" title="3">}</a>
+<a class="sourceLine" id="cb14-4" title="4"></a>
+<a class="sourceLine" id="cb14-5" title="5"><span class="kw">interface</span> Animable {</a>
+<a class="sourceLine" id="cb14-6" title="6">   <span class="dt">void</span> <span class="fu">animate</span>();</a>
+<a class="sourceLine" id="cb14-7" title="7">}</a>
+<a class="sourceLine" id="cb14-8" title="8"></a>
+<a class="sourceLine" id="cb14-9" title="9"><span class="kw">class</span> <span class="bu">Character</span> <span class="kw">implements</span> Drawable, Animable</a>
+<a class="sourceLine" id="cb14-10" title="10">{</a>
+<a class="sourceLine" id="cb14-11" title="11">   <span class="at">@Override</span></a>
+<a class="sourceLine" id="cb14-12" title="12">   <span class="dt">void</span> <span class="fu">draw</span>() {</a>
+<a class="sourceLine" id="cb14-13" title="13">      ....</a>
+<a class="sourceLine" id="cb14-14" title="14">   }</a>
+<a class="sourceLine" id="cb14-15" title="15">   <span class="at">@Override</span></a>
+<a class="sourceLine" id="cb14-16" title="16">   <span class="dt">void</span> <span class="fu">animate</span>() {</a>
+<a class="sourceLine" id="cb14-17" title="17">      ....</a>
+<a class="sourceLine" id="cb14-18" title="18">   }</a>
+<a class="sourceLine" id="cb14-19" title="19">}</a></code></pre></div>
+<ol start="2" type="1">
+<li>Une interface peut “étendre” (regrouper) des interfaces existantes, et y ajouter des méthodes</li>
+</ol>
+<div class="sourceCode" id="cb15"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb15-1" title="1"><span class="kw">interface</span> InteractiveElement <span class="kw">implements</span> Drawable, Animable</a>
+<a class="sourceLine" id="cb15-2" title="2">{</a>
+<a class="sourceLine" id="cb15-3" title="3">    <span class="dt">void</span> <span class="fu">onClick</span>();</a>
+<a class="sourceLine" id="cb15-4" title="4">}</a></code></pre></div>
+<h2 id="travail"><span class="header-section-number">2.6</span> Travail</h2>
+<p>Modifier le programme pour que</p>
+<ul>
+<li>l’ajout d’un rond ou d’un carré se fasse quand on clique à un endroit où il n’y a rien.</li>
+<li>si on clique sur quelque chose qui existe déjà, on peut faire un glisser-déposer.</li>
+</ul>
+<p>Indications</p>
+<ol type="1">
+<li>quand on clique, construire la liste des éléments présents à cet endroit</li>
+</ol>
+<div class="sourceCode" id="cb16"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb16-1" title="1"><span class="dt">void</span> <span class="fu">mousePressed</span>() {</a>
+<a class="sourceLine" id="cb16-2" title="2">    underTheMouse.<span class="fu">clear</span>();</a>
+<a class="sourceLine" id="cb16-3" title="3">    <span class="kw">for</span> (<span class="bu">Element</span> e: elements) {</a>
+<a class="sourceLine" id="cb16-4" title="4">        <span class="kw">if</span> (e.<span class="fu">contains</span>(mouseX, mouseY)) {</a>
+<a class="sourceLine" id="cb16-5" title="5">            underTheMouse.<span class="fu">add</span>(e);</a>
+<a class="sourceLine" id="cb16-6" title="6">        }</a>
+<a class="sourceLine" id="cb16-7" title="7">    }</a>
+<a class="sourceLine" id="cb16-8" title="8">    ...</a>
+<a class="sourceLine" id="cb16-9" title="9">}</a></code></pre></div>
+<p>on peut alors savoir si on en a au moins un, ou pas.</p>
+<ol start="2" type="1">
+<li>lorsqu’on déplace la souris en tenant le bouton, décaler les éléments sélectionnés</li>
+</ol>
+<div class="sourceCode" id="cb17"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb17-1" title="1"><span class="dt">void</span> <span class="fu">mouseDragged</span>() {</a>
+<a class="sourceLine" id="cb17-2" title="2">    <span class="kw">for</span> (<span class="bu">Element</span> e: underTheMouse) {</a>
+<a class="sourceLine" id="cb17-3" title="3">        e.<span class="fu">translate</span>(mouseX - pmouseX, mouseY - pmouseY);</a>
+<a class="sourceLine" id="cb17-4" title="4">    }</a>
+<a class="sourceLine" id="cb17-5" title="5">}</a></code></pre></div>
+<h1 id="héritage"><span class="header-section-number">3</span> Héritage</h1>
+</body>
+</html>

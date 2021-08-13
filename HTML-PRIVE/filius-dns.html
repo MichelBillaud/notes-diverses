@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Michel Billaud (michel.billaud@u-bordeaux.fr, michel.billaud@laposte.net)" />
+  <title>DNS - Résolution des noms - Filius</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">a.sourceLine {
+display: inline-block;
+line-height: 1.25;
+}
+a.sourceLine {
+pointer-events: none;
+color: inherit;
+text-decoration: inherit;
+}
+a.sourceLine:empty {
+height: 1.2em;
+}
+.sourceCode {
+overflow: visible;
+}
+code.sourceCode {
+white-space: pre;
+position: relative;
+}
+div.sourceCode {
+margin: 1em 0;
+}
+pre.sourceCode {
+margin: 0;
+}
+@media screen {
+div.sourceCode {
+overflow: auto;
+}
+}
+@media print {
+code.sourceCode {
+white-space: pre-wrap;
+}
+a.sourceLine {
+text-indent: -1em;
+padding-left: 1em;
+}
+}
+pre.numberSource a.sourceLine {
+position: relative;
+left: -4em;
+}
+pre.numberSource a.sourceLine::before {
+content: attr(title);
+position: relative;
+left: -1em;
+text-align: right;
+vertical-align: baseline;
+border: none;
+pointer-events: all;
+display: inline-block;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+padding: 0 4px;
+width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource {
+margin-left: 3em;
+border-left: 1px solid #aaaaaa;
+padding-left: 4px;
+}
+div.sourceCode {}
+@media screen {
+a.sourceLine::before {
+text-decoration: underline;
+}
+}
+code span.al {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.an {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.at {
+color: #7d9029;
+}
+
+code span.bn {
+color: #40a070;
+}
+
+code span.bu {}
+
+code span.cf {
+color: #007020;
+font-weight: bold;
+}
+
+code span.ch {
+color: #4070a0;
+}
+
+code span.cn {
+color: #880000;
+}
+
+code span.co {
+color: #60a0b0;
+font-style: italic;
+}
+
+code span.cv {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.do {
+color: #ba2121;
+font-style: italic;
+}
+
+code span.dt {
+color: #902000;
+}
+
+code span.dv {
+color: #40a070;
+}
+
+code span.er {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.ex {}
+
+code span.fl {
+color: #40a070;
+}
+
+code span.fu {
+color: #06287e;
+}
+
+code span.im {}
+
+code span.in {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.kw {
+color: #007020;
+font-weight: bold;
+}
+
+code span.op {
+color: #666666;
+}
+
+code span.ot {
+color: #007020;
+}
+
+code span.pp {
+color: #bc7a00;
+}
+
+code span.sc {
+color: #4070a0;
+}
+
+code span.ss {
+color: #bb6688;
+}
+
+code span.st {
+color: #4070a0;
+}
+
+code span.va {
+color: #19177c;
+}
+
+code span.vs {
+color: #4070a0;
+}
+
+code span.wa {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+
+:root {
+--title-color: #202080;
+--source-bg-color: rgb(240, 240, 255);
+}
+h1, h2, h3, h4, h5, h6 {
+border-bottom: solid 1px silver;
+color: var(--title-color);
+}
+body {
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div.sourceCode {
+background-color: var(--source-bg-color);
+padding: 1em;
+}
+#TOC {
+padding: 0.5em;
+border: solid 1px silver;
+}
+#TOC ul {
+list-style-type: none;
+padding-left: 1em;
+}
+nav:before {
+text-indent: 2em;
+content: "Sommaire";
+color: var(--title-color);
+font-weight: bold;
+font-size: large;
+}
+#TOC a {
+text-decoration: none;
+}
+header {
+text-align: center;
+}
+.title {
+}
+.author, .date {
+font-style: italic;
+}
+table, th, td {
+border-collapse: collapse;
+border: solid black 1px;
+padding: 0.5em;
+}
+</style>
+</head>
+<body>
+<header>
+<h1 class="title">DNS - Résolution des noms - Filius</h1>
+<p class="author">Michel Billaud (michel.billaud@u-bordeaux.fr, michel.billaud@laposte.net)</p>
+<p class="date">5 juillet 2020</p>
+</header>
+<nav id="TOC">
+<ul>
+<li><a href="#objectif-résolution-des-noms."><span class="toc-section-number">1</span> Objectif : résolution des noms.</a><ul>
+<li><a href="#adresses-noms-et-résolution"><span class="toc-section-number">1.1</span> Adresses, noms et résolution</a></li>
+<li><a href="#noms-qualifiés-ou-pas."><span class="toc-section-number">1.2</span> Noms qualifiés ou pas.</a></li>
+<li><a href="#un-système-hiérarchisé"><span class="toc-section-number">1.3</span> Un système hiérarchisé</a></li>
+<li><a href="#délégation"><span class="toc-section-number">1.4</span> Délégation</a></li>
+<li><a href="#mécanisme-de-résolution"><span class="toc-section-number">1.5</span> Mécanisme de résolution</a></li>
+<li><a href="#interrogation-dun-serveur"><span class="toc-section-number">1.6</span> Interrogation d’un serveur</a></li>
+</ul></li>
+<li><a href="#pratique"><span class="toc-section-number">2</span> Pratique</a><ul>
+<li><a href="#un-serveur-pour-une-zone"><span class="toc-section-number">2.1</span> Un serveur pour une zone</a><ul>
+<li><a href="#config-réseau"><span class="toc-section-number">2.1.1</span> Config réseau</a></li>
+<li><a href="#config-dns"><span class="toc-section-number">2.1.2</span> Config DNS</a></li>
+<li><a href="#premier-test"><span class="toc-section-number">2.1.3</span> Premier test</a></li>
+<li><a href="#suite"><span class="toc-section-number">2.1.4</span> Suite</a></li>
+<li><a href="#complément"><span class="toc-section-number">2.1.5</span> Complément</a></li>
+</ul></li>
+<li><a href="#domaine-sous-domaine"><span class="toc-section-number">2.2</span> Domaine / sous-domaine</a><ul>
+<li><a href="#création-du-réseau-sous-filius"><span class="toc-section-number">2.2.1</span> Création du réseau sous FILIUS</a></li>
+<li><a href="#configuration-du-client"><span class="toc-section-number">2.2.2</span> Configuration du client</a></li>
+<li><a href="#configuration-dun-serveur-dns-serveur-iut"><span class="toc-section-number">2.2.3</span> Configuration d’un serveur DNS (serveur IUT)</a></li>
+<li><a href="#serveur-dns-pour-un-sous-domaine"><span class="toc-section-number">2.2.4</span> Serveur DNS pour un sous-domaine</a></li>
+<li><a href="#autre-cas-de-figure"><span class="toc-section-number">2.2.5</span> Autre cas de figure</a></li>
+<li><a href="#glue-records-pour-les-serveurs-racine"><span class="toc-section-number">2.2.6</span> Glue records pour les serveurs racine</a></li>
+</ul></li>
+<li><a href="#your-own-dark-internet"><span class="toc-section-number">2.3</span> Your own dark Internet</a></li>
+</ul></li>
+<li><a href="#annexes"><span class="toc-section-number">3</span> Annexes</a><ul>
+<li><a href="#terminologie"><span class="toc-section-number">3.1</span> Terminologie</a></li>
+<li><a href="#exemple-résolution-en-c"><span class="toc-section-number">3.2</span> Exemple résolution en C</a></li>
+<li><a href="#exemple-résolution-en-java"><span class="toc-section-number">3.3</span> Exemple résolution en Java</a></li>
+<li><a href="#annexe-configurer-un-serveur-dns"><span class="toc-section-number">3.4</span> Annexe : configurer un serveur DNS</a></li>
+</ul></li>
+</ul>
+</nav>
+<p><strong>Objectif</strong></p>
+<p>Expliquer quelques bases sur les DNS, avec des manips faisables avec Filius et ses limitations</p>
+<p><strong>TODO</strong> : trouver de meilleurs noms pour les machines de l’exemple “iut”.</p>
+<h1 id="objectif-résolution-des-noms."><span class="header-section-number">1</span> Objectif : résolution des noms.</h1>
+<h2 id="adresses-noms-et-résolution"><span class="header-section-number">1.1</span> Adresses, noms et résolution</h2>
+<p>Sur Internet on désigne des machines (qu’on appelle historiquement des <strong>domaines</strong>) par les adresses IP de leurs interfaces : adresses sur 32 bits pour IPv4, sur 128 bits pour IPv6, mais en pratique, on utilise des noms de domaines comme <code>www.iut.u-bordeaux.fr</code>.</p>
+<p>La <strong>résolution d’adresses</strong> consiste à déterminer la ou les adresses IP qui correspondent à un nom (<code>147.210.94.18</code> pour <code>www.iut.u-bordeaux.fr</code>)</p>
+<p>Les programmes qui utilisent des adresses IP font appel à un module du système d’exploitation, le <strong>resolver</strong>, qui se charge de la résolution. Voir annexe : utilisation de la fonction <code>getaddrinfo()</code>.</p>
+<h2 id="noms-qualifiés-ou-pas."><span class="header-section-number">1.2</span> Noms qualifiés ou pas.</h2>
+<p>Quand on travaille avec les machines d’un réseau, il est commode de les désigner par un “petit nom” (<em>hostname</em>) comme <code>pc-alice</code>, <code>console-bob</code>, etc. Ces noms font implicitement référence à un <strong>suffixe par défaut</strong> (exemple <code>home.org</code>).</p>
+<p>Le nom complet (ou FQDN = fully qualified domain name) s’obtient en combinant les deux, exemple <code>pc-alice.home.org</code>.</p>
+<h2 id="un-système-hiérarchisé"><span class="header-section-number">1.3</span> Un système hiérarchisé</h2>
+<p>L’espace des noms est découpé en <strong>zones</strong>, qui forment une arborescence arborescente :</p>
+<ul>
+<li><code>u-bordeaux.fr</code> fait partie de la zone <code>.fr</code>,</li>
+<li><code>iut.u-bordeaux.fr</code> fait partie de la zone <code>.u-bordeaux.fr</code>,</li>
+<li><code>www.iut.u-bordeaux.fr</code> est un nom qui fait partie de la zone <code>.iut.u-bordeaux.fr</code>.</li>
+</ul>
+<p>Convention : on mettra un point devant quand on parle d’une zone.</p>
+<p>Tout en haut, les noms <code>fr</code>, <code>com</code>, <code>edu</code> etc. (les TLD = Top Level Domains) font partie de la zone “racine” (.).</p>
+<p>Les informations de chaque zone sont maintenues par des serveurs de noms. qui connaissent les informations pour les noms qui y sont <em>directement</em> rattachés. Par exemple, dans <code>.fr</code> on a des informations sur <code>u-bordeaux.fr</code> et <code>gouv.fr</code> etc.</p>
+<h2 id="délégation"><span class="header-section-number">1.4</span> Délégation</h2>
+<p>Par contre, le serveur de noms de <code>.fr</code> ne connaît rien sur le contenu de la zone <code>.u-bordeaux.fr</code>. Tout ce qu’il sait c’est que</p>
+<ul>
+<li><code>u-bordeaux.fr</code> est le nom d’une zone,</li>
+<li>les serveurs qui s’en occupent sont <code>ns2.nic.fr</code>, <code>bxnms.u-bordeaux.fr</code> et <code>cnudns.cines.fr</code>.</li>
+</ul>
+<p>Le système de noms est donc décentralisé, avec un mécanisme de <strong>délégation</strong> de l’administration des informations. L’administrateur de <code>.fr</code> ne s’occupe pas de mettre à jour le contenu de <code>.iut.u-bordeaux.fr</code> dont il ne connaît même pas l’existence.</p>
+<h2 id="mécanisme-de-résolution"><span class="header-section-number">1.5</span> Mécanisme de résolution</h2>
+<p>Pour résoudre le nom <code>www.u-bordeaux.fr</code>, il faudra donc en principe</p>
+<ul>
+<li>interroger un serveur du domaine racine pour trouver un serveur de noms pour <code>.fr</code>,</li>
+<li>interroger le serveur de <code>.fr</code> pour trouver un serveur de noms pour <code>.u-bordeaux.fr</code>,</li>
+<li>interroger ce serveur de noms pour obtenir l’adresse de <code>www.u-bordeaux.fr</code>.</li>
+</ul>
+<p>C’est un processus itératif, une boucle pour interroger divers serveurs.</p>
+<p>Heureusement, on ne le fait pas à chaque fois : le <em>resolver</em> réemploie les informations qu’il a déjà obtenues, dans la limite de leur <strong>durée de vie</strong>.</p>
+<h2 id="interrogation-dun-serveur"><span class="header-section-number">1.6</span> Interrogation d’un serveur</h2>
+<p>En pratique, les machines reliés à internet sont configurées pour interroger un serveur DNS (Domain Name SERVER) ou plusieurs, qui prennent en charge tout ou partie du travail.</p>
+<p>On peut distinguer plusieurs rôles pour les serveurs DNS</p>
+<ul>
+<li><strong>relayer</strong> les interrogations venant des machines d’un réseau interne. Il a un rôle de <strong>mandataire</strong>. En mémorisant dans un <strong>cache</strong> les informations qu’il obtient, il contribue à réduire la charge réseau et améliorer les temps de réponse.</li>
+<li><strong>rendre disponibles</strong> les informations à propos d’un ou plusieurs domaines dont il est <strong>autorité</strong></li>
+</ul>
+<p>Dans le premier cas, un serveur mandataire prend en charge la requête envoyée par le client, et lui fournit une réponse complète. On parle de <strong>requête récursive</strong> (pour résoudre, le client demande à quelqu’un de résoudre). Les réponses ne font pas autorité (non-authoritative answers) parce qu’elles ont été obtenues indirectement, et risquent de ne pas être parfaitement à jour.</p>
+<p>Dans le second cas, le serveur public ne donne de réponse complète que pour les domaines dont il est <strong>autorité</strong>. Pour le reste, il retourne au client l’adresse d’un autre serveur à qui s’adresser. On parle alors de <strong>requête itérative</strong>.</p>
+<h1 id="pratique"><span class="header-section-number">2</span> Pratique</h1>
+<h2 id="un-serveur-pour-une-zone"><span class="header-section-number">2.1</span> Un serveur pour une zone</h2>
+<p>3 machines sur un réseau local</p>
+<pre><code>  --+-----+----+--
+    |     |    |
+   Alice Bob  Server</code></pre>
+<h3 id="config-réseau"><span class="header-section-number">2.1.1</span> Config réseau</h3>
+<ul>
+<li>Alice = 10.1.1.1, Bob = 10.1.1.2, Server = 10.1.1.100.</li>
+<li>vérifier pings de l’une à l’autre.</li>
+</ul>
+<h3 id="config-dns"><span class="header-section-number">2.1.2</span> Config DNS</h3>
+<ul>
+<li>installer logiciel DNS sur NS.</li>
+<li>Sur Serveur, ajouter un enregistrement de type “A”</li>
+</ul>
+<pre><code>bob.home.org    10.1.1.2</code></pre>
+<h3 id="premier-test"><span class="header-section-number">2.1.3</span> Premier test</h3>
+<ul>
+<li>démarrer le serveur</li>
+<li>configurer Alice pour employer le serveur de noms.</li>
+<li>tester avec la commande <code>host bob.home.org</code></li>
+</ul>
+<h3 id="suite"><span class="header-section-number">2.1.4</span> Suite</h3>
+<ul>
+<li>ajoutez les autres noms</li>
+<li>testez depuis les autres machines</li>
+</ul>
+<h3 id="complément"><span class="header-section-number">2.1.5</span> Complément</h3>
+<p>Ajoutez aussi un enregistrement A pour une machine qui n’existe pas (charlie, 10.1.1.4).</p>
+<p>Quelles conclusions tirer des commandes</p>
+<pre><code>ping charlie.home.org
+host charlie.home.org</code></pre>
+<h2 id="domaine-sous-domaine"><span class="header-section-number">2.2</span> Domaine / sous-domaine</h2>
+<p>Dans cette partie on regarde l’articulation entre plusieurs serveurs qui sont autorités pour des zones subordonnées (<code>iut</code>, <code>iut.info</code>, <code>iut.gc</code>…)</p>
+<h3 id="création-du-réseau-sous-filius"><span class="header-section-number">2.2.1</span> Création du réseau sous FILIUS</h3>
+<p>On se contente d’un réseau “plat”, avec tous les machines connectées au même switch.</p>
+<ul>
+<li>lancer Filius, créer un nouveau projet</li>
+<li>positionner un switch reliant 4 machines : <code>CLIENT</code>, <code>SIUT</code>, <code>SINFO</code>, <code>SGC</code>.</li>
+<li>affecter des adresses à ces 4 machines (10.1.1.1, ….)</li>
+</ul>
+<h3 id="configuration-du-client"><span class="header-section-number">2.2.2</span> Configuration du client</h3>
+<ul>
+<li>sur le client, installez le logiciel “Ligne de Commande”,</li>
+<li>vérifier par <code>ping</code> depuis le client qu’il peut communiquer avec les serveurs.</li>
+</ul>
+<p>Lien avec un serveur de noms :</p>
+<ul>
+<li>Essayez la commande <code>host client.iut</code>. Interprétez la réponse (CHEAT: <code>non résolu, aucun serveur disponible</code>, le client n’a contacté aucun serveur, et n’a donc pas pu trouver de réponse)</li>
+<li>Dans la configuration réseau, indiquez l’adresse de <code>SIUT</code> comme serveur de noms.</li>
+<li>Essayez de nouveau. Interprétation ? (CHEAT : <code>délai écoulé, aucune   réponse</code> : le client a tenté de contacter un serveur, qui tarde à répondre)</li>
+</ul>
+<h3 id="configuration-dun-serveur-dns-serveur-iut"><span class="header-section-number">2.2.3</span> Configuration d’un serveur DNS (serveur IUT)</h3>
+<ul>
+<li>Sur le serveur SIUT, installez et démarrez le logiciel DNS.</li>
+<li><p>Depuis le client, essayez la commande <code>host client.iut</code>. Interprétez la réponse (CHEAT: <code>nom d'hôte non résolu</code> le client a contacté un serveur, qui répond qu’il ne sait pas).</p></li>
+<li>Enregistrez maintenant le nom de domaine <code>client.iut</code> avec l’adresse qui va bien.</li>
+<li><p>Testez de nouveau. CHEAT : <code>client.iut a pour adresse IP 10.1.1.1</code> .</p></li>
+</ul>
+<p>Maintenant que ça marche (si tout va bien),</p>
+<ul>
+<li>Enregistrez les noms <code>siut.iut</code>, <code>sinfo.iut</code>.</li>
+<li>Vérifiez que le client peut les résoudre (commande <code>host</code>).</li>
+</ul>
+<p><strong>Note</strong> : apparemment le DNS simulé n’est pas capable de fournir la résolution inverse.</p>
+<h3 id="serveur-dns-pour-un-sous-domaine"><span class="header-section-number">2.2.4</span> Serveur DNS pour un sous-domaine</h3>
+<p>On veut maintenant que le serveur SINFO soit autoritatif pour le sous-domaine <code>info.iut</code>.</p>
+<ul>
+<li>installez et démarrez le serveur DNS sur SINFO</li>
+<li>enregistrez-y un nom comme <code>jj.info.iut</code> (adresse IP quelconque).</li>
+</ul>
+<p>Depuis le client,</p>
+<ul>
+<li>on essaie host <code>jj.info.iut</code>. Réponse : <code>nom d'hôte non résolu</code></li>
+<li>interprétation : le client a interrogé SIUT, qui n’a pas pu lui donner la réponse voulue.</li>
+</ul>
+<p>Pour que ça fonctionne, il faut que le serveur SIUT sache que la gestion de la zone <code>.info.iut</code> est <strong>déléguée</strong> au serveur de noms <code>sinfo.iut</code>.</p>
+<ul>
+<li>À ajouter dans l’onglet NS (name servers).</li>
+</ul>
+<p>Ainsi, le serveur SIUT va renvoyer le client qui l’interroge vers l’autre serveur.</p>
+<h3 id="autre-cas-de-figure"><span class="header-section-number">2.2.5</span> Autre cas de figure</h3>
+<p>Imaginons maintenant qu’une machine cliente soit configurée pour interroger le serveur SINFO.</p>
+<ul>
+<li>tester la résolution de <code>jj.info.iut</code> (ok)</li>
+<li>tester avec <code>client.iut</code> (ko)</li>
+</ul>
+<p>Le problème, c’est que SINFO ne sait pas qui gère la zone .iut Une solution simple est de déclarer que le domaine .iut est généré par le serveur SIUT.</p>
+<ul>
+<li>dans l’onglet NS du serveur SINFO, déclarer que <code>sinfo.iut</code> est serveur DNS de <code>.iut</code>.</li>
+<li>tester : ça ne marche toujours pas.</li>
+</ul>
+<p>La raison, c’est que le serveur DNS ne connaît pas l’adresse IP de <code>siut.iut</code>.</p>
+<ul>
+<li><strong>rafistolage :</strong> ajouter une déclaration d’adresse pour <code>siut.iut</code>.</li>
+</ul>
+<p>Cette déclaration est appelée “glue record”, parce qu’elle sert à recoller les morceaux. elle est dans le serveur pour <code>siut.iut</code>, mais concerne une machine qui est en dehors de cette zone.</p>
+<h3 id="glue-records-pour-les-serveurs-racine"><span class="header-section-number">2.2.6</span> Glue records pour les serveurs racine</h3>
+<p>Mais ce rafistolage ne “passe pas à l’échelle” dans des situations réalistes : en effet, on ne va pas enregistrer (et maintenir) sur chaque serveur des déclarations pour toutes les autres zones. Ca irait totalement à l’encontre du principe d’administration décentralisée de l’espace des noms.</p>
+<p>La <strong>solution</strong> est de déclarer simplement les adresses des serveurs “racine”, à partir desquels on peut atteindre (itérativement) tous les serveurs des domaines enregistrés.</p>
+<p>On déclarera a donc un enregistrement NS indiquant que le domaine racine “.” est desservi par un serveur</p>
+<pre><code>.                    NS  a.root-servers.net.   ; le serveur de noms pour &quot;.&quot;
+a.root-servers.net.  A   xx.yy.zz.tt           ; glue record pour son adresse IP</code></pre>
+<p>La liste (root hints file) des 13 serveurs racine (de A à L) est publiée et mise à jour officiellement. https://www.iana.org/domains/root/files</p>
+<h2 id="your-own-dark-internet"><span class="header-section-number">2.3</span> Your own dark Internet</h2>
+<p>Les noms de domaines d’Internet forment une arborescence, déterminée par les serveurs racines.</p>
+<p>Mais rien n’empêche de construire un serveur racine non-officiel. Exemple, dans leur projet pour gouverner le monde, les chats veulent des noms</p>
+<pre><code>abyssan
+persan
+...
+slaves.humans
+slaves.dogs</code></pre>
+<p>Le serveur racine connaîtra donc les TLD <code>abyssan</code>, <code>european</code>, etc. avec les serveurs qui font autorité.</p>
+<p>Construire un réseau avec quelques TLD et sous domaines, avec un ou 2 noms dans chaque.</p>
+<h1 id="annexes"><span class="header-section-number">3</span> Annexes</h1>
+<h2 id="terminologie"><span class="header-section-number">3.1</span> Terminologie</h2>
+<ul>
+<li><p><strong>Domaine réseau</strong> (network domain) : groupement administratif de réseaux d’ordinateurs ou hôtes. Les domaines qui doivent être accessible depuis l’Internet public ont un nom unique dans le Domain Name System.</p></li>
+<li><p>Le <strong>Domain Name System</strong> (DNS) est un système hiérarchique et décentralisé pour associer des informations diverses à des <em>noms de domaines</em>. En particulier, il permet de traduire des <em>noms de domaines</em> en adresses IP numériques. Attention, le sigle est aussi utilisé pour <strong>Domain Name Server</strong>.</p></li>
+<li><p>Un <strong>nom de domaine</strong> est une chaîne qui identifie une entité sur Internet. C’est une suite d’étiquettes séparées par des points. Il identifie un <em>domaine réseau</em>, ou une ressource comme un ordinateur. Tout nom enregistré dans le DNS est un nom de domaine. Les noms sont organisés en sous-domaines.</p></li>
+<li><p>un <strong>nom de domaine complètement qualifié</strong> (FQDN = fully qualified domain name) est un nom de domaine complet. On le termine généralement par un point. Exemple : <code>www.iut.u-bordeaux.fr.</code>est le FQDN de <code>www.iut</code> dans le domaine réseau <code>u-bordeaux.fr</code>.</p></li>
+<li><p>le <strong>domaine racine</strong> n’a pas de nom. En dessous, on trouve les “Top Level Domains”, comme <code>fr.</code> , <code>com.</code>, etc.</p></li>
+<li><p>un <strong>serveur de noms</strong> (Domain Name Server) est une machine capable de fournir à d’autres des informations à propos de certains noms de domaines.</p></li>
+<li><p><strong>la résolution d’adresse</strong> consiste à obtenir des adresses (ou plus généralement des informations a propos d’un nom.</p></li>
+</ul>
+<h2 id="exemple-résolution-en-c"><span class="header-section-number">3.2</span> Exemple résolution en C</h2>
+<p>Le programme qui suit</p>
+<ul>
+<li>prend en paramètres une suite de noms de domaines</li>
+<li>affiche les adresses IP correspondantes (IPv4 et IPv6).</li>
+</ul>
+<p><strong>Exemple d’utilisation</strong></p>
+<pre><code>$ cc -std=c11 -Wall -Wextra     resolve.c   -o resolv
+$ ./resolve  www.google.fr www.u-bordeaux.fr
+www.google.fr
+    IPv6: 2a00:1450:4007:807::2003
+    IPv4: 216.58.209.227
+www.u-bordeaux.fr
+    IPv4: 147.210.215.26</code></pre>
+<p><strong>Code source</strong> (fichier <code>resolve.c</code>)</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb7-1" title="1"><span class="co">/**</span></a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="co"> * Displays ipv4 and ipv6 addresses of domain names</span></a>
+<a class="sourceLine" id="cb7-3" title="3"><span class="co"> * given as command line parameters.</span></a>
+<a class="sourceLine" id="cb7-4" title="4"><span class="co"> * </span></a>
+<a class="sourceLine" id="cb7-5" title="5"><span class="co"> * m billaud, 2020</span></a>
+<a class="sourceLine" id="cb7-6" title="6"><span class="co"> */</span></a>
+<a class="sourceLine" id="cb7-7" title="7"></a>
+<a class="sourceLine" id="cb7-8" title="8"><span class="pp">#define _XOPEN_SOURCE 700</span></a>
+<a class="sourceLine" id="cb7-9" title="9"></a>
+<a class="sourceLine" id="cb7-10" title="10"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></a>
+<a class="sourceLine" id="cb7-11" title="11"></a>
+<a class="sourceLine" id="cb7-12" title="12"><span class="pp">#include </span><span class="im">&lt;sys/types.h&gt;</span></a>
+<a class="sourceLine" id="cb7-13" title="13"><span class="pp">#include </span><span class="im">&lt;sys/socket.h&gt;</span></a>
+<a class="sourceLine" id="cb7-14" title="14"><span class="pp">#include </span><span class="im">&lt;netdb.h&gt;</span></a>
+<a class="sourceLine" id="cb7-15" title="15"><span class="pp">#include </span><span class="im">&lt;arpa/inet.h&gt;</span></a>
+<a class="sourceLine" id="cb7-16" title="16"></a>
+<a class="sourceLine" id="cb7-17" title="17"><span class="dt">void</span> print_addresses(<span class="dt">char</span> *hostname);</a>
+<a class="sourceLine" id="cb7-18" title="18"></a>
+<a class="sourceLine" id="cb7-19" title="19"><span class="dt">int</span> main(<span class="dt">int</span> argc, <span class="dt">char</span> *argv[])</a>
+<a class="sourceLine" id="cb7-20" title="20">{</a>
+<a class="sourceLine" id="cb7-21" title="21">    <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">1</span>; i &lt; argc; i++) {</a>
+<a class="sourceLine" id="cb7-22" title="22">        print_addresses(argv[i]);</a>
+<a class="sourceLine" id="cb7-23" title="23">    }</a>
+<a class="sourceLine" id="cb7-24" title="24">    <span class="cf">return</span> <span class="dv">0</span>;</a>
+<a class="sourceLine" id="cb7-25" title="25">}</a>
+<a class="sourceLine" id="cb7-26" title="26"></a>
+<a class="sourceLine" id="cb7-27" title="27"><span class="dt">void</span> print_addresses(<span class="dt">char</span> *hostname)</a>
+<a class="sourceLine" id="cb7-28" title="28">{</a>
+<a class="sourceLine" id="cb7-29" title="29">    <span class="co">// get list of results</span></a>
+<a class="sourceLine" id="cb7-30" title="30">    <span class="kw">struct</span> addrinfo hints = {</a>
+<a class="sourceLine" id="cb7-31" title="31">        .ai_family   = AF_UNSPEC,       <span class="co">// ipv4 or IPv6</span></a>
+<a class="sourceLine" id="cb7-32" title="32">        .ai_socktype = SOCK_STREAM</a>
+<a class="sourceLine" id="cb7-33" title="33">    };</a>
+<a class="sourceLine" id="cb7-34" title="34"></a>
+<a class="sourceLine" id="cb7-35" title="35">    <span class="kw">struct</span> addrinfo *results;</a>
+<a class="sourceLine" id="cb7-36" title="36">    printf(<span class="st">&quot;%s</span><span class="sc">\n</span><span class="st">&quot;</span>, hostname);</a>
+<a class="sourceLine" id="cb7-37" title="37">    <span class="dt">int</span>  s = getaddrinfo(hostname, NULL, &amp;hints, &amp;results);</a>
+<a class="sourceLine" id="cb7-38" title="38">    <span class="cf">if</span> (s != <span class="dv">0</span>) {</a>
+<a class="sourceLine" id="cb7-39" title="39">        printf (<span class="st">&quot;</span><span class="sc">\t</span><span class="st">inconnu</span><span class="sc">\n</span><span class="st">&quot;</span>);</a>
+<a class="sourceLine" id="cb7-40" title="40">        <span class="cf">return</span>;</a>
+<a class="sourceLine" id="cb7-41" title="41">    }</a>
+<a class="sourceLine" id="cb7-42" title="42">    <span class="co">// display results</span></a>
+<a class="sourceLine" id="cb7-43" title="43">    <span class="cf">for</span> (<span class="kw">struct</span> addrinfo *ptr = results; ptr != NULL; ptr = ptr-&gt;ai_next) {</a>
+<a class="sourceLine" id="cb7-44" title="44">        <span class="dt">char</span> * family_name = <span class="st">&quot;unknown&quot;</span>;</a>
+<a class="sourceLine" id="cb7-45" title="45">        <span class="dt">void</span> * addr = NULL;</a>
+<a class="sourceLine" id="cb7-46" title="46"></a>
+<a class="sourceLine" id="cb7-47" title="47">        <span class="cf">switch</span> (ptr-&gt;ai_family ) {</a>
+<a class="sourceLine" id="cb7-48" title="48">        <span class="cf">case</span> AF_INET :</a>
+<a class="sourceLine" id="cb7-49" title="49">            family_name = <span class="st">&quot;IPv4&quot;</span>;</a>
+<a class="sourceLine" id="cb7-50" title="50">            addr = &amp;(((<span class="kw">struct</span> sockaddr_in *)(ptr-&gt;ai_addr)) -&gt;sin_addr);</a>
+<a class="sourceLine" id="cb7-51" title="51">            <span class="cf">break</span>;</a>
+<a class="sourceLine" id="cb7-52" title="52">        <span class="cf">case</span> AF_INET6 :</a>
+<a class="sourceLine" id="cb7-53" title="53">            family_name = <span class="st">&quot;IPv6&quot;</span>;</a>
+<a class="sourceLine" id="cb7-54" title="54">            addr = &amp;(((<span class="kw">struct</span> sockaddr_in6 *)(ptr-&gt;ai_addr)) -&gt;sin6_addr);</a>
+<a class="sourceLine" id="cb7-55" title="55">            <span class="cf">break</span>;</a>
+<a class="sourceLine" id="cb7-56" title="56">        }  </a>
+<a class="sourceLine" id="cb7-57" title="57">        <span class="co">// inet_ntop converts address to textual numeric form</span></a>
+<a class="sourceLine" id="cb7-58" title="58">        <span class="dt">char</span> ip_as_string[<span class="dv">100</span>];</a>
+<a class="sourceLine" id="cb7-59" title="59">        inet_ntop(ptr-&gt;ai_family, addr, ip_as_string, <span class="kw">sizeof</span>(ip_as_string));</a>
+<a class="sourceLine" id="cb7-60" title="60">        printf(<span class="st">&quot;</span><span class="sc">\t</span><span class="st">%s: %s</span><span class="sc">\n</span><span class="st">&quot;</span>, family_name, ip_as_string);</a>
+<a class="sourceLine" id="cb7-61" title="61"></a>
+<a class="sourceLine" id="cb7-62" title="62">    }</a>
+<a class="sourceLine" id="cb7-63" title="63">    freeaddrinfo(results);</a>
+<a class="sourceLine" id="cb7-64" title="64">}</a></code></pre></div>
+<h2 id="exemple-résolution-en-java"><span class="header-section-number">3.3</span> Exemple résolution en Java</h2>
+<p>Le programme suivant, écrit en Java, fait presque la même chose :</p>
+<pre><code>$ java resolution.Resolution  www.google.fr www.labri.fr
+www.google.fr
+        IPv4: 216.58.215.35
+        IPv6: 2a00:1450:4007:808:0:0:0:2003
+www.labri.fr
+        IPv4: 147.210.8.59
+        IPv6: 2001:660:6101:404:0:0:0:80</code></pre>
+<p><strong>Source</strong></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb9-1" title="1"><span class="kw">package</span><span class="im"> resolution;</span></a>
+<a class="sourceLine" id="cb9-2" title="2"></a>
+<a class="sourceLine" id="cb9-3" title="3"><span class="co">/**</span></a>
+<a class="sourceLine" id="cb9-4" title="4"> <span class="co">*</span> Displays ipv4 and ipv6 addresses of domain names</a>
+<a class="sourceLine" id="cb9-5" title="5"> <span class="co">*</span> given as command line parameters<span class="co">.</span></a>
+<a class="sourceLine" id="cb9-6" title="6"> <span class="co">*</span> </a>
+<a class="sourceLine" id="cb9-7" title="7"> <span class="co">*</span> m billaud<span class="co">,</span> <span class="co">2020</span></a>
+<a class="sourceLine" id="cb9-8" title="8"> <span class="co">*/</span></a>
+<a class="sourceLine" id="cb9-9" title="9"></a>
+<a class="sourceLine" id="cb9-10" title="10"><span class="kw">import</span><span class="im"> java.net.InetAddress;</span></a>
+<a class="sourceLine" id="cb9-11" title="11"><span class="kw">import</span><span class="im"> java.net.Inet4Address;</span></a>
+<a class="sourceLine" id="cb9-12" title="12"><span class="kw">import</span><span class="im"> java.net.Inet6Address;</span></a>
+<a class="sourceLine" id="cb9-13" title="13"></a>
+<a class="sourceLine" id="cb9-14" title="14"><span class="kw">import</span><span class="im"> java.net.UnknownHostException;</span></a>
+<a class="sourceLine" id="cb9-15" title="15"></a>
+<a class="sourceLine" id="cb9-16" title="16"><span class="kw">public</span> <span class="kw">class</span> Resolution {</a>
+<a class="sourceLine" id="cb9-17" title="17"></a>
+<a class="sourceLine" id="cb9-18" title="18">    <span class="kw">public</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">main</span>(<span class="bu">String</span>[] args) {</a>
+<a class="sourceLine" id="cb9-19" title="19">        <span class="kw">for</span> (<span class="bu">String</span> domainname : args) {</a>
+<a class="sourceLine" id="cb9-20" title="20">            <span class="fu">print_addresses</span>(domainname);</a>
+<a class="sourceLine" id="cb9-21" title="21">        }</a>
+<a class="sourceLine" id="cb9-22" title="22">    }</a>
+<a class="sourceLine" id="cb9-23" title="23"></a>
+<a class="sourceLine" id="cb9-24" title="24">    <span class="kw">private</span> <span class="dt">static</span> <span class="dt">void</span> <span class="fu">print_addresses</span>(<span class="bu">String</span> name) {</a>
+<a class="sourceLine" id="cb9-25" title="25">        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(name);</a>
+<a class="sourceLine" id="cb9-26" title="26">        <span class="kw">try</span> {</a>
+<a class="sourceLine" id="cb9-27" title="27">            <span class="kw">for</span> (<span class="bu">InetAddress</span> address : <span class="bu">InetAddress</span>.<span class="fu">getAllByName</span>(name)) {</a>
+<a class="sourceLine" id="cb9-28" title="28">                <span class="bu">String</span> family</a>
+<a class="sourceLine" id="cb9-29" title="29">                        = address <span class="kw">instanceof</span> <span class="bu">Inet4Address</span> ? <span class="st">&quot;IPv4&quot;</span></a>
+<a class="sourceLine" id="cb9-30" title="30">                                : address <span class="kw">instanceof</span> <span class="bu">Inet6Address</span> ? <span class="st">&quot;IPv6&quot;</span></a>
+<a class="sourceLine" id="cb9-31" title="31">                                        : <span class="st">&quot;other&quot;</span>;</a>
+<a class="sourceLine" id="cb9-32" title="32">                <span class="bu">System</span>.<span class="fu">out.format</span>(<span class="st">&quot;</span><span class="sc">\t%s</span><span class="st">: s</span><span class="sc">\n</span><span class="st">&quot;</span>,</a>
+<a class="sourceLine" id="cb9-33" title="33">                                  family, address.<span class="fu">getHostAddress</span>());</a>
+<a class="sourceLine" id="cb9-34" title="34">            }</a>
+<a class="sourceLine" id="cb9-35" title="35">        } <span class="kw">catch</span> (<span class="bu">UnknownHostException</span> ex) {</a>
+<a class="sourceLine" id="cb9-36" title="36">            <span class="bu">System</span>.<span class="fu">out.format</span>(<span class="st">&quot;</span><span class="sc">\t</span><span class="st">not found&quot;</span>);</a>
+<a class="sourceLine" id="cb9-37" title="37">        }</a>
+<a class="sourceLine" id="cb9-38" title="38">    }</a>
+<a class="sourceLine" id="cb9-39" title="39">}</a></code></pre></div>
+<h2 id="annexe-configurer-un-serveur-dns"><span class="header-section-number">3.4</span> Annexe : configurer un serveur DNS</h2>
+<p><strong>Avec le simulateur FILIUS</strong></p>
+<ol type="1">
+<li>Déterminer si il doit être récursif ou pas (en général : oui si serveur “mandataire”, non pour serveur accessible de l’extérieur).</li>
+<li>Enregistrer au moins un “serveur racine” (serveur pour la zone “.”, avec un <em>glue record</em> pour son adresse).</li>
+<li>Enregistrer les adresses IP (A) des hôtes connus (et gérés) par ce serveur</li>
+<li>Enregistrer les serveurs de noms (NS) pour les sous-domaines connus, et leurs adresses (A).</li>
+</ol>
+<p>Il s’y ajoutera ensuite les déclarations pour les échangeurs de courrier (MX).</p>
+<p><strong>Sur de vrais serveurs de noms</strong>, il y aura davantage de choses à gérer, notamment</p>
+<ul>
+<li>la résolution inverse (à partir d’un numéro IP comme <code>147.210.8.59</code>, retrouver le nom de domaine <code>www3.labri.fr</code>)</li>
+<li>les transferts d’informations pour mettre à jour les serveurs secondaires d’une zone, qui doivent avoir une copie des informations d’une zone détenues par le serveur primaire, au cas où ce dernier serait indisponible).</li>
+</ul>
+<p>Ainsi qu’une grande quantité de types de Resource Records</p>
+<ul>
+<li>SOA : Start of authority, déclaration de zone</li>
+<li>HINFO : hardware information</li>
+<li>TEXT : information</li>
+<li>CNAME : canonical name, synonyme</li>
+<li>AAAA : adresses IPv6</li>
+<li>PTR : pointers, résolution inverse</li>
+</ul>
+<p>Liste plus complète (plus d’une centaine) dans https://www.iana.org/assignments/dns-parameters/dns-parameters.xhtml#dns-parameters-4</p>
+</body>
+</html>

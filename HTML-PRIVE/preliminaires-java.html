@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Michel Billaud (michel.billaud@u-bordeaux.fr, michel.billaud@laposte.net)" />
+  <title>“Rappels java”</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(title);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">a.sourceLine {
+display: inline-block;
+line-height: 1.25;
+}
+a.sourceLine {
+pointer-events: none;
+color: inherit;
+text-decoration: inherit;
+}
+a.sourceLine:empty {
+height: 1.2em;
+}
+.sourceCode {
+overflow: visible;
+}
+code.sourceCode {
+white-space: pre;
+position: relative;
+}
+div.sourceCode {
+margin: 1em 0;
+}
+pre.sourceCode {
+margin: 0;
+}
+@media screen {
+div.sourceCode {
+overflow: auto;
+}
+}
+@media print {
+code.sourceCode {
+white-space: pre-wrap;
+}
+a.sourceLine {
+text-indent: -1em;
+padding-left: 1em;
+}
+}
+pre.numberSource a.sourceLine {
+position: relative;
+left: -4em;
+}
+pre.numberSource a.sourceLine::before {
+content: attr(title);
+position: relative;
+left: -1em;
+text-align: right;
+vertical-align: baseline;
+border: none;
+pointer-events: all;
+display: inline-block;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+padding: 0 4px;
+width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource {
+margin-left: 3em;
+border-left: 1px solid #aaaaaa;
+padding-left: 4px;
+}
+div.sourceCode {}
+@media screen {
+a.sourceLine::before {
+text-decoration: underline;
+}
+}
+code span.al {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.an {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.at {
+color: #7d9029;
+}
+
+code span.bn {
+color: #40a070;
+}
+
+code span.bu {}
+
+code span.cf {
+color: #007020;
+font-weight: bold;
+}
+
+code span.ch {
+color: #4070a0;
+}
+
+code span.cn {
+color: #880000;
+}
+
+code span.co {
+color: #60a0b0;
+font-style: italic;
+}
+
+code span.cv {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.do {
+color: #ba2121;
+font-style: italic;
+}
+
+code span.dt {
+color: #902000;
+}
+
+code span.dv {
+color: #40a070;
+}
+
+code span.er {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.ex {}
+
+code span.fl {
+color: #40a070;
+}
+
+code span.fu {
+color: #06287e;
+}
+
+code span.im {}
+
+code span.in {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.kw {
+color: #007020;
+font-weight: bold;
+}
+
+code span.op {
+color: #666666;
+}
+
+code span.ot {
+color: #007020;
+}
+
+code span.pp {
+color: #bc7a00;
+}
+
+code span.sc {
+color: #4070a0;
+}
+
+code span.ss {
+color: #bb6688;
+}
+
+code span.st {
+color: #4070a0;
+}
+
+code span.va {
+color: #19177c;
+}
+
+code span.vs {
+color: #4070a0;
+}
+
+code span.wa {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+
+:root {
+--title-color: #202080;
+--source-bg-color: rgb(240, 240, 255);
+}
+h1, h2, h3, h4, h5, h6 {
+border-bottom: solid 1px silver;
+color: var(--title-color);
+}
+body {
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div.sourceCode {
+background-color: var(--source-bg-color);
+padding: 1em;
+}
+#TOC {
+padding: 0.5em;
+border: solid 1px silver;
+}
+#TOC ul {
+list-style-type: none;
+padding-left: 1em;
+}
+nav:before {
+text-indent: 2em;
+content: "Sommaire";
+color: var(--title-color);
+font-weight: bold;
+font-size: large;
+}
+#TOC a {
+text-decoration: none;
+}
+header {
+text-align: center;
+}
+.title {
+}
+.author, .date {
+font-style: italic;
+}
+table, th, td {
+border-collapse: collapse;
+border: solid black 1px;
+padding: 0.5em;
+}
+</style>
+</head>
+<body>
+<header>
+<h1 class="title">“Rappels java”</h1>
+<p class="author">Michel Billaud (michel.billaud@u-bordeaux.fr, michel.billaud@laposte.net)</p>
+<p class="date">8 juillet 2020</p>
+</header>
+<nav id="TOC">
+<ul>
+<li><a href="#interfaces-java"><span class="toc-section-number">1</span> Interfaces Java</a><ul>
+<li><a href="#java-historique"><span class="toc-section-number">1.1</span> Java historique</a></li>
+<li><a href="#généricité"><span class="toc-section-number">1.2</span> Généricité</a></li>
+<li><a href="#méthodes-statiques"><span class="toc-section-number">1.3</span> Méthodes statiques</a></li>
+<li><a href="#méthode-par-défaut"><span class="toc-section-number">1.4</span> Méthode par défaut</a></li>
+</ul></li>
+<li><a href="#classes-anonymes"><span class="toc-section-number">2</span> Classes anonymes</a></li>
+<li><a href="#interfaces-fonctionnelles-et-lambda-expressions."><span class="toc-section-number">3</span> Interfaces fonctionnelles et lambda-expressions.</a></li>
+</ul>
+</nav>
+<h1 id="interfaces-java"><span class="header-section-number">1</span> Interfaces Java</h1>
+<h2 id="java-historique"><span class="header-section-number">1.1</span> Java historique</h2>
+<p>L’idée de base des interfaces en Java “historique”, c’est de définir un type pour des variables, qui pourront référencer des objets de différentes classes, pourvu que ces classes <strong>implémentent</strong> l’interface, en proposant une définition pour chacune des méthodes citées dans l’interface. C’est un moyen de réaliser le <strong>polymorphisme</strong>.</p>
+<p>Une interface contient la <strong>liste des signatures de méthodes</strong> qui devront être définies pour les classes concrètes qui implémentent l’interface.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb1-1" title="1"><span class="kw">interface</span> Dessinable {</a>
+<a class="sourceLine" id="cb1-2" title="2">   <span class="dt">void</span> <span class="fu">dessiner</span>();           <span class="co">// signature</span></a>
+<a class="sourceLine" id="cb1-3" title="3">}</a>
+<a class="sourceLine" id="cb1-4" title="4"></a>
+<a class="sourceLine" id="cb1-5" title="5"><span class="kw">class</span> Rond <span class="kw">implements</span> Dessinable {</a>
+<a class="sourceLine" id="cb1-6" title="6">   <span class="fu">Rond</span>(<span class="dt">double</span> x, <span class="dt">double</span> y, <span class="dt">double</span> rayon) {</a>
+<a class="sourceLine" id="cb1-7" title="7">      ....</a>
+<a class="sourceLine" id="cb1-8" title="8">   }</a>
+<a class="sourceLine" id="cb1-9" title="9">   <span class="at">@Override</span></a>
+<a class="sourceLine" id="cb1-10" title="10">   <span class="dt">void</span> <span class="fu">dessiner</span>() {          <span class="co">// code de la méthode</span></a>
+<a class="sourceLine" id="cb1-11" title="11">      <span class="fu">circle</span>(.....);</a>
+<a class="sourceLine" id="cb1-12" title="12">   }</a>
+<a class="sourceLine" id="cb1-13" title="13">}</a>
+<a class="sourceLine" id="cb1-14" title="14"></a>
+<a class="sourceLine" id="cb1-15" title="15">Dessinable d = <span class="kw">new</span> <span class="fu">Rond</span>(<span class="dv">10</span>,<span class="dv">20</span>,<span class="dv">30</span>);</a>
+<a class="sourceLine" id="cb1-16" title="16">d.<span class="fu">dessiner</span>();</a>
+<a class="sourceLine" id="cb1-17" title="17">d = <span class="kw">new</span> <span class="fu">Carre</span>(....);</a>
+<a class="sourceLine" id="cb1-18" title="18">d.<span class="fu">dessiner</span>();</a></code></pre></div>
+<p>Par commodité, une déclaration d’interface peut aussi héberger des déclarations de constantes.</p>
+<p>https://help.semmle.com/wiki/display/JAVA/Constant+interface+anti-pattern</p>
+<h2 id="généricité"><span class="header-section-number">1.2</span> Généricité</h2>
+<p>depuis Java 5, les définitions d’interfaces, classes, méthodes etc.s peuvent être génériques, c’est-à-dire paramétrées par des types. C’est le cas par exemple des collections</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb2-1" title="1"><span class="bu">ArrayList</span>&lt;Personne&gt; invites = <span class="kw">new</span> <span class="bu">ArrayList</span>&lt;&gt;();</a></code></pre></div>
+<p>(Les types ne peuvent pas être des types natifs, comme <code>int</code>, <code>double</code>, …)</p>
+<p>Exemple de définition :</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb3-1" title="1"><span class="kw">class</span> PaireImmuable&lt;T&gt; {</a>
+<a class="sourceLine" id="cb3-2" title="2">   T x, y;</a>
+<a class="sourceLine" id="cb3-3" title="3">   <span class="fu">PaireImmuable</span>(T x, T y) {</a>
+<a class="sourceLine" id="cb3-4" title="4">      <span class="kw">this</span>.<span class="fu">x</span> = x;</a>
+<a class="sourceLine" id="cb3-5" title="5">      <span class="kw">this</span>.<span class="fu">y</span> = y;</a>
+<a class="sourceLine" id="cb3-6" title="6">   }</a>
+<a class="sourceLine" id="cb3-7" title="7">   T <span class="fu">getX</span>() {</a>
+<a class="sourceLine" id="cb3-8" title="8">      <span class="kw">return</span> x;</a>
+<a class="sourceLine" id="cb3-9" title="9">   }</a>
+<a class="sourceLine" id="cb3-10" title="10">   ...</a>
+<a class="sourceLine" id="cb3-11" title="11">}</a></code></pre></div>
+<p>Les paramètres de type s’appellent souvent T, U, V</p>
+<h2 id="méthodes-statiques"><span class="header-section-number">1.3</span> Méthodes statiques</h2>
+<p>Depuis Java 8, les méthodes statiques peuvent être déclarées dans les interfaces, ce qui évite de créer exprès une classe abstraite.</p>
+<p>C’est utilisé par exemple pour des méthodes qui sont des fabriques Exemple :</p>
+<pre><code>interface Personnel {
+
+    static Personnel creer(String nom, double salaire) {
+        if (salaire &lt; 2000) {
+            return new Tacheron(nom, salaire);
+        } else {
+            return new Chef(nom, salaire);
+        }
+    }
+}</code></pre>
+<p>avec les deux classes qui implémentent <code>Personnel</code>.</p>
+<h2 id="méthode-par-défaut"><span class="header-section-number">1.4</span> Méthode par défaut</h2>
+<p>Aussi depuis Java 8 : introduit une méthode qui s’exprime à partir de méthodes existantes. Exemple jouet :</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb5-1" title="1"><span class="kw">interface</span> Compteur {</a>
+<a class="sourceLine" id="cb5-2" title="2">    <span class="dt">int</span> <span class="fu">get</span>();</a>
+<a class="sourceLine" id="cb5-3" title="3">    <span class="dt">void</span> <span class="fu">set</span>(<span class="dt">int</span> v);</a>
+<a class="sourceLine" id="cb5-4" title="4">    </a>
+<a class="sourceLine" id="cb5-5" title="5">    <span class="kw">default</span> <span class="fu">add</span>(<span class="dt">int</span> n) {</a>
+<a class="sourceLine" id="cb5-6" title="6">        <span class="fu">set</span>(<span class="fu">get</span>() + n);</a>
+<a class="sourceLine" id="cb5-7" title="7">    }</a>
+<a class="sourceLine" id="cb5-8" title="8">}</a></code></pre></div>
+<p>Les classes qui implément l’interface <code>Compteur</code></p>
+<ul>
+<li>devront implémenter <code>get</code> et <code>set</code></li>
+<li>bénéficieront gratuitement d’une implémentation de <code>add</code>.</li>
+<li>pourront au besoin redéfinir <code>add</code>.</li>
+</ul>
+<p>Exemple, dans l’interface <code>Collection</code>, on peut imaginer une implémentation par défaut de <code>isEmpty</code> qui repose sur l’appel à <code>size()</code>;</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb6-1" title="1"><span class="kw">interface</span> <span class="bu">Collection</span>&lt;T&gt; {</a>
+<a class="sourceLine" id="cb6-2" title="2"></a>
+<a class="sourceLine" id="cb6-3" title="3">    <span class="dt">int</span> <span class="fu">size</span>();</a>
+<a class="sourceLine" id="cb6-4" title="4">    <span class="kw">default</span> <span class="dt">boolean</span> <span class="fu">isEmpty</span>() {</a>
+<a class="sourceLine" id="cb6-5" title="5">        <span class="kw">return</span> <span class="fu">size</span>() == <span class="dv">0</span>;</a>
+<a class="sourceLine" id="cb6-6" title="6">    }</a>
+<a class="sourceLine" id="cb6-7" title="7"></a>
+<a class="sourceLine" id="cb6-8" title="8">}</a></code></pre></div>
+<p>Mais si, une classe qui implémente <code>Collection</code>, possède par exemple il y a un attribut qui indique la taille, elle redéfinir la méthode pour qu’elle soit plus efficace.</p>
+<h1 id="classes-anonymes"><span class="header-section-number">2</span> Classes anonymes</h1>
+<p>Les classes anonymes sont un moyen de créer, par <code>new</code>, des objets qui implémentent une interface, en indiquant directement le code des méthodes.</p>
+<p>exemple, le constructeur d’un thread prend un paramètre un <code>Runnable</code>, qui a une méthode <code>run()</code>;</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb7-1" title="1"><span class="bu">Runnable</span> r = .....;</a>
+<a class="sourceLine" id="cb7-2" title="2"><span class="bu">Thread</span> t = <span class="kw">new</span> <span class="bu">Thread</span>(r);</a>
+<a class="sourceLine" id="cb7-3" title="3">t.<span class="fu">start</span>();</a></code></pre></div>
+<ol type="1">
+<li>Pour créer un tel <code>Runnable</code>, on peut définir une classe</li>
+</ol>
+<div class="sourceCode" id="cb8"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb8-1" title="1"><span class="kw">class</span> MonAction <span class="kw">implements</span> <span class="bu">Runnable</span> {</a>
+<a class="sourceLine" id="cb8-2" title="2">     <span class="at">@Override</span></a>
+<a class="sourceLine" id="cb8-3" title="3">    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">run</span>() {</a>
+<a class="sourceLine" id="cb8-4" title="4">        <span class="kw">try</span> {</a>
+<a class="sourceLine" id="cb8-5" title="5">            <span class="kw">for</span> (<span class="dt">int</span> i = <span class="dv">1</span>; i &lt;= <span class="dv">5</span>; i++) {</a>
+<a class="sourceLine" id="cb8-6" title="6">                <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="st">&quot;coucou&quot;</span>);</a>
+<a class="sourceLine" id="cb8-7" title="7">                <span class="bu">Thread</span>.<span class="fu">sleep</span>(<span class="dv">500</span>);</a>
+<a class="sourceLine" id="cb8-8" title="8">            }</a>
+<a class="sourceLine" id="cb8-9" title="9">        } <span class="kw">catch</span> (<span class="bu">InterruptedException</span> ex) {</a>
+<a class="sourceLine" id="cb8-10" title="10">            <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="st">&quot;Interrompu&quot;</span>);</a>
+<a class="sourceLine" id="cb8-11" title="11">        }</a>
+<a class="sourceLine" id="cb8-12" title="12">    }</a>
+<a class="sourceLine" id="cb8-13" title="13">}</a></code></pre></div>
+<p>et faire</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb9-1" title="1"><span class="bu">Runnable</span> r = <span class="kw">new</span> <span class="fu">MonAction</span>() {</a></code></pre></div>
+<ol start="3" type="1">
+<li>Sous forme de classe anonyme, on écrit directement</li>
+</ol>
+<div class="sourceCode" id="cb10"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb10-1" title="1"><span class="bu">Runnable</span> r = <span class="kw">new</span> <span class="bu">Runnable</span>() {</a>
+<a class="sourceLine" id="cb10-2" title="2">            <span class="at">@Override</span></a>
+<a class="sourceLine" id="cb10-3" title="3">            <span class="kw">public</span> <span class="dt">void</span> <span class="fu">run</span>() {</a>
+<a class="sourceLine" id="cb10-4" title="4">                <span class="kw">try</span> {</a>
+<a class="sourceLine" id="cb10-5" title="5">                    <span class="kw">for</span> (<span class="dt">int</span> i = <span class="dv">1</span>; i &lt;= <span class="dv">5</span>; i++) {</a>
+<a class="sourceLine" id="cb10-6" title="6">                        <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="st">&quot;coucou&quot;</span>);</a>
+<a class="sourceLine" id="cb10-7" title="7">                        <span class="bu">Thread</span>.<span class="fu">sleep</span>(<span class="dv">500</span>);</a>
+<a class="sourceLine" id="cb10-8" title="8">                    }</a>
+<a class="sourceLine" id="cb10-9" title="9">                } <span class="kw">catch</span> (<span class="bu">InterruptedException</span> ex) {</a>
+<a class="sourceLine" id="cb10-10" title="10">                    <span class="bu">System</span>.<span class="fu">out</span>.<span class="fu">println</span>(<span class="st">&quot;Interrompu&quot;</span>);</a>
+<a class="sourceLine" id="cb10-11" title="11">                }</a>
+<a class="sourceLine" id="cb10-12" title="12">            }</a>
+<a class="sourceLine" id="cb10-13" title="13">        };</a></code></pre></div>
+<p>sans “botter en touche” vers un fichier source différent.</p>
+<p>Un autre avantage des classes anonymes est qu’elles ont accès aux élements définis dans la classe :</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb11-1" title="1"><span class="bu">String</span> message = <span class="st">&quot;hello&quot;</span>;</a>
+<a class="sourceLine" id="cb11-2" title="2"><span class="bu">Thread</span> t = <span class="kw">new</span> <span class="bu">Thread</span>(<span class="kw">new</span> <span class="bu">Runnable</span>() {</a>
+<a class="sourceLine" id="cb11-3" title="3">    <span class="at">@Override</span></a>
+<a class="sourceLine" id="cb11-4" title="4">    <span class="kw">public</span> <span class="dt">void</span> <span class="fu">run</span>() {</a>
+<a class="sourceLine" id="cb11-5" title="5">        <span class="fu">afficher</span>(message, <span class="dv">5</span>, <span class="dv">500</span>);</a>
+<a class="sourceLine" id="cb11-6" title="6">    }</a>
+<a class="sourceLine" id="cb11-7" title="7">});</a></code></pre></div>
+<p>ici la méthode statique <code>afficher</code>, la variable <code>message</code>, …</p>
+<h1 id="interfaces-fonctionnelles-et-lambda-expressions."><span class="header-section-number">3</span> Interfaces fonctionnelles et lambda-expressions.</h1>
+<p>Une notation nouvelle simplifie encore plus les écritures</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb12-1" title="1"><span class="bu">Thread</span> t = <span class="kw">new</span> <span class="bu">Thread</span>( </a>
+<a class="sourceLine" id="cb12-2" title="2">    () -&gt; { <span class="fu">afficher</span>(message, <span class="dv">5</span>, <span class="dv">500</span>); }   <span class="co">// 1</span></a>
+<a class="sourceLine" id="cb12-3" title="3">);</a></code></pre></div>
+<p>Explications</p>
+<ol type="1">
+<li>la notation “flèche” représente une fonction avec ses paramètres (à gauche de la flèche) et son résultat.</li>
+<li>elle représente <strong>la</strong> méthode à implémenter dans l’interface.</li>
+</ol>
+<p>En effet</p>
+<ul>
+<li>le constructeur de <code>Thread</code> prend en paramètre un Runnable,</li>
+<li>l’interface <code>Runnable</code> n’a qu’une seule méthode (<code>run</code>),</li>
+<li>il n’y a donc pas d’ambiguité, l’expression avec la flèche décrit un objet qui a cette méthode.</li>
+</ul>
+<p>La notation “flèche” est-ce qu’on appelle une <strong>expression fonctionnelle</strong> (ou lambda-expression pour des raisons historiques.</p>
+<p>Les interfaces qui n’ont qu’une méthode (non défaut) sont dites <em>fonctionnelles</em>, parce qu’elles ont principalement vocation à représenter une fonction. On les annote par <code>@FunctionalExpression</code>.</p>
+</body>
+</html>

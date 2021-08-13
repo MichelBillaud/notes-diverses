@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Michel Billaud (michel.billaud@u-bordeaux.fr, michel.billaud@laposte.net)" />
+  <title>Transmission sur un réseau local</title>
+  <style type="text/css">
+      code{white-space: pre-wrap;}
+      span.smallcaps{font-variant: small-caps;}
+      span.underline{text-decoration: underline;}
+      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  </style>
+  <style type="text/css">a.sourceLine {
+display: inline-block;
+line-height: 1.25;
+}
+a.sourceLine {
+pointer-events: none;
+color: inherit;
+text-decoration: inherit;
+}
+a.sourceLine:empty {
+height: 1.2em;
+}
+.sourceCode {
+overflow: visible;
+}
+code.sourceCode {
+white-space: pre;
+position: relative;
+}
+div.sourceCode {
+margin: 1em 0;
+}
+pre.sourceCode {
+margin: 0;
+}
+@media screen {
+div.sourceCode {
+overflow: auto;
+}
+}
+@media print {
+code.sourceCode {
+white-space: pre-wrap;
+}
+a.sourceLine {
+text-indent: -1em;
+padding-left: 1em;
+}
+}
+pre.numberSource a.sourceLine {
+position: relative;
+left: -4em;
+}
+pre.numberSource a.sourceLine::before {
+content: attr(title);
+position: relative;
+left: -1em;
+text-align: right;
+vertical-align: baseline;
+border: none;
+pointer-events: all;
+display: inline-block;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+padding: 0 4px;
+width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource {
+margin-left: 3em;
+border-left: 1px solid #aaaaaa;
+padding-left: 4px;
+}
+div.sourceCode {}
+@media screen {
+a.sourceLine::before {
+text-decoration: underline;
+}
+}
+code span.al {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.an {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.at {
+color: #7d9029;
+}
+
+code span.bn {
+color: #40a070;
+}
+
+code span.bu {}
+
+code span.cf {
+color: #007020;
+font-weight: bold;
+}
+
+code span.ch {
+color: #4070a0;
+}
+
+code span.cn {
+color: #880000;
+}
+
+code span.co {
+color: #60a0b0;
+font-style: italic;
+}
+
+code span.cv {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.do {
+color: #ba2121;
+font-style: italic;
+}
+
+code span.dt {
+color: #902000;
+}
+
+code span.dv {
+color: #40a070;
+}
+
+code span.er {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.ex {}
+
+code span.fl {
+color: #40a070;
+}
+
+code span.fu {
+color: #06287e;
+}
+
+code span.im {}
+
+code span.in {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.kw {
+color: #007020;
+font-weight: bold;
+}
+
+code span.op {
+color: #666666;
+}
+
+code span.ot {
+color: #007020;
+}
+
+code span.pp {
+color: #bc7a00;
+}
+
+code span.sc {
+color: #4070a0;
+}
+
+code span.ss {
+color: #bb6688;
+}
+
+code span.st {
+color: #4070a0;
+}
+
+code span.va {
+color: #19177c;
+}
+
+code span.vs {
+color: #4070a0;
+}
+
+code span.wa {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+
+:root {
+--title-color: #202080;
+--source-bg-color: rgb(240, 240, 255);
+}
+h1, h2, h3, h4, h5, h6 {
+border-bottom: solid 1px silver;
+color: var(--title-color);
+}
+body {
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div.sourceCode {
+background-color: var(--source-bg-color);
+padding: 1em;
+}
+#TOC {
+padding: 0.5em;
+border: solid 1px silver;
+}
+#TOC ul {
+list-style-type: none;
+padding-left: 1em;
+}
+nav:before {
+text-indent: 2em;
+content: "Sommaire";
+color: var(--title-color);
+font-weight: bold;
+font-size: large;
+}
+#TOC a {
+text-decoration: none;
+}
+header {
+text-align: center;
+}
+.title {
+}
+.author, .date {
+font-style: italic;
+}
+table, th, td {
+border-collapse: collapse;
+border: solid black 1px;
+padding: 0.5em;
+}
+</style>
+</head>
+<body>
+<header>
+<h1 class="title">Transmission sur un réseau local</h1>
+<p class="author">Michel Billaud (michel.billaud@u-bordeaux.fr, michel.billaud@laposte.net)</p>
+<p class="date">31 mai 2020</p>
+</header>
+<nav id="TOC">
+<ul>
+<li><a href="#le-problème"><span class="toc-section-number">1</span> Le problème</a></li>
+<li><a href="#connexion-physique-des-machines"><span class="toc-section-number">2</span> Connexion physique des machines</a></li>
+<li><a href="#trames"><span class="toc-section-number">3</span> Trames</a></li>
+<li><a href="#le-rôle-du-boîtier"><span class="toc-section-number">4</span> Le rôle du boîtier</a></li>
+<li><a href="#émission-transmission-et-réception-dune-trame."><span class="toc-section-number">5</span> Émission, transmission et réception d’une trame.</a></li>
+<li><a href="#ladresse-de-diffusion"><span class="toc-section-number">6</span> L’adresse de diffusion</a></li>
+<li><a href="#a-qui-dois-je-écrire-protocole-de-résolution-dadresse."><span class="toc-section-number">7</span> A qui dois-je écrire ? Protocole de résolution d’adresse.</a></li>
+<li><a href="#annexes"><span class="toc-section-number">8</span> Annexes</a><ul>
+<li><a href="#fonctionnement-dun-commutateur"><span class="toc-section-number">8.1</span> Fonctionnement d’un commutateur</a><ul>
+<li><a href="#le-problème-1"><span class="toc-section-number">8.1.1</span> Le problème</a></li>
+<li><a href="#solution-table-dadresses-mac"><span class="toc-section-number">8.1.2</span> Solution : table d’adresses MAC</a></li>
+<li><a href="#oublier-et-réapprendre"><span class="toc-section-number">8.1.3</span> Oublier et réapprendre</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFgAAAAfCAMAAABUFvrSAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAAEZ0FNQQAAsY58+1GTAAAAAXNSR0IB2cksfwAAAfJQTFRF////////////////8fHx7+/v6Ofn4+Pj4N/g39/f1tXV09bS0tXS0tXR0dTR0dTQ0NTQ0NPPz9PPztLOztHNzdHNzdHMz8/PzdDMzNDMzNDLzM/Ly8/Ly8/Ky87Kys3Jyc3Jyc3Iy8rLyMzIyMzHx8vHxsrGycjIxsrFxcnFyMfHxcnExMnExMjDw8jDxMfDw8fCwsfCwcXAwMXAwMW/wMS/v8S+v8O+vsO+vsK9vcK9vcK8v7+/vMG8vMG7vMC8u8C7u8C6ur+6ur+5ub65ub64uL23t7y2urm5tru1tbq0tLqztLmzs7iysrixtbW1srexsbewsLavsLWvr7Wur7SusLOvrrStrrOtr7KvrbOsrLKrr6+vq7GqrKurpqqmo6ijoqaho6Ghn6OenqCdn5+fnp2dn5aalpuVlpmWlZmUmJaXk5iTkZSRkZORkY+Pj4+Pi5CKiYyJjoeLhIaEhIWEgoWChIGCf4F+gICAfX98fH98en15eXx5enp6dXV1dnN0cHJvcHBwa25qbmxsY19hYGBgXV5dWVlZUlJSUFFQUFBQQ0RDQEBAPj8+Pzc5NTY1MzMzMjMxMDAwMS0uLS0tKioqKSopKSkpKCkoKCgoKicnJCQkICEgIx8gICAgGxsbEBAQDg4ODQ4NCwsLAAAAK1tPPwAAAAN0Uk5TAAoO5yEBUwAABBdJREFUeNq1Vg1X21QYrr5EzArLshWxLc2o67TCyrBjsNnYDaF0VJiAKBMo6jbmpqOyuYll4lzRDinBj6hr1aZk7Pmfnps0/YidHpm7pzn35Mn7Pvfe5/24dTyLpzIcDiARj0VPhXuCgU7J63Z7fYcDwVB4IDocT4xPvjMzOzuX/O8DcCARH4qc7A36fS5RaHE6W/aLrg5/sLcvMsSYp2dm5/bE7EB8KHIidFRyCbe3dtkhdrduCYd8gWPh14fiifNT0xdm59by7EN+req3XmRIcb2K2GzgQCxyIhTwiKmdqkA7S6Lb3x2ODMfHJqZmPikASiajAIXrpteNooUUb5jIdbsNHIieDAXcwiYAPZuW5XRWB7B5/AX/sb5obHR88qOHyPFERHwODw2vq48MRGbII4P50t9s4MCp3qMexqunOTLHog4UjrsDvQODI4mJPLJEBLAPKDCnIrLEZdnR+EUUGVJgNs1dXc0VGzgQDkriJqDyVBmcCmyKvmA4EhtdRW6fRUw5rCWT6yjxpBiaMWQ9mVxjNhc1TdPOlW0Ycc8RVwpQOaJ65qVD/lD/YPwBalbkkWcbBhRgnniZIcVkMg+eurQfvvtG0z4zbRhx0CfsQG+nusHp2BE6guE3YlDYexaGIKQgmYTKwqBvbGxUEIWaPtY+J7qi/WIijDjQdhtIk20sArdcgd7TQ8iQoYSpRYbRZCj9EwMUroo0/an9TtSsac8ZCCPuPLgFnSOSc4qSNqdlItKxJR4O9Q82JP7eTEs9zVsIvf2rbBA/XyGWhF12TNkwVeaNKcsOv7vf1913toEUCt3NQZXnc8xSNRE6d/EVogVNq0rhbQWWiVSUeLm0qELl50uLhhYt3mA4+psZPHPD5eDx7Gs7cctf67CCd0XTVlb+0D6tBs/jBGTmmTYJynLLgNP9cjj6JXJkT7cc2wcU6MSVyulGtMLS7dumarr9C/HIg2qBZGoKhCWyTpmaAnlpYWFfxaZOCq69lFahsqkqxcgHjylpTub+uaTLwStHrRK8DHYFqbvv7MhbH+YBNZtRq03oatFCrCZ0qWCzMdJtEzpV0m1eMSYqYUvsDPW/GR+bfPerPbXNQFvK0KJRgbx2enh0fGpmD5cIHHjVKGn+cSWdOL9X4p4jrsuNmlDK5e8ZGIyPTUxfmNsTMe5I4n1ArWlDvNE2pS+e6JoGcM97oLbRc2kd+FHw3MGTEmPVfeC+7WoSXrxWsTHrA+ZjIuZDBJsR1RNj1Sterr1MU6LnWo1P+Uc1LOX3uqXqAJMY9ySXkLKu/yXBJdXqYLXN2qWobiFrLSI7MX5+39d2UGh1OlsF0dXx3nadj00ISwaqw2xHcFTw7ZtnJK/H45XO3Nyuj0OjHds1tuLQgPj//lf4zFPi/QuCOmdUsGyqRQAAAABJRU5ErkJggg==" /></p>
+<p>Ce texte fait partie d’une petite <a href="index.html">collection de notes</a> mise à disposition selon les termes de la <a href="http://creativecommons.org/licenses/by-nc-sa/2.0/fr/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France</a>.</p>
+<h1 id="le-problème"><span class="header-section-number">1</span> Le problème</h1>
+<p>Alice, Bob et Charlie ont des machines connectées à un même réseau local.</p>
+<p>Que se passe-t-il lorsque Alice envoie un message message “Hello!” à Bob ?</p>
+<h1 id="connexion-physique-des-machines"><span class="header-section-number">2</span> Connexion physique des machines</h1>
+<p>Les trois machines sont connectées par l’intermédiaire de leurs cartes réseau (interfaces réseau).</p>
+<p>On suppose ici que c’est un réseau filaire (connexions par câbles). Il y a donc un boîtier (concentrateur ou commutateur) auquel les 3 machines sont reliées.</p>
+<h1 id="trames"><span class="header-section-number">3</span> Trames</h1>
+<p>Le message (La chaîne de caractère “Hello!”) est transmis dans une <strong>trame</strong>.</p>
+<p>Une trame, c’est une suite d’octets qui contient</p>
+<ul>
+<li>la “charge utile” (le message),</li>
+<li>l’adresse du destinataire,</li>
+<li>l’adresse de l’expéditeur.</li>
+</ul>
+<p>Ici on parle d’<strong>adresses physiques</strong>. Les cartes réseau utilisent habituellement des “adresses MAC” (Media Access Control) de 6 octets (48 bits) notée en hexadécimal sous la forme <code>f4:8e:38:de:f3:d6</code>.</p>
+<h1 id="le-rôle-du-boîtier"><span class="header-section-number">4</span> Le rôle du boîtier</h1>
+<p>Les machines du réseau local sont reliées aux prises (ports) d’un boîtier (techniquement un concentrateur ou un commutateur).</p>
+<p>Le rôle du boîtier est de transmettre les trames qu’il reçoit sur un port vers toutes les machines du réseau local.</p>
+<p><strong>Remarque :</strong> C’est une vision un peu simplifiée, comme toujours la réalité est un peu plus compliqués :</p>
+<ul>
+<li>il peut y avoir plusieurs boîtiers peuvent être chaînés entre eux,</li>
+<li>les commutateurs ne retransmettent que sur un port quand ils savent qu’une trame est destinée à une machine reliée à ce port. Voir annexe “fonctionnement d’un commutateur”.</li>
+</ul>
+<h1 id="émission-transmission-et-réception-dune-trame."><span class="header-section-number">5</span> Émission, transmission et réception d’une trame.</h1>
+<ol type="1">
+<li>Quand l’ordinateur d’Alice veut envoyer un message à celui de Bob :</li>
+</ol>
+<ul>
+<li>il place le message dans une trame, avec
+<ul>
+<li>la charge utile (une indication du type de message, et son contenu),</li>
+<li>comme adresse de destination, l’adresse MAC de la carte réseau de l’ordinateur de Bob,</li>
+<li>comme adresse source, l’adresse MAC de la carte d’Alice ;</li>
+</ul></li>
+<li>et il demande à la carte réseau d’envoyer tout ça, sous forme de signaux électriques, au boîtier auquel il est relié.</li>
+</ul>
+<ol start="2" type="1">
+<li>Quand le boîtier reçoit cette trame sur un port :</li>
+</ol>
+<ul>
+<li>il la réexpédie sur les autres ports.</li>
+</ul>
+<ol start="3" type="1">
+<li>Quand la carte réseau de l’ordinateur de Bob la reçoit :</li>
+</ol>
+<ul>
+<li>elle constate que la trame lui est destinée (avec le numéro MAC destinataire), on dit alors qu’elle <strong>accepte</strong> la trame.</li>
+<li>elle signale l’arrivée de la trame au système d’exploitation (émission d’une interruption).</li>
+<li>le système d’exploitation s’en occupe (traitement par le pilote de la carte réseau).</li>
+</ul>
+<ol start="4" type="1">
+<li>Par contre, la carte réseau de Charlie, en mode normal</li>
+</ol>
+<ul>
+<li>constate que la trame ne lui est pas destinée (numéro MAC différent)</li>
+<li>et l’ignore.</li>
+</ul>
+<h1 id="ladresse-de-diffusion"><span class="header-section-number">6</span> L’adresse de diffusion</h1>
+<p>Une adresse spéciale, dite “adresse de diffusion” (<em>broadcast address</em>) sert à envoyer une même trame à toutes les machines. C’est l’adresse MAC <code>ff:ff:ff:ff:ff:ff</code>, qui ne comporte que des 1 en binaire.</p>
+<p>En mode normal, une carte réseau qui reçoit une trame, l’accepte donc si l’adresse de destination est</p>
+<ul>
+<li>sa propre adresse MAC</li>
+<li>ou l’adresse de diffusion.</li>
+</ul>
+<p><strong>Note</strong>: une carte réseau peut être mise dans un mode spécial (<em>promiscuous mode</em>) dans lequel toutes les trames sont acceptées. C’est ce qui sert à “sniffer le réseau”, une occupation fréquente pendant les travaux pratiques pour comprendre ce qui se passe.</p>
+<h1 id="a-qui-dois-je-écrire-protocole-de-résolution-dadresse."><span class="header-section-number">7</span> A qui dois-je écrire ? Protocole de résolution d’adresse.</h1>
+<p>Pour que ça fonctionne, il faut que chaque machine connaisse les adresses MAC de ses interlocuteurs. C’est difficilement gérable (administrativement) sur un vrai réseau.</p>
+<p>On adopte donc un autre dispositif : chaque machine a un “identifiant” connu publiquement. Ici on va dire que c’est son nom, pour simplifier.</p>
+<p><strong>Exemple</strong> : Quand “alice” veut envoyer un message à “bob”, et qu’elle ne connaît pas déjà son adresse MAC :</p>
+<ul>
+<li>elle fabrique une trame contenant une requête “indiquez moi l’adresse MAC de bob svp”.</li>
+<li>elle l’envoie à l’adresse de diffusion.</li>
+</ul>
+<p>Cette trame est reçue par toutes les machines du réseau local.</p>
+<ul>
+<li>Normalement c’est “bob” qui va répondre à “alice”, en indiquant sa propre adresse MAC. Il a l’adresse MAC d’Alice (émetteur de la requête)</li>
+<li>Alice peut alors noter cette adresse MAC, et s’en servir pour communiquer avec Bob.</li>
+</ul>
+<p>Cet échange constitue un <strong>protocole de résolution d’adresse</strong> (Address Resolution Protocol), un échange de deux messages :</p>
+<ul>
+<li>une <strong>requête</strong> est émise pour demander à quoi correspond à un identifiant</li>
+<li>la <strong>réponse</strong> fournit l’adresse “de bas niveau”.</li>
+</ul>
+<p>Il existe d’autres possibilités :</p>
+<ul>
+<li>quand une machine se raccorde au réseau, elle se présente (“Hello, je suis Dave”) par un message envoyé à tous (diffusion) ;</li>
+<li>annonces périodiques pour ceux qui n’étaient pas là ;</li>
+<li>une machine peut servir de <strong>mandataire</strong>, et répondre pour d’autres.</li>
+</ul>
+<h1 id="annexes"><span class="header-section-number">8</span> Annexes</h1>
+<h2 id="fonctionnement-dun-commutateur"><span class="header-section-number">8.1</span> Fonctionnement d’un commutateur</h2>
+<p>De nos jours, les boîtiers de connexion d’un réseau local sont généralement de type “commutateur” (<strong>switch</strong>) :</p>
+<p>Un commutateur s’arrange pour réduire le trafic en ne réexpédiant les trames que sur un seul port, si c’est possible.</p>
+<h3 id="le-problème-1"><span class="header-section-number">8.1.1</span> Le problème</h3>
+<p>Dans un réseau local d’une certaine taille (à partir de quelques dizaines de poste), comportant plusieurs boîtiers, on souhaite éviter que toutes les trames soient réexpédiées à toutes les machines.</p>
+<p>Deux raisons :</p>
+<ul>
+<li><p>la <strong>sécurité</strong>, parce qu’une autre machine Eve (pour <em>earsdropping</em>, laisser traîner les oreilles) pourrait espionner les conversations en mettant sa carte en mode “promiscuité”.</p></li>
+<li><p>le <strong>volume de trafic</strong> : on évite de faire circuler inutilement le trafic pour réduire la charge des équipements qui ne sont pas concernés.</p></li>
+</ul>
+<h3 id="solution-table-dadresses-mac"><span class="header-section-number">8.1.2</span> Solution : table d’adresses MAC</h3>
+<p>Lorsque la machine “Alice”, connectée à un certain port <code>p</code> d’un commutateur, envoie une trame sur le réseau local, cette trame a comme <strong>adresse d’origine</strong> l’adresse MAC d’Alice.</p>
+<p>Le commutateur apprend donc que ce port <code>p</code> permet de joindre Alice.</p>
+<p>Dans le commutateur, une table va mémoriser la correspondance entre les adresses MAC connues et les numéros de ports.</p>
+<p>Ensuite, quand le commutateur devra faire passer une trame dont l’<strong>adresse de destination</strong> est connue, il saura par quel port l’acheminer.</p>
+<p>Ceci réduit la charge du réseau, et limite les possibilités d’espionnage par écoute du trafic.</p>
+<h3 id="oublier-et-réapprendre"><span class="header-section-number">8.1.3</span> Oublier et réapprendre</h3>
+<p>Sur un commutateur, les ports ne sont pas affectés de façon définitive. Avec le dispositif précédent, que se passe-t-il si le technicien réseau débranche Alice du port 2 pour la rebrancher sur le port 5 ?</p>
+<p>A priori, les trames destinées à Alice continueront d’être expédiées sur le port 2. Et n’arriveront jamais à destination.</p>
+<p>Pour éviter ce problème, le commutateur peut <strong>oublier</strong> la correspondance entre le port 2 et l’adresse MAC d’Alice, si Alice n’a rien émis depuis un certain temps (typiquement, 1 ou 2 minutes). Les données de la table ont une <strong>durée de vie limitée</strong>.</p>
+<p>De même, la correspondance sera changée si Alice se met à émettre depuis un autre port.</p>
+</body>
+</html>
