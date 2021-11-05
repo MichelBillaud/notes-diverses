@@ -1,7 +1,6 @@
 % Notes diverses
 % Michel Billaud (`michel.billaud@u-bordeaux.fr`, `michel.billaud@laposte.net`)
-% 13 août 2021
-
+% 5 novembre 2021
 
 
 # Licence
@@ -78,3 +77,17 @@ Le strict minimum, pour les débutants.
 Document : [bases-markdown.html](bases-markdown.html)
 
   
+# Génération des permutations
+
+Cette note explique en détail un algorithme classique pour
+passer d'une permutation, par exemple $(3, 5, 2, 4, 1)$
+à la suivante dans l'ordre lexicographique $(3, 5, 4, 1, 2)$.
+
+La technique présentée peut se généraliser à des énumérations
+d'autres types (note à venir).
+
+Le code est fourni en Fortran 95 (soyez indulgents, je n'ai pas codé
+en fortran depuis des décennies, et c'était du Fortran 77).
+
+Document : [permutation-suivante.html](permutation-suivante.html)
+

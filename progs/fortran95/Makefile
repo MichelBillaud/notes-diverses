@@ -1,6 +1,6 @@
 FC = gfortran
 FFLAGS = -std=f95
-FFLAGS = -Wall -Wextra -pedantic 
+FFLAGS += -Wall -Wextra -pedantic 
 
 %: %.f95
 	$(LINK.F) $^ $(LOADLIBES) $(LDLIBS) -o $@

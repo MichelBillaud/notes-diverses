@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Michel Billaud (michel.billaud@laposte.net)" />
+  <title>Recherche de la permutation suivante, explication</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">a.sourceLine {
+display: inline-block;
+line-height: 1.25;
+}
+a.sourceLine {
+pointer-events: none;
+color: inherit;
+text-decoration: inherit;
+}
+a.sourceLine:empty {
+height: 1.2em;
+}
+.sourceCode {
+overflow: visible;
+}
+code.sourceCode {
+white-space: pre;
+position: relative;
+}
+div.sourceCode {
+margin: 1em 0;
+}
+pre.sourceCode {
+margin: 0;
+}
+@media screen {
+div.sourceCode {
+overflow: auto;
+}
+}
+@media print {
+code.sourceCode {
+white-space: pre-wrap;
+}
+a.sourceLine {
+text-indent: -1em;
+padding-left: 1em;
+}
+}
+pre.numberSource a.sourceLine {
+position: relative;
+left: -4em;
+}
+pre.numberSource a.sourceLine::before {
+content: attr(title);
+position: relative;
+left: -1em;
+text-align: right;
+vertical-align: baseline;
+border: none;
+pointer-events: all;
+display: inline-block;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+padding: 0 4px;
+width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource {
+margin-left: 3em;
+border-left: 1px solid #aaaaaa;
+padding-left: 4px;
+}
+div.sourceCode {}
+@media screen {
+a.sourceLine::before {
+text-decoration: underline;
+}
+}
+code span.al {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.an {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.at {
+color: #7d9029;
+}
+
+code span.bn {
+color: #40a070;
+}
+
+code span.bu {}
+
+code span.cf {
+color: #007020;
+font-weight: bold;
+}
+
+code span.ch {
+color: #4070a0;
+}
+
+code span.cn {
+color: #880000;
+}
+
+code span.co {
+color: #60a0b0;
+font-style: italic;
+}
+
+code span.cv {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.do {
+color: #ba2121;
+font-style: italic;
+}
+
+code span.dt {
+color: #902000;
+}
+
+code span.dv {
+color: #40a070;
+}
+
+code span.er {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.ex {}
+
+code span.fl {
+color: #40a070;
+}
+
+code span.fu {
+color: #06287e;
+}
+
+code span.im {}
+
+code span.in {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.kw {
+color: #007020;
+font-weight: bold;
+}
+
+code span.op {
+color: #666666;
+}
+
+code span.ot {
+color: #007020;
+}
+
+code span.pp {
+color: #bc7a00;
+}
+
+code span.sc {
+color: #4070a0;
+}
+
+code span.ss {
+color: #bb6688;
+}
+
+code span.st {
+color: #4070a0;
+}
+
+code span.va {
+color: #19177c;
+}
+
+code span.vs {
+color: #4070a0;
+}
+
+code span.wa {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+
+:root {
+--title-color: #202080;
+--source-bg-color: rgb(240, 240, 255);
+}
+h1, h2, h3, h4, h5, h6 {
+border-bottom: solid 1px silver;
+color: var(--title-color);
+}
+body {
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div.sourceCode {
+background-color: var(--source-bg-color);
+padding: 1em;
+}
+#TOC {
+padding: 0.5em;
+border: solid 1px silver;
+}
+#TOC ul {
+list-style-type: none;
+padding-left: 1em;
+}
+nav:before {
+text-indent: 2em;
+content: "Sommaire";
+color: var(--title-color);
+font-weight: bold;
+font-size: large;
+}
+#TOC a {
+text-decoration: none;
+}
+header {
+text-align: center;
+}
+.title {
+}
+.author, .date {
+font-style: italic;
+}
+table, th, td {
+border-collapse: collapse;
+border: solid black 1px;
+padding: 0.5em;
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Recherche de la permutation suivante, explication</h1>
+<p class="author">Michel Billaud (michel.billaud@laposte.net)</p>
+<p class="date">3 novembre 2021</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#le-problème"><span class="toc-section-number">1</span> Le problème</a></li>
+<li><a href="#construction-de-next"><span class="toc-section-number">2</span> Construction de <span class="math inline"><em>n</em><em>e</em><em>x</em><em>t</em></span></a>
+<ul>
+<li><a href="#comment-compléter-une-permutation"><span class="toc-section-number">2.1</span> Comment compléter une permutation</a></li>
+<li><a href="#décomposition-dune-permutation"><span class="toc-section-number">2.2</span> Décomposition d’une permutation</a></li>
+<li><a href="#passer-dune-permutation-à-la-suivante"><span class="toc-section-number">2.3</span> Passer d’une permutation à la suivante</a></li>
+<li><a href="#une-propriété-des-séquences-décroissantes"><span class="toc-section-number">2.4</span> Une propriété des séquences décroissantes</a></li>
+<li><a href="#conséquence-et-construction-de-la-permutation-suivante"><span class="toc-section-number">2.5</span> Conséquence et construction de la permutation suivante</a></li>
+</ul></li>
+<li><a href="#codage"><span class="toc-section-number">3</span> Codage</a>
+<ul>
+<li><a href="#code-du-programme-principal"><span class="toc-section-number">3.1</span> Code du programme principal</a></li>
+<li><a href="#le-module-permutations"><span class="toc-section-number">3.2</span> Le module <code>permutations</code></a></li>
+<li><a href="#compilation-et-exécution"><span class="toc-section-number">3.3</span> Compilation et exécution</a></li>
+</ul></li>
+</ul>
+</nav>
+<p><img src="data:image/png;base64,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" /></p>
+<p>Ce texte fait partie d’une petite <a href="index.html">collection de notes</a> mise à disposition selon les termes de la <a href="http://creativecommons.org/licenses/by-nc-sa/2.0/fr/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France</a>.</p>
+<ul>
+<li>Les notes sont publiées dans <a href="https://www.mbillaud.fr/notes/" class="uri">https://www.mbillaud.fr/notes/</a></li>
+<li>Sources dans <a href="https://github.com/MichelBillaud/notes-diverses" class="uri">https://github.com/MichelBillaud/notes-diverses</a></li>
+</ul>
+<h1 data-number="1" id="le-problème"><span class="header-section-number">1</span> Le problème</h1>
+<p>Le problème est une question classique d’algorithmique combinatoire :</p>
+<blockquote>
+<p>Donnez un algorithme efficace qui, à partir d’une permutation, détermine la permutation suivante dans l’ordre lexicographique.</p>
+</blockquote>
+<p>Par exemple, l’algorithme trouvera que la permutation <span class="math inline"><em>p</em> = (1, 4, 5, 3, 2)</span> est suivie par <span class="math inline"><em>n</em><em>e</em><em>x</em><em>t</em>(<em>p</em>) = (1, 5, 2, 3, 4)</span>.</p>
+<p><em>Notation</em>. La permutation <span class="math inline">(1, 4, 5, 3, 2)</span> est la bijection <span class="math inline"><em>p</em></span> sur <span class="math inline">1, 2…</span> telle que <span class="math inline"><em>p</em>(1) = 1, <em>p</em>(2) = 4, <em>p</em>(3) = 5, <em>p</em>(4) = 3</span> et <span class="math inline"><em>p</em>(5) = 2</span>.</p>
+<p>On trouve facilement cet algorithme sur internet, je tente ici de donner quelques éclaircissements.</p>
+<p>Cet algorithme permet de construire un programme de génération de permutations dans l’ordre lexicographique, en remarquant que pour tout <span class="math inline"><em>N</em></span></p>
+<ul>
+<li>la première permutation est la suite croissante <span class="math inline">(1, 2, …, <em>N</em>)</span>, facile à construire ;</li>
+<li>la dernière est la suite décroissante $(N, , 2,1), facile à détecter.</li>
+</ul>
+<h1 data-number="2" id="construction-de-next"><span class="header-section-number">2</span> Construction de <span class="math inline"><em>n</em><em>e</em><em>x</em><em>t</em></span></h1>
+<p>La construction de <span class="math inline"><em>n</em><em>e</em><em>x</em><em>t</em></span> repose sur quelques observations simples.</p>
+<h2 data-number="2.1" id="comment-compléter-une-permutation"><span class="header-section-number">2.1</span> Comment compléter une permutation</h2>
+<p>Quand on connait le début d’une permutation, il est facile de déterminer l’ensemble des permutations qui la complètent.</p>
+<p>Par exemple, pour compléter <span class="math inline">(4, 6, 3, ?, ?, ?)</span>, permutation de longueur 6</p>
+<ul>
+<li>les éléments manquants sont 1, 2, 5 ;</li>
+<li>il suffit de combler les “trous” par les permutations de <span class="math inline">{1, 2, 5}</span>.</li>
+</ul>
+<p>Nous sommes intéressés par la <strong>séquence</strong> de permutations dans l’ordre lexicographique, obtenue en complétant le “préfixe” <span class="math inline">(4, 6, 3)</span> successivement par les permutations du “reste” <span class="math inline">{1, 2, 5}</span> dans l’ordre.</p>
+<p>Cette séquence commence par <span class="math inline">(4, 6, 3, 1, 2, 5)</span> et finit par <span class="math inline">(4, 6, 3, 5, 2, 1)</span>, qui ont le “reste” en ordre croissant et décroissant respectivement.</p>
+<h2 data-number="2.2" id="décomposition-dune-permutation"><span class="header-section-number">2.2</span> Décomposition d’une permutation</h2>
+<p>De façon évidente, chaque permutation se décompose de façon unique en concaténation d’un préfixe et d’un suffixe qui soit la plus longue suite décroissante possible.</p>
+<p>Exemple, pour <span class="math inline"><em>p</em> = (1, 4, 5, 3, 2)</span></p>
+<ul>
+<li>le suffixe est <span class="math inline">(5, 3, 2)</span>,</li>
+<li>le préfixe est <span class="math inline">(1, 4)</span>;</li>
+</ul>
+<p>On remarque que</p>
+<ul>
+<li>le suffixe est non vide ;</li>
+<li>le préfixe est vide si et seulement si la permutation est la dernière,</li>
+<li>si le préfixe n’est pas vide, son dernier élément est plus grand que le premier du préfixe (sinon cet élément ferait partie du préfixe).</li>
+</ul>
+<h2 data-number="2.3" id="passer-dune-permutation-à-la-suivante"><span class="header-section-number">2.3</span> Passer d’une permutation à la suivante</h2>
+<p>Une propriété intéressante de cette décomposition est que toute permutation est la plus grande, dans l’ordre lexicographique, de celles qui ont le même préfixe.</p>
+<p>La permutation suivante, si elle existe (ce qui se voit au préfixe non vide), commence donc par la séquence qui s’obtient en augmentant le dernier élément du préfixe, et en complétant. Exemple,</p>
+<ul>
+<li>le préfixe de <span class="math inline">(1, 4, 5, 3, 2)</span> est <span class="math inline">(1, 4)</span>,</li>
+<li>les permutations suivantes commencent par <span class="math inline">(1, 5)</span>,</li>
+<li>la première qui suit est <span class="math inline"><em>n</em><em>e</em><em>x</em><em>t</em>(<em>p</em>) = (1, 5, 4, 3, 2)</span>.</li>
+</ul>
+<p><strong>Attention</strong>, il ne suffit pas de remplacer le dernier élément du préfixe par le suivant. Par exemple le préfixe <span class="math inline">(4, 3, 2)</span> de <span class="math inline">(4, 3, 2, 6, 5, 1)</span> se termine par 2, qu’on ne peut pas remplacer par <span class="math inline">2 + 1 = 3</span> qui apparaît déjà dans le préfixe. Il faut prendre 5, qui est le plus petit élément du suffixe qui soit supérieur à 2.</p>
+<p><strong>Propriété</strong> Cet élément existe toujours.</p>
+<p>En effet, le suffixe n’est pas vide, et par construction son premier élément est plus grand que le dernier du préfixe.</p>
+<h2 data-number="2.4" id="une-propriété-des-séquences-décroissantes"><span class="header-section-number">2.4</span> Une propriété des séquences décroissantes</h2>
+<p>Une propriété des séquences décroissantes simplifiera la construction de la première permutation suivante :</p>
+<p><strong>Propriété</strong> soit une séquence décroissante <span class="math inline"><em>s</em><sub>1</sub>, <em>s</em><sub>2</sub>, …, <em>s</em><sub><em>n</em></sub></span> et <span class="math inline"><em>t</em></span> un nombre. Si il existe un <span class="math inline"><em>k</em></span> tel que <span class="math inline"><em>s</em><sub><em>k</em></sub></span> soit le plus petit des éléments qui soient supérieurs à <span class="math inline"><em>t</em></span>, alors la séquence obtenue en remplaçant <span class="math inline"><em>s</em><sub><em>k</em></sub></span> par <span class="math inline"><em>t</em></span> est décroissante.</p>
+<p>En effet,</p>
+<ul>
+<li><span class="math inline"><em>s</em><sub><em>k</em></sub> ≥ <em>t</em></span> (parce que <span class="math inline"><em>s</em><sub><em>k</em></sub></span> est supérieur à <span class="math inline"><em>t</em></span>) ;</li>
+<li>si <span class="math inline"><em>k</em> &gt; 1</span>, <span class="math inline"><em>s</em><sub><em>k</em> − 1</sub></span> existe et <span class="math inline"><em>s</em><sub><em>k</em> − 1</sub> ≥ <em>s</em><sub><em>k</em></sub></span>, donc <span class="math inline"><em>s</em><sub><em>k</em> − 1</sub> ≥ <em>t</em></span> (parce que <span class="math inline"><em>s</em><sub><em>k</em></sub> ≥ <em>t</em></span>) ;</li>
+<li>si <span class="math inline"><em>k</em> &lt; <em>n</em></span>, <span class="math inline"><em>s</em><sub><em>k</em> + 1</sub></span> existe. Si <span class="math inline"><em>t</em></span> était inférieur à <span class="math inline"><em>s</em><sub><em>k</em> + 1</sub></span>, <span class="math inline"><em>s</em><sub><em>k</em></sub></span> ne serait pas le plus petit élément de la séquence qui soit supérieur à <span class="math inline"><em>t</em></span>. Donc <span class="math inline"><em>t</em> ≥ <em>s</em><sub><em>k</em> + 1</sub></span>.</li>
+</ul>
+<p>Il en résulte que la séquence obtenue est décroissante.</p>
+<h2 data-number="2.5" id="conséquence-et-construction-de-la-permutation-suivante"><span class="header-section-number">2.5</span> Conséquence et construction de la permutation suivante</h2>
+<p>Les étapes de la construction de la permutation suivante</p>
+<ol type="1">
+<li>Décomposer la permutation en préfixe et suffixe.</li>
+<li>Si le préfixe est vide, la permutation est la dernière.</li>
+<li>Dans le suffixe, trouver le plus petit élément qui soit supérieur au dernier élément du préfixe.</li>
+<li>Echanger cet élément avec le dernier du préfixe</li>
+<li>Retourner le suffixe pour le mettre en ordre croissant.</li>
+</ol>
+<p>La remarque précédente a permis de traduire la dernière étape “compléter le suffixe par le reste des éléments en ordre croissant” par un simple retournement de tableau (“miroir”).</p>
+<h1 data-number="3" id="codage"><span class="header-section-number">3</span> Codage</h1>
+<p>Le programme ci-dessous, en Fortran 95, affiche les permutations de longueur 4.</p>
+<p>L’enumération des permutations met en oeuvre deux fonctions qui ont un tableau et sa taille en paramètre.</p>
+<ul>
+<li><code>get_first_permutation</code> remplit le tableau avec la permutation initiale (1,2,…)</li>
+<li><code>get_next_permutation</code> transforme la permutation contenue dans le tableau en la permutation suivante</li>
+</ul>
+<p>Le booléen retourné par les deux fonctions indiquent le succès de l’opération.</p>
+<h2 data-number="3.1" id="code-du-programme-principal"><span class="header-section-number">3.1</span> Code du programme principal</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode fortran"><code class="sourceCode fortran"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">!: @file test_permutations.f95</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="co">!! test program for the permutations module</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="co">!! displays all 24 permutations of (1, 2, 3, 4)</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="kw">program</span> test_permutations</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>  <span class="kw">use</span> permutations</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>  <span class="kw">implicit</span> <span class="kw">none</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>  <span class="dt">integer</span> <span class="dt">::</span> array(<span class="dv">1</span>:<span class="dv">4</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a>  <span class="dt">logical</span> <span class="dt">::</span> exists</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a>  <span class="dt">integer</span> <span class="dt">::</span> number</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a>  </span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a>  number <span class="kw">=</span> <span class="dv">0</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a>  exists <span class="kw">=</span> get_first_permutation(array, <span class="fu">size</span>(array))</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a>  <span class="kw">do</span> <span class="kw">while</span> (exists)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a>     number <span class="kw">=</span> number <span class="kw">+</span> <span class="dv">1</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a>     <span class="kw">call</span> print_permutation</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true"></a>     exists <span class="kw">=</span> get_next_permutation(array, <span class="fu">size</span>(array))</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true"></a>  <span class="kw">end do</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true"></a></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true"></a><span class="co">contains</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true"></a></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true"></a>  <span class="kw">subroutine</span> print_permutation</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true"></a>    <span class="dt">integer</span> <span class="dt">::</span> i</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true"></a>    <span class="fu">write(*</span>, <span class="st">&quot;(I3,&#39;: &#39;,*(I3))&quot;</span><span class="fu">)</span> number, (array(i), i <span class="kw">=</span> <span class="dv">1</span>, <span class="fu">size</span>(array))</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true"></a>    <span class="kw">end subroutine</span> print_permutation</span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true"></a></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true"></a><span class="kw">end program</span> test_permutations</span></code></pre></div>
+<h2 data-number="3.2" id="le-module-permutations"><span class="header-section-number">3.2</span> Le module <code>permutations</code></h2>
+<p>Les fonctions sont fournies par le module <code>permutations</code></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode fortran"><code class="sourceCode fortran"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">!&gt; @file permutations.f95</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="co">!! @brief generation of permutation in lexicographic order</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="kw">module</span> permutations</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>  <span class="kw">implicit</span> <span class="kw">none</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>  <span class="dt">private</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>  <span class="dt">public</span> <span class="dt">::</span> get_first_permutation, get_next_permutation</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a><span class="co">contains</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a><span class="co">!&gt; get the first permutation (1, 2...size) into an array</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a><span class="co">!! @param array array to be filled</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a><span class="co">!! @param size length of the permutation</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a><span class="co">!! @return true if possible</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a>  <span class="kw">function</span> get_first_permutation(array, <span class="fu">size</span>) <span class="kw">result</span>(found)</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a>    </span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true"></a>    <span class="dt">integer</span>, <span class="dt">intent(IN)</span>  <span class="dt">::</span> <span class="fu">size</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true"></a>    <span class="dt">integer</span>, <span class="dt">intent(OUT)</span> <span class="dt">::</span> array(<span class="dv">1</span>:<span class="fu">size</span>)</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true"></a>    <span class="dt">logical</span> <span class="dt">::</span> found</span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true"></a>    </span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true"></a>    <span class="dt">integer</span> <span class="dt">::</span> i</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true"></a>    </span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true"></a>    found <span class="kw">=</span> (<span class="fu">size</span> <span class="op">&gt;</span><span class="kw">=</span> <span class="dv">1</span>)</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true"></a>    <span class="kw">if</span> (<span class="op">.not.</span> found) <span class="kw">return</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true"></a>    </span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true"></a>    <span class="kw">do</span> i <span class="kw">=</span> <span class="dv">1</span>, <span class="fu">size</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true"></a>       array(i) <span class="kw">=</span> i</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true"></a>    <span class="kw">end do</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true"></a>  <span class="kw">end function</span> get_first_permutation</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true"></a>  </span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true"></a>  <span class="co">!&gt; change a given permutation into the next one if possible</span></span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true"></a>  <span class="co">!! @param array array containing the permutations</span></span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true"></a>  <span class="co">!! @param size length of the permutation</span></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true"></a>  <span class="co">!! @return true if possible</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true"></a>  </span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true"></a>  <span class="kw">function</span> get_next_permutation(array, <span class="fu">size</span>) <span class="kw">result</span>(found)</span>
+<span id="cb2-40"><a href="#cb2-40" aria-hidden="true"></a>    </span>
+<span id="cb2-41"><a href="#cb2-41" aria-hidden="true"></a>    <span class="dt">integer</span>, <span class="dt">intent(IN)</span>     <span class="dt">::</span>  <span class="fu">size</span></span>
+<span id="cb2-42"><a href="#cb2-42" aria-hidden="true"></a>    <span class="dt">integer</span>, <span class="dt">intent(INOUT)</span>  <span class="dt">::</span> array(<span class="dv">1</span>:<span class="fu">size</span>)</span>
+<span id="cb2-43"><a href="#cb2-43" aria-hidden="true"></a>    <span class="dt">logical</span>                 <span class="dt">::</span> found</span>
+<span id="cb2-44"><a href="#cb2-44" aria-hidden="true"></a></span>
+<span id="cb2-45"><a href="#cb2-45" aria-hidden="true"></a>    <span class="dt">integer</span>                 <span class="dt">::</span> prefix_length, <span class="bu">index</span></span>
+<span id="cb2-46"><a href="#cb2-46" aria-hidden="true"></a>    </span>
+<span id="cb2-47"><a href="#cb2-47" aria-hidden="true"></a>    prefix_length <span class="kw">=</span> find_prefix_length(array, <span class="fu">size</span>)</span>
+<span id="cb2-48"><a href="#cb2-48" aria-hidden="true"></a>    found <span class="kw">=</span> (prefix_length <span class="op">&gt;</span> <span class="dv">0</span>)</span>
+<span id="cb2-49"><a href="#cb2-49" aria-hidden="true"></a>    <span class="kw">if</span> (<span class="op">.not.</span> found) <span class="kw">return</span>           <span class="co">! array contains the last permutation</span></span>
+<span id="cb2-50"><a href="#cb2-50" aria-hidden="true"></a>    </span>
+<span id="cb2-51"><a href="#cb2-51" aria-hidden="true"></a>    <span class="bu">index</span> <span class="kw">=</span> find_next_in_prefix(array, <span class="fu">size</span>, array(prefix_length))</span>
+<span id="cb2-52"><a href="#cb2-52" aria-hidden="true"></a>    <span class="kw">call</span> swap(array(prefix_length), array(<span class="bu">index</span>))</span>
+<span id="cb2-53"><a href="#cb2-53" aria-hidden="true"></a>    <span class="kw">call</span> reverse_suffix(array, <span class="fu">size</span>, prefix_length <span class="kw">+</span> <span class="dv">1</span>)</span>
+<span id="cb2-54"><a href="#cb2-54" aria-hidden="true"></a>  <span class="kw">end function</span> get_next_permutation</span>
+<span id="cb2-55"><a href="#cb2-55" aria-hidden="true"></a>  </span>
+<span id="cb2-56"><a href="#cb2-56" aria-hidden="true"></a>  <span class="co">!</span></span>
+<span id="cb2-57"><a href="#cb2-57" aria-hidden="true"></a>  <span class="co">! private part</span></span>
+<span id="cb2-58"><a href="#cb2-58" aria-hidden="true"></a>  <span class="co">!</span></span>
+<span id="cb2-59"><a href="#cb2-59" aria-hidden="true"></a>  <span class="kw">function</span> find_prefix_length(array, <span class="fu">size</span>) <span class="kw">result</span>(length)</span>
+<span id="cb2-60"><a href="#cb2-60" aria-hidden="true"></a></span>
+<span id="cb2-61"><a href="#cb2-61" aria-hidden="true"></a>    <span class="dt">integer</span>, <span class="dt">intent(IN)</span> <span class="dt">::</span>  <span class="fu">size</span></span>
+<span id="cb2-62"><a href="#cb2-62" aria-hidden="true"></a>    <span class="dt">integer</span>, <span class="dt">intent(IN)</span> <span class="dt">::</span> array(<span class="dv">1</span>:<span class="fu">size</span>) </span>
+<span id="cb2-63"><a href="#cb2-63" aria-hidden="true"></a>    <span class="dt">integer</span>             <span class="dt">::</span> length</span>
+<span id="cb2-64"><a href="#cb2-64" aria-hidden="true"></a>    </span>
+<span id="cb2-65"><a href="#cb2-65" aria-hidden="true"></a>    length <span class="kw">=</span> <span class="fu">size</span> <span class="kw">-</span> <span class="dv">1</span></span>
+<span id="cb2-66"><a href="#cb2-66" aria-hidden="true"></a>    <span class="kw">do</span> <span class="kw">while</span> ((length <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">.and.</span> (array(length) <span class="op">&gt;</span><span class="kw">=</span> array(length <span class="kw">+</span> <span class="dv">1</span>)))</span>
+<span id="cb2-67"><a href="#cb2-67" aria-hidden="true"></a>       length <span class="kw">=</span> length <span class="kw">-</span> <span class="dv">1</span></span>
+<span id="cb2-68"><a href="#cb2-68" aria-hidden="true"></a>    <span class="kw">end do</span></span>
+<span id="cb2-69"><a href="#cb2-69" aria-hidden="true"></a>  <span class="kw">end function</span> find_prefix_length</span>
+<span id="cb2-70"><a href="#cb2-70" aria-hidden="true"></a>  </span>
+<span id="cb2-71"><a href="#cb2-71" aria-hidden="true"></a>  <span class="kw">function</span> find_next_in_prefix(array, <span class="fu">size</span>, value) <span class="kw">result</span>(<span class="bu">index</span>)</span>
+<span id="cb2-72"><a href="#cb2-72" aria-hidden="true"></a></span>
+<span id="cb2-73"><a href="#cb2-73" aria-hidden="true"></a>    <span class="dt">integer</span>,  <span class="dt">intent(IN)</span>      <span class="dt">::</span>  <span class="fu">size</span>, value</span>
+<span id="cb2-74"><a href="#cb2-74" aria-hidden="true"></a>    <span class="dt">integer</span>,  <span class="dt">intent(IN)</span>      <span class="dt">::</span> array(<span class="dv">1</span>:<span class="fu">size</span>)</span>
+<span id="cb2-75"><a href="#cb2-75" aria-hidden="true"></a></span>
+<span id="cb2-76"><a href="#cb2-76" aria-hidden="true"></a>    <span class="dt">integer</span>                   <span class="dt">::</span> <span class="bu">index</span></span>
+<span id="cb2-77"><a href="#cb2-77" aria-hidden="true"></a>    </span>
+<span id="cb2-78"><a href="#cb2-78" aria-hidden="true"></a>    <span class="bu">index</span> <span class="kw">=</span> <span class="fu">size</span></span>
+<span id="cb2-79"><a href="#cb2-79" aria-hidden="true"></a>    <span class="kw">do</span> <span class="kw">while</span> (array(<span class="bu">index</span>) <span class="op">&lt;</span><span class="kw">=</span> value)</span>
+<span id="cb2-80"><a href="#cb2-80" aria-hidden="true"></a>       <span class="bu">index</span> <span class="kw">=</span> <span class="bu">index</span> <span class="kw">-</span> <span class="dv">1</span></span>
+<span id="cb2-81"><a href="#cb2-81" aria-hidden="true"></a>    <span class="kw">end do</span></span>
+<span id="cb2-82"><a href="#cb2-82" aria-hidden="true"></a>  <span class="kw">end function</span> find_next_in_prefix</span>
+<span id="cb2-83"><a href="#cb2-83" aria-hidden="true"></a>  </span>
+<span id="cb2-84"><a href="#cb2-84" aria-hidden="true"></a>  <span class="kw">subroutine</span> reverse_suffix(array, <span class="fu">size</span>, suffix_start)</span>
+<span id="cb2-85"><a href="#cb2-85" aria-hidden="true"></a></span>
+<span id="cb2-86"><a href="#cb2-86" aria-hidden="true"></a>    <span class="dt">integer</span>, <span class="dt">intent(IN)</span>      <span class="dt">::</span> <span class="fu">size</span>, suffix_start</span>
+<span id="cb2-87"><a href="#cb2-87" aria-hidden="true"></a>    <span class="dt">integer</span>, <span class="dt">intent(INOUT)</span>   <span class="dt">::</span> array(<span class="dv">1</span>:<span class="fu">size</span>)</span>
+<span id="cb2-88"><a href="#cb2-88" aria-hidden="true"></a>    </span>
+<span id="cb2-89"><a href="#cb2-89" aria-hidden="true"></a>    <span class="dt">integer</span> <span class="dt">::</span> left, right</span>
+<span id="cb2-90"><a href="#cb2-90" aria-hidden="true"></a></span>
+<span id="cb2-91"><a href="#cb2-91" aria-hidden="true"></a>    left <span class="kw">=</span> suffix_start</span>
+<span id="cb2-92"><a href="#cb2-92" aria-hidden="true"></a>    right <span class="kw">=</span> <span class="fu">size</span></span>
+<span id="cb2-93"><a href="#cb2-93" aria-hidden="true"></a>    <span class="kw">do</span> <span class="kw">while</span> (left <span class="op">&lt;</span> right)</span>
+<span id="cb2-94"><a href="#cb2-94" aria-hidden="true"></a>       <span class="kw">call</span> swap (array(left), array(right))</span>
+<span id="cb2-95"><a href="#cb2-95" aria-hidden="true"></a>       left <span class="kw">=</span> left <span class="kw">+</span> <span class="dv">1</span></span>
+<span id="cb2-96"><a href="#cb2-96" aria-hidden="true"></a>       right <span class="kw">=</span> right <span class="kw">-</span> <span class="dv">1</span></span>
+<span id="cb2-97"><a href="#cb2-97" aria-hidden="true"></a>    <span class="kw">end do</span></span>
+<span id="cb2-98"><a href="#cb2-98" aria-hidden="true"></a>  <span class="kw">end subroutine</span> reverse_suffix</span>
+<span id="cb2-99"><a href="#cb2-99" aria-hidden="true"></a>  </span>
+<span id="cb2-100"><a href="#cb2-100" aria-hidden="true"></a>  <span class="kw">subroutine</span> swap(a, b)</span>
+<span id="cb2-101"><a href="#cb2-101" aria-hidden="true"></a></span>
+<span id="cb2-102"><a href="#cb2-102" aria-hidden="true"></a>    <span class="dt">integer</span>, <span class="dt">intent(inout)</span> <span class="dt">::</span> a, b</span>
+<span id="cb2-103"><a href="#cb2-103" aria-hidden="true"></a></span>
+<span id="cb2-104"><a href="#cb2-104" aria-hidden="true"></a>    <span class="dt">integer</span> <span class="dt">::</span> c</span>
+<span id="cb2-105"><a href="#cb2-105" aria-hidden="true"></a></span>
+<span id="cb2-106"><a href="#cb2-106" aria-hidden="true"></a>    c <span class="kw">=</span> a</span>
+<span id="cb2-107"><a href="#cb2-107" aria-hidden="true"></a>    a <span class="kw">=</span> b</span>
+<span id="cb2-108"><a href="#cb2-108" aria-hidden="true"></a>    b <span class="kw">=</span> c</span>
+<span id="cb2-109"><a href="#cb2-109" aria-hidden="true"></a>  <span class="kw">end subroutine</span> swap</span>
+<span id="cb2-110"><a href="#cb2-110" aria-hidden="true"></a>  </span>
+<span id="cb2-111"><a href="#cb2-111" aria-hidden="true"></a><span class="kw">end module</span> permutations</span></code></pre></div>
+<h2 data-number="3.3" id="compilation-et-exécution"><span class="header-section-number">3.3</span> Compilation et exécution</h2>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>$ <span class="ex">gfortran</span> -std=f95 -Wall -Wextra -pedantic    <span class="kw">\</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>    <span class="ex">test_permutations.f95</span> permutations.f95     <span class="kw">\</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>    <span class="ex">-o</span> test_permutations</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>$ <span class="ex">./test_permutations</span> </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a>  <span class="ex">1</span>:   1  2  3  4</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>  <span class="ex">2</span>:   1  2  4  3</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="ex">....</span> 20 lignes supprimées....</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a> <span class="ex">23</span>:   4  3  1  2</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a> <span class="ex">24</span>:   4  3  2  1</span></code></pre></div>
+</body>
+</html>
