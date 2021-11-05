@@ -4,76 +4,77 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <meta name="author" content="Michel Billaud (michel.billaud@u-bordeaux.fr, michel.billaud@laposte.net)" />
+  <meta name="author" content="Michel Billaud (michel.billaud@laposte.net)" />
   <title>Bases Markdown</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-  </style>
-  <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
   <style type="text/css">a.sourceLine {
 display: inline-block;
@@ -322,21 +323,23 @@ padding: 0.5em;
 </style>
 </head>
 <body>
-<header>
+<header id="title-block-header">
 <h1 class="title">Bases Markdown</h1>
-<p class="author">Michel Billaud (michel.billaud@u-bordeaux.fr, michel.billaud@laposte.net)</p>
+<p class="author">Michel Billaud (michel.billaud@laposte.net)</p>
 <p class="date">13 juin 2020</p>
 </header>
-<nav id="TOC">
+<nav id="TOC" role="doc-toc">
 <ul>
-<li><a href="#structure-dun-document"><span class="toc-section-number">1</span> Structure d’un document</a><ul>
+<li><a href="#structure-dun-document"><span class="toc-section-number">1</span> Structure d’un document</a>
+<ul>
 <li><a href="#entête-du-document"><span class="toc-section-number">1.1</span> Entête du document</a></li>
 <li><a href="#titraille"><span class="toc-section-number">1.2</span> Titraille</a></li>
 </ul></li>
 <li><a href="#décoration-des-caractères"><span class="toc-section-number">2</span> Décoration des caractères</a></li>
-<li><a href="#listes"><span class="toc-section-number">3</span> Listes</a><ul>
+<li><a href="#listes"><span class="toc-section-number">3</span> Listes</a>
+<ul>
 <li><a href="#listes-à-puces"><span class="toc-section-number">3.1</span> Listes à puces</a></li>
-<li><a href="#listes-numérotée"><span class="toc-section-number">3.2</span> Listes numérotée</a></li>
+<li><a href="#listes-numérotées"><span class="toc-section-number">3.2</span> Listes numérotées</a></li>
 </ul></li>
 <li><a href="#blocs-de-code"><span class="toc-section-number">4</span> Blocs de code</a></li>
 <li><a href="#liens-hypertexte-pour-en-savoir-plus."><span class="toc-section-number">5</span> Liens hypertexte, pour en savoir plus.</a></li>
@@ -347,47 +350,54 @@ padding: 0.5em;
 <li>Les notes sont publiées dans <a href="https://www.mbillaud.fr/notes/" class="uri">https://www.mbillaud.fr/notes/</a></li>
 <li>Sources dans <a href="https://github.com/MichelBillaud/notes-diverses" class="uri">https://github.com/MichelBillaud/notes-diverses</a></li>
 </ul>
-<h1 id="structure-dun-document"><span class="header-section-number">1</span> Structure d’un document</h1>
+<p>Dernière révision 3 nov 2021</p>
+<h1 data-number="1" id="structure-dun-document"><span class="header-section-number">1</span> Structure d’un document</h1>
 <p>Un document Markdown commence par une entête de 3 lignes, suivie par un texte structuré.</p>
-<h2 id="entête-du-document"><span class="header-section-number">1.1</span> Entête du document</h2>
+<h2 data-number="1.1" id="entête-du-document"><span class="header-section-number">1.1</span> Entête du document</h2>
 <p>Les lignes de l’entête commencent par le caractère “pourcent”, et donnent - dans cet ordre - le titre, l’auteur et la date.</p>
 <p><strong>Exemple</strong></p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode markdown"><code class="sourceCode markdown"><a class="sourceLine" id="cb1-1" title="1">% Exercices de programmation</a>
-<a class="sourceLine" id="cb1-2" title="2">% Alan Smithee</a>
-<a class="sourceLine" id="cb1-3" title="3">% 1er Avril 2021</a></code></pre></div>
-<h2 id="titraille"><span class="header-section-number">1.2</span> Titraille</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>% Exercices de programmation</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>% Alan Smithee</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>% 1er Avril 2021</span></code></pre></div>
+<h2 data-number="1.2" id="titraille"><span class="header-section-number">1.2</span> Titraille</h2>
 <p>Les lignes de titres commencent par des dièses <code>#</code>, dont le nombre indique le niveau.</p>
 <p><strong>Exemple :</strong></p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode markdown"><code class="sourceCode markdown"><a class="sourceLine" id="cb2-1" title="1"><span class="fu"># Structure d'un document</span></a>
-<a class="sourceLine" id="cb2-2" title="2"></a>
-<a class="sourceLine" id="cb2-3" title="3">Un document Markdown commence par une entête de 3 lignes, </a>
-<a class="sourceLine" id="cb2-4" title="4">suivie par un texte structuré.</a>
-<a class="sourceLine" id="cb2-5" title="5"></a>
-<a class="sourceLine" id="cb2-6" title="6"><span class="fu">## Entête du document</span></a>
-<a class="sourceLine" id="cb2-7" title="7"></a>
-<a class="sourceLine" id="cb2-8" title="8">Les lignes de l'entête commencent par le caractère &quot;pourcent&quot;, et </a>
-<a class="sourceLine" id="cb2-9" title="9">donnent le titre, l'auteur et la date.</a>
-<a class="sourceLine" id="cb2-10" title="10"></a>
-<a class="sourceLine" id="cb2-11" title="11">**Exemple**</a>
-<a class="sourceLine" id="cb2-12" title="12">....</a></code></pre></div>
-<h1 id="décoration-des-caractères"><span class="header-section-number">2</span> Décoration des caractères</h1>
+<div class="sourceCode" id="cb2"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="fu"># Structure d&#39;un document</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>Un document Markdown commence par une entête de 3 lignes, </span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>suivie par un texte structuré.</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a><span class="fu">## Entête du document</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>Les lignes de l&#39;entête commencent par le caractère &quot;pourcent&quot;, et </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>donnent le titre, l&#39;auteur et la date.</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>**Exemple**</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a>....</span></code></pre></div>
+<h1 data-number="2" id="décoration-des-caractères"><span class="header-section-number">2</span> Décoration des caractères</h1>
 <p><strong>Si on tape :</strong></p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode markdown"><code class="sourceCode markdown"><a class="sourceLine" id="cb3-1" title="1">Les textes &quot;décorés&quot; sont entourés</a>
-<a class="sourceLine" id="cb3-2" title="2">- <span class="fl">par des étoiles pour les *italiques*,</span></a>
-<a class="sourceLine" id="cb3-3" title="3"><span class="fl">- par des étoiles pour les **caractères gras**,</span></a>
-<a class="sourceLine" id="cb3-4" title="4"><span class="fl">- par des &quot;backquotes&quot; pour du </span><span class="bn">`code informatique`</span><span class="fl">.</span></a></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>Les textes &quot;décorés&quot; sont entourés</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="ss">- </span>par des étoiles pour les *italiques*,</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="ss">- </span>par des étoiles pour les **caractères gras**,</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="ss">- </span>par des &quot;backquotes&quot; pour du <span class="in">`code informatique`</span>.</span></code></pre></div>
 <p><strong>On voit :</strong></p>
-<p>Les textes “décorés” sont entourés - par des étoiles pour les <em>italiques</em>, - par des étoiles pour les <strong>caractères gras</strong>, - par des “backquotes” pour du <code>code informatique</code>.</p>
+<p>Les textes “décorés” sont entourés</p>
+<ul>
+<li>par des étoiles pour les <em>italiques</em>,</li>
+<li>par des étoiles pour les <strong>caractères gras</strong>,</li>
+<li>par des “backquotes” pour du <code>code informatique</code>.</li>
+</ul>
 <p><strong>Remarque</strong>: pour afficher ces caractères spéciaux tels-quels, les précéder d’un <em>antislash</em> <code>\</code>.</p>
-<h1 id="listes"><span class="header-section-number">3</span> Listes</h1>
-<h2 id="listes-à-puces"><span class="header-section-number">3.1</span> Listes à puces</h2>
+<h1 data-number="3" id="listes"><span class="header-section-number">3</span> Listes</h1>
+<h2 data-number="3.1" id="listes-à-puces"><span class="header-section-number">3.1</span> Listes à puces</h2>
 <p>Chaque élément commence par un tiret. Les sous-listes sont décalées vers la droite.</p>
-<div class="sourceCode" id="cb4"><pre class="sourceCode markdown"><code class="sourceCode markdown"><a class="sourceLine" id="cb4-1" title="1">- <span class="fl">France</span></a>
-<a class="sourceLine" id="cb4-2" title="2"><span class="fl">   - Vin</span></a>
-<a class="sourceLine" id="cb4-3" title="3"><span class="fl">   - Fromage</span></a>
-<a class="sourceLine" id="cb4-4" title="4"><span class="fl">- Italie</span></a>
-<a class="sourceLine" id="cb4-5" title="5"><span class="fl">   - Pizza</span></a>
-<a class="sourceLine" id="cb4-6" title="6"><span class="fl">   - Scooter</span></a></code></pre></div>
+<div class="sourceCode" id="cb4"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="ss">- </span>France</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="ss">   - </span>Vin</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="ss">   - </span>Fromage</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="ss">- </span>Italie</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="ss">   - </span>Pizza</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a><span class="ss">   - </span>Scooter</span></code></pre></div>
 <p>Apparence :</p>
 <ul>
 <li>France
@@ -401,7 +411,7 @@ padding: 0.5em;
 <li>Scooter</li>
 </ul></li>
 </ul>
-<h2 id="listes-numérotée"><span class="header-section-number">3.2</span> Listes numérotée</h2>
+<h2 data-number="3.2" id="listes-numérotées"><span class="header-section-number">3.2</span> Listes numérotées</h2>
 <pre><code>1. FORTRAN
 2. LISP
 3. COBOL</code></pre>
@@ -411,21 +421,21 @@ padding: 0.5em;
 <li>LISP</li>
 <li>COBOL</li>
 </ol>
-<h1 id="blocs-de-code"><span class="header-section-number">4</span> Blocs de code</h1>
+<h1 data-number="4" id="blocs-de-code"><span class="header-section-number">4</span> Blocs de code</h1>
 <p>Un bloc de code est encadré par des lignes “<code>~~~</code>”. Le nom du langage permet la colorisation des mots-clés.</p>
 <p><strong>Par exemple :</strong></p>
-<div class="sourceCode" id="cb6"><pre class="sourceCode markdown"><code class="sourceCode markdown"><a class="sourceLine" id="cb6-1" title="1">~~~java</a>
-<a class="sourceLine" id="cb6-2" title="2">int en_couleur () {</a>
-<a class="sourceLine" id="cb6-3" title="3">   return 1;</a>
-<a class="sourceLine" id="cb6-4" title="4">}</a>
-<a class="sourceLine" id="cb6-5" title="5">~~~</a></code></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="in">~~~java</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="dt">int</span> <span class="fu">en_couleur</span> () {</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>   <span class="kw">return</span> <span class="dv">1</span>;</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>}</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>~~~</span></code></pre></div>
 <p>apparaît sous la forme :</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode java"><code class="sourceCode java"><a class="sourceLine" id="cb7-1" title="1"><span class="dt">int</span> <span class="fu">en_couleur</span> () {</a>
-<a class="sourceLine" id="cb7-2" title="2">   <span class="kw">return</span> <span class="dv">1</span>;</a>
-<a class="sourceLine" id="cb7-3" title="3">}</a></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode java"><code class="sourceCode java"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="dt">int</span> <span class="fu">en_couleur</span> () {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>   <span class="kw">return</span> <span class="dv">1</span>;</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>}</span></code></pre></div>
 <p><strong>Remarque.</strong> On peut aussi utiliser la marque “```”, le bloc pourra alors contenir l’autre marque.</p>
-<h1 id="liens-hypertexte-pour-en-savoir-plus."><span class="header-section-number">5</span> Liens hypertexte, pour en savoir plus.</h1>
-<div class="sourceCode" id="cb8"><pre class="sourceCode markdown"><code class="sourceCode markdown"><a class="sourceLine" id="cb8-1" title="1">Lisez la <span class="ot">[documentation](https://pandoc.org/MANUAL.html)</span></a></code></pre></div>
+<h1 data-number="5" id="liens-hypertexte-pour-en-savoir-plus."><span class="header-section-number">5</span> Liens hypertexte, pour en savoir plus.</h1>
+<div class="sourceCode" id="cb8"><pre class="sourceCode markdown"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a>Lisez la <span class="co">[</span><span class="ot">documentation</span><span class="co">](https://pandoc.org/MANUAL.html)</span></span></code></pre></div>
 <p>Lisez la <a href="https://pandoc.org/MANUAL.html">documentation</a></p>
 </body>
 </html>

@@ -1,5 +1,5 @@
 % Bases Markdown
-% Michel Billaud (michel.billaud@u-bordeaux.fr,  michel.billaud@laposte.net)
+% Michel Billaud (michel.billaud@laposte.net)
 % 13 juin 2020
 
 
@@ -14,6 +14,7 @@ France](http://creativecommons.org/licenses/by-nc-sa/2.0/fr/).
 - Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
 
+Dernière révision 3 nov 2021
 
 # Structure d'un document
 
@@ -63,6 +64,7 @@ donnent le titre, l'auteur et la date.
 
 ~~~markdown
 Les textes "décorés" sont entourés
+
 - par des étoiles pour les *italiques*,
 - par des étoiles pour les **caractères gras**,
 - par des "backquotes" pour du `code informatique`.
@@ -71,6 +73,7 @@ Les textes "décorés" sont entourés
 **On voit :**
 
 Les textes "décorés" sont entourés
+
 - par des étoiles pour les *italiques*,
 - par des étoiles pour les **caractères gras**,
 - par des "backquotes" pour du `code informatique`.
@@ -104,7 +107,7 @@ Apparence :
      - Pizza
 	 - Scooter
 
-## Listes numérotée
+## Listes numérotées
 
 ~~~
 1. FORTRAN
