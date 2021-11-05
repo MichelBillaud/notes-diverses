@@ -1,3 +1,6 @@
+!> @file permutations.f95
+!! @brief generation of permutation in lexicographic order
+
 module permutations
 
     implicit none
@@ -5,6 +8,11 @@ module permutations
     public :: get_first_permutation, get_next_permutation
 
 contains
+
+!> get the first permutation (1, 2...size) into an array
+!! @param array array to be filled
+!! @param size length of the permutation
+!! @return true if possible
 
     function get_first_permutation(array, size) result(found)
         integer,  intent(IN)  :: size
@@ -19,7 +27,12 @@ contains
             array(i) = i
         end do
     end function get_first_permutation
-    
+
+!> change a givent permutation into the next one if possible
+!! @param array array containing the permutations
+!! @param size length of the permutation
+!! @return true if possible
+
     function get_next_permutation(array, size) result(found)
         integer, intent(IN)     ::  size
         integer, intent(INOUT)  :: array(1:size)

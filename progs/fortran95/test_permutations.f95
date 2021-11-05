@@ -1,7 +1,7 @@
-!
-! demo for "permutations module"
-! displays permutations of (1, 2, 3, 4)
-!
+!: @file test_permutations.f95
+!! test program for the permutations module
+!! displays all 24 permutations of (1, 2, 3, 4)
+
 program test_permutations
     use permutations
     implicit none
