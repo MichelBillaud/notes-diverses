@@ -339,12 +339,13 @@ padding: 0.5em;
 <li><a href="#une-propriété-des-séquences-décroissantes"><span class="toc-section-number">2.4</span> Une propriété des séquences décroissantes</a></li>
 <li><a href="#conséquence-et-construction-de-la-permutation-suivante"><span class="toc-section-number">2.5</span> Conséquence et construction de la permutation suivante</a></li>
 </ul></li>
-<li><a href="#codage"><span class="toc-section-number">3</span> Codage</a>
+<li><a href="#codage-en-fortran"><span class="toc-section-number">3</span> Codage en Fortran</a>
 <ul>
 <li><a href="#code-du-programme-principal"><span class="toc-section-number">3.1</span> Code du programme principal</a></li>
 <li><a href="#le-module-permutations"><span class="toc-section-number">3.2</span> Le module <code>permutations</code></a></li>
 <li><a href="#compilation-et-exécution"><span class="toc-section-number">3.3</span> Compilation et exécution</a></li>
 </ul></li>
+<li><a href="#codage-en-c"><span class="toc-section-number">4</span> Codage en C</a></li>
 </ul>
 </nav>
 <p><img src="data:image/png;base64,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" /></p>
@@ -422,7 +423,7 @@ padding: 0.5em;
 <li>Retourner le suffixe pour le mettre en ordre croissant.</li>
 </ol>
 <p>La remarque précédente a permis de traduire la dernière étape “compléter le suffixe par le reste des éléments en ordre croissant” par un simple retournement de tableau (“miroir”).</p>
-<h1 data-number="3" id="codage"><span class="header-section-number">3</span> Codage</h1>
+<h1 data-number="3" id="codage-en-fortran"><span class="header-section-number">3</span> Codage en Fortran</h1>
 <p>Le programme ci-dessous, en Fortran 95, affiche les permutations de longueur 4.</p>
 <p>L’enumération des permutations met en oeuvre deux fonctions qui ont un tableau et sa taille en paramètre.</p>
 <ul>
@@ -582,5 +583,78 @@ padding: 0.5em;
 <span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="ex">....</span> 20 lignes supprimées....</span>
 <span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a> <span class="ex">23</span>:   4  3  1  2</span>
 <span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a> <span class="ex">24</span>:   4  3  2  1</span></code></pre></div>
+<h1 data-number="4" id="codage-en-c"><span class="header-section-number">4</span> Codage en C</h1>
+<p>Sur le même principe, le programme C suivant énumère les permutations sur <span class="math inline">(0, ...<em>N</em> − 1)</span>. En effet, en C les tableaux commencent par l’indice 0, et il est a priori possible que les éléments de la permutation servent d’indices dans d’autres tableaux.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdbool.h&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="dt">bool</span> get_first_permutation(<span class="dt">int</span> array[], <span class="dt">int</span> size);</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="dt">bool</span> get_next_permutation(<span class="dt">int</span> array[], <span class="dt">int</span> size);</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a><span class="dt">void</span> print_array(<span class="dt">int</span> array[], <span class="dt">int</span> size);</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a><span class="dt">int</span> main()</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>{</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>    <span class="dt">int</span> array[<span class="dv">4</span>];</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>    <span class="dt">int</span> number = <span class="dv">0</span>;</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>    <span class="cf">for</span> (<span class="dt">bool</span> exists = get_first_permutation(array, <span class="dv">4</span>);</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a>            exists;</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>            exists = get_next_permutation(array, <span class="dv">4</span>)) {</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a>        number += <span class="dv">1</span>;</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a>        printf(<span class="st">&quot;%4d : &quot;</span>, number);</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a>        print_array(array, <span class="dv">4</span>);</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a>        printf(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true"></a>    }</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true"></a>}</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true"></a><span class="dt">void</span> print_array(<span class="dt">int</span> array[], <span class="dt">int</span> size)</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true"></a>{</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true"></a>    <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; size; i++) {</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true"></a>        printf(<span class="st">&quot;%3d&quot;</span>, array[i]);</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true"></a>    }</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true"></a>}</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true"></a></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true"></a><span class="dt">bool</span> get_first_permutation(<span class="dt">int</span> array[], <span class="dt">int</span> size)</span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true"></a>{</span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true"></a>    <span class="cf">if</span> (size &lt;= <span class="dv">0</span>) {</span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true"></a>        <span class="cf">return</span> false;</span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true"></a>    }</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true"></a>    <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; size; i++) {</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true"></a>        array[i] =  i;</span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true"></a>    }</span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true"></a>    <span class="cf">return</span> true;</span>
+<span id="cb4-40"><a href="#cb4-40" aria-hidden="true"></a>}</span>
+<span id="cb4-41"><a href="#cb4-41" aria-hidden="true"></a></span>
+<span id="cb4-42"><a href="#cb4-42" aria-hidden="true"></a><span class="dt">void</span> swap(<span class="dt">int</span> *pa, <span class="dt">int</span> *pb)</span>
+<span id="cb4-43"><a href="#cb4-43" aria-hidden="true"></a>{</span>
+<span id="cb4-44"><a href="#cb4-44" aria-hidden="true"></a>    <span class="dt">int</span> tmp = *pa;</span>
+<span id="cb4-45"><a href="#cb4-45" aria-hidden="true"></a>    *pa = *pb;</span>
+<span id="cb4-46"><a href="#cb4-46" aria-hidden="true"></a>    *pb = tmp;</span>
+<span id="cb4-47"><a href="#cb4-47" aria-hidden="true"></a>}</span>
+<span id="cb4-48"><a href="#cb4-48" aria-hidden="true"></a></span>
+<span id="cb4-49"><a href="#cb4-49" aria-hidden="true"></a><span class="dt">bool</span> get_next_permutation(<span class="dt">int</span> array[], <span class="dt">int</span> size)</span>
+<span id="cb4-50"><a href="#cb4-50" aria-hidden="true"></a>{</span>
+<span id="cb4-51"><a href="#cb4-51" aria-hidden="true"></a>    <span class="dt">int</span> suffix_start = size-<span class="dv">1</span>;</span>
+<span id="cb4-52"><a href="#cb4-52" aria-hidden="true"></a>    <span class="cf">while</span> (suffix_start &gt; <span class="dv">0</span></span>
+<span id="cb4-53"><a href="#cb4-53" aria-hidden="true"></a>            &amp;&amp;  array[suffix_start - <span class="dv">1</span>] &gt;= array[suffix_start]) {</span>
+<span id="cb4-54"><a href="#cb4-54" aria-hidden="true"></a>        suffix_start --;</span>
+<span id="cb4-55"><a href="#cb4-55" aria-hidden="true"></a>    }</span>
+<span id="cb4-56"><a href="#cb4-56" aria-hidden="true"></a>    <span class="cf">if</span> (suffix_start == <span class="dv">0</span>) {</span>
+<span id="cb4-57"><a href="#cb4-57" aria-hidden="true"></a>        <span class="cf">return</span> false;</span>
+<span id="cb4-58"><a href="#cb4-58" aria-hidden="true"></a>    }</span>
+<span id="cb4-59"><a href="#cb4-59" aria-hidden="true"></a>    <span class="dt">int</span> index = size -<span class="dv">1</span>;</span>
+<span id="cb4-60"><a href="#cb4-60" aria-hidden="true"></a>    <span class="cf">while</span> (array[suffix_start - <span class="dv">1</span>] &gt; array[index]) {</span>
+<span id="cb4-61"><a href="#cb4-61" aria-hidden="true"></a>        index --;</span>
+<span id="cb4-62"><a href="#cb4-62" aria-hidden="true"></a>    }</span>
+<span id="cb4-63"><a href="#cb4-63" aria-hidden="true"></a>    swap (&amp; array[suffix_start - <span class="dv">1</span>], &amp; array[index]);</span>
+<span id="cb4-64"><a href="#cb4-64" aria-hidden="true"></a>    <span class="cf">for</span> (<span class="dt">int</span> left = suffix_start, right = size - <span class="dv">1</span>;</span>
+<span id="cb4-65"><a href="#cb4-65" aria-hidden="true"></a>            left &lt; right;</span>
+<span id="cb4-66"><a href="#cb4-66" aria-hidden="true"></a>            left++, right-- ) {</span>
+<span id="cb4-67"><a href="#cb4-67" aria-hidden="true"></a>        swap (&amp; array[left], &amp;array[right]);</span>
+<span id="cb4-68"><a href="#cb4-68" aria-hidden="true"></a>    }</span>
+<span id="cb4-69"><a href="#cb4-69" aria-hidden="true"></a></span>
+<span id="cb4-70"><a href="#cb4-70" aria-hidden="true"></a>    <span class="cf">return</span> true;</span>
+<span id="cb4-71"><a href="#cb4-71" aria-hidden="true"></a>}</span></code></pre></div>
 </body>
 </html>

@@ -1,6 +1,6 @@
 % Notes diverses
 % Michel Billaud (`michel.billaud@u-bordeaux.fr`, `michel.billaud@laposte.net`)
-% 5 novembre 2021
+% 6 novembre 2021
 
 
 # Licence
@@ -14,6 +14,47 @@ Partage dans les Mêmes Conditions 2.0 France](http://creativecommons.org/licens
 
 - Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
+
+# Polymorphisme en C
+
+Novembre 2021. On montre sur un exemple détaillé comment réaliser du
+*polymorphisme* en C
+
+Le code suivant :
+
+~~~C
+    Animal * animals[] = {
+        (Animal *) new_Dog("Medor"),
+        (Animal *) new_Fish("Yellow"),
+        (Animal *) new_Dog("Rex")
+    };
+
+    for (int i = 0; i < 3; i++) {
+        Animal_Talk(animals[i]);
+        Animal_Feed(animals[i], "the kibbles"); // croquettes
+    }
+~~~
+
+exécute, lors des appels d'`Animal_Talk` et `Animal_Feed`, du code différent,
+qui dépend du type effectif (`Dog` ou `Fish`) des objets. C'est réalisé
+grâce à une "table de fonctions virtuelles" propres à chaque type.
+
+Document : [polymorphisme-en-c.html](polymorphisme-en-c.html)
+
+# Génération des permutations
+
+Novembre 2021. Cette note explique en détail un algorithme classique pour
+passer d'une permutation, par exemple $(3, 5, 2, 4, 1)$
+à la suivante dans l'ordre lexicographique $(3, 5, 4, 1, 2)$.
+
+La technique présentée peut se généraliser à des énumérations
+d'autres types (note à venir).
+
+Le code est fourni en Fortran 95 (ça m'amusait de l'apprendre, j'en
+étais resté à la version 77) et en C.
+
+Document : [permutation-suivante.html](permutation-suivante.html)
+
 
 # Vi, comment s'en sortir ? (et l'utiliser un peu)
 
@@ -77,17 +118,3 @@ Le strict minimum, pour les débutants.
 Document : [bases-markdown.html](bases-markdown.html)
 
   
-# Génération des permutations
-
-Cette note explique en détail un algorithme classique pour
-passer d'une permutation, par exemple $(3, 5, 2, 4, 1)$
-à la suivante dans l'ordre lexicographique $(3, 5, 4, 1, 2)$.
-
-La technique présentée peut se généraliser à des énumérations
-d'autres types (note à venir).
-
-Le code est fourni en Fortran 95 (soyez indulgents, je n'ai pas codé
-en fortran depuis des décennies, et c'était du Fortran 77).
-
-Document : [permutation-suivante.html](permutation-suivante.html)
-

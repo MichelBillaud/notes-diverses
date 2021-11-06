@@ -13,6 +13,68 @@
     div.column{display: inline-block; vertical-align: top; width: 50%;}
     div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
     ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
   <style type="text/css">a.sourceLine {
 display: inline-block;
@@ -264,18 +326,19 @@ padding: 0.5em;
 <header id="title-block-header">
 <h1 class="title">Notes diverses</h1>
 <p class="author">Michel Billaud (<code>michel.billaud@u-bordeaux.fr</code>, <code>michel.billaud@laposte.net</code>)</p>
-<p class="date">5 novembre 2021</p>
+<p class="date">6 novembre 2021</p>
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
 <li><a href="#licence"><span class="toc-section-number">1</span> Licence</a></li>
-<li><a href="#vi-comment-sen-sortir-et-lutiliser-un-peu"><span class="toc-section-number">2</span> Vi, comment s’en sortir ? (et l’utiliser un peu)</a></li>
-<li><a href="#les-tris"><span class="toc-section-number">3</span> Les tris</a></li>
-<li><a href="#réseau"><span class="toc-section-number">4</span> Réseau</a></li>
-<li><a href="#développer-à-partir-des-tests"><span class="toc-section-number">5</span> Développer à partir des tests</a></li>
-<li><a href="#exercices-somme-et-moyenne-dun-tableau"><span class="toc-section-number">6</span> Exercices “somme et moyenne d’un tableau”</a></li>
-<li><a href="#bases-markdown"><span class="toc-section-number">7</span> Bases markdown</a></li>
-<li><a href="#génération-des-permutations"><span class="toc-section-number">8</span> Génération des permutations</a></li>
+<li><a href="#polymorphisme-en-c"><span class="toc-section-number">2</span> Polymorphisme en C</a></li>
+<li><a href="#génération-des-permutations"><span class="toc-section-number">3</span> Génération des permutations</a></li>
+<li><a href="#vi-comment-sen-sortir-et-lutiliser-un-peu"><span class="toc-section-number">4</span> Vi, comment s’en sortir ? (et l’utiliser un peu)</a></li>
+<li><a href="#les-tris"><span class="toc-section-number">5</span> Les tris</a></li>
+<li><a href="#réseau"><span class="toc-section-number">6</span> Réseau</a></li>
+<li><a href="#développer-à-partir-des-tests"><span class="toc-section-number">7</span> Développer à partir des tests</a></li>
+<li><a href="#exercices-somme-et-moyenne-dun-tableau"><span class="toc-section-number">8</span> Exercices “somme et moyenne d’un tableau”</a></li>
+<li><a href="#bases-markdown"><span class="toc-section-number">9</span> Bases markdown</a></li>
 </ul>
 </nav>
 <h1 data-number="1" id="licence"><span class="header-section-number">1</span> Licence</h1>
@@ -285,13 +348,33 @@ padding: 0.5em;
 <li>Les notes sont publiées dans <a href="https://www.mbillaud.fr/notes/" class="uri">https://www.mbillaud.fr/notes/</a></li>
 <li>Sources dans <a href="https://github.com/MichelBillaud/notes-diverses" class="uri">https://github.com/MichelBillaud/notes-diverses</a></li>
 </ul>
-<h1 data-number="2" id="vi-comment-sen-sortir-et-lutiliser-un-peu"><span class="header-section-number">2</span> Vi, comment s’en sortir ? (et l’utiliser un peu)</h1>
+<h1 data-number="2" id="polymorphisme-en-c"><span class="header-section-number">2</span> Polymorphisme en C</h1>
+<p>Novembre 2021. On montre sur un exemple détaillé comment réaliser du <em>polymorphisme</em> en C</p>
+<p>Le code suivant :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>    Animal * animals[] = {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>        (Animal *) new_Dog(<span class="st">&quot;Medor&quot;</span>),</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a>        (Animal *) new_Fish(<span class="st">&quot;Yellow&quot;</span>),</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>        (Animal *) new_Dog(<span class="st">&quot;Rex&quot;</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>    };</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>    <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; <span class="dv">3</span>; i++) {</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>        Animal_Talk(animals[i]);</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a>        Animal_Feed(animals[i], <span class="st">&quot;the kibbles&quot;</span>); <span class="co">// croquettes</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a>    }</span></code></pre></div>
+<p>exécute, lors des appels d’<code>Animal_Talk</code> et <code>Animal_Feed</code>, du code différent, qui dépend du type effectif (<code>Dog</code> ou <code>Fish</code>) des objets. C’est réalisé grâce à une “table de fonctions virtuelles” propres à chaque type.</p>
+<p>Document : <a href="polymorphisme-en-c.html">polymorphisme-en-c.html</a></p>
+<h1 data-number="3" id="génération-des-permutations"><span class="header-section-number">3</span> Génération des permutations</h1>
+<p>Novembre 2021. Cette note explique en détail un algorithme classique pour passer d’une permutation, par exemple <span class="math inline">(3, 5, 2, 4, 1)</span> à la suivante dans l’ordre lexicographique <span class="math inline">(3, 5, 4, 1, 2)</span>.</p>
+<p>La technique présentée peut se généraliser à des énumérations d’autres types (note à venir).</p>
+<p>Le code est fourni en Fortran 95 (ça m’amusait de l’apprendre, j’en étais resté à la version 77) et en C.</p>
+<p>Document : <a href="permutation-suivante.html">permutation-suivante.html</a></p>
+<h1 data-number="4" id="vi-comment-sen-sortir-et-lutiliser-un-peu"><span class="header-section-number">4</span> Vi, comment s’en sortir ? (et l’utiliser un peu)</h1>
 <p>L’éditeur de textes vi est apparu en 1976, il est présent sur la majorité des systèmes Unix (vim, version améliorée). C’est parfois le seul éditeur installé au départ, et souvent l’éditeur de textes par défaut. On peut en préférer d’autres, mais il est important de savoir en sortir si on est tombé dedans, et de connaître quelques commandes de bases pour l’utiliser, même si on référerait autre chose.</p>
 <p>Document : <a href="vi-utilisation-basique.html">vi-utilisation-basique.html</a></p>
-<h1 data-number="3" id="les-tris"><span class="header-section-number">3</span> Les tris</h1>
+<h1 data-number="5" id="les-tris"><span class="header-section-number">5</span> Les tris</h1>
 <p>D’où viennent les idées sur les algorithmes de tri “naïfs” qu’on présente souvent aux débutants : tri par sélection, tri par insertion, tri à bulles ?</p>
 <p>Document : <a href="idees-tris-naifs.html">idees-tris-naifs.html</a></p>
-<h1 data-number="4" id="réseau"><span class="header-section-number">4</span> Réseau</h1>
+<h1 data-number="6" id="réseau"><span class="header-section-number">6</span> Réseau</h1>
 <ul>
 <li>Explication de la notion de trame, d’adresse (MAC), et de communication sur un réseau local.</li>
 </ul>
@@ -300,21 +383,16 @@ padding: 0.5em;
 <li>Notions de routage dans un réseau (interconnexion de réseaux locaux). Adresses IP, préfixes et masques, configuration des interfaces, définition des routes.</li>
 </ul>
 <p>Document : <a href="routage.html">routage.html</a></p>
-<h1 data-number="5" id="développer-à-partir-des-tests"><span class="header-section-number">5</span> Développer à partir des tests</h1>
+<h1 data-number="7" id="développer-à-partir-des-tests"><span class="header-section-number">7</span> Développer à partir des tests</h1>
 <p>Quand on programme, on se trompe souvent. Il est intéressant de prévoir des tests automatisés dès le début.</p>
 <p>Illustration avec C.</p>
 <p>Document : <a href="dev-tests-c.html">dev-tests-c.html</a></p>
-<h1 data-number="6" id="exercices-somme-et-moyenne-dun-tableau"><span class="header-section-number">6</span> Exercices “somme et moyenne d’un tableau”</h1>
+<h1 data-number="8" id="exercices-somme-et-moyenne-dun-tableau"><span class="header-section-number">8</span> Exercices “somme et moyenne d’un tableau”</h1>
 <p>Exercices très simples qu’on donne souvent à écrire aux débutants. Le problème est qu’ils sont souvent mal posés, sur le plan pédagogique.</p>
 <p>On présente une formulation de ces exercices (pour C), et on explique les problèmes courants avec les autres formulations.</p>
 <p>Document : <a href="exo-somme-tableau.html">exo-somme-tableau.html</a></p>
-<h1 data-number="7" id="bases-markdown"><span class="header-section-number">7</span> Bases markdown</h1>
+<h1 data-number="9" id="bases-markdown"><span class="header-section-number">9</span> Bases markdown</h1>
 <p>Le strict minimum, pour les débutants.</p>
 <p>Document : <a href="bases-markdown.html">bases-markdown.html</a></p>
-<h1 data-number="8" id="génération-des-permutations"><span class="header-section-number">8</span> Génération des permutations</h1>
-<p>Cette note explique en détail un algorithme classique pour passer d’une permutation, par exemple <span class="math inline">(3, 5, 2, 4, 1)</span> à la suivante dans l’ordre lexicographique <span class="math inline">(3, 5, 4, 1, 2)</span>.</p>
-<p>La technique présentée peut se généraliser à des énumérations d’autres types (note à venir).</p>
-<p>Le code est fourni en Fortran 95 (soyez indulgents, je n’ai pas codé en fortran depuis des décennies, et c’était du Fortran 77).</p>
-<p>Document : <a href="permutation-suivante.html">permutation-suivante.html</a></p>
 </body>
 </html>
