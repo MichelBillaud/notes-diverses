@@ -17,6 +17,8 @@ France](http://creativecommons.org/licenses/by-nc-sa/2.0/fr/).
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
 
 
+Dernières corrections : 6 novembre.
+
 # Le problème
 
 Le problème est une question classique d'algorithmique combinatoire :
@@ -71,7 +73,7 @@ respectivement.
 
 ## Décomposition d'une permutation
 
-De façon évidente, chaque permutation se décompose de façon unique en
+De façon évidente, chaque permutation se décompose *de façon unique* en
 concaténation d'un préfixe et d'un suffixe qui soit la plus longue
 suite décroissante possible. 
 
@@ -83,10 +85,11 @@ Exemple, pour $p = (1,4,5,3,2)$
 
 On remarque que
 
-- le suffixe est non vide ;
+- le suffixe est non vide (le dernier élément est une suite décroissante à lui tout seul);
 - le préfixe est vide si et seulement si la permutation est la dernière,
-- si le préfixe n'est pas vide, son dernier élément est plus grand que
-  le premier du préfixe (sinon cet élément ferait partie du préfixe).
+- par définition, si le préfixe n'est pas vide, son dernier élément
+  est plus grand que le premier du suffixe (sinon cet élément ferait
+  partie du fixe).
 
 
 

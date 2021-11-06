@@ -353,6 +353,7 @@ padding: 0.5em;
 <li>Les notes sont publiées dans <a href="https://www.mbillaud.fr/notes/" class="uri">https://www.mbillaud.fr/notes/</a></li>
 <li>Sources dans <a href="https://github.com/MichelBillaud/notes-diverses" class="uri">https://github.com/MichelBillaud/notes-diverses</a></li>
 </ul>
+<p>Dernières corrections : 6 novembre.</p>
 <h1 data-number="1" id="le-problème"><span class="header-section-number">1</span> Le problème</h1>
 <p>Le problème est une question classique d’algorithmique combinatoire :</p>
 <blockquote>
@@ -378,7 +379,7 @@ padding: 0.5em;
 <p>Nous sommes intéressés par la <strong>séquence</strong> de permutations dans l’ordre lexicographique, obtenue en complétant le “préfixe” <span class="math inline">(4, 6, 3)</span> successivement par les permutations du “reste” <span class="math inline">{1, 2, 5}</span> dans l’ordre.</p>
 <p>Cette séquence commence par <span class="math inline">(4, 6, 3, 1, 2, 5)</span> et finit par <span class="math inline">(4, 6, 3, 5, 2, 1)</span>, qui ont le “reste” en ordre croissant et décroissant respectivement.</p>
 <h2 data-number="2.2" id="décomposition-dune-permutation"><span class="header-section-number">2.2</span> Décomposition d’une permutation</h2>
-<p>De façon évidente, chaque permutation se décompose de façon unique en concaténation d’un préfixe et d’un suffixe qui soit la plus longue suite décroissante possible.</p>
+<p>De façon évidente, chaque permutation se décompose <em>de façon unique</em> en concaténation d’un préfixe et d’un suffixe qui soit la plus longue suite décroissante possible.</p>
 <p>Exemple, pour <span class="math inline"><em>p</em> = (1, 4, 5, 3, 2)</span></p>
 <ul>
 <li>le suffixe est <span class="math inline">(5, 3, 2)</span>,</li>
@@ -386,9 +387,9 @@ padding: 0.5em;
 </ul>
 <p>On remarque que</p>
 <ul>
-<li>le suffixe est non vide ;</li>
+<li>le suffixe est non vide (le dernier élément est une suite décroissante à lui tout seul);</li>
 <li>le préfixe est vide si et seulement si la permutation est la dernière,</li>
-<li>si le préfixe n’est pas vide, son dernier élément est plus grand que le premier du préfixe (sinon cet élément ferait partie du préfixe).</li>
+<li>par définition, si le préfixe n’est pas vide, son dernier élément est plus grand que le premier du suffixe (sinon cet élément ferait partie du fixe).</li>
 </ul>
 <h2 data-number="2.3" id="passer-dune-permutation-à-la-suivante"><span class="header-section-number">2.3</span> Passer d’une permutation à la suivante</h2>
 <p>Une propriété intéressante de cette décomposition est que toute permutation est la plus grande, dans l’ordre lexicographique, de celles qui ont le même préfixe.</p>
