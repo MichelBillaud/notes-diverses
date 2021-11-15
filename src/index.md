@@ -1,6 +1,6 @@
 % Notes diverses
 % Michel Billaud (`michel.billaud@u-bordeaux.fr`, `michel.billaud@laposte.net`)
-% 6 novembre 2021
+% 15 novembre 2021
 
 
 # Licence
@@ -14,6 +14,26 @@ Partage dans les Mêmes Conditions 2.0 France](http://creativecommons.org/licens
 
 - Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
+
+
+# A propos des Makefiles
+
+Novembre 2021. Récupération de quelques notes d'explication sur
+l'utilisation des Makefiles sur des projets de petite taille en
+C. Ces notes ont été écrite pour un cours C/Système en 2018.
+
+**Documents** 
+
+- [makefile-gen-dependances.html](makefile-gen-dependances.html) Un
+Makefile doit indiquer les dépendances entre les sources et les
+fichiers produits. La note montre comment l'option `-MMD` de `gcc`
+évite d'avoir à le faire manuellement.
+- [makefile-options .html](makefile-options .html) Comment indiquer
+  des options spécifiques pour *certaines* cibles d'un `Makefile`.
+- [makefile-projet.html](makefile-projet.html) Quand un projet
+  contient de nombreux fichiers sources, il est intéressant de
+  produire les fichiers intermédiaires et les exécutables dans des
+  répertoires séparés des sources.
 
 # Polymorphisme en C
 
