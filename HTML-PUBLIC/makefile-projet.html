@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Michel Billaud" />
+  <title>Makefile, organisation d’un projet</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">a.sourceLine {
+display: inline-block;
+line-height: 1.25;
+}
+a.sourceLine {
+pointer-events: none;
+color: inherit;
+text-decoration: inherit;
+}
+a.sourceLine:empty {
+height: 1.2em;
+}
+.sourceCode {
+overflow: visible;
+}
+code.sourceCode {
+white-space: pre;
+position: relative;
+}
+div.sourceCode {
+margin: 1em 0;
+}
+pre.sourceCode {
+margin: 0;
+}
+@media screen {
+div.sourceCode {
+overflow: auto;
+}
+}
+@media print {
+code.sourceCode {
+white-space: pre-wrap;
+}
+a.sourceLine {
+text-indent: -1em;
+padding-left: 1em;
+}
+}
+pre.numberSource a.sourceLine {
+position: relative;
+left: -4em;
+}
+pre.numberSource a.sourceLine::before {
+content: attr(title);
+position: relative;
+left: -1em;
+text-align: right;
+vertical-align: baseline;
+border: none;
+pointer-events: all;
+display: inline-block;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+padding: 0 4px;
+width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource {
+margin-left: 3em;
+border-left: 1px solid #aaaaaa;
+padding-left: 4px;
+}
+div.sourceCode {}
+@media screen {
+a.sourceLine::before {
+text-decoration: underline;
+}
+}
+code span.al {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.an {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.at {
+color: #7d9029;
+}
+
+code span.bn {
+color: #40a070;
+}
+
+code span.bu {}
+
+code span.cf {
+color: #007020;
+font-weight: bold;
+}
+
+code span.ch {
+color: #4070a0;
+}
+
+code span.cn {
+color: #880000;
+}
+
+code span.co {
+color: #60a0b0;
+font-style: italic;
+}
+
+code span.cv {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.do {
+color: #ba2121;
+font-style: italic;
+}
+
+code span.dt {
+color: #902000;
+}
+
+code span.dv {
+color: #40a070;
+}
+
+code span.er {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.ex {}
+
+code span.fl {
+color: #40a070;
+}
+
+code span.fu {
+color: #06287e;
+}
+
+code span.im {}
+
+code span.in {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.kw {
+color: #007020;
+font-weight: bold;
+}
+
+code span.op {
+color: #666666;
+}
+
+code span.ot {
+color: #007020;
+}
+
+code span.pp {
+color: #bc7a00;
+}
+
+code span.sc {
+color: #4070a0;
+}
+
+code span.ss {
+color: #bb6688;
+}
+
+code span.st {
+color: #4070a0;
+}
+
+code span.va {
+color: #19177c;
+}
+
+code span.vs {
+color: #4070a0;
+}
+
+code span.wa {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+
+:root {
+--title-color: #202080;
+--source-bg-color: rgb(240, 240, 255);
+}
+h1, h2, h3, h4, h5, h6 {
+border-bottom: solid 1px silver;
+color: var(--title-color);
+}
+body {
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div.sourceCode {
+background-color: var(--source-bg-color);
+padding: 1em;
+}
+#TOC {
+padding: 0.5em;
+border: solid 1px silver;
+}
+#TOC ul {
+list-style-type: none;
+padding-left: 1em;
+}
+nav:before {
+text-indent: 2em;
+content: "Sommaire";
+color: var(--title-color);
+font-weight: bold;
+font-size: large;
+}
+#TOC a {
+text-decoration: none;
+}
+header {
+text-align: center;
+}
+.title {
+}
+.author, .date {
+font-style: italic;
+}
+table, th, td {
+border-collapse: collapse;
+border: solid black 1px;
+padding: 0.5em;
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Makefile, organisation d’un projet</h1>
+<p class="author">Michel Billaud</p>
+<p class="date">10 octobre 2018</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#problématique"><span class="toc-section-number">1</span> Problématique</a>
+<ul>
+<li><a href="#un-exemple-de-projet"><span class="toc-section-number">1.1</span> Un Exemple de projet</a></li>
+<li><a href="#un-makefile-basique"><span class="toc-section-number">1.2</span> Un makefile “basique”</a></li>
+<li><a href="#critique"><span class="toc-section-number">1.3</span> Critique</a></li>
+</ul></li>
+<li><a href="#utilisation-de-répertoires-séparés"><span class="toc-section-number">2</span> Utilisation de répertoires séparés</a>
+<ul>
+<li><a href="#objectif"><span class="toc-section-number">2.1</span> Objectif</a></li>
+<li><a href="#construction-raisonnée-du-makefile"><span class="toc-section-number">2.2</span> Construction raisonnée du <code>Makefile</code></a>
+<ul>
+<li><a href="#les-variables"><span class="toc-section-number">2.2.1</span> Les variables</a></li>
+<li><a href="#la-production-des-exécutables"><span class="toc-section-number">2.2.2</span> La production des exécutables</a></li>
+<li><a href="#dépendances-et-utilitaires"><span class="toc-section-number">2.2.3</span> Dépendances et utilitaires</a></li>
+</ul></li>
+<li><a href="#exécution-du-makefile"><span class="toc-section-number">2.3</span> Exécution du Makefile</a></li>
+</ul></li>
+<li><a href="#conclusion"><span class="toc-section-number">3</span> Conclusion</a></li>
+</ul>
+</nav>
+<p><strong>Résumé.</strong> Quand un projet contient de nombreux fichiers sources, il est intéressant de produire les fichiers intermédiaires et les exécutables dans des répertoires séparés des sources.</p>
+<p><strong>Dernière mise à jour</strong> : 15 novembre 2021.</p>
+<h1 data-number="1" id="problématique"><span class="header-section-number">1</span> Problématique</h1>
+<h2 data-number="1.1" id="un-exemple-de-projet"><span class="header-section-number">1.1</span> Un Exemple de projet</h2>
+<p>On construit un projet avec deux exécutables à produire :</p>
+<ul>
+<li><code>main_f</code>, qui appelle une fonction <code>foo()</code></li>
+<li><code>main_fb</code>, qui appelle <code>foo()</code> et <code>bar()</code>.</li>
+</ul>
+<p>Source de <code>main_fb.c</code> :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;foo.h&quot;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;bar.h&quot;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="dt">int</span> main() {</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>  foo();</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>  bar();</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a>  <span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a>}</span></code></pre></div>
+<p>Chaque fonction est compilée séparément. Nous avons donc les fichiers sources :</p>
+<ul>
+<li><code>main_f.c</code> et <code>main_fb.c</code> contenant les fonctions <code>main()</code> des deux exécutables,</li>
+<li>les fichiers d’entêtes <code>foo.h</code> et <code>bar.h</code> contenant les prototypes,</li>
+<li>les fichiers d’entêtes <code>foo.c</code> et <code>bar.c</code> avec le code des fonctions.</li>
+</ul>
+<h2 data-number="1.2" id="un-makefile-basique"><span class="header-section-number">1.2</span> Un makefile “basique”</h2>
+<p>En utilisant les règles par défaut, les dépendances implicites, et la génération automatique des dépendances, on peut écrire un <code>Makefile</code> simple :</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="dt">CFLAGS </span><span class="ch">=</span><span class="st"> -MMD -MP</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="dt">EXECS </span><span class="ch">=</span><span class="st"> main_f main_fb</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="dv">all:</span><span class="dt"> </span><span class="ch">$(</span><span class="dt">EXECS</span><span class="ch">)</span><span class="dt"> </span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a><span class="dv">main_f:</span><span class="dt">  main_f.o   foo.o</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a><span class="dv">main_fb:</span><span class="dt"> main_fb.o  foo.o bar.o</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a><span class="kw">-include</span> <span class="ch">$(</span><span class="kw">wildcard</span><span class="st"> *.d</span><span class="ch">)</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a><span class="dv">clean:</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a>    <span class="ch">$(</span><span class="dt">RM</span><span class="ch">)</span> *~ *.o *.d</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a><span class="dv">mrproper:</span><span class="dt"> clean</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a>    <span class="ch">$(</span><span class="dt">RM</span><span class="ch">)</span> <span class="ch">$(</span><span class="dt">EXECS</span><span class="ch">)</span></span></code></pre></div>
+<p>dont l’exécution conduit au résultat voulu</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>$ <span class="fu">make</span> -f Makefile.simple </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="fu">cc</span> -MMD -MP   -c -o main_f.o main_f.c</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="fu">cc</span> -MMD -MP   -c -o foo.o foo.c</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="fu">cc</span>   main_f.o foo.o   -o main_f</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="fu">cc</span> -MMD -MP   -c -o main_fb.o main_fb.c</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a><span class="fu">cc</span> -MMD -MP   -c -o bar.o bar.c</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="fu">cc</span>   main_fb.o foo.o bar.o   -o main_fb</span></code></pre></div>
+<h2 data-number="1.3" id="critique"><span class="header-section-number">1.3</span> Critique</h2>
+<p>Cette solution a l’inconvénient d’envahir le répertoire avec des fichiers de travail :</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a>$ <span class="fu">ls</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="ex">bar.c</span>  bar.o  foo.h   main_fb    main_fb.o  main_f.o</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="ex">bar.d</span>  foo.c  foo.o   main_fb.c  main_f.c   Makefile</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="ex">bar.h</span>  foo.d  main_f  main_fb.d  main_f.d   </span></code></pre></div>
+<p>C’est le problème auquel on essaie de remédier.</p>
+<h1 data-number="2" id="utilisation-de-répertoires-séparés"><span class="header-section-number">2</span> Utilisation de répertoires séparés</h1>
+<h2 data-number="2.1" id="objectif"><span class="header-section-number">2.1</span> Objectif</h2>
+<p>L’objectif est de ne pas polluer le répertoire des sources. Pour cela on utilisera deux sous-répertoires</p>
+<ul>
+<li><code>build</code> pour les fichiers intermédiaires (objets et dépendances) produits pendant le développement du projet,</li>
+<li><code>dist</code> pour les exécutables “à livrer”.</li>
+</ul>
+<h2 data-number="2.2" id="construction-raisonnée-du-makefile"><span class="header-section-number">2.2</span> Construction raisonnée du <code>Makefile</code></h2>
+<h3 data-number="2.2.1" id="les-variables"><span class="header-section-number">2.2.1</span> Les variables</h3>
+<p>Le <code>Makefile</code> commence par quelques définitions</p>
+<ul>
+<li>les <strong>noms des sous-répertoires</strong> :</li>
+</ul>
+<div class="sourceCode" id="cb5"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="dt">BUILD_DIR </span><span class="ch">=</span><span class="st"> build</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="dt">DIST_DIR  </span><span class="ch">=</span><span class="st"> dist</span></span></code></pre></div>
+<ul>
+<li>la liste des noms des exécutables du projet, à produire dans le <code>BUILD_DIR</code></li>
+</ul>
+<div class="sourceCode" id="cb6"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="dt">EXECS </span><span class="ch">=</span><span class="st"> main_f main_fb</span></span></code></pre></div>
+<ul>
+<li>pour chaque exécutable du projet, la liste des modules objets nécessaires</li>
+</ul>
+<div class="sourceCode" id="cb7"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="dt">OBJS_MAIN_F </span><span class="ch">=</span><span class="st">  main_f.o  foo.o</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="dt">OBJS_MAIN_FB </span><span class="ch">=</span><span class="st"> main_fb.o foo.o bar.o</span></span></code></pre></div>
+<ul>
+<li>Et bien sûr les options de compilation pour la génération automatique des dépendances</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="dt">CFLAGS </span><span class="ch">=</span><span class="st"> -MMD -MP</span></span></code></pre></div>
+<h3 data-number="2.2.2" id="la-production-des-exécutables"><span class="header-section-number">2.2.2</span> La production des exécutables</h3>
+<ul>
+<li>La règle suivante, qui est en principe la première, demande la <strong>production de tous les exécutables</strong> dans le répertoire <code>dist/</code></li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="dv">all:</span><span class="dt"> </span><span class="ch">$(</span><span class="kw">addprefix</span><span class="st"> </span><span class="ch">$(</span><span class="dt">DIST_DIR</span><span class="ch">)</span><span class="st">/</span><span class="kw">,</span><span class="ch">$(</span><span class="dt">EXECS</span><span class="ch">))</span></span></code></pre></div>
+<ul>
+<li>Viennent ensuite les dépendances pour la composition des fichiers exécutables. Les noms des fichiers objets sont donnés dans une variable, on les préfixe par le nom du du sous-répertoire où il faut les placer (<code>build/</code>):</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="dv">$(DIST_DIR)/main_f:</span><span class="dt">  </span><span class="ch">$(</span><span class="kw">addprefix</span><span class="st"> </span><span class="ch">$(</span><span class="dt">BUILD_DIR</span><span class="ch">)</span><span class="st">/</span><span class="kw">,</span><span class="ch">$(</span><span class="dt">OBJS_MAIN_F</span><span class="ch">))</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a><span class="dv">$(DIST_DIR)/main_fb:</span><span class="dt"> </span><span class="ch">$(</span><span class="kw">addprefix</span><span class="st"> </span><span class="ch">$(</span><span class="dt">BUILD_DIR</span><span class="ch">)</span><span class="st">/</span><span class="kw">,</span><span class="ch">$(</span><span class="dt">OBJS_MAIN_FB</span><span class="ch">))</span></span></code></pre></div>
+<ul>
+<li><strong>La production des exécutables</strong> dans <code>dist/</code> est décrite par une règle “générique”qui est dérivée de la macro classique d’édition des liens, en créant au besoin le répertoire <code>dist/</code></li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="dv">$(DIST_DIR)/%:</span><span class="dt">  </span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>    <span class="ch">@</span><span class="fu">mkdir -p </span><span class="ch">$(</span><span class="dt">DIST_DIR</span><span class="ch">)</span><span class="fu">  </span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a>    <span class="ch">$(</span><span class="dt">LINK.c</span><span class="ch">)</span> -o <span class="ch">$@</span> <span class="ch">$^</span></span></code></pre></div>
+<ul>
+<li>Une règle générique similaire décrit les <strong>compilations</strong> :</li>
+</ul>
+<div class="sourceCode" id="cb12"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="dv">$(BUILD_DIR)/%.o:</span><span class="dt"> %.c</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a>    <span class="ch">@</span><span class="fu">mkdir -p </span><span class="ch">$(</span><span class="dt">BUILD_DIR</span><span class="ch">)</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a>    <span class="ch">$(</span><span class="dt">COMPILE.c</span><span class="ch">)</span> -o <span class="ch">$@</span> <span class="ch">$^</span></span></code></pre></div>
+<h3 data-number="2.2.3" id="dépendances-et-utilitaires"><span class="header-section-number">2.2.3</span> Dépendances et utilitaires</h3>
+<ul>
+<li>enfin, on trouve l’<strong>inclusion des dépendances</strong></li>
+</ul>
+<div class="sourceCode" id="cb13"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="kw">-include</span> <span class="ch">$(</span><span class="dt">BUILD_DIR</span><span class="ch">)</span>/*.d</span></code></pre></div>
+<ul>
+<li>ainsi que les règles utilitaires, dont les commandes de nettoyage</li>
+</ul>
+<div class="sourceCode" id="cb14"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="dv">clean:</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a>    <span class="ch">$(</span><span class="dt">RM</span><span class="ch">)</span> *~ </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a>    <span class="ch">$(</span><span class="dt">RM</span><span class="ch">)</span> -r (BUILD_DIR)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a><span class="dv">mrproper:</span><span class="dt"> clean</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true"></a>    <span class="ch">$(</span><span class="dt">RM</span><span class="ch">)</span> -r  <span class="ch">$(</span><span class="dt">DIST_DIR</span><span class="ch">)</span></span></code></pre></div>
+<h2 data-number="2.3" id="exécution-du-makefile"><span class="header-section-number">2.3</span> Exécution du Makefile</h2>
+<ul>
+<li>L’exécution de la commande <code>make</code> produit bien les fichiers voulus</li>
+</ul>
+<div class="sourceCode" id="cb15"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a>$ <span class="fu">make</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a><span class="fu">cc</span> -MMD -MP   -c -o build/main_f.o main_f.c</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a><span class="fu">cc</span> -MMD -MP   -c -o build/foo.o foo.c</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a><span class="fu">mkdir</span> -p dist</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a><span class="fu">cc</span> -MMD -MP    -o dist/main_f build/main_f.o build/foo.o</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true"></a><span class="fu">cc</span> -MMD -MP   -c -o build/main_fb.o main_fb.c</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true"></a><span class="fu">cc</span> -MMD -MP   -c -o build/bar.o bar.c</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true"></a><span class="fu">mkdir</span> -p dist</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true"></a><span class="fu">cc</span> -MMD -MP    -o dist/main_fb build/main_fb.o build/foo.o build/bar.o</span></code></pre></div>
+<ul>
+<li>Vue d’ensemble des fichiers :</li>
+</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a>$ <span class="va">LANG=</span> <span class="ex">tree</span> -c</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a><span class="ex">.</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a><span class="kw">|</span><span class="ex">--</span> foo.c</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a><span class="kw">|</span><span class="ex">--</span> foo.h</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a><span class="kw">|</span><span class="ex">--</span> bar.h</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true"></a><span class="kw">|</span><span class="ex">--</span> main_f.c</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true"></a><span class="kw">|</span><span class="ex">--</span> main_fb.c</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true"></a><span class="kw">|</span><span class="ex">--</span> bar.c</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true"></a><span class="kw">|</span><span class="ex">--</span> Makefile</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true"></a><span class="kw">|</span><span class="ex">--</span> build</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true"></a><span class="kw">|</span>   <span class="kw">|</span><span class="ex">--</span> bar.d</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true"></a><span class="kw">|</span>   <span class="kw">|</span><span class="ex">--</span> bar.o</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true"></a><span class="kw">|</span>   <span class="kw">|</span><span class="ex">--</span> foo.d</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true"></a><span class="kw">|</span>   <span class="kw">|</span><span class="ex">--</span> foo.o</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true"></a><span class="kw">|</span>   <span class="kw">|</span><span class="ex">--</span> main_f.d</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true"></a><span class="kw">|</span>   <span class="kw">|</span><span class="ex">--</span> main_f.o</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true"></a><span class="kw">|</span>   <span class="kw">|</span><span class="ex">--</span> main_fb.d</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true"></a><span class="kw">|</span>   <span class="kw">`</span><span class="ex">--</span> main_fb.o</span>
+<span id="cb16-19"><a href="#cb16-19" aria-hidden="true"></a><span class="kw">`</span><span class="ex">--</span> dist</span>
+<span id="cb16-20"><a href="#cb16-20" aria-hidden="true"></a>    <span class="kw">|</span><span class="ex">--</span> main_f</span>
+<span id="cb16-21"><a href="#cb16-21" aria-hidden="true"></a>    <span class="kw">`</span><span class="ex">--</span> main_fb</span></code></pre></div>
+<ul>
+<li>Les fichiers de dépendance sont corrects. Ils contiennent des “phony targets” pour les fichiers d’entete, à cause de l’option <code>-MP</code> dans les <code>CFLAGS</code> :</li>
+</ul>
+<p>Fichier <code>build/main_fb.d</code> :</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="dv">build/main_fb.o:</span><span class="dt"> main_fb.c foo.h bar.h</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a><span class="dv">foo.h:</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true"></a><span class="dv">bar.h:</span></span></code></pre></div>
+<p>Fichier <code>build/foo.d</code></p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="dv">build/foo.o:</span><span class="dt"> foo.c foo.h</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true"></a><span class="dv">foo.h:</span></span></code></pre></div>
+<h1 data-number="3" id="conclusion"><span class="header-section-number">3</span> Conclusion</h1>
+<p>Le <code>Makefile</code> ainsi construit ne contient que quelques lignes spécifiques à ce projet :</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="dt">EXECS </span><span class="ch">=</span><span class="st"> main_f main_fb    </span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a>...</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true"></a><span class="dv">main_f  :</span><span class="dt"> main_f.o  foo.o</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true"></a><span class="dv">main_fb :</span><span class="dt"> main_fb.o foo.o bar.o</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true"></a>...</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true"></a><span class="dv">$(DIST_DIR)/main_f  :</span><span class="dt"> </span><span class="ch">$(</span><span class="kw">addprefix</span><span class="st"> </span><span class="ch">$(</span><span class="dt">BUILD_DIR</span><span class="ch">)</span><span class="st">/</span><span class="kw">,</span><span class="ch">$(</span><span class="dt">OBJS_MAIN_F</span><span class="ch">))</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true"></a><span class="dv">$(DIST_DIR)/main_fb :</span><span class="dt"> </span><span class="ch">$(</span><span class="kw">addprefix</span><span class="st"> </span><span class="ch">$(</span><span class="dt">BUILD_DIR</span><span class="ch">)</span><span class="st">/</span><span class="kw">,</span><span class="ch">$(</span><span class="dt">OBJS_MAIN_FB</span><span class="ch">))</span></span></code></pre></div>
+<p>Pour des projets qui ont une structure similaire, c’est-à-dire</p>
+<ul>
+<li>plusieurs exécutables à produire,</li>
+<li>tous les sources dans le même répertoire,</li>
+</ul>
+<p>il est facile de l’adapter.</p>
+</body>
+</html>
