@@ -28,7 +28,7 @@ C. Ces notes ont été écrite pour un cours C/Système en 2018.
 Makefile doit indiquer les dépendances entre les sources et les
 fichiers produits. La note montre comment l'option `-MMD` de `gcc`
 évite d'avoir à le faire manuellement.
-- [makefile-options .html](makefile-options .html) Comment indiquer
+- [makefile-options.html](makefile-options.html) Comment indiquer
   des options spécifiques pour *certaines* cibles d'un `Makefile`.
 - [makefile-projet.html](makefile-projet.html) Quand un projet
   contient de nombreux fichiers sources, il est intéressant de
