@@ -5,7 +5,6 @@
 
 #include "Shape.h"
 
-
 // fonction virtuelle
 
 void display(void *this) {
