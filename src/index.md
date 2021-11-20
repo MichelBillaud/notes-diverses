@@ -16,6 +16,18 @@ Partage dans les Mêmes Conditions 2.0 France](http://creativecommons.org/licens
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
 
 
+# "Factory" en C
+
+Novembre 2021. On montre comment mettre en oeuvre en C le patron de
+conception "factory", dans lequel une fonction est utilisée pour
+fabriquer des objets de types distincts.
+
+
+Document : [factory-en-c.html](factory-en-c.html)
+
+C'est une continuation de celui sur 
+ [le polymorphisme en C](polymorphisme-en-c.html)
+
 # A propos des Makefiles
 
 Novembre 2021. Récupération de quelques notes d'explication sur
