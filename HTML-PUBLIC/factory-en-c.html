@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Michel Billaud (michel.billaud@laposte.net)" />
+  <title>“factory” en C</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">a.sourceLine {
+display: inline-block;
+line-height: 1.25;
+}
+a.sourceLine {
+pointer-events: none;
+color: inherit;
+text-decoration: inherit;
+}
+a.sourceLine:empty {
+height: 1.2em;
+}
+.sourceCode {
+overflow: visible;
+}
+code.sourceCode {
+white-space: pre;
+position: relative;
+}
+div.sourceCode {
+margin: 1em 0;
+}
+pre.sourceCode {
+margin: 0;
+}
+@media screen {
+div.sourceCode {
+overflow: auto;
+}
+}
+@media print {
+code.sourceCode {
+white-space: pre-wrap;
+}
+a.sourceLine {
+text-indent: -1em;
+padding-left: 1em;
+}
+}
+pre.numberSource a.sourceLine {
+position: relative;
+left: -4em;
+}
+pre.numberSource a.sourceLine::before {
+content: attr(title);
+position: relative;
+left: -1em;
+text-align: right;
+vertical-align: baseline;
+border: none;
+pointer-events: all;
+display: inline-block;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+padding: 0 4px;
+width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource {
+margin-left: 3em;
+border-left: 1px solid #aaaaaa;
+padding-left: 4px;
+}
+div.sourceCode {}
+@media screen {
+a.sourceLine::before {
+text-decoration: underline;
+}
+}
+code span.al {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.an {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.at {
+color: #7d9029;
+}
+
+code span.bn {
+color: #40a070;
+}
+
+code span.bu {}
+
+code span.cf {
+color: #007020;
+font-weight: bold;
+}
+
+code span.ch {
+color: #4070a0;
+}
+
+code span.cn {
+color: #880000;
+}
+
+code span.co {
+color: #60a0b0;
+font-style: italic;
+}
+
+code span.cv {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.do {
+color: #ba2121;
+font-style: italic;
+}
+
+code span.dt {
+color: #902000;
+}
+
+code span.dv {
+color: #40a070;
+}
+
+code span.er {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.ex {}
+
+code span.fl {
+color: #40a070;
+}
+
+code span.fu {
+color: #06287e;
+}
+
+code span.im {}
+
+code span.in {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.kw {
+color: #007020;
+font-weight: bold;
+}
+
+code span.op {
+color: #666666;
+}
+
+code span.ot {
+color: #007020;
+}
+
+code span.pp {
+color: #bc7a00;
+}
+
+code span.sc {
+color: #4070a0;
+}
+
+code span.ss {
+color: #bb6688;
+}
+
+code span.st {
+color: #4070a0;
+}
+
+code span.va {
+color: #19177c;
+}
+
+code span.vs {
+color: #4070a0;
+}
+
+code span.wa {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+
+:root {
+--title-color: #202080;
+--source-bg-color: rgb(240, 240, 255);
+}
+h1, h2, h3, h4, h5, h6 {
+border-bottom: solid 1px silver;
+color: var(--title-color);
+}
+body {
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div.sourceCode {
+background-color: var(--source-bg-color);
+padding: 1em;
+}
+#TOC {
+padding: 0.5em;
+border: solid 1px silver;
+}
+#TOC ul {
+list-style-type: none;
+padding-left: 1em;
+}
+nav:before {
+text-indent: 2em;
+content: "Sommaire";
+color: var(--title-color);
+font-weight: bold;
+font-size: large;
+}
+#TOC a {
+text-decoration: none;
+}
+header {
+text-align: center;
+}
+.title {
+}
+.author, .date {
+font-style: italic;
+}
+table, th, td {
+border-collapse: collapse;
+border: solid black 1px;
+padding: 0.5em;
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">“factory” en C</h1>
+<p class="author">Michel Billaud (michel.billaud@laposte.net)</p>
+<p class="date">20 novembre 2021</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#à-quoi-ça-sert"><span class="toc-section-number">1</span> À quoi ça sert</a>
+<ul>
+<li><a href="#polymorphisme"><span class="toc-section-number">1.1</span> Polymorphisme</a></li>
+<li><a href="#ce-quon-veut-faire"><span class="toc-section-number">1.2</span> Ce qu’on veut faire</a></li>
+<li><a href="#annexe-objets-et-polymorphisme"><span class="toc-section-number">1.3</span> Annexe : Objets et polymorphisme</a></li>
+</ul></li>
+<li><a href="#la-fabrique"><span class="toc-section-number">2</span> La fabrique</a>
+<ul>
+<li><a href="#fonctions-de-fabrication"><span class="toc-section-number">2.1</span> Fonctions de fabrication</a></li>
+<li><a href="#le-type-factory"><span class="toc-section-number">2.2</span> Le type <code>Factory</code></a></li>
+<li><a href="#enregistrement-dun-builder"><span class="toc-section-number">2.3</span> Enregistrement d’un “builder”</a></li>
+<li><a href="#construction-dun-objet"><span class="toc-section-number">2.4</span> Construction d’un objet</a></li>
+</ul></li>
+<li><a href="#conclusion"><span class="toc-section-number">3</span> Conclusion</a></li>
+</ul>
+</nav>
+<p><img src="data:image/png;base64,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" /></p>
+<p>Ce texte fait partie d’une petite <a href="index.html">collection de notes</a> mise à disposition selon les termes de la <a href="http://creativecommons.org/licenses/by-nc-sa/2.0/fr/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France</a>.</p>
+<ul>
+<li>Les notes sont publiées dans <a href="https://www.mbillaud.fr/notes/" class="uri">https://www.mbillaud.fr/notes/</a></li>
+<li>Sources dans <a href="https://github.com/MichelBillaud/notes-diverses" class="uri">https://github.com/MichelBillaud/notes-diverses</a></li>
+</ul>
+<p>Dernières corrections : 20 novembre 2021</p>
+<p>Todo: vérifier cohérence des notations.</p>
+<h1 data-number="1" id="à-quoi-ça-sert"><span class="header-section-number">1</span> À quoi ça sert</h1>
+<p>On suppose qu’on est dans un contexte où on a une approche “programmation objet en C”, avec du polymorphisme</p>
+<h2 data-number="1.1" id="polymorphisme"><span class="header-section-number">1.1</span> Polymorphisme</h2>
+<p>Un exemple : des formes qui peuvent être des rectangles, des cercles, etc. Des fonctions “new_quelquechose” sont chargées de créer, par allocation dynamique, des instances :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>Rectangle *r = new_rectangle(<span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">10</span>, <span class="dv">20</span>);  <span class="co">// position et dimensions</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>Circle    *c = new_circle(<span class="dv">300</span>, <span class="dv">300</span>, <span class="dv">50</span>);         <span class="co">// position et rayon</span></span></code></pre></div>
+<p>Il existe une fonction <code>display_shape()</code> qui leur est applicable à tous :</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>display_shape(r);</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>display_shape(c);</span></code></pre></div>
+<p>Elle produit des textes qui dépendent du type</p>
+<pre><code>rectangle 10x20 at (100,200)
+circle with radius 5 at (300,300)</code></pre>
+<p>Comme elle accepte des pointeurs de différents types, et que C ne permet pas de surcharger les fonctions, son argument est de type “pointeur générique” :</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="dt">void</span> display_shape(<span class="dt">void</span> * shapePtr);</span></code></pre></div>
+<p>Dans le même ordre d’idée, on pourra constituer des tableaux (ou des listes, ou …) de pointeurs génériques pour représenter des collections d’objets</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="dt">void</span> * array[] = {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>    new_rectangle(<span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">10</span>, <span class="dv">20</span>),</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>    new_circle(<span class="dv">300</span>, <span class="dv">300</span>, <span class="dv">50</span>),</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>    ....</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>};</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a><span class="cf">for</span> (<span class="dt">size_t</span> i = <span class="dv">0</span>; i &lt; <span class="kw">sizeof</span>(array)/<span class="kw">sizeof</span>(array[O]); i++) {</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>    display_shape(i);</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a>}</span></code></pre></div>
+<p>Voir un peu plus loin la manière de faire ceci.</p>
+<h2 data-number="1.2" id="ce-quon-veut-faire"><span class="header-section-number">1.2</span> Ce qu’on veut faire</h2>
+<p>On voudrait disposer d’une fonction “générique” capable de fabriquer des instances <em>de divers types</em>, en fonction d’un paramètre qui lui est donné, et de listes de paramètres variables en nombre et en type.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co">// exemple provisoire</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="dt">void</span> * array[] = {</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>    new_shape(<span class="st">&quot;rectangle&quot;</span>, <span class="dv">100</span>, <span class="dv">200</span>, <span class="dv">10</span>, <span class="dv">20</span>),</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>    new_shape(<span class="st">&quot;circle&quot;</span>,    <span class="dv">300</span>, <span class="dv">300</span>, <span class="dv">50</span>),</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>    new_shape(<span class="st">&quot;text&quot;</span>,      <span class="dv">100</span>, <span class="dv">100</span>, <span class="st">&quot;hello, world&quot;</span>);</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>    ....</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>};</span></code></pre></div>
+<p>De toute évidence, il va falloir utiliser la bibliothèque STDARG.</p>
+<p>On pourrait envisager de définir la fonction <code>new_shape</code> par un aiguillage du genre</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="dt">void</span> * new_shape(<span class="dt">char</span> *type, ...) </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>{</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>    <span class="dt">void</span> *ptr;</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>    <span class="dt">va_list</span> ap;</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>    va_start(ap, type);</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>    <span class="cf">if</span> (strcmp(type, <span class="st">&quot;rectangle&quot;</span>) == <span class="dv">0</span>) {</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>        <span class="dt">int</span> x = va_arg(ap, <span class="dt">int</span>);</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>        <span class="dt">int</span> y = va_arg(ap, <span class="dt">int</span>);</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a>        <span class="dt">int</span> r = va_arg(ap, <span class="dt">int</span>);</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a>        ptr = new_circle(x, y, r);</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a>    } <span class="cf">else</span> <span class="cf">if</span> (strcmp(type, <span class="st">&quot;circle&quot;</span>) == <span class="dv">0</span>) {</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a>        ...</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a>    }</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true"></a>    va_end(ap);</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true"></a>    <span class="cf">return</span> ptr;</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true"></a>}</span></code></pre></div>
+<p>mais ça conduit à une fonction dont le code s’allonge en fonction du nombre de types, ce qui peut poser des problèmes de maintenance.</p>
+<p>L’idée, que nous allons développer, c’est d’avoir, au lieu d’une fonction, un objet “factory” (fabrique) dont le rôle est construire des “shapes” de différentes sortes</p>
+<p>Il comportera deux “méthodes”</p>
+<ul>
+<li>un qui sert à enregister une manière supplémentaire de créer des objets,</li>
+<li>une pour fabriquer effectivement un objet à partir de paramètres.</li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="co">// Exemple</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>ShapeFactory factory = { .... };  <span class="co">// on verra plus tard</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="co">// enregistrement</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>factory_register(&amp;factory, <span class="st">&quot;circle&quot;</span>,    <span class="st">&quot;ddd&quot;</span>,  build_circle); </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a>factory_register(&amp;factory, <span class="st">&quot;rectangle&quot;</span>, <span class="st">&quot;dddd&quot;</span>, build_rectangle);</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a>factory_register(&amp;factory, <span class="st">&quot;text&quot;</span>,      <span class="st">&quot;dds&quot;</span>,  build_text);</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a><span class="co">// fabrication d&#39;un objet</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a><span class="dt">void</span> * p = factory_build(&amp;factory, <span class="st">&quot;text&quot;</span>, <span class="dv">100</span>, <span class="dv">100</span>, <span class="st">&quot;hello, world&quot;</span>);</span></code></pre></div>
+<p>Le troisième paramètre donne le type des arguments attendus (pour un <code>text</code> : deux entiers et une chaine). Le 4ieme est une fonction auxiliaire qui crée un objet à partir des paramètres extraits.</p>
+<h2 data-number="1.3" id="annexe-objets-et-polymorphisme"><span class="header-section-number">1.3</span> Annexe : Objets et polymorphisme</h2>
+<p>Dans cette partie on montre rapidement comment avoir des objets et des fonctions polymorphes en C.</p>
+<ol type="1">
+<li>On définit un type de structure qui indique les pointeurs vers les fonctions qu’on peut appliquer aux objets de façon générique. Ici il n’y en a qu’une, une méthode d’affichage.</li>
+</ol>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="kw">typedef</span> <span class="kw">struct</span> {</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>    <span class="dt">void</span> (*display)(<span class="dt">void</span> *);</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>    <span class="co">// ...</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>} ShapeMethods;</span></code></pre></div>
+<p>Ce n’est pas un tableau, mais on appelle ça une “table de méthodes”.</p>
+<ol start="2" type="1">
+<li>Pour chacune des “classes” (<code>Circle</code>, <code>Rectangle</code>, …), il y a une instance qui renvoie vers des fonctions spécifiques au type</li>
+</ol>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a>ShapeMethods circleMethods    = { .display = &amp; display_circle };</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>ShapeMethods rectangleMethods = { .display = &amp; display_rectangle };</span></code></pre></div>
+<ol start="3" type="1">
+<li>Chaque objet est représenté par une structure dont le <strong>premier</strong> champ pointe vers la table de sa classe</li>
+</ol>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="kw">typedef</span> <span class="kw">struct</span> {</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>    ShapeMethods *methods;  <span class="co">// ici</span></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a>    <span class="dt">int</span> x, y,</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>    <span class="dt">int</span> radius;</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a>} Circle;</span></code></pre></div>
+<p>ce champ est initialisé lors de la construction</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a>Circle * new_circle(<span class="dt">int</span> x, <span class="dt">int</span> y, <span class="dt">int</span> radius)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a>{</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a>    Circle *c = malloc(<span class="kw">sizeof</span>(Circle));</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a>    *c = (Circle) { </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a>        .table = &amp;circleMethods,   <span class="co">// ici</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true"></a>        .x = x, </span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true"></a>        .y = y,</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true"></a>        .radius = radius</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true"></a>    };</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true"></a>    <span class="cf">return</span> c;</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true"></a>}</span></code></pre></div>
+<p>(en cas de difficulté, se renseigner sur l’utilisation de désignateurs pour initialiser les structures).</p>
+<ol start="4" type="1">
+<li>La méthode “générique” <code>display_shape</code> utilise cette table comme relai pour appeler la méthode qui correspond au type de l’objet</li>
+</ol>
+<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="dt">void</span> display_shape(<span class="dt">void</span> * this)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a>{</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a>    ShapeMethods *table = this;   <span class="co">// transtypage</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a>    table-&gt;display(this);</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a>}</span></code></pre></div>
+<p>Ici on met à profit le fait que le standard C garantit que le premier champ d’une structure commence physiquement à la même adresse que la structure, cf 6.7.2.15 dans le <a href="https://files.lhmouse.com/standards/ISO%20C%20N2176.pdf">draft standard C17</a></p>
+<blockquote>
+<p>A pointer to a structure object, suitably converted, points to its initial member</p>
+</blockquote>
+<ol start="4" type="1">
+<li>La fonction <code>display_circle</code> a comme premier paramètre un pointeur générique<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, qu’il faut transtyper avant usage</li>
+</ol>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="dt">void</span> display_circle(<span class="dt">void</span> * shapePtr) {</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a>    Circle *thisCircle = shapePtr;</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a>    printf(<span class="st">&quot;circle with radius %d at (%d,%d)&quot;</span>, </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a>        thisCircle-&gt;radius,</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a>        thisCircle-&gt;x,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true"></a>        thisCircle-&gt;y);</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true"></a>}</span></code></pre></div>
+<h1 data-number="2" id="la-fabrique"><span class="header-section-number">2</span> La fabrique</h1>
+<p>Un objet “Factory” va mémoriser pour chaque identifiant (une chaine), le type des paramètres (dans une chaine) et la fonction qui sert à fabriquer l’objet.</p>
+<h2 data-number="2.1" id="fonctions-de-fabrication"><span class="header-section-number">2.1</span> Fonctions de fabrication</h2>
+<p>La fabrication des objets (de types divers) se fait à partir de paramètres de types différents.</p>
+<p>Pour cela nous définissons un type “union” assez grand pour contenir un paramètre quelconque</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="kw">typedef</span> <span class="kw">union</span> {</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a>           <span class="dt">int</span> d;</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a>           <span class="dt">float</span> f;</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a>           <span class="dt">char</span> *s;</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a>} BuilderParameter;</span></code></pre></div>
+<p>les fonctions de fabrication sont des <strong>adaptateurs</strong> pour avoir un prototype commun pour les fonctions qui construisent des objets : elles reçoivent un tableau de paramètres et retournent un pointeur générique.</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="dt">void</span> * build_circle(BuilderParameter params[])</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a>{</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a>    <span class="cf">return</span> new Circle(params[<span class="dv">0</span>].i, params[<span class="dv">1</span>].i, params[<span class="dv">2</span>].i);</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a>}</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true"></a><span class="dt">void</span> * build_text(BuilderParameter params[])</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true"></a>{</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true"></a>    <span class="cf">return</span> new Text(params[<span class="dv">0</span>].i, params[<span class="dv">1</span>].i, params[<span class="dv">2</span>].s);</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true"></a>}</span></code></pre></div>
+<h2 data-number="2.2" id="le-type-factory"><span class="header-section-number">2.2</span> Le type <code>Factory</code></h2>
+<p>Une structure <code>Factory</code> contient une collection de descriptions (nom, types des arguments, “builders”) :</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="kw">typedef</span> <span class="kw">struct</span> {</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a>    <span class="dt">char</span> * name;</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a>    <span class="dt">char</span> * types;</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true"></a>    <span class="dt">void</span> * (*builder)(BuilderParameter params[]);</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true"></a>} BuilderDescription;</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true"></a><span class="pp">#define MAX_NB_DESCRIPTIONS_IN_FACTORY 10</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true"></a><span class="kw">typedef</span> <span class="kw">struct</span> {</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true"></a>    <span class="dt">int</span> nb_descriptions;</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true"></a>    BuilderDescription descriptions[MAX_NB_DESCRIPTIONS_IN_FACTORY];</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true"></a>} ShapeFactory;</span></code></pre></div>
+<p>Une factory doit être initialisée avant usage:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a>ShapeFactory factory = { .nb_descriptions = <span class="dv">0</span> };</span></code></pre></div>
+<h2 data-number="2.3" id="enregistrement-dun-builder"><span class="header-section-number">2.3</span> Enregistrement d’un “builder”</h2>
+<p>L’enregistrement dans une factory est un simple ajout à la table</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="dt">void</span> factory_register(ShapeFactory *factory, <span class="dt">char</span> *name, <span class="dt">char</span> *types, </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a>                      <span class="dt">void</span> * (*builder)(BuilderParameter params[])</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true"></a>{</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true"></a>    factory-&gt;descriptions[factory-&gt;nb_descriptions ++] =</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true"></a>        (BuilderDescription) { </span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true"></a>            .name = name,</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true"></a>            .types = types,</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true"></a>            .builder = builder</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true"></a>            };</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true"></a>}</span></code></pre></div>
+<h2 data-number="2.4" id="construction-dun-objet"><span class="header-section-number">2.4</span> Construction d’un objet</h2>
+<p>Pour construire un objet, il faut</p>
+<ul>
+<li>en fonction du nom indiqué, retrouver la description</li>
+<li>récuperer les paramètres avec les types voulus et les mettre dans un tableau</li>
+<li>appeler le builder.</li>
+</ul>
+<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="pp">#define BUILDER_MAX_NB_PARAMTERS 10</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true"></a><span class="dt">void</span> * factory_build(ShapeFactory *factory, <span class="dt">char</span> name[], ...)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true"></a>{</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true"></a>    <span class="dt">int</span> index = <span class="dv">0</span>;</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true"></a>    <span class="cf">while</span> ((index &lt; factory-&gt;nb_descriptions)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true"></a>    &amp;&amp; (strcmp(name, factory-&gt;descriptions[index].name) != <span class="dv">0</span>)) {</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true"></a>        index++;</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true"></a>    }</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true"></a></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true"></a>    <span class="cf">if</span> (index == factory-&gt;nb_descriptions) {</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true"></a>        <span class="cf">return</span> NULL;</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true"></a>    }</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true"></a>    BuilderDescription *d = &amp; factory-&gt;descriptions[index];</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true"></a></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true"></a>    BuilderParameter parameters[BUILDER_MAX_NB_PARAMETERS];</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true"></a>    <span class="dt">va_list</span> ap;</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true"></a>    va_start(ap, name);</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true"></a>    <span class="cf">for</span>(<span class="dt">int</span> i = <span class="dv">0</span>; d-&gt;types[i] != <span class="ch">&#39;\0&#39;</span>; i++) {</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true"></a>        <span class="cf">switch</span> (d-&gt;types[i]) {</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true"></a>        <span class="cf">case</span> <span class="ch">&#39;d&#39;</span> :</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true"></a>            parameters[i].i = va_arg(ap, <span class="dt">int</span>);</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true"></a>            <span class="cf">break</span>;</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true"></a>        <span class="cf">case</span> <span class="ch">&#39;f&#39;</span> :</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true"></a>            parameters[i].f = va_arg(ap, <span class="dt">double</span>);</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true"></a>            <span class="cf">break</span>;</span>
+<span id="cb20-27"><a href="#cb20-27" aria-hidden="true"></a>        <span class="cf">case</span> <span class="ch">&#39;s&#39;</span> :</span>
+<span id="cb20-28"><a href="#cb20-28" aria-hidden="true"></a>            parameters[i].s = va_arg(ap, <span class="dt">char</span> *);</span>
+<span id="cb20-29"><a href="#cb20-29" aria-hidden="true"></a>            <span class="cf">break</span>;</span>
+<span id="cb20-30"><a href="#cb20-30" aria-hidden="true"></a>        }</span>
+<span id="cb20-31"><a href="#cb20-31" aria-hidden="true"></a>        va_end(ap);</span>
+<span id="cb20-32"><a href="#cb20-32" aria-hidden="true"></a>    }</span>
+<span id="cb20-33"><a href="#cb20-33" aria-hidden="true"></a>    <span class="cf">return</span> d-&gt;builder(parameters);</span>
+<span id="cb20-34"><a href="#cb20-34" aria-hidden="true"></a>}</span></code></pre></div>
+<h1 data-number="3" id="conclusion"><span class="header-section-number">3</span> Conclusion</h1>
+<ul>
+<li>Le langage C n’est absolument pas fait pour supporter la programmation orientée objets telle qu’on la connait.</li>
+<li>On arrive quand même à faire des choses qui y ressemblent, au prox de quelques contorsions.</li>
+<li>Au passage on perd tout le contrôle de types.</li>
+</ul>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>Un pointeur de type <code>Circle*</code> semble plus naturel, mais poserait un problème de conflit de type lors de la construction de la table <code>ShapeMethods</code>. Le champ <code>display</code> est un “pointeur sur une fonction dont l’argument est un pointeur générique”, théoriquement incompatible avec “pointeur vers une fonction dont l’argument est un pointeur de <code>Circle</code>”.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+</body>
+</html>
