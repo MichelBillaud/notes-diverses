@@ -1,1 +1,1 @@
-cp -v HTML-PUBLIC/* /media/billaud/ftp.mbillaud.fr/www/notes/
+cp -v HTML-PUBLIC/* ZIPS/* /media/billaud/ftp.mbillaud.fr/www/notes/

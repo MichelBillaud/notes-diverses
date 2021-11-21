@@ -15,9 +15,9 @@ France](http://creativecommons.org/licenses/by-nc-sa/2.0/fr/).
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
 
 
-Dernières corrections : 20 novembre 2021
+Dernières corrections : 
 
-Todo: vérifier cohérence des notations.
+- 21 novembre 2021 : typos, liens vers sources. Ajout variante.
 
 
 # À quoi ça sert 
@@ -55,7 +55,7 @@ permet pas de surcharger les fonctions, son argument est de type
 "pointeur générique" :
 
 ~~~C
-void display_shape(void * shapePtr);
+void display_shape(void * this);
 ~~~
 
 
@@ -71,7 +71,7 @@ void * array[] = {
 };
 
 for (size_t i = 0; i < sizeof(array)/sizeof(array[O]); i++) {
-    display_shape(i);
+    display_shape(array[i]);
 }
 ~~~
 
@@ -129,7 +129,7 @@ des "shapes" de différentes sortes
 
 Il comportera deux "méthodes" 
 
-- un qui sert à enregister une manière supplémentaire de créer des
+- un qui sert à enregistrer une manière supplémentaire de créer des
   objets,
 - une pour fabriquer effectivement un objet à partir de paramètres.
 
@@ -138,51 +138,51 @@ Il comportera deux "méthodes"
 ShapeFactory factory = { .... };  // on verra plus tard
 
 // enregistrement
-factory_register(&factory, "circle",    "ddd",  build_circle); 
-factory_register(&factory, "rectangle", "dddd", build_rectangle);
-factory_register(&factory, "text",      "dds",  build_text);
+factory_register(&factory, "circle",    "iii",  &build_circle); 
+factory_register(&factory, "rectangle", "iiii", &build_rectangle);
+factory_register(&factory, "text",      "iis",  &build_text);
 
 // fabrication d'un objet
 void * p = factory_build(&factory, "text", 100, 100, "hello, world");
 ~~~
 
 Le troisième paramètre donne le type des arguments attendus (pour un
-`text` : deux entiers et une chaine). Le 4ieme est une fonction
+`Text` : deux entiers et une chaîne). Le 4ième est une fonction
 auxiliaire qui crée un objet à partir des paramètres extraits.
 
 ## Annexe : Objets et polymorphisme
 
-Dans cette partie on montre rapidement comment avoir des objets et des
+Dans cette partie, on montre rapidement comment avoir des objets et des
 fonctions polymorphes en C.
 
 1. On définit un type de structure qui indique les pointeurs vers les
-fonctions qu'on peut appliquer aux objets de façon générique. Ici il n'y en a qu'une,
-une méthode d'affichage.
+fonctions qu'on peut appliquer aux objets de façon générique. Ici il
+n'y en a qu'une, une méthode d'affichage.
 
 ~~~C
 typedef struct {
 	void (*display)(void *);
 	// ...
-} ShapeMethods;
+} ShapeMethodsTable;
 ~~~
 
 Ce n'est pas un tableau, mais on appelle ça une "table de méthodes".
 
-2. Pour chacune des "classes" (`Circle`, `Rectangle`, ...), il y a une instance
-qui renvoie vers des fonctions spécifiques au type
+2. Pour chacune des "classes" (`Circle`, `Rectangle`, ...), il y a une
+instance qui renvoie vers des fonctions spécifiques au type
 
 ~~~C
-ShapeMethods circleMethods    = { .display = & display_circle };
-ShapeMethods rectangleMethods = { .display = & display_rectangle };
+ShapeMethods circleMethodsTable    = { .display = & display_circle };
+ShapeMethods rectangleMethodsTable = { .display = & display_rectangle };
 ~~~
 
-3. Chaque objet est représenté par une structure dont le **premier** champ pointe
-vers la table de sa classe
+3. Chaque objet est représenté par une structure dont le **premier**
+champ pointe vers la table de sa classe
 
 ~~~C
 typedef struct {
-	ShapeMethods *methods;  // ici
-	int x, y,
+	ShapeMethods *table;  // ici
+	int x, y;
 	int radius;
 } Circle;
 ~~~
@@ -194,7 +194,7 @@ Circle * new_circle(int x, int y, int radius)
 {
     Circle *c = malloc(sizeof(Circle));
 	*c = (Circle) { 
-		.table = &circleMethods,   // ici
+		.table = &circleMethodsTable,   // ici
 		.x = x, 
 		.y = y,
 		.radius = radius
@@ -207,14 +207,14 @@ Circle * new_circle(int x, int y, int radius)
 initialiser les structures).
 
 
-4. La méthode "générique" `display_shape` utilise cette table comme relai pour appeler la méthode
-qui correspond au type de l'objet
+4. La méthode "générique" `display_shape` utilise cette table comme
+relais pour appeler la méthode qui correspond au type de l'objet
 
 ~~~C
 void display_shape(void * this)
 {
-	ShapeMethods *table = this;   // transtypage
-	table->display(this);
+	ShapeMethodsTable **table = this;   // transtypage
+	(*table)->display(this);
 }
 ~~~
 
@@ -223,42 +223,50 @@ champ d'une structure commence physiquement à la même adresse que la
 structure, cf 6.7.2.15 dans le [draft standard
 C17](https://files.lhmouse.com/standards/ISO%20C%20N2176.pdf)
 
-> A pointer to a structure object, suitably converted, points to its initial member
+> A pointer to a structure object, suitably converted, points to its
+> initial member
+
+Le paramètre `this` pointe donc sur le pointeur vers la table des méthodes,
+d'où la double indirection.
 
 4. La fonction `display_circle` a comme premier paramètre un pointeur
    générique[^1], qu'il faut transtyper avant usage
 
 ~~~C
-void display_circle(void * shapePtr) {
-	Circle *thisCircle = shapePtr;
-	printf("circle with radius %d at (%d,%d)", 
+void display_circle(void * this) {
+	Circle *thisCircle = this;
+	printf("circle with radius %d at (%d,%d)\n", 
 		thisCircle->radius,
 		thisCircle->x,
 		thisCircle->y);
 }
 ~~~
 
-[^1]: Un pointeur de type `Circle*` semble plus naturel, mais poserait
-un problème de conflit de type lors de la construction de la table
-`ShapeMethods`. Le champ `display` est un "pointeur sur une fonction
-dont l'argument est un pointeur générique", théoriquement incompatible avec
-"pointeur vers une fonction dont l'argument est un pointeur de `Circle`".
+[^1]: Un pointeur de type `Circle*` semblerait de prime abord plus
+naturel, mais causerait un conflit de type lors de la construction de
+la table `ShapeMethodsTable`. Le champ `display` est de type "pointeur
+sur une fonction dont l'argument est un pointeur générique",
+théoriquement incompatible avec "pointeur sur une fonction dont
+l'argument est un pointeur de `Circle`".
 
 
 # La fabrique
 
-Un objet "Factory" va mémoriser pour chaque identifiant (une chaine), le type des paramètres (dans une chaine)
-et la fonction qui sert à fabriquer l'objet.
+Un objet `Factory` va mémoriser pour chaque identifiant (une chaîne),
+le type des paramètres (dans une chaîne) et la fonction qui sert à
+fabriquer l'objet.
 
 ## Fonctions de fabrication
 
-La fabrication des objets (de types divers) se fait à partir de paramètres de types différents.
+La fabrication des objets (de types divers) se fait à partir de
+paramètres de types différents.
 
-Pour cela nous définissons un type "union" assez grand pour contenir un paramètre quelconque
+Pour cela nous définissons un type "union" assez grand pour contenir
+un paramètre quelconque
 
 ~~~C
 typedef union {
-           int d;
+           int i;
 		   float f;
 		   char *s;
 } BuilderParameter;
@@ -272,19 +280,20 @@ générique.
 ~~~C
 void * build_circle(BuilderParameter params[])
 {
-	return new Circle(params[0].i, params[1].i, params[2].i);
+	return new_circle(params[0].i, params[1].i, params[2].i);
 }
 
 void * build_text(BuilderParameter params[])
 {
-	return new Text(params[0].i, params[1].i, params[2].s);
+	return new_text(params[0].i, params[1].i, params[2].s);
 }
 ~~~
 
 
 ## Le type `Factory`
 
-Une structure `Factory` contient une collection de descriptions (nom, types des arguments, "builders") :
+Une structure `Factory` contient une collection de descriptions (nom,
+types des arguments, "builders") :
 
 ~~~C
 typedef struct {
@@ -313,7 +322,7 @@ L'enregistrement dans une factory est un simple ajout à la table
 
 ~~~C
 void factory_register(ShapeFactory *factory, char *name, char *types, 
-	                  void * (*builder)(BuilderParameter params[])
+	                  void * (*builder)(BuilderParameter params[]))
 {
 	factory->descriptions[factory->nb_descriptions ++] =
 		(BuilderDescription) { 
@@ -330,12 +339,12 @@ void factory_register(ShapeFactory *factory, char *name, char *types,
 Pour construire un objet, il faut
 
 - en fonction du nom indiqué, retrouver la description
-- récuperer les paramètres avec les types voulus et les 
+- récupérer les paramètres avec les types voulus et les 
 mettre dans un tableau
 - appeler le builder.
 
 ~~~C
-#define BUILDER_MAX_NB_PARAMTERS 10
+#define MAX_NB_PARAMETERS_IN_BUILDER 10
 
 void * factory_build(ShapeFactory *factory, char name[], ...)
 {
@@ -350,12 +359,12 @@ void * factory_build(ShapeFactory *factory, char name[], ...)
 	}
     BuilderDescription *d = & factory->descriptions[index];
 
-    BuilderParameter parameters[BUILDER_MAX_NB_PARAMETERS];
+    BuilderParameter parameters[MAX_NB_PARAMETERS_IN_BUILDER];
     va_list ap;
     va_start(ap, name);
     for(int i = 0; d->types[i] != '\0'; i++) {
         switch (d->types[i]) {
-        case 'd' :
+        case 'i' :
             parameters[i].i = va_arg(ap, int);
             break;
         case 'f' :
@@ -371,9 +380,108 @@ void * factory_build(ShapeFactory *factory, char name[], ...)
 }
 ~~~
 
-# Conclusion
+# Une variante
 
-- Le langage C n'est absolument pas fait pour supporter la programmation orientée objets telle qu'on la connait.
-- On  arrive quand même à faire des choses qui y ressemblent, au prox de quelques contorsions.
-- Au passage on perd tout le contrôle de types.
+On peut imaginer une variante : les différents builders d'une factory 
+sont identifiées par une valeur retournée par la factory lors de leur
+enregistrement. 
+
+## Exemple d'utilisation
+
+~~~C
+// Exemple
+ShapeFactory factory = { .nb_descriptions = 0 };
+
+// enregistrement
+const int CIRCLE    = factory_register(&factory, "iii",  &build_circle); 
+const int TEXT      = factory_register(&factory, "iis",  &build_text);
+
+// fabrication d'un objet
+void * p = factory_build(&factory, TEXT, 100, 100, "hello, world");
+~~~
+
+## Les identifiants
+
+En fait, l'identifiant retourné par l'enregistrement sera l'indice de la
+description enregistrée. 
+
+Ceci permettra un accès direct lors des constructions, plus rapide que
+la recherche de la chaine.
+
+## Le nouveau type `ShapeFactory`
+
+Il n'y a plus de noms à stocker dans les descriptions
+
+~~~C
+typedef struct {
+	// char * name;           // SUPPRIMÉ
+	char * types;
+	void * (*builder)(BuilderParameter params[]);
+} BuilderDescription;
+~~~
+
+## L'enregistrement
+
+~~~C
+int factory_register(ShapeFactory *factory, 
+                      // char *name,      // SUPPRIMÉ
+					  char *types, 
+	                  void * (*builder)(BuilderParameter params[]))
+{
+	factory->descriptions[factory->nb_descriptions] =
+		(BuilderDescription) {
+		    // .name = name,              // SUPPRIMÉ
+			.types = types,
+			.builder = builder
+			};
+	return factory->nb_descriptions++;    // RETOUR DE L'INDICE
+}
+~~~
+
+## La construction
+
+La construction utilise directement l'index reçu, ce qui élimine la
+recherche par nom :
+
+~~~C
+void * factory_build(ShapeFactory *factory, int index, ...)
+{
+    // recherche par nom supprimée
+	
+    BuilderDescription *d = & factory->descriptions[index];
+    BuilderParameter parameters[MAX_NB_PARAMETERS_IN_BUILDER];
+    va_list ap;
+    va_start(ap, index);                           // CHANGEMENT
+    for (int i = 0; d->types[i] != '\0'; i++) {
+        switch (d->types[i]) {
+        case 'i' :
+            parameters[i].i = va_arg(ap, int);
+            break;
+        case 'f' :
+            parameters[i].f = va_arg(ap, double);
+            break;
+        case 's' :
+            parameters[i].s = va_arg(ap, char *);
+            break;
+        }
+        va_end(ap);
+    }
+    return d->builder(parameters);
+~~~
+
+
+# Remarques
+
+- Le langage C n'est absolument pas fait pour supporter la
+  programmation orientée objets telle qu'on la connait.
+- On arrive quand même à faire des choses qui y ressemblent, au prix
+  de quelques contorsions.
+- Au passage, on perd tout le contrôle de types : le compilateur ne
+  peut pas vérifier que l'on passe à une "fonction générique" des
+  adresses d'un type raisonnable.
+
+# Annexe : code source
+
+Le code source complet est disponible dans [DemoFactory.zip](DemoFactory.zip)
+
 
