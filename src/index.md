@@ -15,6 +15,14 @@ Partage dans les Mêmes Conditions 2.0 France](http://creativecommons.org/licens
 - Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
 
+# "Lambdas" en C
+
+Novembre 2021. Comment simuler des "lambdas" en C dans un programme
+d'énumération des mots de Dyck (systèmes de parenthèses bien formés),
+qui se base sur un algorithme récursif, fondé sur la grammaire
+$S \rightarrow \epsilon \|  a S b S$.
+
+Document : [enumeration-mots-dyck-en-c.html](enumeration-mots-dyck-en-c.html)
 
 # "Factory" en C
 
