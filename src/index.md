@@ -15,6 +15,16 @@ Partage dans les Mêmes Conditions 2.0 France](http://creativecommons.org/licens
 - Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
 
+# Sockets IPv4 et IPv6 en C
+
+Janvier 2021. Les cours de programmation réseau/C utilisent obstinément
+une vieille API, en ignorant complètement IPv6, et les améliorations
+apportées au langage C depuis sa première normalisation en 1989.
+
+On essaie de faire un peu mieux.
+
+Document : [sockets-ipv6.md](sockets-ipv6.md)
+
 # "Lambdas" en C
 
 Novembre 2021. Comment simuler des "lambdas" en C dans un programme
