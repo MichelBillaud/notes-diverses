@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="M Billaud" />
+  <title>Sockets avec IPv4 et IPv6</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">a.sourceLine {
+display: inline-block;
+line-height: 1.25;
+}
+a.sourceLine {
+pointer-events: none;
+color: inherit;
+text-decoration: inherit;
+}
+a.sourceLine:empty {
+height: 1.2em;
+}
+.sourceCode {
+overflow: visible;
+}
+code.sourceCode {
+white-space: pre;
+position: relative;
+}
+div.sourceCode {
+margin: 1em 0;
+}
+pre.sourceCode {
+margin: 0;
+}
+@media screen {
+div.sourceCode {
+overflow: auto;
+}
+}
+@media print {
+code.sourceCode {
+white-space: pre-wrap;
+}
+a.sourceLine {
+text-indent: -1em;
+padding-left: 1em;
+}
+}
+pre.numberSource a.sourceLine {
+position: relative;
+left: -4em;
+}
+pre.numberSource a.sourceLine::before {
+content: attr(title);
+position: relative;
+left: -1em;
+text-align: right;
+vertical-align: baseline;
+border: none;
+pointer-events: all;
+display: inline-block;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+padding: 0 4px;
+width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource {
+margin-left: 3em;
+border-left: 1px solid #aaaaaa;
+padding-left: 4px;
+}
+div.sourceCode {}
+@media screen {
+a.sourceLine::before {
+text-decoration: underline;
+}
+}
+code span.al {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.an {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.at {
+color: #7d9029;
+}
+
+code span.bn {
+color: #40a070;
+}
+
+code span.bu {}
+
+code span.cf {
+color: #007020;
+font-weight: bold;
+}
+
+code span.ch {
+color: #4070a0;
+}
+
+code span.cn {
+color: #880000;
+}
+
+code span.co {
+color: #60a0b0;
+font-style: italic;
+}
+
+code span.cv {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.do {
+color: #ba2121;
+font-style: italic;
+}
+
+code span.dt {
+color: #902000;
+}
+
+code span.dv {
+color: #40a070;
+}
+
+code span.er {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.ex {}
+
+code span.fl {
+color: #40a070;
+}
+
+code span.fu {
+color: #06287e;
+}
+
+code span.im {}
+
+code span.in {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.kw {
+color: #007020;
+font-weight: bold;
+}
+
+code span.op {
+color: #666666;
+}
+
+code span.ot {
+color: #007020;
+}
+
+code span.pp {
+color: #bc7a00;
+}
+
+code span.sc {
+color: #4070a0;
+}
+
+code span.ss {
+color: #bb6688;
+}
+
+code span.st {
+color: #4070a0;
+}
+
+code span.va {
+color: #19177c;
+}
+
+code span.vs {
+color: #4070a0;
+}
+
+code span.wa {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+
+:root {
+--title-color: #202080;
+--source-bg-color: rgb(240, 240, 255);
+}
+h1, h2, h3, h4, h5, h6 {
+border-bottom: solid 1px silver;
+color: var(--title-color);
+}
+body {
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div.sourceCode {
+background-color: var(--source-bg-color);
+padding: 1em;
+}
+#TOC {
+padding: 0.5em;
+border: solid 1px silver;
+}
+#TOC ul {
+list-style-type: none;
+padding-left: 1em;
+}
+nav:before {
+text-indent: 2em;
+content: "Sommaire";
+color: var(--title-color);
+font-weight: bold;
+font-size: large;
+}
+#TOC a {
+text-decoration: none;
+}
+header {
+text-align: center;
+}
+.title {
+}
+.author, .date {
+font-style: italic;
+}
+table, th, td {
+border-collapse: collapse;
+border: solid black 1px;
+padding: 0.5em;
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Sockets avec IPv4 et IPv6</h1>
+<p class="author">M Billaud</p>
+<p class="date">2 septembre 2018</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#introduction-pourquoi-ce-document"><span class="toc-section-number">1</span> Introduction : pourquoi ce document ?</a></li>
+<li><a href="#conversion-hôteport-adresse-internet"><span class="toc-section-number">2</span> Conversion hôte+port &lt;=&gt; adresse internet</a>
+<ul>
+<li><a href="#getaddrinfo-obtenir-une-adresse-internet"><span class="toc-section-number">2.1</span> <code>getaddrinfo()</code> : Obtenir une adresse internet</a></li>
+<li><a href="#nom-de-machine-et-numéro-de-port"><span class="toc-section-number">2.2</span> Nom de machine et numéro de port</a></li>
+<li><a href="#liste-de-résultats"><span class="toc-section-number">2.3</span> Liste de résultats</a></li>
+<li><a href="#exemple"><span class="toc-section-number">2.4</span> Exemple</a></li>
+<li><a href="#les-indications"><span class="toc-section-number">2.5</span> Les indications</a></li>
+<li><a href="#getnameinfo-traduction-dadresse-internet-en-hôteservice"><span class="toc-section-number">2.6</span> <code>getnameinfo()</code> : traduction d’adresse internet en hôte+service</a></li>
+<li><a href="#un-exemple-programme-de-résolution-dadresses"><span class="toc-section-number">2.7</span> Un exemple : programme de résolution d’adresses</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 data-number="1" id="introduction-pourquoi-ce-document"><span class="header-section-number">1</span> Introduction : pourquoi ce document ?</h1>
+<p>La notion de <em>socket</em> remonte à la RFC 1471, du temps d’ARPANET (1971). Les premières APIs proviennent d’Unix 4.2 BSD (1983). Elles permettent d’utiliser le réseau de façon uniforme, avec différentes familles de protocoles : IPv4, APPLETALK, IPX, X25, etc.</p>
+<p>Traditionnellement, les documents pédagogiques se réfèrent à IPv4 pour la programmation réseau entre machines. Mais l’apparition d’IPv6 (RFC 2460 de 1998) change les choses, même si le déploiement en est encore limité : il convient maintenant d’écrire des applications qui fonctionnent à la fois avec IPv4 et IPv6.</p>
+<p>Heureusement, des fonctions ont été introduites (POSIX issue 6, 2004) pour assurer cette compatibilité, rendant obsolètes les fonctions qui étaient généralement enseignées jusque-là.</p>
+<p>Par exemple la fonction <code>gethostbyname</code></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="kw">struct</span> hostent * gethostbyname(<span class="dt">const</span> <span class="dt">char</span> *name)</span></code></pre></div>
+<p>assurait la résolution des noms (traduction d’une adresse de la forme “<code>www.google.fr</code>” en adresse IP <code>216.58.201.227</code>), en retournant des adresse IPv4 contenues dans une liste chainée de structures.</p>
+<p>Elle est évidemment inutilisable pour obtenir les adresses IPv6 qui sont pourtant fournies par les DNS.</p>
+<p>À la place, on utilisera <code>getaddrinfo</code></p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="dt">int</span> getaddrinfo(<span class="dt">const</span> <span class="dt">char</span> *node, <span class="dt">const</span> <span class="dt">char</span> *service,</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>                <span class="dt">const</span> <span class="kw">struct</span> addrinfo *hints,</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>                <span class="kw">struct</span> addrinfo **res);</span></code></pre></div>
+<p>qui retournera une liste d’adresses internet IPv4 et/ou IPv6, selon les arguments qui lui sont données :</p>
+<ul>
+<li><code>node</code> et <code>service</code> : nom de la machine et du port,</li>
+<li>une structure <code>hints</code> contenant des indications diverses.</li>
+</ul>
+<p>La nouvelle API permet de traiter indifféremment des adresses et des sockets IPv6 et v4. C’est ce qu’expose ce document.</p>
+<h1 data-number="2" id="conversion-hôteport-adresse-internet"><span class="header-section-number">2</span> Conversion hôte+port &lt;=&gt; adresse internet</h1>
+<h2 data-number="2.1" id="getaddrinfo-obtenir-une-adresse-internet"><span class="header-section-number">2.1</span> <code>getaddrinfo()</code> : Obtenir une adresse internet</h2>
+<p>La fonction <code>getaddrinfo</code> fournit des <em>adresses internet</em>, c’est-à-dire des objets qui contiennent à la fois</p>
+<ul>
+<li>une adresse IP</li>
+<li>un numéro de port</li>
+</ul>
+<p>sous forme d’une liste chainée de structures <code>addrinfo</code>.</p>
+<h2 data-number="2.2" id="nom-de-machine-et-numéro-de-port"><span class="header-section-number">2.2</span> Nom de machine et numéro de port</h2>
+<p>Les deux premiers paramètres sont des chaines de caractères avec le nom de la machine ou son numéro ip, le nom du service (voir <code>/etc/services</code>) ou le numéro de port.</p>
+<p>Exemples d’appels :</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>getaddrinfo(<span class="st">&quot;www.google.fr&quot;</span>,     <span class="st">&quot;80&quot;</span>,    .....);</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>getaddrinfo(<span class="st">&quot;www.u-bordeaux.fr&quot;</span>, <span class="st">&quot;https&quot;</span>, ....);</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>getaddrinfo(<span class="st">&quot;2a01:e0c:1::1&quot;</span>,     <span class="st">&quot;http&quot;</span>,  ....);</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>getaddrinfo(<span class="st">&quot;www.facebook.com&quot;</span>,  NULL,    ....);</span></code></pre></div>
+<p>Dans le dernier cas, on obtiendra une adresse internet avec un numéro IP renseigné, et un numéro de port non spécifié.</p>
+<h2 data-number="2.3" id="liste-de-résultats"><span class="header-section-number">2.3</span> Liste de résultats</h2>
+<p>Les résultats sont fournis par l’intermédiaire d’une liste chainée de structures <code>addrinfo</code> :</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">struct</span> addrinfo {</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>               <span class="dt">int</span>              ai_flags;</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>               <span class="dt">int</span>              ai_family;</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>               <span class="dt">int</span>              ai_socktype;</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>               <span class="dt">int</span>              ai_protocol;</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>               socklen_t        ai_addrlen;</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a>               <span class="kw">struct</span> sockaddr *ai_addr;</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a>               <span class="dt">char</span>            *ai_canonname;</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>               <span class="kw">struct</span> addrinfo *ai_next;</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>           };</span></code></pre></div>
+<p>ce type de structure sert aussi pour les indications complémentaires pour la requête (voir plus loin)</p>
+<p>Les champs qui nous intéressent, dans les résultats, sont</p>
+<ul>
+<li><code>ai_family</code>qui indique la famille d’adresses : constante <code>AF_INET</code> pour ipv4, <code>AF_INET6</code> pour ipv6 ;</li>
+<li><code>ai_addr</code> qui est un pointeur sur une adresse “générique”, qui sera concrètement soit une <code>struct in_addr</code>, soit une <code>struct in6_addr</code>, selon la famille indiquée.</li>
+<li><code>ai_addrlen</code>, la longueur de cette adresse ;</li>
+<li><code>ai_next</code>, un pointeur sur le résultat suivant.</li>
+</ul>
+<p>Attention, il faudra libérer la liste de résultats après usage, en appelant <code>freeaddrinfo</code></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="dt">void</span> freeaddrinfo(<span class="kw">struct</span> addrinfo *res);</span></code></pre></div>
+<h2 data-number="2.4" id="exemple"><span class="header-section-number">2.4</span> Exemple</h2>
+<p>Illustration : créer un socket TCP client connecté à un serveur WEB (protocole http), en utilisant la première adresse trouvée (et sans faire aucune vérification):</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="dt">char</span> * nom_serveur = <span class="st">&quot;....&quot;</span>;</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="kw">struct</span> addrinfo * premier;                  <span class="co">// adresse premier résultat;</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>getaddrinfo(nom_serveur, <span class="st">&quot;http&quot;</span>, NULL, &amp; premier);</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="dt">int</span> fd = socket(premier-&gt;ai_family, SOCK_STREAM, <span class="dv">0</span>);</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>bind(fd, premier-&gt;ai_addr, premier_&gt;ai_addrlen);</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>freeaddrinfo(adr_premier_resultat);</span></code></pre></div>
+<h2 data-number="2.5" id="les-indications"><span class="header-section-number">2.5</span> Les indications</h2>
+<p>Dans l’exemple ci-dessus, le troisième paramètre de <code>getatddrinfo()</code> est un pointeur nul, mais on peut s’en servir pour transmettre l’adresse d’une structure <code>addrinfo</code> qui sert à préciser ce que l’on veut.</p>
+<p>Les champs pertinents (les plus intéressants) :</p>
+<ul>
+<li><code>ai_family</code>qui indique la ou les familles d’adresses voulues : constante <code>AF_INET</code> pour ipv4, <code>AF_INET6</code> pour ipv6, <code>AF_UNSPEC</code> (par défaut) pour l’un ou l’autre.</li>
+<li><code>ai_socktype</code> indique si on ne doit rechercher que certains types de services (<code>SOCK_STREAM</code>, <code>SOCK_DGRAM</code>) ou tous (O).</li>
+<li><code>ai_flags</code> : combinaison d’indicateurs divers. Y mettre <code>AI_PASSIVE</code> pour un serveur qui doit accepter des connexions sur ses différentes adresses réseau.</li>
+</ul>
+<p>Les autres doivent être initialisés, 0 est une valeur par défaut raisonnable.</p>
+<p>L’initialisation se fait élégamment grâce aux “Designated Initializers” introduits par la norme C99. Exemple</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">struct</span> addrinfo indication_client {</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>   .ai_family   = AF_UNSPEC,</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>   .ai_socktype = SOCK_STREAM</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>};</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>   </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a><span class="kw">struct</span> addrinfo indications_serveur {   <span class="co">// pour un serveur IPv6</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>   .ai_family = AF_INET6,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>   .ai_flags  = AI_PASSIVE</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a>   <span class="co">// les autres champs sont automatiquement initialisés à 0</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a>};</span></code></pre></div>
+<h2 data-number="2.6" id="getnameinfo-traduction-dadresse-internet-en-hôteservice"><span class="header-section-number">2.6</span> <code>getnameinfo()</code> : traduction d’adresse internet en hôte+service</h2>
+<p>La fonction <code>getnameinfo()</code> réalise la conversion inverse : à partir d’une adresse internet, obtenir une description du l’adresse IP de la machine et du numéro de service/port.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="dt">int</span> getnameinfo(<span class="dt">const</span> <span class="kw">struct</span> sockaddr *addr, socklen_t addrlen,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>                <span class="dt">char</span> *host, socklen_t hostlen,</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>                <span class="dt">char</span> *serv, socklen_t servlen, </span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>                <span class="dt">int</span> flags);</span></code></pre></div>
+<p>Les paramètres sont</p>
+<ul>
+<li>un pointeur sur la structure contenant l’adresse, et sa taille</li>
+<li>l’adresse d’un tampon pour y ranger le nom de la machine, et sa longueur</li>
+<li>l’adresse d’un tampon pour le port, et sa longueur.</li>
+<li>une combinaison d’indicateurs : <code>NI_NUMERICHOST</code> et <code>NI_NUMERICSERV</code>, pour avoir les indications sous forme numérique.</li>
+</ul>
+<h2 data-number="2.7" id="un-exemple-programme-de-résolution-dadresses"><span class="header-section-number">2.7</span> Un exemple : programme de résolution d’adresses</h2>
+<p>Le programme qui suit s’exécute en ligne de commande. Il prend en paramètre une série de noms de machines ou d’adresses</p>
+<p>Pour chaque machine il affiche les adresses IP numériques sous forme numérique IPv4 (décimal pointé) ou IPv6 (hexadécimal).</p>
+<p><strong>Code Source</strong></p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co">/*</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="co"> resolution.c</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="co"> Résolution d&#39;adresses</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a><span class="co"> */</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;unistd.h&gt;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;sys/socket.h&gt;</span></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;netinet/in.h&gt;</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;arpa/inet.h&gt;</span></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;netdb.h&gt;</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;limits.h&gt;</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true"></a></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true"></a><span class="dt">void</span> resoudre_nom(<span class="dt">const</span> <span class="dt">char</span> nom_hote[]);</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true"></a></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true"></a><span class="dt">int</span> main(<span class="dt">int</span> argc, <span class="dt">char</span> *argv[])</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true"></a>{</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true"></a>    <span class="cf">if</span> (argc == <span class="dv">1</span>) {</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true"></a>        printf(<span class="st">&quot;usage: %s adresses...</span><span class="sc">\n</span><span class="st">&quot;</span>, argv[<span class="dv">0</span>]);</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true"></a>        <span class="cf">return</span> EXIT_FAILURE;</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true"></a>    }</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true"></a>    <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">1</span>; i &lt; argc; i++) {</span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true"></a>        resoudre_nom(argv[i]);</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true"></a>    }</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true"></a>    <span class="cf">return</span> EXIT_SUCCESS;</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true"></a>}</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true"></a></span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true"></a><span class="dt">void</span> resoudre_nom(<span class="dt">const</span> <span class="dt">char</span> nom_hote[])</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true"></a>{</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true"></a>    printf(<span class="st">&quot;* Résolution de %s</span><span class="sc">\n</span><span class="st">&quot;</span>, nom_hote);</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true"></a>    <span class="kw">struct</span> addrinfo *adr_liste_adresses;</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true"></a></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true"></a>    <span class="co">// le type de socket est précisé pour n&#39;avoir qu&#39;une réponse par numéro IP</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true"></a>    <span class="kw">struct</span> addrinfo indications = {</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true"></a>        .ai_family = AF_UNSPEC,</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true"></a>        .ai_socktype = SOCK_STREAM</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true"></a>    };</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true"></a></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true"></a>    <span class="dt">int</span> r = getaddrinfo(nom_hote, NULL,</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true"></a>            &amp;indications,</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true"></a>            &amp; adr_liste_adresses);</span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true"></a>    <span class="cf">if</span> (r != <span class="dv">0</span>) {</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true"></a>        printf(<span class="st">&quot;- échec de la résolution</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true"></a>        <span class="cf">return</span>;</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true"></a>    };</span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true"></a>    <span class="cf">for</span> (<span class="kw">struct</span> addrinfo *ptr = adr_liste_adresses;</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true"></a>            ptr != NULL;</span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true"></a>            ptr = ptr-&gt;ai_next) {</span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true"></a>        <span class="co">// conversion  adresse -&gt; hote</span></span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true"></a>        <span class="dt">char</span> ip_hote[HOST_NAME_MAX]; <span class="co">// taille max FQDN, RFC 1035</span></span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true"></a>        getnameinfo(ptr-&gt;ai_addr, ptr-&gt;ai_addrlen,</span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true"></a>                ip_hote, <span class="kw">sizeof</span> (ip_hote),</span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true"></a>                NULL, <span class="dv">0</span>, <span class="co">// port non utilisé</span></span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true"></a>                NI_NUMERICHOST);</span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true"></a>        printf(<span class="st">&quot;-&gt; %s</span><span class="sc">\n</span><span class="st">&quot;</span>, ip_hote);</span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true"></a>    }</span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true"></a>    printf(<span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true"></a>    freeaddrinfo(adr_liste_adresses);</span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true"></a>}</span></code></pre></div>
+<p><strong>Exemple d’exécution</strong></p>
+<pre><code>$ ./resolution www.google.fr  www.free.fr www.u-bordeaux.fr
+* Résolution de www.google.fr
+-&gt; 2a00:1450:4007:809::2003
+-&gt; 216.58.198.195
+
+* Résolution de www.free.fr
+-&gt; 2a01:e0c:1::1
+-&gt; 212.27.48.10
+
+* Résolution de www.u-bordeaux.fr
+-&gt; 147.210.215.26</code></pre>
+</body>
+</html>

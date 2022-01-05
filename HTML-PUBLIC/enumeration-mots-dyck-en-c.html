@@ -363,8 +363,12 @@ padding: 0.5em;
 <li>qui ont, quand on les coupe en 2, au moins autant de <span class="math inline"><em>a</em></span> à gauche que de <span class="math inline"><em>b</em></span>.</li>
 </ul>
 <p>Exemple <code>aabbabaabb</code> est un mot de Dyck, de longueur 10.</p>
-<p>Il existe des techniques bien connues (TODO: ajouter références) pour énumérer ces mots.</p>
-<p>Notre objectif est de montrer ici comment, dans un programme C, énumérer tous les mots de Dyck d’une taille fixé, en nous basant sur la grammaire context-free bien connue qui les engendre.</p>
+<p>Il existe des techniques bien connues pour énumérer ces mots :</p>
+<ul>
+<li>Ichiro Semba, Generation of all the balanced parenthesis strings in lexicographical order, Information Processing Letters, vol 12, num 4, pp 188-192 (1981)</li>
+<li>D. Knuth, The Art Of Computer Programming, vol 4 Combinatorial Algorithms, Part 1, 7.2.1.6, p 443 (2011).</li>
+</ul>
+<p>Notre objectif est de montrer ici comment, dans un programme C, énumérer tous les mots de Dyck d’une taille fixée, <strong>en nous basant sur la grammaire context-free</strong> bien connue qui les engendre.</p>
 <h2 data-number="1.1" id="grammaire-context-free-des-mots-de-dyck"><span class="header-section-number">1.1</span> Grammaire context-free des mots de Dyck</h2>
 <p>Rappel les mots de Dyck sont générés par la grammaire context-free d’axiome <span class="math inline"><em>S</em></span> :</p>
 <blockquote>

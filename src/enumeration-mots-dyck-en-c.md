@@ -28,12 +28,18 @@ On peut les voir comme des mots sur un alphabet à deux lettres $A = \{a, b\}$
 
 Exemple `aabbabaabb` est un mot de Dyck, de longueur 10.
 
-Il existe des techniques bien connues (TODO: ajouter références)
-pour énumérer ces mots.
+Il existe des techniques bien connues
+pour énumérer ces mots :
+
+- Ichiro Semba, Generation of all the balanced parenthesis strings in
+  lexicographical order, Information Processing Letters, vol 12, num
+  4, pp 188-192 (1981)
+- D. Knuth, The Art Of Computer Programming, vol 4 Combinatorial
+  Algorithms, Part 1, 7.2.1.6, p 443 (2011).
 
 Notre objectif est de montrer ici comment, dans un programme C,
-énumérer tous les mots de Dyck d'une taille fixé, en nous basant
-sur la grammaire context-free bien connue qui les engendre.
+énumérer tous les mots de Dyck d'une taille fixée, 
+**en nous basant sur la grammaire context-free** bien connue qui les engendre.
 
 ## Grammaire context-free des mots de Dyck
 
