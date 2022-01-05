@@ -23,7 +23,7 @@ apportées au langage C depuis sa première normalisation en 1989.
 
 On essaie de faire un peu mieux.
 
-Document : [sockets-ipv6.md](sockets-ipv6.md)
+Document : [sockets-ipv6.html](sockets-ipv6.html)
 
 # "Lambdas" en C
 
