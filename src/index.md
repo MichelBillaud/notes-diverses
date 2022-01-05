@@ -17,7 +17,7 @@ Partage dans les Mêmes Conditions 2.0 France](http://creativecommons.org/licens
 
 # Sockets IPv4 et IPv6 en C
 
-Janvier 2021. Les cours de programmation réseau/C utilisent obstinément
+Janvier 2022. Les cours de programmation réseau/C utilisent obstinément
 une vieille API, en ignorant complètement IPv6, et les améliorations
 apportées au langage C depuis sa première normalisation en 1989.
 
