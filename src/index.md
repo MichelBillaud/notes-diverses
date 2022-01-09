@@ -1,6 +1,6 @@
 % Notes diverses
 % Michel Billaud (`michel.billaud@u-bordeaux.fr`, `michel.billaud@laposte.net`)
-% 15 novembre 2021
+% 9 janvier 2022
 
 
 # Licence
@@ -14,6 +14,18 @@ Partage dans les Mêmes Conditions 2.0 France](http://creativecommons.org/licens
 
 - Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
+
+# Makefiles pour un  projet en C avec un sous-projet
+
+
+
+Quand un projet atteint une certaine taille, il arrive
+qu'on puisse en isoler une "bibliothèque" (sous-projet) qu'on espère
+réutiliser dans d'autres projets.  Ici on montre comment organiser et
+compiler un projet (en C) qui contient un sous-projet. Et surtout, on 
+explique les `Makefile`s qui vont avec.
+
+Document : [makefile-sous-projet.html](makefile-sous-projet.html)
 
 # Sockets IPv4 et IPv6 en C
 
@@ -34,6 +46,7 @@ $S \rightarrow \epsilon \|  a S b S$.
 
 Document : [enumeration-mots-dyck-en-c.html](enumeration-mots-dyck-en-c.html)
 
+
 # "Factory" en C
 
 Novembre 2021. On montre comment mettre en oeuvre en C le patron de
@@ -46,7 +59,7 @@ Document : [factory-en-c.html](factory-en-c.html)
 C'est une continuation de celui sur 
  [le polymorphisme en C](polymorphisme-en-c.html)
 
-# A propos des Makefiles
+# À propos des Makefiles
 
 Novembre 2021. Récupération de quelques notes d'explication sur
 l'utilisation des Makefiles sur des projets de petite taille en

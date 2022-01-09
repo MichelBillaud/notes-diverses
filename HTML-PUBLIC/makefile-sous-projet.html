@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Michel Billaud" />
+  <title>Makefile, projet avec sous-projet dans une bibliothèque</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">a.sourceLine {
+display: inline-block;
+line-height: 1.25;
+}
+a.sourceLine {
+pointer-events: none;
+color: inherit;
+text-decoration: inherit;
+}
+a.sourceLine:empty {
+height: 1.2em;
+}
+.sourceCode {
+overflow: visible;
+}
+code.sourceCode {
+white-space: pre;
+position: relative;
+}
+div.sourceCode {
+margin: 1em 0;
+}
+pre.sourceCode {
+margin: 0;
+}
+@media screen {
+div.sourceCode {
+overflow: auto;
+}
+}
+@media print {
+code.sourceCode {
+white-space: pre-wrap;
+}
+a.sourceLine {
+text-indent: -1em;
+padding-left: 1em;
+}
+}
+pre.numberSource a.sourceLine {
+position: relative;
+left: -4em;
+}
+pre.numberSource a.sourceLine::before {
+content: attr(title);
+position: relative;
+left: -1em;
+text-align: right;
+vertical-align: baseline;
+border: none;
+pointer-events: all;
+display: inline-block;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+padding: 0 4px;
+width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource {
+margin-left: 3em;
+border-left: 1px solid #aaaaaa;
+padding-left: 4px;
+}
+div.sourceCode {}
+@media screen {
+a.sourceLine::before {
+text-decoration: underline;
+}
+}
+code span.al {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.an {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.at {
+color: #7d9029;
+}
+
+code span.bn {
+color: #40a070;
+}
+
+code span.bu {}
+
+code span.cf {
+color: #007020;
+font-weight: bold;
+}
+
+code span.ch {
+color: #4070a0;
+}
+
+code span.cn {
+color: #880000;
+}
+
+code span.co {
+color: #60a0b0;
+font-style: italic;
+}
+
+code span.cv {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.do {
+color: #ba2121;
+font-style: italic;
+}
+
+code span.dt {
+color: #902000;
+}
+
+code span.dv {
+color: #40a070;
+}
+
+code span.er {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.ex {}
+
+code span.fl {
+color: #40a070;
+}
+
+code span.fu {
+color: #06287e;
+}
+
+code span.im {}
+
+code span.in {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.kw {
+color: #007020;
+font-weight: bold;
+}
+
+code span.op {
+color: #666666;
+}
+
+code span.ot {
+color: #007020;
+}
+
+code span.pp {
+color: #bc7a00;
+}
+
+code span.sc {
+color: #4070a0;
+}
+
+code span.ss {
+color: #bb6688;
+}
+
+code span.st {
+color: #4070a0;
+}
+
+code span.va {
+color: #19177c;
+}
+
+code span.vs {
+color: #4070a0;
+}
+
+code span.wa {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+
+:root {
+--title-color: #202080;
+--source-bg-color: rgb(240, 240, 255);
+}
+h1, h2, h3, h4, h5, h6 {
+border-bottom: solid 1px silver;
+color: var(--title-color);
+}
+body {
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div.sourceCode {
+background-color: var(--source-bg-color);
+padding: 1em;
+}
+#TOC {
+padding: 0.5em;
+border: solid 1px silver;
+}
+#TOC ul {
+list-style-type: none;
+padding-left: 1em;
+}
+nav:before {
+text-indent: 2em;
+content: "Sommaire";
+color: var(--title-color);
+font-weight: bold;
+font-size: large;
+}
+#TOC a {
+text-decoration: none;
+}
+header {
+text-align: center;
+}
+.title {
+}
+.author, .date {
+font-style: italic;
+}
+table, th, td {
+border-collapse: collapse;
+border: solid black 1px;
+padding: 0.5em;
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Makefile, projet avec sous-projet dans une bibliothèque</h1>
+<p class="author">Michel Billaud</p>
+<p class="date">9 janvier 2022</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#exemple"><span class="toc-section-number">1</span> Exemple</a></li>
+<li><a href="#makefile-du-projet-principal"><span class="toc-section-number">2</span> Makefile du projet principal</a></li>
+<li><a href="#organisation-générale-des-sources"><span class="toc-section-number">3</span> Organisation générale des sources</a></li>
+<li><a href="#makefile-du-sous-projet"><span class="toc-section-number">4</span> Makefile du sous-projet</a></li>
+<li><a href="#compilation-du-sous-projet"><span class="toc-section-number">5</span> Compilation du sous-projet</a></li>
+<li><a href="#compilation-du-projet-complet-exécution"><span class="toc-section-number">6</span> Compilation du projet complet, exécution</a></li>
+<li><a href="#conclusion"><span class="toc-section-number">7</span> Conclusion</a></li>
+<li><a href="#annexe-vue-générale-des-fichiers"><span class="toc-section-number">8</span> Annexe : vue générale des fichiers</a></li>
+</ul>
+</nav>
+<p><strong>Résumé.</strong> Quand un projet atteint une certaine taille, il arrive qu’on puisse en isoler une “bibliothèque” (sous-projet) qu’on espère réutiliser dans d’autres projets. Ici on montre comment organiser et compiler un projet (en C) qui contient un sous-projet. Et surtout on explique les <code>Makefile</code>s qui vont avec.</p>
+<p><strong>Dernière mise à jour</strong> : 9 janvier 2022.</p>
+<h1 data-number="1" id="exemple"><span class="header-section-number">1</span> Exemple</h1>
+<p>Le programme principal suivant</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">// main.c</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;MusicLib.h&quot;</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="dt">int</span> main() {</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>    music_play(<span class="st">&quot;Pouet-Pouet.mp3&quot;</span>);</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a>    music_stop();</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a>}</span></code></pre></div>
+<p>fait appel à deux fonctions d’un sous-projet “MusicLib”. Elles sont déclarées dans <code>MusicLib.h</code> qui se trouve dans le répertoire du sous-projet.</p>
+<h1 data-number="2" id="makefile-du-projet-principal"><span class="header-section-number">2</span> Makefile du projet principal</h1>
+<p>Le <code>Makefile</code> du projet principal</p>
+<pre class="make"><code>CFLAGS = -std=c11 -Wall -Wextra
+
+CPPFLAGS = -IMusicLib/include
+LDLIBS   = -LMusicLib/lib/ -lmymusic
+
+all: updates main
+
+updates:
+    (cd MusicLib ; make)
+
+main : main.o
+
+clean:
+    $(RM) *~ *.o
+
+mrproper: clean
+    $(RM) main
+    (cd MusicLib ; make mrproper)</code></pre>
+<p>réalise la fabrication de l’exécutable <code>main</code>.</p>
+<ul>
+<li>Pour la compilation, le fichier d’entête <code>MusicLib.h</code> est pris dans <code>MusicLib/include/MusicLib.h</code> ;</li>
+<li>Pour l’édition des liens, les fonctions <code>music_play()</code> et <code>music_stop()</code> sont dans la bibliothèque statique <code>MusicLib/lib/libmymusic.a</code>.</li>
+</ul>
+<p><strong>Déroulement</strong> : si on lance la commande <code>make</code> avec la cible par défaut (<code>all</code>), le sous-projet est d’abord mis à jour pour produire éventuellement une nouvelle version de la bibliothèque <code>MusicLib/lib/libmymusic.a</code>. Ensuite, le <code>main</code> est fabriqué.</p>
+<p><strong>Attention</strong> si le <code>main</code> existe déjà et est à jour par rapport à <code>main.c</code>, il n’est pas recréé si la bibliothèque a été modifiée (on verra peut être plus loin comment arranger ça).</p>
+<h1 data-number="3" id="organisation-générale-des-sources"><span class="header-section-number">3</span> Organisation générale des sources</h1>
+<p>Le projet et le sous-projet sont organisés ainsi</p>
+<pre><code>.
+|-- Makefile
+|-- MusicLib
+|   |-- Makefile
+|   |-- include
+|   |   |-- MusicLib.h
+|   |   |-- music_play.h
+|   |   `-- music_stop.h
+|   |-- lib
+|   |-- obj
+|   `-- src
+|       |-- music_play.c
+|       `-- music_stop.c
+`-- main.c
+
+5 directories, 8 files</code></pre>
+<p>Le fichier <code>MusicLib/src/music_play.c</code> contient le source d’une fonction</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;music_play.h&quot;</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="dt">void</span> music_play(<span class="dt">char</span> *filename) {</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>    printf(<span class="st">&quot;vous entendez maintenant %s</span><span class="sc">\n</span><span class="st">&quot;</span>, filename);</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a>}</span></code></pre></div>
+<p>dont l’entête est dans <code>MusicLib/include/music_play.h</code></p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="pp">#ifndef MUSIC_PLAY_H</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="pp">#define MUSIC_PLAY_H</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="dt">void</span> music_play(<span class="dt">char</span> *filename);</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a><span class="pp">#endif</span></span></code></pre></div>
+<p>Même chose pour <code>music_stop</code>. le fichier <code>MusicLib/include/MusicLib.h</code> regroupe les entêtes “exportées” du sous-projet :</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="pp">#ifndef MUSIC_LIB_H</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="pp">#define MUSIC_LIB_H</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;music_play.h&quot;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;music_stop.h&quot;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a><span class="pp">#endif</span></span></code></pre></div>
+<h1 data-number="4" id="makefile-du-sous-projet"><span class="header-section-number">4</span> Makefile du sous-projet</h1>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="er">#</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="er"># Makefile pour le sous projet MusicLib</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a><span class="er">#</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>CFLAGS = -std=c11 -Wall -Wextra</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>CFLAGS += -MMD</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>CPPFLAGS = -Iinclude</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>ARFLAGS = rv</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a>OBJ = music_play music_stop</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a>lib/libmymusic.a: $(addprefix obj/,$(addsuffix .o,$(OBJ)))</span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a>    $(AR) $(ARFLAGS) $@ $^</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true"></a></span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true"></a>obj/%.o: src/%.c</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true"></a>    $(COMPILE.c) -o $@ $&lt;</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true"></a></span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true"></a>-include $(wildcard obj<span class="co">/*.d)</span></span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true"></a></span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true"></a><span class="co">clean:</span></span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true"></a><span class="co">    $(RM) *~ */</span>*~ *<span class="co">/*.d */</span>*.o</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true"></a></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true"></a>mrproper: clean</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true"></a>    $(RM) lib<span class="co">/*.a</span></span></code></pre></div>
+<h1 data-number="5" id="compilation-du-sous-projet"><span class="header-section-number">5</span> Compilation du sous-projet</h1>
+<p>Si on exécute ce <code>Makefile</code>, on voit passer les étapes de fabrication de la cible par défaut (<code>lib/libmusic.a</code>) :</p>
+<pre><code>$ make
+cc -std=c11 -Wall -Wextra -MMD -Iinclude  -c -o obj/music_play.o src/music_play.c
+cc -std=c11 -Wall -Wextra -MMD -Iinclude  -c -o obj/music_stop.o src/music_stop.c
+ar rv lib/libmymusic.a obj/music_play.o obj/music_stop.o
+ar: création de lib/libmymusic.a
+a - obj/music_play.o
+a - obj/music_stop.o</code></pre>
+<p>à savoir</p>
+<ol type="1">
+<li>fabrication (<code>cc</code>) des fichiers <code>obj/*.o</code> à partir des sources <code>src/*.c</code>,</li>
+<li>fabrication (<code>ar</code>) de la bibliothèque à partir des <code>obj/*.o</code>.</li>
+</ol>
+<p><strong>Remarque :</strong> l’option <code>-MMD</code> jointe à la directive <code>-include</code> permet la gestion automatique des dépendances</p>
+<h1 data-number="6" id="compilation-du-projet-complet-exécution"><span class="header-section-number">6</span> Compilation du projet complet, exécution</h1>
+<p>Si on lance maintenant la commande <code>make</code> dans le répertoire principal :</p>
+<pre><code>$ make
+(cd MusicLib ; make)
+make[1] : on entre dans le répertoire « /xxx/MusicLib »
+make[1]: « lib/libmymusic.a » est à jour.
+make[1] : on quitte le répertoire « /xxx/MusicLib »
+cc -std=c11 -Wall -Wextra -IMusicLib/include  -c -o main.o main.c
+cc   main.o  -LMusicLib/lib/ -lmymusic -o main</code></pre>
+<ol type="1">
+<li>le sous-projet est mis à jour et recompilé au besoin (ici, non) ;</li>
+<li>le source <code>main.c</code> est compilé ;</li>
+<li>l’exécutable est produit par édition des liens avec la bibliothèque.</li>
+</ol>
+<p>Il ne reste plus qu’à l’exécuter</p>
+<pre><code>$ ./main
+vous entendez maintenant Pouet-Pouet.mp3
+fin de la musique</code></pre>
+<h1 data-number="7" id="conclusion"><span class="header-section-number">7</span> Conclusion</h1>
+<p>Ce qui est présenté ci dessus, c’est le makefile quand le sous-projet est encore instable, c’est à dire en cours de co-développement avec le projet principal.</p>
+<p>Quand le sous-projet est stable, il est “sorti” de l’arborescence du projet, et le <code>Makefile</code> du projet principal ne demande plus sa re-compilation.</p>
+<h1 data-number="8" id="annexe-vue-générale-des-fichiers"><span class="header-section-number">8</span> Annexe : vue générale des fichiers</h1>
+<pre><code>.
+|-- Makefile
+|-- MusicLib
+|   |-- Makefile
+|   |-- include
+|   |   |-- MusicLib.h
+|   |   |-- music_play.h
+|   |   `-- music_stop.h
+|   |-- lib
+|   |   `-- libmymusic.a
+|   |-- obj
+|   |   |-- music_play.d
+|   |   |-- music_play.o
+|   |   |-- music_stop.d
+|   |   `-- music_stop.o
+|   `-- src
+|       |-- music_play.c
+|       `-- music_stop.c
+|-- main
+|-- main.c
+`-- main.o
+
+5 directories, 15 files</code></pre>
+</body>
+</html>

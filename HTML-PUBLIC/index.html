@@ -326,23 +326,24 @@ padding: 0.5em;
 <header id="title-block-header">
 <h1 class="title">Notes diverses</h1>
 <p class="author">Michel Billaud (<code>michel.billaud@u-bordeaux.fr</code>, <code>michel.billaud@laposte.net</code>)</p>
-<p class="date">15 novembre 2021</p>
+<p class="date">9 janvier 2022</p>
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
 <li><a href="#licence"><span class="toc-section-number">1</span> Licence</a></li>
-<li><a href="#sockets-ipv4-et-ipv6-en-c"><span class="toc-section-number">2</span> Sockets IPv4 et IPv6 en C</a></li>
-<li><a href="#lambdas-en-c"><span class="toc-section-number">3</span> “Lambdas” en C</a></li>
-<li><a href="#factory-en-c"><span class="toc-section-number">4</span> “Factory” en C</a></li>
-<li><a href="#a-propos-des-makefiles"><span class="toc-section-number">5</span> A propos des Makefiles</a></li>
-<li><a href="#polymorphisme-en-c"><span class="toc-section-number">6</span> Polymorphisme en C</a></li>
-<li><a href="#génération-des-permutations"><span class="toc-section-number">7</span> Génération des permutations</a></li>
-<li><a href="#vi-comment-sen-sortir-et-lutiliser-un-peu"><span class="toc-section-number">8</span> Vi, comment s’en sortir ? (et l’utiliser un peu)</a></li>
-<li><a href="#les-tris"><span class="toc-section-number">9</span> Les tris</a></li>
-<li><a href="#réseau"><span class="toc-section-number">10</span> Réseau</a></li>
-<li><a href="#développer-à-partir-des-tests"><span class="toc-section-number">11</span> Développer à partir des tests</a></li>
-<li><a href="#exercices-somme-et-moyenne-dun-tableau"><span class="toc-section-number">12</span> Exercices “somme et moyenne d’un tableau”</a></li>
-<li><a href="#bases-markdown"><span class="toc-section-number">13</span> Bases markdown</a></li>
+<li><a href="#makefiles-pour-un-projet-en-c-avec-un-sous-projet"><span class="toc-section-number">2</span> Makefiles pour un projet en C avec un sous-projet</a></li>
+<li><a href="#sockets-ipv4-et-ipv6-en-c"><span class="toc-section-number">3</span> Sockets IPv4 et IPv6 en C</a></li>
+<li><a href="#lambdas-en-c"><span class="toc-section-number">4</span> “Lambdas” en C</a></li>
+<li><a href="#factory-en-c"><span class="toc-section-number">5</span> “Factory” en C</a></li>
+<li><a href="#à-propos-des-makefiles"><span class="toc-section-number">6</span> À propos des Makefiles</a></li>
+<li><a href="#polymorphisme-en-c"><span class="toc-section-number">7</span> Polymorphisme en C</a></li>
+<li><a href="#génération-des-permutations"><span class="toc-section-number">8</span> Génération des permutations</a></li>
+<li><a href="#vi-comment-sen-sortir-et-lutiliser-un-peu"><span class="toc-section-number">9</span> Vi, comment s’en sortir ? (et l’utiliser un peu)</a></li>
+<li><a href="#les-tris"><span class="toc-section-number">10</span> Les tris</a></li>
+<li><a href="#réseau"><span class="toc-section-number">11</span> Réseau</a></li>
+<li><a href="#développer-à-partir-des-tests"><span class="toc-section-number">12</span> Développer à partir des tests</a></li>
+<li><a href="#exercices-somme-et-moyenne-dun-tableau"><span class="toc-section-number">13</span> Exercices “somme et moyenne d’un tableau”</a></li>
+<li><a href="#bases-markdown"><span class="toc-section-number">14</span> Bases markdown</a></li>
 </ul>
 </nav>
 <h1 data-number="1" id="licence"><span class="header-section-number">1</span> Licence</h1>
@@ -352,18 +353,21 @@ padding: 0.5em;
 <li>Les notes sont publiées dans <a href="https://www.mbillaud.fr/notes/" class="uri">https://www.mbillaud.fr/notes/</a></li>
 <li>Sources dans <a href="https://github.com/MichelBillaud/notes-diverses" class="uri">https://github.com/MichelBillaud/notes-diverses</a></li>
 </ul>
-<h1 data-number="2" id="sockets-ipv4-et-ipv6-en-c"><span class="header-section-number">2</span> Sockets IPv4 et IPv6 en C</h1>
+<h1 data-number="2" id="makefiles-pour-un-projet-en-c-avec-un-sous-projet"><span class="header-section-number">2</span> Makefiles pour un projet en C avec un sous-projet</h1>
+<p>Quand un projet atteint une certaine taille, il arrive qu’on puisse en isoler une “bibliothèque” (sous-projet) qu’on espère réutiliser dans d’autres projets. Ici on montre comment organiser et compiler un projet (en C) qui contient un sous-projet. Et surtout, on explique les <code>Makefile</code>s qui vont avec.</p>
+<p>Document : <a href="makefile-sous-projet.html">makefile-sous-projet.html</a></p>
+<h1 data-number="3" id="sockets-ipv4-et-ipv6-en-c"><span class="header-section-number">3</span> Sockets IPv4 et IPv6 en C</h1>
 <p>Janvier 2022. Les cours de programmation réseau/C utilisent obstinément une vieille API, en ignorant complètement IPv6, et les améliorations apportées au langage C depuis sa première normalisation en 1989.</p>
 <p>On essaie de faire un peu mieux.</p>
 <p>Document : <a href="sockets-ipv6.html">sockets-ipv6.html</a></p>
-<h1 data-number="3" id="lambdas-en-c"><span class="header-section-number">3</span> “Lambdas” en C</h1>
+<h1 data-number="4" id="lambdas-en-c"><span class="header-section-number">4</span> “Lambdas” en C</h1>
 <p>Novembre 2021. Comment simuler des “lambdas” en C dans un programme d’énumération des mots de Dyck (systèmes de parenthèses bien formés), qui se base sur un algorithme récursif, fondé sur la grammaire <span class="math inline"><em>S</em> → <em>ϵ</em>∥<em>a</em><em>S</em><em>b</em><em>S</em></span>.</p>
 <p>Document : <a href="enumeration-mots-dyck-en-c.html">enumeration-mots-dyck-en-c.html</a></p>
-<h1 data-number="4" id="factory-en-c"><span class="header-section-number">4</span> “Factory” en C</h1>
+<h1 data-number="5" id="factory-en-c"><span class="header-section-number">5</span> “Factory” en C</h1>
 <p>Novembre 2021. On montre comment mettre en oeuvre en C le patron de conception “factory”, dans lequel une fonction est utilisée pour fabriquer des objets de types distincts.</p>
 <p>Document : <a href="factory-en-c.html">factory-en-c.html</a></p>
 <p>C’est une continuation de celui sur <a href="polymorphisme-en-c.html">le polymorphisme en C</a></p>
-<h1 data-number="5" id="a-propos-des-makefiles"><span class="header-section-number">5</span> A propos des Makefiles</h1>
+<h1 data-number="6" id="à-propos-des-makefiles"><span class="header-section-number">6</span> À propos des Makefiles</h1>
 <p>Novembre 2021. Récupération de quelques notes d’explication sur l’utilisation des Makefiles sur des projets de petite taille en C. Ces notes ont été écrite pour un cours C/Système en 2018.</p>
 <p><strong>Documents</strong></p>
 <ul>
@@ -371,7 +375,7 @@ padding: 0.5em;
 <li><a href="makefile-options.html">makefile-options.html</a> Comment indiquer des options spécifiques pour <em>certaines</em> cibles d’un <code>Makefile</code>.</li>
 <li><a href="makefile-projet.html">makefile-projet.html</a> Quand un projet contient de nombreux fichiers sources, il est intéressant de produire les fichiers intermédiaires et les exécutables dans des répertoires séparés des sources.</li>
 </ul>
-<h1 data-number="6" id="polymorphisme-en-c"><span class="header-section-number">6</span> Polymorphisme en C</h1>
+<h1 data-number="7" id="polymorphisme-en-c"><span class="header-section-number">7</span> Polymorphisme en C</h1>
 <p>Novembre 2021. On montre sur un exemple détaillé comment réaliser du <em>polymorphisme</em> en C</p>
 <p>Le code suivant :</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>    Animal * animals[] = {</span>
@@ -386,18 +390,18 @@ padding: 0.5em;
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a>    }</span></code></pre></div>
 <p>exécute, lors des appels d’<code>Animal_Talk</code> et <code>Animal_Feed</code>, du code différent, qui dépend du type effectif (<code>Dog</code> ou <code>Fish</code>) des objets. C’est réalisé grâce à une “table de fonctions virtuelles” propres à chaque type.</p>
 <p>Document : <a href="polymorphisme-en-c.html">polymorphisme-en-c.html</a></p>
-<h1 data-number="7" id="génération-des-permutations"><span class="header-section-number">7</span> Génération des permutations</h1>
+<h1 data-number="8" id="génération-des-permutations"><span class="header-section-number">8</span> Génération des permutations</h1>
 <p>Novembre 2021. Cette note explique en détail un algorithme classique pour passer d’une permutation, par exemple <span class="math inline">(3, 5, 2, 4, 1)</span> à la suivante dans l’ordre lexicographique <span class="math inline">(3, 5, 4, 1, 2)</span>.</p>
 <p>La technique présentée peut se généraliser à des énumérations d’autres types (note à venir).</p>
 <p>Le code est fourni en Fortran 95 (ça m’amusait de l’apprendre, j’en étais resté à la version 77) et en C.</p>
 <p>Document : <a href="permutation-suivante.html">permutation-suivante.html</a></p>
-<h1 data-number="8" id="vi-comment-sen-sortir-et-lutiliser-un-peu"><span class="header-section-number">8</span> Vi, comment s’en sortir ? (et l’utiliser un peu)</h1>
+<h1 data-number="9" id="vi-comment-sen-sortir-et-lutiliser-un-peu"><span class="header-section-number">9</span> Vi, comment s’en sortir ? (et l’utiliser un peu)</h1>
 <p>L’éditeur de textes vi est apparu en 1976, il est présent sur la majorité des systèmes Unix (vim, version améliorée). C’est parfois le seul éditeur installé au départ, et souvent l’éditeur de textes par défaut. On peut en préférer d’autres, mais il est important de savoir en sortir si on est tombé dedans, et de connaître quelques commandes de bases pour l’utiliser, même si on référerait autre chose.</p>
 <p>Document : <a href="vi-utilisation-basique.html">vi-utilisation-basique.html</a></p>
-<h1 data-number="9" id="les-tris"><span class="header-section-number">9</span> Les tris</h1>
+<h1 data-number="10" id="les-tris"><span class="header-section-number">10</span> Les tris</h1>
 <p>D’où viennent les idées sur les algorithmes de tri “naïfs” qu’on présente souvent aux débutants : tri par sélection, tri par insertion, tri à bulles ?</p>
 <p>Document : <a href="idees-tris-naifs.html">idees-tris-naifs.html</a></p>
-<h1 data-number="10" id="réseau"><span class="header-section-number">10</span> Réseau</h1>
+<h1 data-number="11" id="réseau"><span class="header-section-number">11</span> Réseau</h1>
 <ul>
 <li>Explication de la notion de trame, d’adresse (MAC), et de communication sur un réseau local.</li>
 </ul>
@@ -406,15 +410,15 @@ padding: 0.5em;
 <li>Notions de routage dans un réseau (interconnexion de réseaux locaux). Adresses IP, préfixes et masques, configuration des interfaces, définition des routes.</li>
 </ul>
 <p>Document : <a href="routage.html">routage.html</a></p>
-<h1 data-number="11" id="développer-à-partir-des-tests"><span class="header-section-number">11</span> Développer à partir des tests</h1>
+<h1 data-number="12" id="développer-à-partir-des-tests"><span class="header-section-number">12</span> Développer à partir des tests</h1>
 <p>Quand on programme, on se trompe souvent. Il est intéressant de prévoir des tests automatisés dès le début.</p>
 <p>Illustration avec C.</p>
 <p>Document : <a href="dev-tests-c.html">dev-tests-c.html</a></p>
-<h1 data-number="12" id="exercices-somme-et-moyenne-dun-tableau"><span class="header-section-number">12</span> Exercices “somme et moyenne d’un tableau”</h1>
+<h1 data-number="13" id="exercices-somme-et-moyenne-dun-tableau"><span class="header-section-number">13</span> Exercices “somme et moyenne d’un tableau”</h1>
 <p>Exercices très simples qu’on donne souvent à écrire aux débutants. Le problème est qu’ils sont souvent mal posés, sur le plan pédagogique.</p>
 <p>On présente une formulation de ces exercices (pour C), et on explique les problèmes courants avec les autres formulations.</p>
 <p>Document : <a href="exo-somme-tableau.html">exo-somme-tableau.html</a></p>
-<h1 data-number="13" id="bases-markdown"><span class="header-section-number">13</span> Bases markdown</h1>
+<h1 data-number="14" id="bases-markdown"><span class="header-section-number">14</span> Bases markdown</h1>
 <p>Le strict minimum, pour les débutants.</p>
 <p>Document : <a href="bases-markdown.html">bases-markdown.html</a></p>
 </body>
