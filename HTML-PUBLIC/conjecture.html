@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Michel Billaud (michel.billaud@laposte.net)" />
+  <title>Une Conjecture sur les Mots</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+  </style>
+  <style type="text/css">a.sourceLine {
+display: inline-block;
+line-height: 1.25;
+}
+a.sourceLine {
+pointer-events: none;
+color: inherit;
+text-decoration: inherit;
+}
+a.sourceLine:empty {
+height: 1.2em;
+}
+.sourceCode {
+overflow: visible;
+}
+code.sourceCode {
+white-space: pre;
+position: relative;
+}
+div.sourceCode {
+margin: 1em 0;
+}
+pre.sourceCode {
+margin: 0;
+}
+@media screen {
+div.sourceCode {
+overflow: auto;
+}
+}
+@media print {
+code.sourceCode {
+white-space: pre-wrap;
+}
+a.sourceLine {
+text-indent: -1em;
+padding-left: 1em;
+}
+}
+pre.numberSource a.sourceLine {
+position: relative;
+left: -4em;
+}
+pre.numberSource a.sourceLine::before {
+content: attr(title);
+position: relative;
+left: -1em;
+text-align: right;
+vertical-align: baseline;
+border: none;
+pointer-events: all;
+display: inline-block;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+padding: 0 4px;
+width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource {
+margin-left: 3em;
+border-left: 1px solid #aaaaaa;
+padding-left: 4px;
+}
+div.sourceCode {}
+@media screen {
+a.sourceLine::before {
+text-decoration: underline;
+}
+}
+code span.al {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.an {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.at {
+color: #7d9029;
+}
+
+code span.bn {
+color: #40a070;
+}
+
+code span.bu {}
+
+code span.cf {
+color: #007020;
+font-weight: bold;
+}
+
+code span.ch {
+color: #4070a0;
+}
+
+code span.cn {
+color: #880000;
+}
+
+code span.co {
+color: #60a0b0;
+font-style: italic;
+}
+
+code span.cv {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.do {
+color: #ba2121;
+font-style: italic;
+}
+
+code span.dt {
+color: #902000;
+}
+
+code span.dv {
+color: #40a070;
+}
+
+code span.er {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.ex {}
+
+code span.fl {
+color: #40a070;
+}
+
+code span.fu {
+color: #06287e;
+}
+
+code span.im {}
+
+code span.in {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.kw {
+color: #007020;
+font-weight: bold;
+}
+
+code span.op {
+color: #666666;
+}
+
+code span.ot {
+color: #007020;
+}
+
+code span.pp {
+color: #bc7a00;
+}
+
+code span.sc {
+color: #4070a0;
+}
+
+code span.ss {
+color: #bb6688;
+}
+
+code span.st {
+color: #4070a0;
+}
+
+code span.va {
+color: #19177c;
+}
+
+code span.vs {
+color: #4070a0;
+}
+
+code span.wa {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+
+:root {
+--title-color: #202080;
+--source-bg-color: rgb(240, 240, 255);
+}
+h1, h2, h3, h4, h5, h6 {
+border-bottom: solid 1px silver;
+color: var(--title-color);
+}
+body {
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div.sourceCode {
+background-color: var(--source-bg-color);
+padding: 1em;
+}
+#TOC {
+padding: 0.5em;
+border: solid 1px silver;
+}
+#TOC ul {
+list-style-type: none;
+padding-left: 1em;
+}
+nav:before {
+text-indent: 2em;
+content: "Sommaire";
+color: var(--title-color);
+font-weight: bold;
+font-size: large;
+}
+#TOC a {
+text-decoration: none;
+}
+header {
+text-align: center;
+}
+.title {
+}
+.author, .date {
+font-style: italic;
+}
+table, th, td {
+border-collapse: collapse;
+border: solid black 1px;
+padding: 0.5em;
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Une Conjecture sur les Mots</h1>
+<p class="author">Michel Billaud (michel.billaud@laposte.net)</p>
+<p class="date">12 janvier 2022</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#quelques-définitions"><span class="toc-section-number">1</span> Quelques définitions</a>
+<ul>
+<li><a href="#mots"><span class="toc-section-number">1.1</span> Mots</a></li>
+<li><a href="#morphisme"><span class="toc-section-number">1.2</span> Morphisme</a></li>
+<li><a href="#points-fixes-dun-morphisme"><span class="toc-section-number">1.3</span> Points-fixes d’un morphisme</a></li>
+</ul></li>
+<li><a href="#morphismes-qui-ont-un-mot-comme-point-fixe"><span class="toc-section-number">2</span> Morphismes qui ont un mot comme point-fixe</a>
+<ul>
+<li><a href="#mots-primitifs-qui-ne-sont-points-fixes-que-par-lidentité"><span class="toc-section-number">2.1</span> Mots primitifs : qui ne sont points fixes que par l’identité</a></li>
+<li><a href="#la-conjecture"><span class="toc-section-number">2.2</span> La conjecture</a></li>
+</ul></li>
+<li><a href="#bibliographie"><span class="toc-section-number">3</span> Bibliographie</a></li>
+</ul>
+</nav>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFgAAAAfCAMAAABUFvrSAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAAEZ0FNQQAAsY58+1GTAAAAAXNSR0IB2cksfwAAAfJQTFRF////////////////8fHx7+/v6Ofn4+Pj4N/g39/f1tXV09bS0tXS0tXR0dTR0dTQ0NTQ0NPPz9PPztLOztHNzdHNzdHMz8/PzdDMzNDMzNDLzM/Ly8/Ly8/Ky87Kys3Jyc3Jyc3Iy8rLyMzIyMzHx8vHxsrGycjIxsrFxcnFyMfHxcnExMnExMjDw8jDxMfDw8fCwsfCwcXAwMXAwMW/wMS/v8S+v8O+vsO+vsK9vcK9vcK8v7+/vMG8vMG7vMC8u8C7u8C6ur+6ur+5ub65ub64uL23t7y2urm5tru1tbq0tLqztLmzs7iysrixtbW1srexsbewsLavsLWvr7Wur7SusLOvrrStrrOtr7KvrbOsrLKrr6+vq7GqrKurpqqmo6ijoqaho6Ghn6OenqCdn5+fnp2dn5aalpuVlpmWlZmUmJaXk5iTkZSRkZORkY+Pj4+Pi5CKiYyJjoeLhIaEhIWEgoWChIGCf4F+gICAfX98fH98en15eXx5enp6dXV1dnN0cHJvcHBwa25qbmxsY19hYGBgXV5dWVlZUlJSUFFQUFBQQ0RDQEBAPj8+Pzc5NTY1MzMzMjMxMDAwMS0uLS0tKioqKSopKSkpKCkoKCgoKicnJCQkICEgIx8gICAgGxsbEBAQDg4ODQ4NCwsLAAAAK1tPPwAAAAN0Uk5TAAoO5yEBUwAABBdJREFUeNq1Vg1X21QYrr5EzArLshWxLc2o67TCyrBjsNnYDaF0VJiAKBMo6jbmpqOyuYll4lzRDinBj6hr1aZk7Pmfnps0/YidHpm7pzn35Mn7Pvfe5/24dTyLpzIcDiARj0VPhXuCgU7J63Z7fYcDwVB4IDocT4xPvjMzOzuX/O8DcCARH4qc7A36fS5RaHE6W/aLrg5/sLcvMsSYp2dm5/bE7EB8KHIidFRyCbe3dtkhdrduCYd8gWPh14fiifNT0xdm59by7EN+req3XmRIcb2K2GzgQCxyIhTwiKmdqkA7S6Lb3x2ODMfHJqZmPikASiajAIXrpteNooUUb5jIdbsNHIieDAXcwiYAPZuW5XRWB7B5/AX/sb5obHR88qOHyPFERHwODw2vq48MRGbII4P50t9s4MCp3qMexqunOTLHog4UjrsDvQODI4mJPLJEBLAPKDCnIrLEZdnR+EUUGVJgNs1dXc0VGzgQDkriJqDyVBmcCmyKvmA4EhtdRW6fRUw5rCWT6yjxpBiaMWQ9mVxjNhc1TdPOlW0Ycc8RVwpQOaJ65qVD/lD/YPwBalbkkWcbBhRgnniZIcVkMg+eurQfvvtG0z4zbRhx0CfsQG+nusHp2BE6guE3YlDYexaGIKQgmYTKwqBvbGxUEIWaPtY+J7qi/WIijDjQdhtIk20sArdcgd7TQ8iQoYSpRYbRZCj9EwMUroo0/an9TtSsac8ZCCPuPLgFnSOSc4qSNqdlItKxJR4O9Q82JP7eTEs9zVsIvf2rbBA/XyGWhF12TNkwVeaNKcsOv7vf1913toEUCt3NQZXnc8xSNRE6d/EVogVNq0rhbQWWiVSUeLm0qELl50uLhhYt3mA4+psZPHPD5eDx7Gs7cctf67CCd0XTVlb+0D6tBs/jBGTmmTYJynLLgNP9cjj6JXJkT7cc2wcU6MSVyulGtMLS7dumarr9C/HIg2qBZGoKhCWyTpmaAnlpYWFfxaZOCq69lFahsqkqxcgHjylpTub+uaTLwStHrRK8DHYFqbvv7MhbH+YBNZtRq03oatFCrCZ0qWCzMdJtEzpV0m1eMSYqYUvsDPW/GR+bfPerPbXNQFvK0KJRgbx2enh0fGpmD5cIHHjVKGn+cSWdOL9X4p4jrsuNmlDK5e8ZGIyPTUxfmNsTMe5I4n1ArWlDvNE2pS+e6JoGcM97oLbRc2kd+FHw3MGTEmPVfeC+7WoSXrxWsTHrA+ZjIuZDBJsR1RNj1Sterr1MU6LnWo1P+Uc1LOX3uqXqAJMY9ySXkLKu/yXBJdXqYLXN2qWobiFrLSI7MX5+39d2UGh1OlsF0dXx3nadj00ISwaqw2xHcFTw7ZtnJK/H45XO3Nyuj0OjHds1tuLQgPj//lf4zFPi/QuCOmdUsGyqRQAAAABJRU5ErkJggg==" /></p>
+<p>Ce texte fait partie d’une petite <a href="index.html">collection de notes</a> mise à disposition selon les termes de la <a href="http://creativecommons.org/licenses/by-nc-sa/2.0/fr/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France</a>.</p>
+<ul>
+<li>Les notes sont publiées dans <a href="https://www.mbillaud.fr/notes/" class="uri">https://www.mbillaud.fr/notes/</a></li>
+<li>Sources dans <a href="https://github.com/MichelBillaud/notes-diverses" class="uri">https://github.com/MichelBillaud/notes-diverses</a></li>
+</ul>
+<p>Il y a très longtemps (vers 1988), je m’étais posé un petit problème, que je n’ai pas réussi à résoudre. Rien d’étonnant, c’était pas dans mon domaine, et je n’y ai travaillé que mollement. Donc j’ai laissé tomber rapidement, mais après avoir appelé à l’aide sur Usenet, qui ne manque pas de gens plus compétents (on en retrouve des traces dans le newsgroup <code>comp.theory</code>, en 1993, mais j’avais dû déjà poser la question en 1988).</p>
+<blockquote>
+<p>Given a word <span class="math inline"><em>w</em></span>, if for each letter <span class="math inline"><em>x</em></span> occurring in <span class="math inline"><em>w</em></span>, there exists non-trivial morphism <span class="math inline"><em>f</em><sub><em>x</em></sub></span> such that the word obtained by erasing all the occurrences of <span class="math inline"><em>x</em></span> in <span class="math inline"><em>x</em></span> is a fixed point of <span class="math inline"><em>f</em><sub><em>x</em></sub></span>, then there exists a non-trivial morphism <span class="math inline"><em>f</em></span> such that <span class="math inline"><em>w</em></span> is a fixed point of <span class="math inline"><em>f</em></span>.</p>
+</blockquote>
+<p>Et bon, surprise, on est en 2022, mais apparemment c’est toujours pas résolu.</p>
+<p>Bon, peut-être que c’est pas très clair, alors j’explique :</p>
+<h1 data-number="1" id="quelques-définitions"><span class="header-section-number">1</span> Quelques définitions</h1>
+<p>Je suppose que vous avez quand même entendu parler de mots construits sur un alphabet. Sinon, c’est pas compliqué</p>
+<h2 data-number="1.1" id="mots"><span class="header-section-number">1.1</span> Mots</h2>
+<ul>
+<li>un <strong>alphabet</strong> c’est un ensemble, donc les éléments sont appelés <strong>lettres</strong>. Exemple <span class="math inline"><em>A</em> = {<em>a</em>, <em>b</em>, <em>c</em>, <em>d</em>}</span>.</li>
+<li>un <strong>mot</strong>, c’est une séquence de lettres, exemple <span class="math inline"><em>a</em><em>b</em><em>c</em><em>b</em><em>a</em><em>d</em></span>.</li>
+<li>on appelle traditionnellement <strong>langage</strong> un ensemble de mots (sans restriction particulière).</li>
+<li>le mot vide, c’est la séquence vide, qu’on note souvent <span class="math inline"><em>ϵ</em></span></li>
+<li>la <strong>concaténation</strong> de deux mots, c’est quand on les met bout à bout. On la note souvent par un point. Par exemple, $ab . cbad = abcbad&quot;.</li>
+<li>par commodité, on confond la notation d’une lettre avec le mot qui ne contient que cette lettre.</li>
+</ul>
+<h2 data-number="1.2" id="morphisme"><span class="header-section-number">1.2</span> Morphisme</h2>
+<p>En général, un <strong>morphisme</strong> est une application d’un ensemble vers un autre qui préserve une opération.</p>
+<p>Ici on considére les morphismes entre deux ensembles de mots (construits sur des alphabets différents ou pas) qui préservent la concaténation.</p>
+<p>C’est-à-dire que si <span class="math inline"><em>f</em></span> est un morphisme, pour tous mots <span class="math inline"><em>u</em>, <em>v</em></span> on a <span class="math inline"><em>f</em>(<em>u</em>.<em>v</em>) = <em>f</em>(<em>u</em>).<em>f</em>(<em>v</em>)</span>.</p>
+<p>Une conséquence est qu’un morphisme est déterminé par la connaissance des images des lettres de l’alphabet. C’est évident : si on connait <span class="math inline"><em>f</em>(<em>a</em>)</span>, <span class="math inline"><em>f</em>(<em>b</em>)</span> etc. alors on peut calculer l’image des mots formés à partir des lettres <span class="math inline"><em>a</em>, <em>b</em>, ...</span> etc.</p>
+<p>La notion s’étend à des langages (ensembles de mots) : l’image d’un ensemble de mots par un morphisme, c’est l’ensemble des images par le morphisme.</p>
+<h2 data-number="1.3" id="points-fixes-dun-morphisme"><span class="header-section-number">1.3</span> Points-fixes d’un morphisme</h2>
+<p>On regarde maintenant les morphismes dans le cas où les ensembles de départ et d’arrivée sont les mêmes. Automorphismes ?</p>
+<p>Un <strong>point fixe du morphisme</strong> <span class="math inline"><em>f</em></span>, c’est un mot <span class="math inline"><em>w</em></span> qui est sa propre image par <span class="math inline"><em>f</em></span> (c-a-d <span class="math inline"><em>f</em>(<em>w</em>) = <em>w</em></span>).</p>
+<p>Exemple <span class="math inline"><em>a</em><em>b</em></span> est un point fixe pour <span class="math inline"><em>f</em>(<em>a</em>) = <em>a</em><em>b</em></span> et <span class="math inline"><em>f</em>(<em>b</em>) = <em>ϵ</em></span>.</p>
+<p>Un morphisme n’admet pas forcément de point fixe, exemple évident : le morphisme qui double chaque lettre : <span class="math inline"><em>f</em>(<em>a</em>) = <em>a</em><em>a</em>, <em>f</em>(<em>b</em>) = <em>b</em><em>b</em>,;...</span>.</p>
+<p>Mais quand il en admet un, il en admet une infinité : si <span class="math inline"><em>f</em>(<em>w</em>) = <em>w</em></span>, alors <span class="math inline"><em>f</em>(<em>w</em><sup><em>n</em></sup>) = <em>w</em><sup><em>n</em></sup></span>.</p>
+<h1 data-number="2" id="morphismes-qui-ont-un-mot-comme-point-fixe"><span class="header-section-number">2</span> Morphismes qui ont un mot comme point-fixe</h1>
+<p>On aurait pu s’amuser avec les propriétés de l’ensemble des points fixes d’un morphisme, mais on part dans la direction inverse :</p>
+<ul>
+<li>on prend un mot <span class="math inline"><em>w</em></span> au départ</li>
+<li>quels morphismes l’admettent comme point fixe ?</li>
+</ul>
+<p>Ce qui amène quelques observations :</p>
+<ul>
+<li>il y en a toujours au moins un : le morphisme identité.</li>
+<li>si on en a un, tous les morphismes obtenus en faisant varier les images des lettres qui n’apparaissent pas dans le mot font aussi l’affaire.</li>
+</ul>
+<p>Exemple : si on part du mot <span class="math inline"><em>w</em> = <em>a</em><em>a</em></span>, on a <span class="math inline"><em>f</em>(<em>w</em>) = <em>w</em></span> si et seulement si <span class="math inline"><em>f</em>(<em>a</em>) = <em>a</em></span>. Les valeurs de <span class="math inline"><em>f</em>(<em>b</em>)</span>, <span class="math inline"><em>f</em>(<em>c</em>)</span> etc. sont indifférentes.</p>
+<p>On va donc se concentrer sur les morphismes restreints aux lettres qui apparaissent dans le mot.</p>
+<h2 data-number="2.1" id="mots-primitifs-qui-ne-sont-points-fixes-que-par-lidentité"><span class="header-section-number">2.1</span> Mots primitifs : qui ne sont points fixes que par l’identité</h2>
+<p>Ce qui nous intéresse, c’est les mots qui ne sont leur propre image <strong>que d’une seule et unique façon</strong> : par l’identité.</p>
+<p>Exemples : <span class="math inline"><em>a</em></span>, <span class="math inline"><em>a</em><em>a</em></span>, <span class="math inline"><em>a</em><sup><em>n</em></sup></span>, <span class="math inline"><em>a</em><em>b</em><em>b</em><em>a</em></span>, <span class="math inline"><em>a</em><em>b</em><em>a</em><em>b</em><em>a</em></span>, <span class="math inline">(<em>a</em><em>b</em>)<sup><em>n</em></sup><em>a</em></span>, etc.</p>
+<p>Contre-exemple : <span class="math inline"><em>a</em><em>b</em><em>a</em><em>b</em></span>, en prenant <span class="math inline"><em>f</em>(<em>a</em>) = <em>a</em><em>b</em></span> et <span class="math inline"><em>f</em>(<em>b</em>) = <em>ϵ</em></span>.</p>
+<p>Il est bien évident qu’il y en a une infinité (cf. les exemple <span class="math inline"><em>a</em><sup><em>b</em></sup></span>).</p>
+<p>On va les appeler “mots primitifs”.</p>
+<h2 data-number="2.2" id="la-conjecture"><span class="header-section-number">2.2</span> La conjecture</h2>
+<p>Informellement, la question c’est</p>
+<blockquote>
+<p>tout mot primitif sur un alphabet à <span class="math inline"><em>n</em></span> lettres peut-il être obtenu à partir d’un mot primitif sur un alphabet à <span class="math inline"><em>n</em> − 1</span> lettres, en y insérant judicieusement des occurrences de la lettre supplémentaire ?</p>
+</blockquote>
+<p>Exemple</p>
+<ul>
+<li><span class="math inline"><em>a</em><em>b</em><em>b</em><em>a</em></span> : à partir de <span class="math inline"><em>a</em><em>a</em></span> ou <span class="math inline"><em>b</em><em>b</em></span>,</li>
+<li><span class="math inline"><em>a</em><em>b</em><em>c</em><em>a</em><em>c</em><em>b</em></span> : à partir de <span class="math inline"><em>b</em><em>c</em><em>c</em><em>b</em></span>, mais pas de <span class="math inline"><em>a</em><em>b</em><em>a</em><em>b</em></span> ou <span class="math inline"><em>a</em><em>c</em><em>a</em><em>c</em></span> qui ne sont pas primitifs.</li>
+</ul>
+<p>Bref, posé dans l’autre sens :</p>
+<blockquote>
+<p>pour tout mot primitif <span class="math inline"><em>w</em></span>, existe-t-il au moins une lettre <span class="math inline"><em>x</em></span> dans <span class="math inline"><em>w</em></span> qu’on pourrait effacer pour retomber sur un mot primitif ?</p>
+</blockquote>
+<p>Les enumérations par programme n’ont jusqu’ici pas trouvé de contre-exemple, et on conjecture que oui.</p>
+<p>Mais la preuve reste à faire.</p>
+<h1 data-number="3" id="bibliographie"><span class="header-section-number">3</span> Bibliographie</h1>
+<p>(TODO)</p>
+</body>
+</html>

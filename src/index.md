@@ -9,11 +9,27 @@
 
 Cette collection de notes est mise à disposition selon les termes de la
 [Licence Creative Commons Attribution -
-Pas d’Utilisation Commerciale - 
-Partage dans les Mêmes Conditions 2.0 France](http://creativecommons.org/licenses/by-nc-sa/2.0/fr/).
+Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France](http://creativecommons.org/licenses/by-nc-sa/2.0/fr/).
 
 - Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
+
+
+
+# Une vieille conjecture
+
+Janvier 2022. Il y a très longtemps (vers 88 je crois) je m'étais posé
+une question que je n'avais pas résolue. Ce n'était pas du tout mon
+domaine, et ça me paraissait plus dur que prévu. Apparemment ça a
+intéressé des gens (combinatoire des mots) et c'est toujours une
+question ouverte.
+
+Si vous voulez tenter votre chance...
+
+Document: [conjecture.html](conjecture.html)
+
+Todo: insérer la biblio des articles qui en causent.
+
 
 # Makefiles pour un  projet en C avec un sous-projet
 
