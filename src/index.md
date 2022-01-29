@@ -14,6 +14,19 @@ Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France]
 - Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
 
+# Configurer CodeBlocks
+
+Sur le Web, certains cours recommandent aux débutants en C/C++ d'utiliser
+l'IDE CodeBlocks pour leurs premiers pas en C ou C++
+
+Cette note n'est pas là pour critiquer ce choix, ni les cours en
+question - malgré le mal que j'en pense - mais pour aider à le
+configurer correctement pour débuter. Ici on montre comment faire pour que le
+compilateur
+
+- afficher les avertissements,
+- vérifie que le code se conforme à une version précise du langage (de
+  préférence, le standard le plus récent).
 
 
 # Une vieille conjecture
