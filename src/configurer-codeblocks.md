@@ -1,6 +1,6 @@
 % Configurer CodeBlocks
 % Michel Billaud (michel.billaud@laposte.net)
-% 29 janvier 20222
+% 29 janvier 2022
 
 
 ![](https://i.creativecommons.org/l/by-nc-sa/2.0/fr/88x31.png)
