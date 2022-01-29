@@ -28,6 +28,7 @@ compilateur
 - vérifie que le code se conforme à une version précise du langage (de
   préférence, le standard le plus récent).
 
+Document: [configurer-codeblocks.html](configurer-codeblocks.html)
 
 # Une vieille conjecture
 
