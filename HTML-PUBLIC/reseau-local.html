@@ -4,13 +4,15 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <meta name="author" content="Michel Billaud (michel.billaud@u-bordeaux.fr, michel.billaud@laposte.net)" />
+  <meta name="author" content="Michel Billaud (michel.billaud@laposte.net)" />
   <title>Transmission sur un réseau local</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
   </style>
   <style type="text/css">a.sourceLine {
 display: inline-block;
@@ -259,12 +261,12 @@ padding: 0.5em;
 </style>
 </head>
 <body>
-<header>
+<header id="title-block-header">
 <h1 class="title">Transmission sur un réseau local</h1>
-<p class="author">Michel Billaud (michel.billaud@u-bordeaux.fr, michel.billaud@laposte.net)</p>
+<p class="author">Michel Billaud (michel.billaud@laposte.net)</p>
 <p class="date">31 mai 2020</p>
 </header>
-<nav id="TOC">
+<nav id="TOC" role="doc-toc">
 <ul>
 <li><a href="#le-problème"><span class="toc-section-number">1</span> Le problème</a></li>
 <li><a href="#connexion-physique-des-machines"><span class="toc-section-number">2</span> Connexion physique des machines</a></li>
@@ -273,8 +275,10 @@ padding: 0.5em;
 <li><a href="#émission-transmission-et-réception-dune-trame."><span class="toc-section-number">5</span> Émission, transmission et réception d’une trame.</a></li>
 <li><a href="#ladresse-de-diffusion"><span class="toc-section-number">6</span> L’adresse de diffusion</a></li>
 <li><a href="#a-qui-dois-je-écrire-protocole-de-résolution-dadresse."><span class="toc-section-number">7</span> A qui dois-je écrire ? Protocole de résolution d’adresse.</a></li>
-<li><a href="#annexes"><span class="toc-section-number">8</span> Annexes</a><ul>
-<li><a href="#fonctionnement-dun-commutateur"><span class="toc-section-number">8.1</span> Fonctionnement d’un commutateur</a><ul>
+<li><a href="#annexes"><span class="toc-section-number">8</span> Annexes</a>
+<ul>
+<li><a href="#fonctionnement-dun-commutateur"><span class="toc-section-number">8.1</span> Fonctionnement d’un commutateur</a>
+<ul>
 <li><a href="#le-problème-1"><span class="toc-section-number">8.1.1</span> Le problème</a></li>
 <li><a href="#solution-table-dadresses-mac"><span class="toc-section-number">8.1.2</span> Solution : table d’adresses MAC</a></li>
 <li><a href="#oublier-et-réapprendre"><span class="toc-section-number">8.1.3</span> Oublier et réapprendre</a></li>
@@ -288,13 +292,13 @@ padding: 0.5em;
 <li>Les notes sont publiées dans <a href="https://www.mbillaud.fr/notes/" class="uri">https://www.mbillaud.fr/notes/</a></li>
 <li>Sources dans <a href="https://github.com/MichelBillaud/notes-diverses" class="uri">https://github.com/MichelBillaud/notes-diverses</a></li>
 </ul>
-<h1 id="le-problème"><span class="header-section-number">1</span> Le problème</h1>
+<h1 data-number="1" id="le-problème"><span class="header-section-number">1</span> Le problème</h1>
 <p>Alice, Bob et Charlie ont des machines connectées à un même réseau local.</p>
 <p>Que se passe-t-il lorsque Alice envoie un message message “Hello!” à Bob ?</p>
-<h1 id="connexion-physique-des-machines"><span class="header-section-number">2</span> Connexion physique des machines</h1>
+<h1 data-number="2" id="connexion-physique-des-machines"><span class="header-section-number">2</span> Connexion physique des machines</h1>
 <p>Les trois machines sont connectées par l’intermédiaire de leurs cartes réseau (interfaces réseau).</p>
 <p>On suppose ici que c’est un réseau filaire (connexions par câbles). Il y a donc un boîtier (concentrateur ou commutateur) auquel les 3 machines sont reliées.</p>
-<h1 id="trames"><span class="header-section-number">3</span> Trames</h1>
+<h1 data-number="3" id="trames"><span class="header-section-number">3</span> Trames</h1>
 <p>Le message (La chaîne de caractère “Hello!”) est transmis dans une <strong>trame</strong>.</p>
 <p>Une trame, c’est une suite d’octets qui contient</p>
 <ul>
@@ -303,7 +307,7 @@ padding: 0.5em;
 <li>l’adresse de l’expéditeur.</li>
 </ul>
 <p>Ici on parle d’<strong>adresses physiques</strong>. Les cartes réseau utilisent habituellement des “adresses MAC” (<em>Media Access Control</em>) de 6 octets (48 bits) notée en hexadécimal sous la forme <code>f4:8e:38:de:f3:d6</code>.</p>
-<h1 id="le-rôle-du-boîtier"><span class="header-section-number">4</span> Le rôle du boîtier</h1>
+<h1 data-number="4" id="le-rôle-du-boîtier"><span class="header-section-number">4</span> Le rôle du boîtier</h1>
 <p>Les machines du réseau local sont reliées aux prises (ports) d’un boîtier (techniquement un concentrateur ou un commutateur).</p>
 <p>Le rôle du boîtier est de transmettre les trames qu’il reçoit sur un port vers toutes les machines du réseau local.</p>
 <p><strong>Remarque :</strong> C’est une vision un peu simplifiée, comme toujours la réalité est un peu plus compliqués :</p>
@@ -311,7 +315,7 @@ padding: 0.5em;
 <li>il peut y avoir plusieurs boîtiers peuvent être chaînés entre eux,</li>
 <li>les commutateurs ne retransmettent que sur un port quand ils savent qu’une trame est destinée à une machine reliée à ce port. Voir annexe “fonctionnement d’un commutateur”.</li>
 </ul>
-<h1 id="émission-transmission-et-réception-dune-trame."><span class="header-section-number">5</span> Émission, transmission et réception d’une trame.</h1>
+<h1 data-number="5" id="émission-transmission-et-réception-dune-trame."><span class="header-section-number">5</span> Émission, transmission et réception d’une trame.</h1>
 <ol type="1">
 <li>Quand l’ordinateur d’Alice veut envoyer un message à celui de Bob :</li>
 </ol>
@@ -345,7 +349,7 @@ padding: 0.5em;
 <li>constate que la trame ne lui est pas destinée (numéro MAC différent)</li>
 <li>et l’ignore.</li>
 </ul>
-<h1 id="ladresse-de-diffusion"><span class="header-section-number">6</span> L’adresse de diffusion</h1>
+<h1 data-number="6" id="ladresse-de-diffusion"><span class="header-section-number">6</span> L’adresse de diffusion</h1>
 <p>Une adresse spéciale, dite “adresse de diffusion” (<em>broadcast address</em>) sert à envoyer une même trame à toutes les machines. C’est l’adresse MAC <code>ff:ff:ff:ff:ff:ff</code>, qui ne comporte que des 1 en binaire.</p>
 <p>En mode normal, une carte réseau qui reçoit une trame, l’accepte donc si l’adresse de destination est</p>
 <ul>
@@ -353,7 +357,7 @@ padding: 0.5em;
 <li>ou l’adresse de diffusion.</li>
 </ul>
 <p><strong>Note</strong>: une carte réseau peut être mise dans un mode spécial (<em>promiscuous mode</em>) dans lequel toutes les trames sont acceptées. C’est ce qui sert à “sniffer le réseau”, une occupation fréquente pendant les travaux pratiques pour comprendre ce qui se passe.</p>
-<h1 id="a-qui-dois-je-écrire-protocole-de-résolution-dadresse."><span class="header-section-number">7</span> A qui dois-je écrire ? Protocole de résolution d’adresse.</h1>
+<h1 data-number="7" id="a-qui-dois-je-écrire-protocole-de-résolution-dadresse."><span class="header-section-number">7</span> A qui dois-je écrire ? Protocole de résolution d’adresse.</h1>
 <p>Pour que ça fonctionne, il faut que chaque machine connaisse les adresses MAC de ses interlocuteurs. C’est difficilement gérable (administrativement) sur un vrai réseau.</p>
 <p>On adopte donc un autre dispositif : chaque machine a un “identifiant” connu publiquement. Ici on va dire que c’est son nom, pour simplifier.</p>
 <p><strong>Exemple</strong> : Quand “alice” veut envoyer un message à “bob”, et qu’elle ne connaît pas déjà son adresse MAC :</p>
@@ -377,24 +381,24 @@ padding: 0.5em;
 <li>annonces périodiques pour ceux qui n’étaient pas là ;</li>
 <li>une machine peut servir de <strong>mandataire</strong>, et répondre pour d’autres.</li>
 </ul>
-<h1 id="annexes"><span class="header-section-number">8</span> Annexes</h1>
-<h2 id="fonctionnement-dun-commutateur"><span class="header-section-number">8.1</span> Fonctionnement d’un commutateur</h2>
+<h1 data-number="8" id="annexes"><span class="header-section-number">8</span> Annexes</h1>
+<h2 data-number="8.1" id="fonctionnement-dun-commutateur"><span class="header-section-number">8.1</span> Fonctionnement d’un commutateur</h2>
 <p>De nos jours, les boîtiers de connexion d’un réseau local sont généralement de type “commutateur” (<strong>switch</strong>) :</p>
 <p>Un commutateur s’arrange pour réduire le trafic en ne réexpédiant les trames que sur un seul port, si c’est possible.</p>
-<h3 id="le-problème-1"><span class="header-section-number">8.1.1</span> Le problème</h3>
+<h3 data-number="8.1.1" id="le-problème-1"><span class="header-section-number">8.1.1</span> Le problème</h3>
 <p>Dans un réseau local d’une certaine taille (à partir de quelques dizaines de poste), comportant plusieurs boîtiers, on souhaite éviter que toutes les trames soient réexpédiées à toutes les machines.</p>
 <p>Deux raisons :</p>
 <ul>
 <li><p>la <strong>sécurité</strong>, parce qu’une autre machine Eve (pour <em>earsdropping</em>, laisser traîner les oreilles) pourrait espionner les conversations en mettant sa carte en mode “promiscuité”.</p></li>
 <li><p>le <strong>volume de trafic</strong> : on évite de faire circuler inutilement le trafic pour réduire la charge des équipements qui ne sont pas concernés.</p></li>
 </ul>
-<h3 id="solution-table-dadresses-mac"><span class="header-section-number">8.1.2</span> Solution : table d’adresses MAC</h3>
+<h3 data-number="8.1.2" id="solution-table-dadresses-mac"><span class="header-section-number">8.1.2</span> Solution : table d’adresses MAC</h3>
 <p>Lorsque la machine “Alice”, connectée à un certain port <code>p</code> d’un commutateur, envoie une trame sur le réseau local, cette trame a comme <strong>adresse d’origine</strong> l’adresse MAC d’Alice.</p>
 <p>Le commutateur apprend donc que ce port <code>p</code> permet de joindre Alice.</p>
 <p>Dans le commutateur, une table va mémoriser la correspondance entre les adresses MAC connues et les numéros de ports.</p>
 <p>Ensuite, quand le commutateur devra faire passer une trame dont l’<strong>adresse de destination</strong> est connue, il saura par quel port l’acheminer.</p>
 <p>Ceci réduit la charge du réseau, et limite les possibilités d’espionnage par écoute du trafic.</p>
-<h3 id="oublier-et-réapprendre"><span class="header-section-number">8.1.3</span> Oublier et réapprendre</h3>
+<h3 data-number="8.1.3" id="oublier-et-réapprendre"><span class="header-section-number">8.1.3</span> Oublier et réapprendre</h3>
 <p>Sur un commutateur, les ports ne sont pas affectés de façon définitive. Avec le dispositif précédent, que se passe-t-il si le technicien réseau débranche Alice du port 2 pour la rebrancher sur le port 5 ?</p>
 <p>A priori, les trames destinées à Alice continueront d’être expédiées sur le port 2. Et n’arriveront jamais à destination.</p>
 <p>Pour éviter ce problème, le commutateur peut <strong>oublier</strong> la correspondance entre le port 2 et l’adresse MAC d’Alice, si Alice n’a rien émis depuis un certain temps (typiquement, 1 ou 2 minutes). Les données de la table ont une <strong>durée de vie limitée</strong>.</p>

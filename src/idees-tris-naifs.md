@@ -1,5 +1,5 @@
 % Idées à la base des algorithmes de tris naïfs
-% Michel Billaud (`michel.billaud@u-bordeaux.fr`, `michel.billaud@laposte.net`)
+% Michel Billaud (`michel.billaud@laposte.net`)
 % 30 mai 2020
 
 

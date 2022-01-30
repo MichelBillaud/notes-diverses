@@ -4,76 +4,77 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <meta name="author" content="Michel Billaud (michel.billaud@u-bordeaux.fr, michel.billaud@laposte.net)" />
+  <meta name="author" content="Michel Billaud (michel.billaud@laposte.net)" />
   <title>Programmation: Comment demander de l’aide ?</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
-  </style>
-  <style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(title);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
-  }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
   </style>
   <style type="text/css">a.sourceLine {
 display: inline-block;
@@ -322,12 +323,12 @@ padding: 0.5em;
 </style>
 </head>
 <body>
-<header>
+<header id="title-block-header">
 <h1 class="title">Programmation: Comment demander de l’aide ?</h1>
-<p class="author">Michel Billaud (michel.billaud@u-bordeaux.fr, michel.billaud@laposte.net)</p>
+<p class="author">Michel Billaud (michel.billaud@laposte.net)</p>
 <p class="date">3 juin 2020</p>
 </header>
-<nav id="TOC">
+<nav id="TOC" role="doc-toc">
 <ul>
 <li><a href="#le-problème"><span class="toc-section-number">1</span> Le problème</a></li>
 <li><a href="#catégorie-de-problème"><span class="toc-section-number">2</span> Catégorie de problème</a></li>
@@ -343,10 +344,10 @@ padding: 0.5em;
 <li>Les notes sont publiées dans <a href="https://www.mbillaud.fr/notes/" class="uri">https://www.mbillaud.fr/notes/</a></li>
 <li>Sources dans <a href="https://github.com/MichelBillaud/notes-diverses" class="uri">https://github.com/MichelBillaud/notes-diverses</a></li>
 </ul>
-<h1 id="le-problème"><span class="header-section-number">1</span> Le problème</h1>
+<h1 data-number="1" id="le-problème"><span class="header-section-number">1</span> Le problème</h1>
 <p>Vous travaillez sur un exercice ou un projet de programmation. Ça ne marche pas. Vous ne voyez pas pourquoi. Vous voudriez demandez l’aide de quelqu’un. Bonne idée.</p>
 <p>Il ne reste plus qu’à lui écrire. Mais, faute d’être extra-lucide, il/elle ne pourra vous aider qu’à partir des éléments que vous lui fournissez.</p>
-<h1 id="catégorie-de-problème"><span class="header-section-number">2</span> Catégorie de problème</h1>
+<h1 data-number="2" id="catégorie-de-problème"><span class="header-section-number">2</span> Catégorie de problème</h1>
 <p>Si vous débutez, vous affrontez de nombreux problèmes à la fois. C’est normal.</p>
 <p>Donc commencez par préciser clairement si il s’agit</p>
 <ul>
@@ -354,7 +355,7 @@ padding: 0.5em;
 <li>d’un problème d’<strong>exécution</strong> (ça ne marche pas comme vous voulez),</li>
 <li>ou d’un problème de <strong>conception</strong> (vous ne voyez pas comment faire telle ou telle chose.</li>
 </ul>
-<h1 id="problème-de-compilation"><span class="header-section-number">3</span> Problème de compilation</h1>
+<h1 data-number="3" id="problème-de-compilation"><span class="header-section-number">3</span> Problème de compilation</h1>
 <p>Vous avez tapé du code source, vous lancez la compilation, il y a un message (en rouge, d’habitude) qui dit qu’il y a un problème.</p>
 <p>Pour avoir de l’aide à ce sujet, il faut que vous montriez au moins :</p>
 <ul>
@@ -364,7 +365,7 @@ padding: 0.5em;
 <p>Parfois, il n’est pas inutile d’indiquer aussi la <strong>ligne de commande</strong> que vous avez utilisée pour faire compiler le code source.</p>
 <p>Attendez-vous à recevoir comme réponse “à votre avis, que veut dire le message que vous avez copié-collé ?”, qui signifie que</p>
 <ul>
-<li>l’erreur semble bien être causée par la ligne que vous indiquez,</li>
+<li><p>l’erreur semble bien être causée par la ligne que vous indiquez,</p></li>
 <li><p>elle est triviale</p></li>
 <li><p>que vous auriez dû lire le message, qui vous décrit exactement le problème.</p></li>
 </ul>
@@ -372,13 +373,13 @@ padding: 0.5em;
 <ol type="1">
 <li>Soit le code source <code>b.c</code></li>
 </ol>
-<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><a class="sourceLine" id="cb1-1" title="1"><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></a>
-<a class="sourceLine" id="cb1-2" title="2"></a>
-<a class="sourceLine" id="cb1-3" title="3"><span class="dt">int</span> main()</a>
-<a class="sourceLine" id="cb1-4" title="4">{</a>
-<a class="sourceLine" id="cb1-5" title="5">    <span class="dt">int</span> pi = <span class="fl">3.14</span>;</a>
-<a class="sourceLine" id="cb1-6" title="6">    printf(<span class="st">&quot;pi = %f</span><span class="sc">\n</span><span class="st">&quot;</span>, pi);</a>
-<a class="sourceLine" id="cb1-7" title="7">}</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="dt">int</span> main()</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a>{</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>    <span class="dt">int</span> pi = <span class="fl">3.14</span>;</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>    printf(<span class="st">&quot;pi = %f</span><span class="sc">\n</span><span class="st">&quot;</span>, pi);</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>}</span></code></pre></div>
 <ol start="2" type="1">
 <li>je le compile avec</li>
 </ol>
@@ -395,17 +396,17 @@ but argument 2 has type ‘int’ [-Wformat=]
 <ol start="4" type="1">
 <li>C’est la faute à Linux. Je vais réinstaller Windows.</li>
 </ol>
-<h1 id="fournir-un-code-lisible"><span class="header-section-number">4</span> Fournir un code lisible</h1>
+<h1 data-number="4" id="fournir-un-code-lisible"><span class="header-section-number">4</span> Fournir un code lisible</h1>
 <p>Le code que vous fournissez doit toujours être <strong>parfaitement indenté</strong>, parce qu’une mauvaise indentation handicape la lecture, donc la recherche et la correction des erreurs.</p>
 <ul>
 <li>netbeans : <code>shift-alt-F</code></li>
 <li>visual studio code : <code>shift-controle-I</code></li>
 </ul>
-<h1 id="description-dun-problème-dexécution"><span class="header-section-number">5</span> Description d’un problème d’exécution</h1>
+<h1 data-number="5" id="description-dun-problème-dexécution"><span class="header-section-number">5</span> Description d’un problème d’exécution</h1>
 <p>La compilation de votre code source s’est apparemment bien passée, mais “ça ne marche pas”.</p>
 <p>Ce n’est pas une description suffisante.</p>
 <ul>
-<li>on ne sait pas ce que votre programme est censé faire,</li>
+<li><p>on ne sait pas ce que votre programme est censé faire,</p></li>
 <li><p>il marche peut être dans certains cas, donc si vous avez constaté qu’il ne marche pas, donnez un <strong>scénario d’erreur</strong> avec</p>
 <ul>
 <li>éventuellement les données que vous fournissez,</li>
@@ -428,14 +429,14 @@ pi = 0.000000</code></pre>
 <p><strong>La réponse</strong> : sur cet exemple, on vous suggèrera de commencer par <strong>recompiler le programme</strong> avec les options qui produisent un maximum de messages d’avertissement.</p>
 <p>N’oubliez pas que les enseignant-e-s sont là pour vous pousser vers une <strong>démarche de travail correcte</strong>, qui vous permettra d’être autonomes. Donc à moins d’être pressés de se débarrasser de vous et d’être sûr de ne plus jamais vous revoir - ils ne vont pas vous répondre directement “remplacez <code>int</code> par <code>double</code> ligne 6”.</p>
 <p>En fait, vos enseignants ont le <em>devoir</em> de se montrer si exaspérants à vous retourner des questions au lieu de répondre, que vous préfériez vous les poser tout seul directement. C’est un métier sympa, en fait.</p>
-<h1 id="problème-dexécution-utilisez-le-compilateur"><span class="header-section-number">6</span> Problème d’exécution : utilisez le compilateur</h1>
+<h1 data-number="6" id="problème-dexécution-utilisez-le-compilateur"><span class="header-section-number">6</span> Problème d’exécution : utilisez le compilateur</h1>
 <p>Si vous aviez utilisé les options de compilation recommandées, le compilateur vous aurait signalé des problèmes dans votre code.</p>
 <p>Donc :</p>
 <ul>
 <li>compilez <strong>toujours</strong> avec les options qui produisent le <strong>maximum</strong> de messages d’avertissement (En C ou C++, <code>-Wall -Wextra</code>, par exemple).</li>
 <li>tant que vous ne les avez pas <strong>toutes</strong> corrigées, inutile de lancer l’exécution.</li>
 </ul>
-<h1 id="scénario-derreur-minimal"><span class="header-section-number">7</span> Scénario d’erreur minimal</h1>
+<h1 data-number="7" id="scénario-derreur-minimal"><span class="header-section-number">7</span> Scénario d’erreur minimal</h1>
 <p>On a vu qu’il fallait fournir un <strong>scénario d’erreur</strong> pour décrire l’erreur.</p>
 <p>Ce scénario d’erreur doit être le <strong>plus petit possible</strong>. Si votre programme qui afficher un tableau de nombres dans l’ordre croissant ne marche pas sur un exemple à 10 éléments, cherchez <strong>activement</strong> des exemples plus petits. Il est assez probable qu’on puisse trouver un tableau à 2 ou 3 éléments pour lequel ça ne marche pas (voire un seul !).</p>
 <p>Intérêt double :</p>

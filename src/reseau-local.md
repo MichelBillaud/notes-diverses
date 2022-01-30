@@ -1,5 +1,5 @@
 % Transmission sur un réseau local
-% Michel Billaud (michel.billaud@u-bordeaux.fr,  michel.billaud@laposte.net)
+% Michel Billaud (michel.billaud@laposte.net)
 % 31 mai 2020
 
 

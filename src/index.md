@@ -1,6 +1,6 @@
 % Notes diverses
-% Michel Billaud (`michel.billaud@u-bordeaux.fr`, `michel.billaud@laposte.net`)
-% 9 janvier 2022
+% Michel Billaud (`michel.billaud@laposte.net`)
+% 30 janvier 2022
 
 
 # Licence
@@ -13,6 +13,15 @@ Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France]
 
 - Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
+
+# Corrigé du premier sujet d'épreuves pratiques NSI
+
+Le sujet se trouve sur la page
+<https://eduscol.education.fr/2661/banque-des-epreuves-pratiques-de-specialite-nsi>,
+dans <https://eduscol.education.fr/document/33178/download>
+
+Document : [corrige-22-NSI-01.html](corrige-22-NSI-01.html)
+
 
 # Configurer CodeBlocks
 

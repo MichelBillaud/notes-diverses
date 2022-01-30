@@ -1,5 +1,5 @@
 % Programmation: Comment demander de l'aide ?
-% Michel Billaud (michel.billaud@u-bordeaux.fr,  michel.billaud@laposte.net)
+% Michel Billaud (michel.billaud@laposte.net)
 % 3 juin 2020
 
 

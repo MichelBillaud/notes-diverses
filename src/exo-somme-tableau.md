@@ -1,5 +1,5 @@
 % Programmation: Exercice "somme et moyenne d'un tableau".
-% Michel Billaud (michel.billaud@u-bordeaux.fr,  michel.billaud@laposte.net)
+% Michel Billaud (michel.billaud@laposte.net)
 % 9 juin 2020
 
 

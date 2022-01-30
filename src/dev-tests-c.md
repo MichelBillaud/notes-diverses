@@ -1,5 +1,5 @@
 % Développer à partir des tests
-% Michel Billaud (michel.billaud@u-bordeaux.fr,  michel.billaud@laposte.net)
+% Michel Billaud (michel.billaud@laposte.net)
 % 8 juin 2020
 
 ![](https://i.creativecommons.org/l/by-nc-sa/2.0/fr/88x31.png)

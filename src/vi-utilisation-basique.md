@@ -1,5 +1,5 @@
 % L'éditeur vi, utilisation minimale.
-% Michel Billaud (michel.billaud@u-bordeaux.fr,  michel.billaud@laposte.net)
+% Michel Billaud (michel.billaud@laposte.net)
 % 7 juin 2020
 
 
