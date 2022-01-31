@@ -14,6 +14,25 @@ Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France]
 - Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
 
+
+# Corrigé sujet 4 épreuves pratiques NSI
+
+Sujet dans <https://eduscol.education.fr/document/33187/download> :
+
+- encodage par différence d'une suite de nombres
+- affichage d'un arbre d'expression arithmétique sous forme parenthésée.
+
+Document : [corrige-22-NSI-04.html](corrige-22-NSI-04.html)
+
+# Corrigé sujet 3 épreuves pratiques NSI
+
+Sujet dans <https://eduscol.education.fr/document/33184/download> :
+
+- encodage par différence d'une suite de nombres
+- affichage d'un arbre d'expression arithmétique sous forme parenthésée.
+
+Document : [corrige-22-NSI-03.html](corrige-22-NSI-03.html)
+
 # Corrigé second sujet épreuves pratiques NSI
 
 Janvier 2022.
