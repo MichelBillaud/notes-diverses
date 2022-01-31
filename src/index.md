@@ -14,11 +14,27 @@ Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France]
 - Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
 
+# Corrigé second sujet épreuves pratiques NSI
+
+Janvier 2022.
+
+Sujet dans <https://eduscol.education.fr/document/33181/download> :
+
+- moyenne avec coefficients
+- triangle de pascal (programme à trous)
+
+Document : [corrige-22-NSI-02.html](corrige-22-NSI-02.html)
+
 # Corrigé du premier sujet d'épreuves pratiques NSI
 
 Le sujet se trouve sur la page
 <https://eduscol.education.fr/2661/banque-des-epreuves-pratiques-de-specialite-nsi>,
 dans <https://eduscol.education.fr/document/33178/download>
+
+Questions :
+
+- nombre d'occurrences d'un caractère dans une chaîne
+- rendu de monnaie (programme à trous)
 
 Document : [corrige-22-NSI-01.html](corrige-22-NSI-01.html)
 

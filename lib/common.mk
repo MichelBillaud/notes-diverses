@@ -10,7 +10,7 @@ PDF = $(addprefix $(PDFDIR)/,$(addsuffix .pdf,$(basename $(SRC))))
 all: $(HTML) $(PDF)
 
 $(HTMLDIR)/%.html: %.md $(CSS)
-	pandoc  -N --toc -t html5  -c $(CSS) --self-contained  $<  -o $@
+	pandoc  -N --toc -t html5  --mathml -c $(CSS) --self-contained  $<  -o $@
 
 $(PDFDIR)/%.2col.pdf: %.md
 	pandoc -t latex --pdf-engine=xelatex -N --toc --self-contained -V lang=fr -V papersize:a4 -V documentclass:extarticle -V classoption:twocolumn -o $@ $^
