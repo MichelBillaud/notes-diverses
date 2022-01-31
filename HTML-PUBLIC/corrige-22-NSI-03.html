@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Michel Billaud (michel.billaud@laposte.net)" />
+  <title>Corrigé Sujet 3 épreuve pratique NSI</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">a.sourceLine {
+display: inline-block;
+line-height: 1.25;
+}
+a.sourceLine {
+pointer-events: none;
+color: inherit;
+text-decoration: inherit;
+}
+a.sourceLine:empty {
+height: 1.2em;
+}
+.sourceCode {
+overflow: visible;
+}
+code.sourceCode {
+white-space: pre;
+position: relative;
+}
+div.sourceCode {
+margin: 1em 0;
+}
+pre.sourceCode {
+margin: 0;
+}
+@media screen {
+div.sourceCode {
+overflow: auto;
+}
+}
+@media print {
+code.sourceCode {
+white-space: pre-wrap;
+}
+a.sourceLine {
+text-indent: -1em;
+padding-left: 1em;
+}
+}
+pre.numberSource a.sourceLine {
+position: relative;
+left: -4em;
+}
+pre.numberSource a.sourceLine::before {
+content: attr(title);
+position: relative;
+left: -1em;
+text-align: right;
+vertical-align: baseline;
+border: none;
+pointer-events: all;
+display: inline-block;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+padding: 0 4px;
+width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource {
+margin-left: 3em;
+border-left: 1px solid #aaaaaa;
+padding-left: 4px;
+}
+div.sourceCode {}
+@media screen {
+a.sourceLine::before {
+text-decoration: underline;
+}
+}
+code span.al {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.an {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.at {
+color: #7d9029;
+}
+
+code span.bn {
+color: #40a070;
+}
+
+code span.bu {}
+
+code span.cf {
+color: #007020;
+font-weight: bold;
+}
+
+code span.ch {
+color: #4070a0;
+}
+
+code span.cn {
+color: #880000;
+}
+
+code span.co {
+color: #60a0b0;
+font-style: italic;
+}
+
+code span.cv {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.do {
+color: #ba2121;
+font-style: italic;
+}
+
+code span.dt {
+color: #902000;
+}
+
+code span.dv {
+color: #40a070;
+}
+
+code span.er {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.ex {}
+
+code span.fl {
+color: #40a070;
+}
+
+code span.fu {
+color: #06287e;
+}
+
+code span.im {}
+
+code span.in {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.kw {
+color: #007020;
+font-weight: bold;
+}
+
+code span.op {
+color: #666666;
+}
+
+code span.ot {
+color: #007020;
+}
+
+code span.pp {
+color: #bc7a00;
+}
+
+code span.sc {
+color: #4070a0;
+}
+
+code span.ss {
+color: #bb6688;
+}
+
+code span.st {
+color: #4070a0;
+}
+
+code span.va {
+color: #19177c;
+}
+
+code span.vs {
+color: #4070a0;
+}
+
+code span.wa {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+
+:root {
+--title-color: #202080;
+--source-bg-color: rgb(240, 240, 255);
+}
+h1, h2, h3, h4, h5, h6 {
+border-bottom: solid 1px silver;
+color: var(--title-color);
+}
+body {
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div.sourceCode {
+background-color: var(--source-bg-color);
+padding: 1em;
+}
+#TOC {
+padding: 0.5em;
+border: solid 1px silver;
+}
+#TOC ul {
+list-style-type: none;
+padding-left: 1em;
+}
+nav:before {
+text-indent: 2em;
+content: "Sommaire";
+color: var(--title-color);
+font-weight: bold;
+font-size: large;
+}
+#TOC a {
+text-decoration: none;
+}
+header {
+text-align: center;
+}
+.title {
+}
+.author, .date {
+font-style: italic;
+}
+table, th, td {
+border-collapse: collapse;
+border: solid black 1px;
+padding: 0.5em;
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Corrigé Sujet 3 épreuve pratique NSI</h1>
+<p class="author">Michel Billaud (<code>michel.billaud@laposte.net</code>)</p>
+<p class="date">31 janvier 2022</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#licence"><span class="toc-section-number">1</span> Licence</a></li>
+<li><a href="#le-sujet"><span class="toc-section-number">2</span> Le sujet</a></li>
+<li><a href="#exercice-1-delta-encoding"><span class="toc-section-number">3</span> Exercice 1 : delta encoding</a>
+<ul>
+<li><a href="#résolution"><span class="toc-section-number">3.1</span> Résolution</a></li>
+<li><a href="#solution"><span class="toc-section-number">3.2</span> Solution</a></li>
+</ul></li>
+<li><a href="#solution-2-boucle-sur-indices"><span class="toc-section-number">4</span> Solution 2, boucle sur indices</a></li>
+<li><a href="#exercice-2-représentation-infixe-de-larbre-dune-expression-arithmétique"><span class="toc-section-number">5</span> Exercice 2 : représentation infixe de l’arbre d’une expression arithmétique</a>
+<ul>
+<li><a href="#résolution-1"><span class="toc-section-number">5.1</span> Résolution</a></li>
+<li><a href="#critique-de-lexercice-la-méthode-__str__"><span class="toc-section-number">5.2</span> Critique de l’exercice : la méthode <code>__str__</code></a></li>
+<li><a href="#critique-de-lexercice-mauvais-usage-de-labstraction."><span class="toc-section-number">5.3</span> Critique de l’exercice : mauvais usage de l’abstraction.</a></li>
+<li><a href="#hors-sujet-utilisation-de-deux-classes"><span class="toc-section-number">5.4</span> Hors sujet : utilisation de deux classes</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 data-number="1" id="licence"><span class="header-section-number">1</span> Licence</h1>
+<p><img src="data:image/png;base64,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" /></p>
+<p>Cette collection de notes est mise à disposition selon les termes de la <a href="http://creativecommons.org/licenses/by-nc-sa/2.0/fr/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France</a>.</p>
+<ul>
+<li>Les notes sont publiées dans <a href="https://www.mbillaud.fr/notes/" class="uri">https://www.mbillaud.fr/notes/</a></li>
+<li>Sources dans <a href="https://github.com/MichelBillaud/notes-diverses" class="uri">https://github.com/MichelBillaud/notes-diverses</a></li>
+</ul>
+<h1 data-number="2" id="le-sujet"><span class="header-section-number">2</span> Le sujet</h1>
+<p>Se trouve sur la page <a href="https://eduscol.education.fr/2661/banque-des-epreuves-pratiques-de-specialite-nsi" class="uri">https://eduscol.education.fr/2661/banque-des-epreuves-pratiques-de-specialite-nsi</a>, dans <a href="https://eduscol.education.fr/document/33184/download" class="uri">https://eduscol.education.fr/document/33184/download</a></p>
+<h1 data-number="3" id="exercice-1-delta-encoding"><span class="header-section-number">3</span> Exercice 1 : delta encoding</h1>
+<p><strong>Sujet résumé</strong> : écrire une fonction <code>delta</code> qui, à partir d’une liste de nombres, retourner la liste des différences entre une donnée et celle qui la précède. Exemples</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="op">&gt;&gt;&gt;</span> delta([<span class="dv">1000</span>, <span class="dv">800</span>, <span class="dv">802</span>, <span class="dv">1000</span>, <span class="dv">1003</span>])</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>[<span class="dv">1000</span>, <span class="op">-</span><span class="dv">200</span>, <span class="dv">2</span>, <span class="dv">198</span>, <span class="dv">3</span>]</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="op">&gt;&gt;&gt;</span> delta([<span class="dv">42</span>])</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="dv">42</span></span></code></pre></div>
+<h2 data-number="3.1" id="résolution"><span class="header-section-number">3.1</span> Résolution</h2>
+<p>On ne saurait trop remercier le rédacteur du sujet qui prend la peine de donner l’exemple d’une liste avec une seule donnée pour qu’on pense à ce cas particulier :</p>
+<ul>
+<li>la première donnée n’a pas de prédécesseur,</li>
+<li>et la première valeur du résultat est la première donnée.</li>
+</ul>
+<p>Faut-il en faire un cas particulier dans le programme ? Les choses se simplifient si on a l’idée de considérer que</p>
+<ul>
+<li>chaque donnée a un prédécesseur</li>
+<li>y compris pour la première, le prédécesseur fictif O.</li>
+</ul>
+<h2 data-number="3.2" id="solution"><span class="header-section-number">3.2</span> Solution</h2>
+<p>On s’en tire facilement avec une boucle sur la liste, et une variable qui sert à mémoriser le prédecesseur</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a>derniere <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="cf">for</span> donnee <span class="kw">in</span> liste:</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>   ...</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>   derniere <span class="op">=</span> donnee</span></code></pre></div>
+<p>à chaque étape, on ajoute un élément au résultat, une liste qui est initialement vide. Cet élément est la différence entre la donnée et la précédente</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>resultat <span class="op">=</span> []                  <span class="co"># avant la boucle</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>...</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>resultat <span class="op">=</span> donnee <span class="op">-</span> derniere   <span class="co"># dans la boucle</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>....</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="cf">return</span> resultat                <span class="co"># à la fin</span></span></code></pre></div>
+<p>Here we go</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">def</span> delta(liste):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>    resultat <span class="op">=</span> []</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>    derniere <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>    <span class="cf">for</span> donnee <span class="kw">in</span> liste:</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>       resultat.append(donnee <span class="op">-</span> derniere)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>       derniere <span class="op">=</span> donnee</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a>    <span class="cf">return</span> resultat</span></code></pre></div>
+<h1 data-number="4" id="solution-2-boucle-sur-indices"><span class="header-section-number">4</span> Solution 2, boucle sur indices</h1>
+<p>On peut aussi avoir l’idée d’utiliser les indices, parce que</p>
+<p>En remarquant que <code>resultat[i]</code> est égal à <code>liste[i] - liste[i-1]</code>, on peut aussi avoir l’idée de faire une boucle sur les indices.</p>
+<p>Boucle qui partira à l’indice 1, puisque <code>resultat[0]</code> doit être traité comme un cas particulier (<code>liste[-1]</code> n’existe pas) :</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">def</span> delta2(liste):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>    resultat <span class="op">=</span> [ liste[<span class="dv">0</span>] ]                     <span class="co"># cas particulier</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(liste)):              <span class="co"># de 1 à taille-1</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>        resultat.append(liste[i] <span class="op">-</span> liste[i<span class="op">-</span><span class="dv">1</span>])</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>    <span class="cf">return</span> resultat</span></code></pre></div>
+<h1 data-number="5" id="exercice-2-représentation-infixe-de-larbre-dune-expression-arithmétique"><span class="header-section-number">5</span> Exercice 2 : représentation infixe de l’arbre d’une expression arithmétique</h1>
+<p><strong>Sujet résumé</strong> : Compléter le code suivant</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">def</span> expression_infixe(e):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>    s <span class="op">=</span> ...                            <span class="co"># 1</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>    <span class="cf">if</span> e.gauche <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>        s <span class="op">=</span> s <span class="op">+</span> expression_infixe(...) <span class="co"># 2</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>    s <span class="op">=</span> s <span class="op">+</span> ...                        <span class="co"># 3</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>    <span class="cf">if</span> ... <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:                <span class="co"># 4</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>        s <span class="op">=</span> s <span class="op">+</span> ...                    <span class="co"># 5</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>    <span class="cf">if</span> ...:                            <span class="co"># 6</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>        <span class="cf">return</span> s</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>    </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a>    <span class="cf">return</span> <span class="st">&#39;(&#39;</span><span class="op">+</span> s <span class="op">+</span><span class="st">&#39;)&#39;</span></span></code></pre></div>
+<h2 data-number="5.1" id="résolution-1"><span class="header-section-number">5.1</span> Résolution</h2>
+<p>Si on reprend le sujet, un <code>Noeud</code> (classe fournie) peut représenter deux types d’objets</p>
+<ul>
+<li>les nombres, qui sont des feuilles</li>
+<li>l’application d’un opérateur binaire à deux sous expressions</li>
+</ul>
+<p>D’après l’exemple fourni, on infère que</p>
+<ul>
+<li>dans le premier cas, la valeur du nombre est dans l’attribut <code>valeur</code> (ce qui est raisonnable) et les attributs <code>gauche</code> et <code>droite</code> sont égaux à <code>None</code> ;</li>
+<li>dans le second cas, <code>valeur</code> contient l’opérateur, et les noeuds des sous-expressions sont référencées par <code>gauche</code> et <code>droite</code>.</li>
+</ul>
+<p>Ce qu’il faut produire :</p>
+<ul>
+<li>dans le cas d’un nombre : le nombre lui-même ;</li>
+<li>dans le cas d’une expression : une parenthèse ouvrante, la sous-expression de gauche, l’operateur, la sous-expression de droite, et une parenthèse fermante.</li>
+</ul>
+<p>Une solution simple, directe et de bon goût serait de traduire ceci en employant la méthode <code>est_une_feuille</code> aimablement fournie</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">def</span> expression_infixe(n):  </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>    <span class="cf">if</span> n.est_une_feuille() :</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>        <span class="cf">return</span> <span class="bu">str</span>(n.valeur)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>    <span class="cf">else</span>:</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>        <span class="cf">return</span> <span class="st">&quot;(&quot;</span> <span class="op">+</span> expression_infixe(n.gauche) <span class="op">\</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>               <span class="op">+</span> n.valeur <span class="op">\</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>               <span class="op">+</span> expression_infixe(n.droit) <span class="op">+</span> <span class="st">&quot;)&quot;</span></span></code></pre></div>
+<p><strong>Remarque</strong> : Le paramètre est renommé <code>n</code> parce qu’il s’agit d’un <code>Noeud</code> et que “noeud” commence par un “n”. Mettre <code>e</code> suggère qu’il s’agit d’une expression, mais le sujet utilise le mot “expression” à propos de la représentation textuelle. A témoin <code>expression_infixe</code> qui retourne une chaîne. À un moment, il faut essayer d’être cohérent.</p>
+<p>Mais le pire est à venir : puisqu’il s’agit d’un sujet d’examen, il faut se plier aux lubies de l’examinateur, et faire rentrer les belles rondeurs de notre solution dans les trous carrés mis à notre disposition.</p>
+<p>Raisonnement :</p>
+<ul>
+<li><p>le <code>return</code> final se charge d’ajouter des parenthèses à <code>s</code>. On ne va donc pas le faire ailleurs. Et ça permet de conclure que <code>s</code> doit être une chaîne.</p></li>
+<li><p>Et on déduit que si on arrive à ce <code>return</code>, c’est que le <code>return</code> précédent s’est occupé du cas où il n’y avait pas de parenthèses : les nombres.</p></li>
+<li><p>pour le trou 6 on aurait donc</p></li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a>   <span class="cf">if</span> e.est_une_feuille():              <span class="co">#6</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>        <span class="cf">return</span> s</span></code></pre></div>
+<ul>
+<li><p>mais pour cela il faut que <code>s</code> contienne la chaine qui représente la valeur (voir plus loin)</p></li>
+<li><p>pour le trou 2, on ajoute dans une expression infixe après avoir testé <code>e.gauche</code></p></li>
+<li><p>on peut donc imaginer qu’il s’agit de l’expression de gauche,</p></li>
+</ul>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a> <span class="cf">if</span> e.gauche <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>        s <span class="op">=</span> s <span class="op">+</span> expression_infixe(e.gauche)   <span class="co">#2</span></span></code></pre></div>
+<ul>
+<li>on a vu que <code>s</code> était une chaîne. Elle est initialisé dans le trou 1, on l’étend à droite en 2, 3 et 5, et on l’encadre à la fin.</li>
+<li>Donc, puisqu’en 2 on y met l’expression de gauche, qui ne sere précédée par rien sinon la parenthèse ouvrante ajoutée en bout de course, on déduit que <code>s</code> est nécessairement la chaîne vide au départ</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a>       s <span class="op">=</span> <span class="st">&#39;&#39;</span>                    <span class="co">#1</span></span></code></pre></div>
+<ul>
+<li>le sort des trous 5 et 6 est réglé par symétrie</li>
+</ul>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a> <span class="cf">if</span> e.droit <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:                     <span class="co"># 4</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>        s <span class="op">=</span> s <span class="op">+</span> expression_infixe(e.droit)   <span class="co"># 5</span></span></code></pre></div>
+<ul>
+<li>ne reste plus qu’à régler que le cas de la valeur dans le trou 3. Or il y a un petit problème : avec la représentation choisie pour les données, l’attribut <code>valeur</code> contient soit un nombre, soit une chaine. Et on ne peut pas concaténer un nombre à <code>s</code>. Il faut donc une conversion</li>
+</ul>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a>  s <span class="op">=</span> s <span class="op">+</span> <span class="bu">str</span>(e.valeur)                     <span class="co"># 3</span></span></code></pre></div>
+<p>Et donc voila :</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="kw">def</span> expression_infixe(e):</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a>    s <span class="op">=</span> <span class="st">&#39;&#39;</span>                                   <span class="co">#1</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a>    <span class="cf">if</span> e.gauche <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a>        s <span class="op">=</span> s <span class="op">+</span> expression_infixe(e.gauche)  <span class="co">#2</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a>    s <span class="op">=</span> s <span class="op">+</span> <span class="bu">str</span>(e.valeur)                    <span class="co">#3</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true"></a>    <span class="cf">if</span> e.droit <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:                  <span class="co">#4</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true"></a>        s <span class="op">=</span> s <span class="op">+</span> expression_infixe(e.droit)   <span class="co">#5</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true"></a>    <span class="cf">if</span> e.est_une_feuille():                  <span class="co">#6</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true"></a>        <span class="cf">return</span> s</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true"></a>    <span class="cf">return</span> <span class="st">&#39;(&#39;</span><span class="op">+</span> s <span class="op">+</span><span class="st">&#39;)&#39;</span></span></code></pre></div>
+<h2 data-number="5.2" id="critique-de-lexercice-la-méthode-__str__"><span class="header-section-number">5.2</span> Critique de l’exercice : la méthode <code>__str__</code></h2>
+<p>Croyant certainement bien faire, le rédacteur du sujet a fourni une méthode <code>__str__</code> qui fabrique une représentation sous forme de chaine de la valeur d’un noeud, et permettrait de remplir le trou 3 ainsi</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a>    s <span class="op">=</span> s <span class="op">+</span> e                    <span class="co">#3</span></span></code></pre></div>
+<p>La méthode <code>__str__</code> est là pour fournir la représentation textuelle d’un objet. Dans la représentation textuelle d’un “noeud binaire”, les sous-expressions doivent être représentées.</p>
+<p>Dévoyer <code>__str__</code> pour en faire un accesseur/convertisseur de type pour un attribut en particulier, c’est une idée tordue.</p>
+<h2 data-number="5.3" id="critique-de-lexercice-mauvais-usage-de-labstraction."><span class="header-section-number">5.3</span> Critique de l’exercice : mauvais usage de l’abstraction.</h2>
+<p>Quand, dans la définition d’un type par une classe, on introduit une méthode, c’est avec l’objectif de fournir une <strong>abstraction</strong> qui permet de manipuler l’objet sans revenir aux détails d’implémentation.</p>
+<p>Dans <code>expression_infixe</code>, on ne devrait pas tester</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="cf">if</span> e.gauche <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span></code></pre></div>
+<p>mais</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="cf">if</span> <span class="kw">not</span> e.est_une feuille():</span></code></pre></div>
+<p>Si on le fait, on obtient</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="kw">def</span> expression_infixe(e):</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a>    s <span class="op">=</span> <span class="st">&#39;&#39;</span>                                   <span class="co">#1</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a>    <span class="cf">if</span> <span class="kw">not</span> e.est_une_feuille():</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true"></a>        s <span class="op">=</span> s <span class="op">+</span> expression_infixe(e.gauche)  <span class="co">#2</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true"></a>    s <span class="op">=</span> s <span class="op">+</span> <span class="bu">str</span>(e.valeur)                    <span class="co">#3</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true"></a>    <span class="cf">if</span> <span class="kw">not</span> e.est_une_feuille():              <span class="co">#4</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true"></a>        s <span class="op">=</span> s <span class="op">+</span> expression_infixe(e.droit)   <span class="co">#5</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true"></a>    <span class="cf">if</span> e.est_une_feuille():                  <span class="co">#6</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true"></a>        <span class="cf">return</span> s</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true"></a>    <span class="cf">return</span> <span class="st">&#39;(&#39;</span><span class="op">+</span> s <span class="op">+</span><span class="st">&#39;)</span></span></code></pre></div>
+<p>qu’on montre bien qu’on s’embarque dans des complications, en testant 3 fois la même chose, dans le but irraisonné d’avoir l’instruction 3 en commun.</p>
+<p>En séparant les cas dès le départ</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a><span class="kw">def</span> expression_infixe(e):</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true"></a>    <span class="cf">if</span> e.est_une_feuille():</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true"></a>        s <span class="op">=</span> <span class="bu">str</span>(e.valeur)                  <span class="co"># conversion</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true"></a>    <span class="cf">else</span>:</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true"></a>        s  expression_infixe(e.gauche) </span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true"></a>        s <span class="op">=</span> s <span class="op">+</span> e.valeur                     <span class="co"># chaine   </span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true"></a>        s <span class="op">=</span> s <span class="op">+</span> expression_infixe(e.droit)  </span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true"></a>        s <span class="op">=</span> <span class="st">&#39;(&#39;</span> <span class="op">+</span> s <span class="op">+</span> <span class="st">&#39;)&#39;</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true"></a>    <span class="cf">return</span> s</span></code></pre></div>
+<h2 data-number="5.4" id="hors-sujet-utilisation-de-deux-classes"><span class="header-section-number">5.4</span> Hors sujet : utilisation de deux classes</h2>
+<p>En utilisant 2 classes “basiques” pour implémenter les deux types d’arbres</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="kw">class</span> Nombre:</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, valeur):</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true"></a>        <span class="va">self</span>.valeur <span class="op">=</span> valeur</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true"></a><span class="kw">class</span> Binaire:</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, gauche, operateur, droite):</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true"></a>        <span class="va">self</span>.gauche <span class="op">=</span> gauche</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true"></a>        <span class="va">self</span>.operateur <span class="op">=</span> operateur</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true"></a>        <span class="va">self</span>.droite <span class="op">=</span> droite</span></code></pre></div>
+<p>on a aussi une solution élégante</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="kw">def</span> infixe(arbre):</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true"></a>    <span class="cf">if</span> <span class="bu">isinstance</span>(arbre, Nombre):</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true"></a>        <span class="cf">return</span> <span class="bu">str</span>(arbre.valeur)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true"></a>    <span class="cf">elif</span> <span class="bu">isinstance</span>(arbre, Binaire):</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true"></a>        <span class="cf">return</span> <span class="st">&#39;(&#39;</span> <span class="op">+</span> infixe(arbre.gauche)<span class="op">\</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true"></a>            <span class="op">+</span> arbre.operateur <span class="op">\</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true"></a>            <span class="op">+</span> infixe(arbre.droite) <span class="op">+</span> <span class="st">&#39;)&#39;</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true"></a>    <span class="cf">else</span>:</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true"></a>        <span class="cf">raise</span> <span class="pp">RuntimeError</span>(<span class="st">&quot;Type invalide&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true"></a>exemple <span class="op">=</span> Binaire( Binaire(Nombre(<span class="dv">3</span>), <span class="st">&#39;*&#39;</span>, Binaire(Nombre(<span class="dv">8</span>),<span class="st">&#39;+&#39;</span>, Nombre(<span class="dv">7</span>))),</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true"></a>    <span class="st">&#39;-&#39;</span>,  Binaire(Nombre(<span class="dv">2</span>), <span class="st">&#39;+&#39;</span>, Nombre(<span class="dv">1</span>)))</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true"></a><span class="bu">print</span> (infixe(exemple))</span></code></pre></div>
+</body>
+</html>
