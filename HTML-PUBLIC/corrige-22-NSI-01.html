@@ -386,10 +386,10 @@ padding: 0.5em;
 </ul>
 <div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">def</span> recherche(caractere, mot):</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>    nb <span class="op">=</span> <span class="dv">0</span>                    <span class="co"># nombre d&#39;occurrences, 0 au départ</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>    <span class="cf">for</span> c <span class="kw">in</span> mot:             <span class="co"># pour chaque caractere c du mot</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>    <span class="cf">for</span> c <span class="kw">in</span> mot:             <span class="co"># pour chaque caractère c du mot</span></span>
 <span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>        <span class="cf">if</span> c <span class="op">==</span> caractere:    <span class="co">#   - est-ce le bon ?</span></span>
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>            nb <span class="op">+=</span> <span class="dv">1</span>           <span class="co">#   - oui ! un de plus !</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>    <span class="cf">return</span> nb                 <span class="co"># et voila le total.</span></span></code></pre></div>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>    <span class="cf">return</span> nb                 <span class="co"># et voilà le total.</span></span></code></pre></div>
 <p>Je suppose que c’est la solution à laquelle les correcteurs s’attendent le plus. Mais on peut faire autrement.</p>
 <h2 data-number="3.3" id="solution-2-sous-liste-en-intension-et-comptage"><span class="header-section-number">3.3</span> Solution 2 : sous-liste en intension et comptage</h2>
 <p>Une chaîne de caractères est aussi une liste de caractères. À ce titre,</p>
@@ -400,7 +400,7 @@ padding: 0.5em;
 <div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">def</span> recherche(caractere, mot):</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>    <span class="cf">return</span> <span class="bu">len</span>([c <span class="cf">for</span> c <span class="kw">in</span> mot <span class="cf">if</span> c <span class="op">==</span> caractere])</span></code></pre></div>
 <h2 data-number="3.4" id="solution-3-la-méthode-count-des-chaînes"><span class="header-section-number">3.4</span> Solution 3 : la méthode <code>count</code> des chaînes</h2>
-<p>Quand on connait le langage Python, on sait que les chaînes sont des séquences qui ont une méthode <code>count</code> qui retourne le nombre d’occurrences d’une sous-séquence.</p>
+<p>Quand on connaît le langage Python, on sait que les chaînes sont des séquences qui ont une méthode <code>count</code> qui retourne le nombre d’occurrences d’une sous-séquence.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">def</span> recherche3(caractere, mot):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>    <span class="cf">return</span> mot.count(caractere)      </span></code></pre></div>
 <p>bref, c’est tout fait.</p>
@@ -444,9 +444,9 @@ padding: 0.5em;
 <li>ou alors le nombre d’occurrences du caractère dans la suite, avec 1 de plus si le premier caractère du mot était le bon.</li>
 </ul>
 <h2 data-number="3.6" id="critique-de-la-solution-récursive-naïve"><span class="header-section-number">3.6</span> Critique de la solution récursive naïve</h2>
-<p>Cette solution fournit un résultat correcte, mais elle a un défaut, sa <strong>complexité temporelle</strong>, liée au fait que la construction de <code>mot[1:]</code> pour un mot de taille <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> implique une copie des <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math> élements concernés dans une nouvelle liste.</p>
-<p>En gros, si on part d’un mot de 10 lettres, le passage au sous-mot de 9 lettres nécessitera de copier 9 éléménts. Mais pour traiter ce mot de 9 lettres, il faudra aussi faire une copie du sous-mot de 8 lettres, et le traiter.</p>
-<p>Bref, tout ça va nous couter 9+8+….+1 étapes. Pour un mot de taille <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>, ça nous fera <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mrow><mi>n</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><mn>2</mn></mfrac><annotation encoding="application/x-tex">\frac{n(n+1)}{2}</annotation></semantics></math> étapes, une quantité qui grandit comme le carré de <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>. On parle de complexité temporelle <strong>quadratique</strong>.</p>
+<p>Cette solution fournit un résultat correcte, mais elle a un défaut, sa <strong>complexité temporelle</strong>, liée au fait que la construction de <code>mot[1:]</code> pour un mot de taille <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> implique une copie des <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math> éléments concernés dans une nouvelle liste.</p>
+<p>En gros, si on part d’un mot de 10 lettres, le passage au sous-mot de 9 lettres nécessitera de copier 9 éléments. Mais pour traiter ce mot de 9 lettres, il faudra aussi faire une copie du sous-mot de 8 lettres, et le traiter.</p>
+<p>Bref, tout ça va nous coûter 9+8+….+1 étapes. Pour un mot de taille <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>, ça nous fera <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mrow><mi>n</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><mn>2</mn></mfrac><annotation encoding="application/x-tex">\frac{n(n+1)}{2}</annotation></semantics></math> étapes, une quantité qui grandit comme le carré de <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>. On parle de complexité temporelle <strong>quadratique</strong>.</p>
 <p>Comme nous disposons d’une autre solution (itérative) qui n’est pas compliquée et qui fait le calcul en un temps qui est simplement proportionnel à <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> (complexité <strong>linéaire</strong>), en pratique, on n’utilisera évidemment pas la solution récursive présentée ci-dessus.</p>
 <h2 data-number="3.7" id="solution-5-sauvons-la-récursion"><span class="header-section-number">3.7</span> Solution 5 : Sauvons la récursion !</h2>
 <p>Ceci ne veut pas dire <strong>du tout</strong> qu’une approche récursive soit <strong>intrinsèquement</strong> inefficace.</p>
@@ -464,8 +464,9 @@ padding: 0.5em;
 <span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a>            <span class="cf">return</span> r</span></code></pre></div>
 <p>Ce coup-ci, le temps de calcul est linéaire.</p>
 <p>On retrouve cette manière de faire une récursion sur une sous-liste dans l’exercice précédent.</p>
-<p><strong>Note</strong> : les expressions conditionnelles de Python permettent réduire les 4 dernières lignes à</p>
+<p><strong>Note</strong> : les <em>expressions conditionnelles</em> de Python permettent de réduire les 4 dernières lignes à</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a>    <span class="cf">return</span>  r <span class="op">+</span> <span class="dv">1</span>  <span class="cf">if</span> caractere <span class="op">==</span> mot[debut]  <span class="cf">else</span> r</span></code></pre></div>
+<p>qui se lit naturellement “retourne r+1 si ceci-cela, et 0 sinon”.</p>
 <h2 data-number="3.8" id="solution-6-récursion-avec-variable-tampon"><span class="header-section-number">3.8</span> Solution 6 : Récursion avec variable tampon</h2>
 <p>Profitons de l’occasion pour utiliser la technique de la “variable tampon”, qui est également présente dans l’exercice suivant.</p>
 <p>En gros, on se sert d’un paramètre supplémentaire qui sert à construire le résultat final. Ici, <code>total</code> indiquera le nombre d’occurrences trouvé jusque là.</p>
@@ -476,7 +477,7 @@ padding: 0.5em;
 <span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>    t <span class="op">=</span> <span class="dv">1</span>  <span class="cf">if</span> caractere <span class="op">==</span> mot[debut]  <span class="cf">else</span> <span class="dv">0</span> </span>
 <span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>    <span class="cf">return</span> recherche(caractere, mot, debut <span class="op">+</span> <span class="dv">1</span>, total <span class="op">+</span> t)</span></code></pre></div>
 <p>La technique du paramètre tampon est souvent utilisée pour obtenir un algorithme récursif où la récursion est terminale (c’est-à-dire que l’appel récursif est la dernière chose qu’on fait dans la fonction).</p>
-<p>L’intérêt de la récursion terminale, c’est que l’interprète n’a rien à mémoriser dans la pile lors de l’appel, et peut même transformer l’appel récursif en boucle. Comme on n’empile rien, la taille de la pile utilisée reste constante (si l’interprète est bien fait), au lieu de croitre linéairement avec les versions récursives précédentes.</p>
+<p>L’intérêt de la récursion terminale, c’est que l’interprète n’a rien à mémoriser dans la pile lors de l’appel, et peut même transformer l’appel récursif en boucle. Comme on n’empile rien, la taille de la pile utilisée reste constante (si l’interprète est bien fait), au lieu de croître linéairement avec les versions récursives précédentes.</p>
 <p>Ce qui nous ramène au premier algorithme, avec la correspondance entre <code>debut</code> et <code>i</code> pour les indices, et <code>total</code> avec <code>nb</code> pour les compteurs.</p>
 <h1 data-number="4" id="exercice-2-rendu-de-monnaie"><span class="header-section-number">4</span> Exercice 2 : rendu de monnaie</h1>
 <h2 data-number="4.1" id="la-question-1"><span class="header-section-number">4.1</span> La question</h2>
@@ -515,7 +516,7 @@ padding: 0.5em;
 <p>Il n’y a jamais que 4 trous à compléter.</p>
 <p>Quelques observations</p>
 <ul>
-<li>l’exécution des exemples montre qu’il faut retourner une liste. Ca servira surement pour le trou numéro 1.</li>
+<li>l’exécution des exemples montre qu’il faut retourner une liste. Ça servira sûrement pour le trou numéro 1.</li>
 <li>au cours des appels, le second paramètre est une liste vide au départ (valeur par défaut) qui se remplit (trou 3).</li>
 <li>le troisième paramètre <code>i</code> est un indice dans le tableau <code>Pieces</code> (ligne du bug, initialement la première. Il faudra bien le faire avancer un jour (trou 4).</li>
 </ul>

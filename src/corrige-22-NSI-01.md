@@ -62,10 +62,10 @@ une boucle  (`for c in mot: ...`)
 ~~~python
 def recherche(caractere, mot):
     nb = 0                    # nombre d'occurrences, 0 au départ
-    for c in mot:             # pour chaque caractere c du mot
+    for c in mot:             # pour chaque caractère c du mot
         if c == caractere:    #   - est-ce le bon ?
             nb += 1           #   - oui ! un de plus !
-    return nb                 # et voila le total.
+    return nb                 # et voilà le total.
 ~~~
 
 Je suppose que c'est la solution à laquelle les correcteurs
@@ -89,7 +89,7 @@ def recherche(caractere, mot):
 
 ## Solution 3 : la méthode `count` des chaînes
 
-Quand on connait le langage Python, on sait que les chaînes sont des
+Quand on connaît le langage Python, on sait que les chaînes sont des
 séquences qui ont une méthode `count` qui retourne le nombre
 d'occurrences d'une sous-séquence.
 
@@ -163,14 +163,14 @@ qui se lit :
 Cette solution fournit un résultat correcte, mais elle a un défaut,
 sa **complexité temporelle**, liée au fait que la construction de
 `mot[1:]` pour un mot de taille $n$ implique une copie des $n-1$
-élements concernés dans une nouvelle liste.
+éléments concernés dans une nouvelle liste.
 
 En gros, si on part d'un mot de 10 lettres, le passage au sous-mot de
-9 lettres nécessitera de copier 9 éléménts. Mais pour traiter ce mot
+9 lettres nécessitera de copier 9 éléments. Mais pour traiter ce mot
 de 9 lettres, il faudra aussi faire une copie du sous-mot de 8
 lettres, et le traiter.
 
-Bref, tout ça va nous couter 9+8+....+1 étapes. Pour un mot de taille
+Bref, tout ça va nous coûter 9+8+....+1 étapes. Pour un mot de taille
 $n$, ça nous fera $\frac{n(n+1)}{2}$ étapes, une quantité qui grandit
 comme le carré de $n$. On parle de complexité temporelle
 **quadratique**.
@@ -211,12 +211,15 @@ Ce coup-ci, le temps de calcul est linéaire.
 On retrouve cette manière de faire une récursion sur une sous-liste
 dans l'exercice précédent.
 
-**Note** : les expressions conditionnelles de Python permettent réduire les
-4 dernières lignes à
+**Note** : les *expressions conditionnelles* de Python permettent de
+réduire les 4 dernières lignes à
 
 ~~~python
 	return  r + 1  if caractere == mot[debut]  else r
 ~~~
+
+qui se lit naturellement "retourne r+1 si ceci-cela, et 0 sinon".
+
 
 
 ## Solution 6 : Récursion avec variable tampon
@@ -247,7 +250,7 @@ L'intérêt de la récursion terminale, c'est que l'interprète n'a rien à
 mémoriser dans la pile lors de l'appel, et peut même transformer
 l'appel récursif en boucle.  Comme on n'empile rien, la taille de la
 pile utilisée reste constante (si l'interprète est bien fait), au lieu
-de croitre linéairement avec les versions récursives précédentes.
+de croître linéairement avec les versions récursives précédentes.
 
 Ce qui nous ramène au premier algorithme, avec la correspondance entre
 `debut` et `i` pour les indices, et `total` avec `nb` pour les
@@ -318,7 +321,7 @@ Il n'y a jamais que 4 trous à compléter.
 Quelques observations
 
 - l'exécution des exemples montre qu'il faut retourner une liste.
-Ca servira surement pour le trou numéro 1.
+Ça servira sûrement pour le trou numéro 1.
 - au cours des appels, le second paramètre est une liste vide au départ
 (valeur par défaut) qui se remplit (trou 3).
 - le troisième paramètre `i` est un indice dans le tableau `Pieces` (ligne du bug, initialement la première. Il faudra bien le faire avancer un jour (trou 4).
@@ -350,3 +353,4 @@ def rendu_glouton(a_rendre, solution = [], i = 0):
 	else :
 		return rendu_glouton(a_rendre, solution, i + 1)  # 4
 ~~~
+
