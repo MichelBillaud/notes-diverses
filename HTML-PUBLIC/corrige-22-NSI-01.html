@@ -338,7 +338,10 @@ padding: 0.5em;
 <li><a href="#solution-1-itération-et-comptage"><span class="toc-section-number">3.2</span> Solution 1 : itération et comptage</a></li>
 <li><a href="#solution-2-sous-liste-en-intension-et-comptage"><span class="toc-section-number">3.3</span> Solution 2 : sous-liste en intension et comptage</a></li>
 <li><a href="#solution-3-la-méthode-count-des-chaînes"><span class="toc-section-number">3.4</span> Solution 3 : la méthode <code>count</code> des chaînes</a></li>
-<li><a href="#solution-4-récursion-structurelle"><span class="toc-section-number">3.5</span> Solution 4 : récursion structurelle</a></li>
+<li><a href="#solution-4-récursion-structurelle-naïve"><span class="toc-section-number">3.5</span> Solution 4 : récursion structurelle naïve</a></li>
+<li><a href="#critique-de-la-solution-récursive-naïve"><span class="toc-section-number">3.6</span> Critique de la solution récursive naïve</a></li>
+<li><a href="#solution-5-sauvons-la-récursion"><span class="toc-section-number">3.7</span> Solution 5 : Sauvons la récursion !</a></li>
+<li><a href="#solution-6-récursion-avec-variable-tampon"><span class="toc-section-number">3.8</span> Solution 6 : Récursion avec variable tampon</a></li>
 </ul></li>
 <li><a href="#exercice-2-rendu-de-monnaie"><span class="toc-section-number">4</span> Exercice 2 : rendu de monnaie</a>
 <ul>
@@ -348,6 +351,9 @@ padding: 0.5em;
 </ul></li>
 </ul>
 </nav>
+<ul>
+<li>mise à jour 1er février, complément sur les versions récursives</li>
+</ul>
 <h1 data-number="1" id="licence"><span class="header-section-number">1</span> Licence</h1>
 <p><img src="data:image/png;base64,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" /></p>
 <p>Cette collection de notes est mise à disposition selon les termes de la <a href="http://creativecommons.org/licenses/by-nc-sa/2.0/fr/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France</a>.</p>
@@ -398,7 +404,7 @@ padding: 0.5em;
 <div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">def</span> recherche3(caractere, mot):</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>    <span class="cf">return</span> mot.count(caractere)      </span></code></pre></div>
 <p>bref, c’est tout fait.</p>
-<h2 data-number="3.5" id="solution-4-récursion-structurelle"><span class="header-section-number">3.5</span> Solution 4 : récursion structurelle</h2>
+<h2 data-number="3.5" id="solution-4-récursion-structurelle-naïve"><span class="header-section-number">3.5</span> Solution 4 : récursion structurelle naïve</h2>
 <p>Sachant que</p>
 <ul>
 <li>une chaîne est vide ou pas,</li>
@@ -437,20 +443,55 @@ padding: 0.5em;
 <li>retourner 0 si le mot est vide</li>
 <li>ou alors le nombre d’occurrences du caractère dans la suite, avec 1 de plus si le premier caractère du mot était le bon.</li>
 </ul>
+<h2 data-number="3.6" id="critique-de-la-solution-récursive-naïve"><span class="header-section-number">3.6</span> Critique de la solution récursive naïve</h2>
+<p>Cette solution fournit un résultat correcte, mais elle a un défaut, sa <strong>complexité temporelle</strong>, liée au fait que la construction de <code>mot[1:]</code> pour un mot de taille <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> implique une copie des <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math> élements concernés dans une nouvelle liste.</p>
+<p>En gros, si on part d’un mot de 10 lettres, le passage au sous-mot de 9 lettres nécessitera de copier 9 éléménts. Mais pour traiter ce mot de 9 lettres, il faudra aussi faire une copie du sous-mot de 8 lettres, et le traiter.</p>
+<p>Bref, tout ça va nous couter 9+8+….+1 étapes. Pour un mot de taille <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>, ça nous fera <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mrow><mi>n</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><mn>2</mn></mfrac><annotation encoding="application/x-tex">\frac{n(n+1)}{2}</annotation></semantics></math> étapes, une quantité qui grandit comme le carré de <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>. On parle de complexité temporelle <strong>quadratique</strong>.</p>
+<p>Comme nous disposons d’une autre solution (itérative) qui n’est pas compliquée et qui fait le calcul en un temps qui est simplement proportionnel à <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> (complexité <strong>linéaire</strong>), en pratique, on n’utilisera évidemment pas la solution récursive présentée ci-dessus.</p>
+<h2 data-number="3.7" id="solution-5-sauvons-la-récursion"><span class="header-section-number">3.7</span> Solution 5 : Sauvons la récursion !</h2>
+<p>Ceci ne veut pas dire <strong>du tout</strong> qu’une approche récursive soit <strong>intrinsèquement</strong> inefficace.</p>
+<p>Ce qui coûte ici, c’est de faire la <strong>copie</strong> de la fin du mot, pour la passer en paramètre.</p>
+<p>À la place, on peut passer le mot inchangé, et un paramètre qui indique l’indice du premier caractère restant à traiter.</p>
+<p>Ce qu’on peut présenter sous cette forme</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">def</span> recherche(caractere, mot, debut <span class="op">=</span> <span class="dv">0</span>):</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>    <span class="cf">if</span> debut <span class="op">==</span> <span class="bu">len</span>(mot):</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>        <span class="cf">return</span> <span class="dv">0</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>    <span class="cf">else</span>:</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>        r <span class="op">=</span> recherche(caractere, mot, debut <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a>        <span class="cf">if</span> caractere <span class="op">==</span> mot[debut]:</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a>            <span class="cf">return</span> r <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a>        <span class="cf">else</span>:</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a>            <span class="cf">return</span> r</span></code></pre></div>
+<p>Ce coup-ci, le temps de calcul est linéaire.</p>
+<p>On retrouve cette manière de faire une récursion sur une sous-liste dans l’exercice précédent.</p>
+<p><strong>Note</strong> : les expressions conditionnelles de Python permettent réduire les 4 dernières lignes à</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a>    <span class="cf">return</span>  r <span class="op">+</span> <span class="dv">1</span>  <span class="cf">if</span> caractere <span class="op">==</span> mot[debut]  <span class="cf">else</span> r</span></code></pre></div>
+<h2 data-number="3.8" id="solution-6-récursion-avec-variable-tampon"><span class="header-section-number">3.8</span> Solution 6 : Récursion avec variable tampon</h2>
+<p>Profitons de l’occasion pour utiliser la technique de la “variable tampon”, qui est également présente dans l’exercice suivant.</p>
+<p>En gros, on se sert d’un paramètre supplémentaire qui sert à construire le résultat final. Ici, <code>total</code> indiquera le nombre d’occurrences trouvé jusque là.</p>
+<p>Quand la récursion est terminée, la fonction retourne le contenu du tampon</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="kw">def</span> recherche(caractere, mot, debut <span class="op">=</span> <span class="dv">0</span>, total <span class="op">=</span> <span class="dv">0</span>):</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>    <span class="cf">if</span> debut <span class="op">==</span> <span class="bu">len</span>(mot):</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a>        <span class="cf">return</span> total</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>    t <span class="op">=</span> <span class="dv">1</span>  <span class="cf">if</span> caractere <span class="op">==</span> mot[debut]  <span class="cf">else</span> <span class="dv">0</span> </span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a>    <span class="cf">return</span> recherche(caractere, mot, debut <span class="op">+</span> <span class="dv">1</span>, total <span class="op">+</span> t)</span></code></pre></div>
+<p>La technique du paramètre tampon est souvent utilisée pour obtenir un algorithme récursif où la récursion est terminale (c’est-à-dire que l’appel récursif est la dernière chose qu’on fait dans la fonction).</p>
+<p>L’intérêt de la récursion terminale, c’est que l’interprète n’a rien à mémoriser dans la pile lors de l’appel, et peut même transformer l’appel récursif en boucle. Comme on n’empile rien, la taille de la pile utilisée reste constante (si l’interprète est bien fait), au lieu de croitre linéairement avec les versions récursives précédentes.</p>
+<p>Ce qui nous ramène au premier algorithme, avec la correspondance entre <code>debut</code> et <code>i</code> pour les indices, et <code>total</code> avec <code>nb</code> pour les compteurs.</p>
 <h1 data-number="4" id="exercice-2-rendu-de-monnaie"><span class="header-section-number">4</span> Exercice 2 : rendu de monnaie</h1>
 <h2 data-number="4.1" id="la-question-1"><span class="header-section-number">4.1</span> La question</h2>
 <p>Un bout de programme Python à trous, à compléter</p>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a>Pieces <span class="op">=</span> [<span class="dv">100</span>,<span class="dv">50</span>,<span class="dv">20</span>,<span class="dv">10</span>,<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">1</span>]</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a><span class="kw">def</span> rendu_glouton(arendre, solution<span class="op">=</span>[], i<span class="op">=</span><span class="dv">0</span>):</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>    <span class="cf">if</span> arendre <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>        <span class="cf">return</span> ...                                    <span class="co"># 1</span></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a>    p <span class="op">=</span> pieces[i]                                     <span class="co"># </span><span class="al">BUG</span></span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a>    <span class="cf">if</span> p <span class="op">&lt;=</span> ... :                                     <span class="co"># 2</span></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a>        solution.append(...)                          <span class="co"># 3</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a>        <span class="cf">return</span> rendu_glouton(arendre <span class="op">-</span> p, solution, i)</span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a>    <span class="cf">else</span> :</span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a>        <span class="cf">return</span> rendu_glouton(arendre, solution, ...)  <span class="co"># 4</span></span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a>Pieces <span class="op">=</span> [<span class="dv">100</span>,<span class="dv">50</span>,<span class="dv">20</span>,<span class="dv">10</span>,<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">1</span>]</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a><span class="kw">def</span> rendu_glouton(arendre, solution<span class="op">=</span>[], i<span class="op">=</span><span class="dv">0</span>):</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>    <span class="cf">if</span> arendre <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a>        <span class="cf">return</span> ...                                    <span class="co"># 1</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a>    p <span class="op">=</span> pieces[i]                                     <span class="co"># </span><span class="al">BUG</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a>    <span class="cf">if</span> p <span class="op">&lt;=</span> ... :                                     <span class="co"># 2</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true"></a>        solution.append(...)                          <span class="co"># 3</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true"></a>        <span class="cf">return</span> rendu_glouton(arendre <span class="op">-</span> p, solution, i)</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true"></a>    <span class="cf">else</span> :</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true"></a>        <span class="cf">return</span> rendu_glouton(arendre, solution, ...)  <span class="co"># 4</span></span></code></pre></div>
 <p>comportement attendu</p>
 <pre><code>&gt;&gt;&gt;rendu_glouton_r(68,[],0)
 [50, 10, 5, 2, 1]
@@ -486,16 +527,16 @@ padding: 0.5em;
 <li>et que sinon, on rende la monnaie avec des pièces de valeurs plus faibles, qui sont plus loin dans la liste <code>return     rendu_glouton(arendre, solution, i + 1) # 4</code></li>
 </ul>
 <h2 data-number="4.3" id="corrigé"><span class="header-section-number">4.3</span> Corrigé</h2>
-<div class="sourceCode" id="cb11"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a>PIECES <span class="op">=</span> [<span class="dv">100</span>, <span class="dv">50</span>, <span class="dv">20</span>, <span class="dv">10</span>, <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">1</span>]</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a><span class="kw">def</span> rendu_glouton(a_rendre, solution <span class="op">=</span> [], i <span class="op">=</span> <span class="dv">0</span>):</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>    <span class="cf">if</span> a_rendre <span class="op">==</span> <span class="dv">0</span>:</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true"></a>        <span class="cf">return</span> solution                                  <span class="co"># 1</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true"></a>    p <span class="op">=</span> PIECES[i]               </span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true"></a>    <span class="cf">if</span> p <span class="op">&lt;=</span> a_rendre:                                    <span class="co"># 2</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true"></a>        solution.append(p)                               <span class="co"># 3</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true"></a>        <span class="cf">return</span> rendu_glouton(a_rendre <span class="op">-</span> p, solution, i)</span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true"></a>    <span class="cf">else</span> :</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true"></a>        <span class="cf">return</span> rendu_glouton(a_rendre, solution, i <span class="op">+</span> <span class="dv">1</span>)  <span class="co"># 4</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a>PIECES <span class="op">=</span> [<span class="dv">100</span>, <span class="dv">50</span>, <span class="dv">20</span>, <span class="dv">10</span>, <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">1</span>]</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a><span class="kw">def</span> rendu_glouton(a_rendre, solution <span class="op">=</span> [], i <span class="op">=</span> <span class="dv">0</span>):</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a>    <span class="cf">if</span> a_rendre <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a>        <span class="cf">return</span> solution                                  <span class="co"># 1</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true"></a>    p <span class="op">=</span> PIECES[i]               </span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true"></a>    <span class="cf">if</span> p <span class="op">&lt;=</span> a_rendre:                                    <span class="co"># 2</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true"></a>        solution.append(p)                               <span class="co"># 3</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true"></a>        <span class="cf">return</span> rendu_glouton(a_rendre <span class="op">-</span> p, solution, i)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true"></a>    <span class="cf">else</span> :</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true"></a>        <span class="cf">return</span> rendu_glouton(a_rendre, solution, i <span class="op">+</span> <span class="dv">1</span>)  <span class="co"># 4</span></span></code></pre></div>
 </body>
 </html>

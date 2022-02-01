@@ -3,6 +3,8 @@
 % 30 janvier 2022
 
 
+- mise à jour 1er février, complément sur les versions récursives
+
 # Licence
 
 ![](https://i.creativecommons.org/l/by-nc-sa/2.0/fr/88x31.png)
@@ -100,7 +102,7 @@ def recherche3(caractere, mot):
 bref, c'est tout fait.
 
 
-## Solution 4 : récursion structurelle
+## Solution 4 : récursion structurelle naïve
 
 Sachant que
 
@@ -156,6 +158,101 @@ qui se lit :
 - ou alors le nombre d'occurrences du caractère dans la suite, avec 1
   de plus si le premier caractère du mot était le bon.
   
+## Critique de la solution récursive naïve
+
+Cette solution fournit un résultat correcte, mais elle a un défaut,
+sa **complexité temporelle**, liée au fait que la construction de
+`mot[1:]` pour un mot de taille $n$ implique une copie des $n-1$
+élements concernés dans une nouvelle liste.
+
+En gros, si on part d'un mot de 10 lettres, le passage au sous-mot de
+9 lettres nécessitera de copier 9 éléménts. Mais pour traiter ce mot
+de 9 lettres, il faudra aussi faire une copie du sous-mot de 8
+lettres, et le traiter.
+
+Bref, tout ça va nous couter 9+8+....+1 étapes. Pour un mot de taille
+$n$, ça nous fera $\frac{n(n+1)}{2}$ étapes, une quantité qui grandit
+comme le carré de $n$. On parle de complexité temporelle
+**quadratique**.
+
+Comme nous disposons d'une autre solution (itérative) qui n'est pas
+compliquée et qui fait le calcul en un temps qui est simplement
+proportionnel à $n$ (complexité **linéaire**), en pratique, on
+n'utilisera évidemment pas la solution récursive présentée ci-dessus.
+
+## Solution 5 : Sauvons la récursion !
+
+Ceci ne veut pas dire **du tout** qu'une approche récursive soit
+**intrinsèquement** inefficace.
+
+Ce qui coûte ici, c'est de faire la **copie** de la fin du mot, pour
+la passer en paramètre.
+
+À la place, on peut passer le mot inchangé, et un paramètre qui indique
+l'indice du premier caractère restant à traiter.
+
+Ce qu'on peut présenter sous cette forme
+
+~~~python
+def recherche(caractere, mot, debut = 0):
+    if debut == len(mot):
+        return 0
+    else:
+        r = recherche(caractere, mot, debut + 1)
+        if caractere == mot[debut]:
+            return r + 1
+        else:
+            return r
+~~~
+
+Ce coup-ci, le temps de calcul est linéaire.
+
+
+On retrouve cette manière de faire une récursion sur une sous-liste
+dans l'exercice précédent.
+
+**Note** : les expressions conditionnelles de Python permettent réduire les
+4 dernières lignes à
+
+~~~python
+	return  r + 1  if caractere == mot[debut]  else r
+~~~
+
+
+## Solution 6 : Récursion avec variable tampon
+
+Profitons de l'occasion pour utiliser la technique de la "variable tampon",
+qui est également présente dans l'exercice suivant.
+
+En gros, on se sert d'un paramètre supplémentaire qui sert à
+construire le résultat final. Ici, `total` indiquera le nombre
+d'occurrences trouvé jusque là.
+
+Quand la récursion est terminée, la fonction retourne le contenu du tampon
+
+~~~python
+def recherche(caractere, mot, debut = 0, total = 0):
+	if debut == len(mot):
+		return total
+	t = 1  if caractere == mot[debut]  else 0 
+	return recherche(caractere, mot, debut + 1, total + t)
+~~~
+
+
+La technique du paramètre tampon est souvent utilisée pour obtenir un
+algorithme récursif où la récursion est terminale (c'est-à-dire que
+l'appel récursif est la dernière chose qu'on fait dans la fonction).
+
+L'intérêt de la récursion terminale, c'est que l'interprète n'a rien à
+mémoriser dans la pile lors de l'appel, et peut même transformer
+l'appel récursif en boucle.  Comme on n'empile rien, la taille de la
+pile utilisée reste constante (si l'interprète est bien fait), au lieu
+de croitre linéairement avec les versions récursives précédentes.
+
+Ce qui nous ramène au premier algorithme, avec la correspondance entre
+`debut` et `i` pour les indices, et `total` avec `nb` pour les
+compteurs.
+
 
 # Exercice 2 : rendu de monnaie
 
