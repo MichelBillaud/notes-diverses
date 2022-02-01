@@ -15,6 +15,27 @@ Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France]
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
 
 
+
+# Corrigé sujet 6 épreuves pratiques NSI
+
+Sujet dans <https://eduscol.education.fr/document/33193/download> :
+
+- recherche de la valeur et l'indice du maximum d'une liste
+- recherche d'une sous-chaîne.
+
+Document : [corrige-22-NSI-06.html](corrige-22-NSI-06.html)
+
+
+# Corrigé sujet 5 épreuves pratiques NSI
+
+Sujet dans <https://eduscol.education.fr/document/33190/download> :
+
+- minimum et maximum d'une liste
+- construction d'un paquet de cartes
+
+Document : [corrige-22-NSI-05.html](corrige-22-NSI-05.html)
+
+
 # Corrigé sujet 4 épreuves pratiques NSI
 
 Sujet dans <https://eduscol.education.fr/document/33187/download> :

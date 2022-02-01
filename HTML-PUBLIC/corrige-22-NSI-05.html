@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Michel Billaud (michel.billaud@laposte.net)" />
+  <title>Corrigé Sujet 5 épreuve pratique NSI</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">a.sourceLine {
+display: inline-block;
+line-height: 1.25;
+}
+a.sourceLine {
+pointer-events: none;
+color: inherit;
+text-decoration: inherit;
+}
+a.sourceLine:empty {
+height: 1.2em;
+}
+.sourceCode {
+overflow: visible;
+}
+code.sourceCode {
+white-space: pre;
+position: relative;
+}
+div.sourceCode {
+margin: 1em 0;
+}
+pre.sourceCode {
+margin: 0;
+}
+@media screen {
+div.sourceCode {
+overflow: auto;
+}
+}
+@media print {
+code.sourceCode {
+white-space: pre-wrap;
+}
+a.sourceLine {
+text-indent: -1em;
+padding-left: 1em;
+}
+}
+pre.numberSource a.sourceLine {
+position: relative;
+left: -4em;
+}
+pre.numberSource a.sourceLine::before {
+content: attr(title);
+position: relative;
+left: -1em;
+text-align: right;
+vertical-align: baseline;
+border: none;
+pointer-events: all;
+display: inline-block;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+padding: 0 4px;
+width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource {
+margin-left: 3em;
+border-left: 1px solid #aaaaaa;
+padding-left: 4px;
+}
+div.sourceCode {}
+@media screen {
+a.sourceLine::before {
+text-decoration: underline;
+}
+}
+code span.al {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.an {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.at {
+color: #7d9029;
+}
+
+code span.bn {
+color: #40a070;
+}
+
+code span.bu {}
+
+code span.cf {
+color: #007020;
+font-weight: bold;
+}
+
+code span.ch {
+color: #4070a0;
+}
+
+code span.cn {
+color: #880000;
+}
+
+code span.co {
+color: #60a0b0;
+font-style: italic;
+}
+
+code span.cv {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.do {
+color: #ba2121;
+font-style: italic;
+}
+
+code span.dt {
+color: #902000;
+}
+
+code span.dv {
+color: #40a070;
+}
+
+code span.er {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.ex {}
+
+code span.fl {
+color: #40a070;
+}
+
+code span.fu {
+color: #06287e;
+}
+
+code span.im {}
+
+code span.in {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.kw {
+color: #007020;
+font-weight: bold;
+}
+
+code span.op {
+color: #666666;
+}
+
+code span.ot {
+color: #007020;
+}
+
+code span.pp {
+color: #bc7a00;
+}
+
+code span.sc {
+color: #4070a0;
+}
+
+code span.ss {
+color: #bb6688;
+}
+
+code span.st {
+color: #4070a0;
+}
+
+code span.va {
+color: #19177c;
+}
+
+code span.vs {
+color: #4070a0;
+}
+
+code span.wa {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+
+:root {
+--title-color: #202080;
+--source-bg-color: rgb(240, 240, 255);
+}
+h1, h2, h3, h4, h5, h6 {
+border-bottom: solid 1px silver;
+color: var(--title-color);
+}
+body {
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div.sourceCode {
+background-color: var(--source-bg-color);
+padding: 1em;
+}
+#TOC {
+padding: 0.5em;
+border: solid 1px silver;
+}
+#TOC ul {
+list-style-type: none;
+padding-left: 1em;
+}
+nav:before {
+text-indent: 2em;
+content: "Sommaire";
+color: var(--title-color);
+font-weight: bold;
+font-size: large;
+}
+#TOC a {
+text-decoration: none;
+}
+header {
+text-align: center;
+}
+.title {
+}
+.author, .date {
+font-style: italic;
+}
+table, th, td {
+border-collapse: collapse;
+border: solid black 1px;
+padding: 0.5em;
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Corrigé Sujet 5 épreuve pratique NSI</h1>
+<p class="author">Michel Billaud (<code>michel.billaud@laposte.net</code>)</p>
+<p class="date">1er février 2022</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#licence"><span class="toc-section-number">1</span> Licence</a></li>
+<li><a href="#le-sujet"><span class="toc-section-number">2</span> Le sujet</a></li>
+<li><a href="#question-1-recherche-du-minimum-et-du-maximum-dune-liste-de-nombres"><span class="toc-section-number">3</span> Question 1 : recherche du minimum et du maximum d’une liste de nombres</a>
+<ul>
+<li><a href="#solution-1-directe"><span class="toc-section-number">3.1</span> Solution 1 (directe)</a></li>
+<li><a href="#solution-2"><span class="toc-section-number">3.2</span> Solution 2</a></li>
+<li><a href="#solution-3-fusion-de-boucles"><span class="toc-section-number">3.3</span> Solution 3 (fusion de boucles)</a></li>
+</ul></li>
+<li><a href="#exercice-paquet-de-carte"><span class="toc-section-number">4</span> Exercice : paquet de carte</a>
+<ul>
+<li><a href="#résolution"><span class="toc-section-number">4.1</span> Résolution</a></li>
+<li><a href="#solution"><span class="toc-section-number">4.2</span> Solution</a></li>
+<li><a href="#critique"><span class="toc-section-number">4.3</span> Critique</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 data-number="1" id="licence"><span class="header-section-number">1</span> Licence</h1>
+<p><img src="data:image/png;base64,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" /></p>
+<p>Cette collection de notes est mise à disposition selon les termes de la <a href="http://creativecommons.org/licenses/by-nc-sa/2.0/fr/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France</a>.</p>
+<ul>
+<li>Les notes sont publiées dans <a href="https://www.mbillaud.fr/notes/" class="uri">https://www.mbillaud.fr/notes/</a></li>
+<li>Sources dans <a href="https://github.com/MichelBillaud/notes-diverses" class="uri">https://github.com/MichelBillaud/notes-diverses</a></li>
+</ul>
+<h1 data-number="2" id="le-sujet"><span class="header-section-number">2</span> Le sujet</h1>
+<p>Se trouve sur la page <a href="https://eduscol.education.fr/2661/banque-des-epreuves-pratiques-de-specialite-nsi" class="uri">https://eduscol.education.fr/2661/banque-des-epreuves-pratiques-de-specialite-nsi</a>, dans <a href="https://eduscol.education.fr/document/33190/download" class="uri">https://eduscol.education.fr/document/33190/download</a></p>
+<ul>
+<li>minimum et maximum d’une liste</li>
+<li>construction d’un paquet de cartes</li>
+</ul>
+<h1 data-number="3" id="question-1-recherche-du-minimum-et-du-maximum-dune-liste-de-nombres"><span class="header-section-number">3</span> Question 1 : recherche du minimum et du maximum d’une liste de nombres</h1>
+<p><strong>Résumé</strong> : retourner un dictionnaire qui contient le minimum et le maximum d’une liste de nombres</p>
+<pre><code>&gt;&gt;&gt; tableau = [0, 1, 4, 2, -2, 9, 3, 1, 7, 1]
+&gt;&gt;&gt; resultat = rechercheMinMax(tableau)
+&gt;&gt;&gt; resultat
+{&#39;min&#39;: -2, &#39;max&#39;: 9}
+&gt;&gt;&gt; tableau = []
+&gt;&gt;&gt; resultat = rechercheMinMax(tableau)
+&gt;&gt;&gt; resultat
+{&#39;min&#39;: None, &#39;max&#39;: None}</code></pre>
+<h2 data-number="3.1" id="solution-1-directe"><span class="header-section-number">3.1</span> Solution 1 (directe)</h2>
+<p>Sachant qu’il existe des fonctions <code>min</code> et <code>max</code> qui s’appliquent aux listes non vides, on peut écrire directement</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">def</span> rechercheMinMax(tab):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>    <span class="cf">if</span> <span class="bu">len</span>(tab) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>        <span class="cf">return</span> {<span class="st">&#39;min&#39;</span> : <span class="va">None</span>, <span class="st">&#39;max&#39;</span> : <span class="va">None</span> }</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>    <span class="cf">else</span>:</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>        <span class="cf">return</span> {<span class="st">&#39;min&#39;</span> : <span class="bu">min</span>(tab), <span class="st">&#39;max&#39;</span> : <span class="bu">max</span>(tab)}</span></code></pre></div>
+<h2 data-number="3.2" id="solution-2"><span class="header-section-number">3.2</span> Solution 2</h2>
+<p>Si on en ignore l’existence, on peut les écrire</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="kw">def</span> min_tableau(tab):</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>    <span class="cf">if</span> <span class="bu">len</span>(tab) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>    m <span class="op">=</span> tab[<span class="dv">0</span>]</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a>    <span class="cf">for</span> v <span class="kw">in</span> tab:</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>        <span class="cf">if</span> v <span class="op">&lt;</span> m:</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>            m <span class="op">=</span> v</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>    <span class="cf">return</span> m</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a><span class="kw">def</span> max_tableau(tab):</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>   <span class="co"># similaire, en remplaçant &lt; par &gt;</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a><span class="kw">def</span> rechercheMinMax(tab):</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a>        <span class="cf">return</span> {<span class="st">&#39;min&#39;</span> : minTableau(tab),</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a>                <span class="st">&#39;max&#39;</span> : maxTableau(tab) }</span></code></pre></div>
+<h2 data-number="3.3" id="solution-3-fusion-de-boucles"><span class="header-section-number">3.3</span> Solution 3 (fusion de boucles)</h2>
+<p>Certains correcteurs s’attendent certainement à avoir une fonction qui fait tout d’un coup</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">def</span> rechercheMinMax(tab):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>    <span class="cf">if</span> <span class="bu">len</span>(tab) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>        mi <span class="op">=</span> <span class="va">None</span>            <span class="co"># évitons les noms réservés</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>        ma <span class="op">=</span> <span class="va">None</span>            <span class="co"># min et max</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>    <span class="cf">else</span>:</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>        mi <span class="op">=</span> tab[<span class="dv">0</span>]</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a>        ma <span class="op">=</span> tab[<span class="dv">0</span>]</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a>        <span class="cf">for</span> v <span class="kw">in</span> tab:</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>            <span class="cf">if</span> v <span class="op">&lt;</span> mi:</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>                mi <span class="op">=</span> v</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a>            <span class="cf">if</span> v <span class="op">&gt;</span> ma:</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>                ma <span class="op">=</span> v</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a>    <span class="cf">return</span> { <span class="st">&#39;min&#39;</span> : mi, <span class="st">&#39;max&#39;</span> : ma }</span></code></pre></div>
+<p>ou pire, avec des indices. Contrôlés par une boucle <code>while</code>.</p>
+<h1 data-number="4" id="exercice-paquet-de-carte"><span class="header-section-number">4</span> Exercice : paquet de carte</h1>
+<p><strong>Résumé du sujet</strong> : on dispose d’une classe <code>Carte</code>, avec un constructeur paramétré par une couleur (entre 1 et 4) et une valeur (entre 1 et 13), et des accesseurs <code>getNom</code> et <code>getValeur</code>. On doit compléter le squelette d’une classe <code>PaquetDeCarte</code> de façon à pouvoir exécuter le scénario</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="op">&gt;&gt;&gt;</span>un Paquet <span class="op">=</span> PaquetDeCarte()</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a><span class="op">&gt;&gt;&gt;</span> unPaquet.remplir()</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="op">&gt;&gt;&gt;</span> uneCarte <span class="op">=</span> unPaquet.getCarteAt(<span class="dv">20</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="op">&gt;&gt;&gt;</span> <span class="bu">print</span>(uneCarte.getNom() <span class="op">+</span> <span class="st">&quot; de &quot;</span> <span class="op">+</span> uneCarte.getCouleur())</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a><span class="dv">6</span> de coeur</span></code></pre></div>
+<p>On demande aussi :</p>
+<blockquote>
+<p>puis ajouter des assertions dans l’initialiseur de <code>Carte</code>, ainsi que dans la méthode <code>getCarteAt()</code>. Le squelette fourni est le suivant :</p>
+</blockquote>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">class</span> PaquetDeCarte:</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>):</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>        <span class="va">self</span>.contenu <span class="op">=</span> []</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>    <span class="co">&quot;&quot;&quot;Remplit le paquet de cartes&quot;&quot;&quot;</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>    <span class="kw">def</span> remplir(<span class="va">self</span>):</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>        <span class="co">#A compléter                                     # 1</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>    <span class="co">&quot;&quot;&quot;Renvoie la Carte qui se trouve à la position donnée&quot;&quot;&quot;</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>    <span class="kw">def</span> getCarteAt(<span class="va">self</span>, pos):</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a>        <span class="co">#A compléter                                     # 2</span></span></code></pre></div>
+<h2 data-number="4.1" id="résolution"><span class="header-section-number">4.1</span> Résolution</h2>
+<p>Remplissage : les cartes seront visiblement stockées dans l’attribut <code>contenu</code>. qui est une liste. Pour remplir, il suffit d’y mettre les 4 x 13 cartes.</p>
+<p>Accès à une carte: le paramètre <code>pos</code> servira d’indice dans la liste.</p>
+<p>On va supposer que l’ “initaliseur” du sujet désigne le corps du constructeur….</p>
+<h2 data-number="4.2" id="solution"><span class="header-section-number">4.2</span> Solution</h2>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>    <span class="kw">def</span> remplir(<span class="va">self</span>):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>        <span class="cf">for</span> couleur <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">4</span><span class="op">+</span><span class="dv">1</span>):</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>            <span class="cf">for</span> valeur <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">13</span><span class="op">+</span><span class="dv">1</span>):</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>                <span class="va">self</span>.contenu.append(Carte(couleur, valeur))</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>    </span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>    <span class="kw">def</span> getCarteAt(<span class="va">self</span>, pos):</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>        <span class="cf">assert</span> <span class="dv">0</span> <span class="op">&lt;=</span> pos <span class="op">&lt;</span> <span class="bu">len</span>(<span class="va">self</span>.contenu)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>        <span class="cf">return</span> <span class="va">self</span>.contenu[pos]</span></code></pre></div>
+<p>Dans l’assertion, on utilise de préférence l’enchainement de comparaisons spécifique à Python. A défaut, on imite les autres langages :</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a>    <span class="cf">assert</span> <span class="dv">0</span> <span class="op">&lt;=</span> pos  <span class="kw">and</span> pos <span class="op">&lt;</span> <span class="bu">len</span>(<span class="va">self</span>.contenu)</span></code></pre></div>
+<p>Pour le constructeur de <code>Carte</code> :</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="kw">class</span> Carte:</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, c, v):</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>        <span class="cf">assert</span> <span class="dv">1</span> <span class="op">&lt;=</span> c <span class="op">&lt;=</span> <span class="dv">4</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>        <span class="cf">assert</span> <span class="dv">1</span> <span class="op">&lt;=</span> v <span class="op">&lt;=</span> <span class="dv">13</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>        <span class="va">self</span>.Couleur <span class="op">=</span> c</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>        <span class="va">self</span>.Valeur <span class="op">=</span> v</span></code></pre></div>
+<h2 data-number="4.3" id="critique"><span class="header-section-number">4.3</span> Critique</h2>
+<p>Le code source présente ne tient aucun compte des conventions usuelles de programmation de Python :</p>
+<ul>
+<li>les noms d’attributs (<code>Couleur</code>) devraient être en minuscules (<code>couleur</code>)</li>
+<li>les noms composés de méthode (<code>getNom</code>) devraient être en snake_case (<code>get_nom</code>) et éviter de mélanger les langues (<code>nom()</code> et <code>couleur()</code> feraient l’affaire).</li>
+<li>le tableau de chaines “en dur” devrait être une constante</li>
+</ul>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a>COULEURS <span class="op">=</span> [<span class="st">&#39;pique&#39;</span>, <span class="st">&#39;coeur&#39;</span>, <span class="st">&#39;carreau&#39;</span>, <span class="st">&#39;trefle&#39;</span>]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>...</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a>    <span class="kw">def</span> getCouleur(<span class="va">self</span>):</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>        <span class="cf">return</span> COULEURS[<span class="va">self</span>.couleur <span class="op">-</span> <span class="dv">1</span>]</span></code></pre></div>
+</body>
+</html>

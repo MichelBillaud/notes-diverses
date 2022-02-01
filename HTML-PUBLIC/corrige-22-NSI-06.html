@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Michel Billaud (michel.billaud@laposte.net)" />
+  <title>Corrigé Sujet 6 épreuve pratique NSI</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">a.sourceLine {
+display: inline-block;
+line-height: 1.25;
+}
+a.sourceLine {
+pointer-events: none;
+color: inherit;
+text-decoration: inherit;
+}
+a.sourceLine:empty {
+height: 1.2em;
+}
+.sourceCode {
+overflow: visible;
+}
+code.sourceCode {
+white-space: pre;
+position: relative;
+}
+div.sourceCode {
+margin: 1em 0;
+}
+pre.sourceCode {
+margin: 0;
+}
+@media screen {
+div.sourceCode {
+overflow: auto;
+}
+}
+@media print {
+code.sourceCode {
+white-space: pre-wrap;
+}
+a.sourceLine {
+text-indent: -1em;
+padding-left: 1em;
+}
+}
+pre.numberSource a.sourceLine {
+position: relative;
+left: -4em;
+}
+pre.numberSource a.sourceLine::before {
+content: attr(title);
+position: relative;
+left: -1em;
+text-align: right;
+vertical-align: baseline;
+border: none;
+pointer-events: all;
+display: inline-block;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+padding: 0 4px;
+width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource {
+margin-left: 3em;
+border-left: 1px solid #aaaaaa;
+padding-left: 4px;
+}
+div.sourceCode {}
+@media screen {
+a.sourceLine::before {
+text-decoration: underline;
+}
+}
+code span.al {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.an {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.at {
+color: #7d9029;
+}
+
+code span.bn {
+color: #40a070;
+}
+
+code span.bu {}
+
+code span.cf {
+color: #007020;
+font-weight: bold;
+}
+
+code span.ch {
+color: #4070a0;
+}
+
+code span.cn {
+color: #880000;
+}
+
+code span.co {
+color: #60a0b0;
+font-style: italic;
+}
+
+code span.cv {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.do {
+color: #ba2121;
+font-style: italic;
+}
+
+code span.dt {
+color: #902000;
+}
+
+code span.dv {
+color: #40a070;
+}
+
+code span.er {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.ex {}
+
+code span.fl {
+color: #40a070;
+}
+
+code span.fu {
+color: #06287e;
+}
+
+code span.im {}
+
+code span.in {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.kw {
+color: #007020;
+font-weight: bold;
+}
+
+code span.op {
+color: #666666;
+}
+
+code span.ot {
+color: #007020;
+}
+
+code span.pp {
+color: #bc7a00;
+}
+
+code span.sc {
+color: #4070a0;
+}
+
+code span.ss {
+color: #bb6688;
+}
+
+code span.st {
+color: #4070a0;
+}
+
+code span.va {
+color: #19177c;
+}
+
+code span.vs {
+color: #4070a0;
+}
+
+code span.wa {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+
+:root {
+--title-color: #202080;
+--source-bg-color: rgb(240, 240, 255);
+}
+h1, h2, h3, h4, h5, h6 {
+border-bottom: solid 1px silver;
+color: var(--title-color);
+}
+body {
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div.sourceCode {
+background-color: var(--source-bg-color);
+padding: 1em;
+}
+#TOC {
+padding: 0.5em;
+border: solid 1px silver;
+}
+#TOC ul {
+list-style-type: none;
+padding-left: 1em;
+}
+nav:before {
+text-indent: 2em;
+content: "Sommaire";
+color: var(--title-color);
+font-weight: bold;
+font-size: large;
+}
+#TOC a {
+text-decoration: none;
+}
+header {
+text-align: center;
+}
+.title {
+}
+.author, .date {
+font-style: italic;
+}
+table, th, td {
+border-collapse: collapse;
+border: solid black 1px;
+padding: 0.5em;
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Corrigé Sujet 6 épreuve pratique NSI</h1>
+<p class="author">Michel Billaud (<code>michel.billaud@laposte.net</code>)</p>
+<p class="date">1er février 2022</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#licence"><span class="toc-section-number">1</span> Licence</a></li>
+<li><a href="#le-sujet"><span class="toc-section-number">2</span> Le sujet</a></li>
+<li><a href="#recherche-de-la-valeur-et-lindice-du-maximum-dune-liste"><span class="toc-section-number">3</span> Recherche de la valeur et l’indice du maximum d’une liste</a>
+<ul>
+<li><a href="#résolution"><span class="toc-section-number">3.1</span> Résolution</a></li>
+<li><a href="#solution"><span class="toc-section-number">3.2</span> Solution</a></li>
+<li><a href="#la-question-de-la-liste-vide"><span class="toc-section-number">3.3</span> La question de la liste vide</a></li>
+<li><a href="#bonus-automatiser-les-tests"><span class="toc-section-number">3.4</span> Bonus : automatiser les tests</a></li>
+</ul></li>
+<li><a href="#recherche-dune-sous-chaîne-dans-une-chaîne"><span class="toc-section-number">4</span> Recherche d’une sous-chaîne dans une chaîne</a>
+<ul>
+<li><a href="#résolution-1"><span class="toc-section-number">4.1</span> Résolution</a></li>
+<li><a href="#solution-1"><span class="toc-section-number">4.2</span> Solution</a></li>
+<li><a href="#solution-nettoyée"><span class="toc-section-number">4.3</span> Solution nettoyée</a></li>
+<li><a href="#décomposer-pour-simplifier"><span class="toc-section-number">4.4</span> Décomposer pour simplifier</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 data-number="1" id="licence"><span class="header-section-number">1</span> Licence</h1>
+<p><img src="data:image/png;base64,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" /></p>
+<p>Cette collection de notes est mise à disposition selon les termes de la <a href="http://creativecommons.org/licenses/by-nc-sa/2.0/fr/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France</a>.</p>
+<ul>
+<li>Les notes sont publiées dans <a href="https://www.mbillaud.fr/notes/" class="uri">https://www.mbillaud.fr/notes/</a></li>
+<li>Sources dans <a href="https://github.com/MichelBillaud/notes-diverses" class="uri">https://github.com/MichelBillaud/notes-diverses</a></li>
+</ul>
+<h1 data-number="2" id="le-sujet"><span class="header-section-number">2</span> Le sujet</h1>
+<p>Se trouve sur la page <a href="https://eduscol.education.fr/2661/banque-des-epreuves-pratiques-de-specialite-nsi" class="uri">https://eduscol.education.fr/2661/banque-des-epreuves-pratiques-de-specialite-nsi</a>, dans <a href="https://eduscol.education.fr/document/33193/download" class="uri">https://eduscol.education.fr/document/33193/download</a></p>
+<ul>
+<li>recherche de la valeur et l’indice du maximum d’une liste</li>
+<li>recherche d’une sous-chaîne.</li>
+</ul>
+<h1 data-number="3" id="recherche-de-la-valeur-et-lindice-du-maximum-dune-liste"><span class="header-section-number">3</span> Recherche de la valeur et l’indice du maximum d’une liste</h1>
+<p><strong>Sujet</strong> : Écrire une fonction <code>maxi</code> qui prend en paramètre une liste <code>tab</code> de nombres entiers et qui renvoie un couple donnant le plus grand élément de cette liste ainsi que l’indice de la première apparition de ce maximum dans la liste.</p>
+<p>Exemple</p>
+<pre><code>&gt;&gt;&gt; maxi([1,5,6,9,1,2,3,7,9,8])
+(9,3)</code></pre>
+<p>Problèmes :</p>
+<ul>
+<li>le sujet oublie de préciser ce que la fonction doit retourner quand la liste est vide.</li>
+<li>pourquoi appeler <code>tab</code> une liste ?</li>
+</ul>
+<h2 data-number="3.1" id="résolution"><span class="header-section-number">3.1</span> Résolution</h2>
+<ul>
+<li>On se permet donc de supposer qu’on n’appellera jamais <code>maxi</code> sur une liste vide.</li>
+<li>noter qu’on veut l’indice de la <em>première</em> occurrence.</li>
+</ul>
+<p>Le calcul se fait en posant un résultat provisoire (valeur du minimum et de son indice), et en l’améliorant en utilisant les éléments suivants)</p>
+<h2 data-number="3.2" id="solution"><span class="header-section-number">3.2</span> Solution</h2>
+<ul>
+<li>Puisqu’on a besoin de retourner un indice, il n’est pas déraisonnable que la boucle porte sur les indices : utilisation d’un <code>range()</code></li>
+<li>on peut prendre comme résultat provisoire le premier élément et son indice (O).</li>
+</ul>
+<p>“Du coup”, le <code>range</code> peut démarrer à 1, puisque l’indice 0 a déjà été pris en compte</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="kw">def</span> maxi(tab):</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>    valeur_maxi <span class="op">=</span> tab[<span class="dv">0</span>]</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>    indice_maxi <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="bu">len</span>(tab)):</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a>        <span class="cf">if</span> tab[i] <span class="op">&gt;</span> valeur_maxi:</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a>            valeur_maxi <span class="op">=</span> tab[i]</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>            indice_maxi <span class="op">=</span> i</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>    <span class="cf">return</span> (valeur_maxi, indice_maxi)</span></code></pre></div>
+<p>Ca serait mieux en renommant <code>tab</code> en <code>liste</code>, mais pour un examen, il vaut mieux s’en tenir à l’énoncé.</p>
+<h2 data-number="3.3" id="la-question-de-la-liste-vide"><span class="header-section-number">3.3</span> La question de la liste vide</h2>
+<p>Si on tient traiter le cas de la liste vide, il faut expliciter le choix qui est fait, parce que la spécification d’origine ne permet pas de le supposer. Exemple</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co"># Cette fonction retourne un couple (etc)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="co"># La fonction retourne None (résultat = absence de couple) </span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="co"># si la liste est vide</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="kw">def</span> maxi(tab):</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>    <span class="cf">if</span> <span class="bu">len</span>(maxi) <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>    ...</span></code></pre></div>
+<h2 data-number="3.4" id="bonus-automatiser-les-tests"><span class="header-section-number">3.4</span> Bonus : automatiser les tests</h2>
+<p>Quand on programme, on commet des erreurs, que l’on détecte en faisant passer des tests.</p>
+<p>C’est parfaitement normal de commettre des erreurs, mais c’est agaçant. Et faire passer des tests pour vérifier, c’est fatigant. Le résultat, c’est qu’on a tendance à ne pas les faire sérieusement, parce que</p>
+<ul>
+<li>c’est répétitif</li>
+<li>on se dit “ouais bon, non pas la peine ça marche je suis sûr”,</li>
+<li>et le risque d’avoir une mauvaise nouvelle qui contredit ce bel optimiste est important.</li>
+</ul>
+<p>Une solution à ce problème de <em>psychologie du travail</em> est d’automatiser autant que possible le passage des tests.</p>
+<p>Un exemple simple, dans ce cas :</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="kw">def</span> verifier_maxi(tab, attendu):</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a>    <span class="bu">print</span> (<span class="st">&quot;# appel maxi(&quot;</span> <span class="op">+</span> <span class="bu">str</span>(tab) <span class="op">+</span> <span class="st">&quot;)&quot;</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a>    <span class="bu">print</span> (<span class="st">&quot;- résultat attendu = &quot;</span> <span class="op">+</span> <span class="bu">str</span>(attendu))</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>    <span class="bu">print</span> (<span class="st">&quot;- resultat obtenu  = &quot;</span> <span class="op">+</span> <span class="bu">str</span>(maxi(tab)))</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a><span class="co"># tests</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a>verifier_maxi([<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">6</span>,<span class="dv">9</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">7</span>,<span class="dv">9</span>,<span class="dv">8</span>], (<span class="dv">9</span>,<span class="dv">3</span>))</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a>verifier_maxi([<span class="dv">5</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], (<span class="dv">5</span>, <span class="dv">0</span>))   <span class="co">#cas du premier</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>verifier_maxi([<span class="dv">5</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">5</span>], (<span class="dv">5</span>, <span class="dv">0</span>))   <span class="co">#cas du premier</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a>verifier_maxi([<span class="dv">11</span>, <span class="dv">22</span>, <span class="dv">33</span>], (<span class="dv">33</span>, <span class="dv">2</span>))  <span class="co">#cas du dernier</span></span></code></pre></div>
+<p>Dans l’appel à <code>verifier_maxi</code>, on fournit</p>
+<ul>
+<li>les données</li>
+<li>le résultat attendu.</li>
+</ul>
+<p>La fonction <code>verifier_maxi</code> affiche les deux, ainsi que le résultat obtenu, dans un format qui facilite les vérifications. Exécution :</p>
+<pre><code># appel maxi([1, 5, 6, 9, 1, 2, 3, 7, 9, 8])
+- résultat attendu = (9, 3)
+- resultat obtenu  = (9, 3)
+# appel maxi([5, 1, 2, 3])
+- résultat attendu = (5, 0)
+- resultat obtenu  = (5, 0)
+# appel maxi([5, 1, 2, 5])
+- résultat attendu = (5, 0)
+- resultat obtenu  = (5, 0)
+# appel maxi([11, 22, 33])
+- résultat attendu = (33, 2)
+- resultat obtenu  = (33, 2)</code></pre>
+<p>On peut aussi prévoir l’affichage d’un message <code>ERREUR</code> bien visible si les résultats obtenus et attendus diffèrent.</p>
+<h1 data-number="4" id="recherche-dune-sous-chaîne-dans-une-chaîne"><span class="header-section-number">4</span> Recherche d’une sous-chaîne dans une chaîne</h1>
+<p><strong>Sujet résumé :</strong> compléter le code suivant pour qu’il indique si une chaîne (<code>gene</code>) apparaît dans</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="kw">def</span> recherche(gene, seq_adn):</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>    n <span class="op">=</span> <span class="bu">len</span>(seq_adn)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>    g <span class="op">=</span> <span class="bu">len</span>(gene)</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>    i <span class="op">=</span> ...                                  <span class="co"># 1</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>    trouve <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>    <span class="cf">while</span> i <span class="op">&lt;</span> ... <span class="kw">and</span> trouve <span class="op">==</span> ... :        <span class="co"># 2</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>        j <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>        <span class="cf">while</span> j <span class="op">&lt;</span> g <span class="kw">and</span> gene[j] <span class="op">==</span> seq_adn[i<span class="op">+</span>j]:</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>            ...                              <span class="co"># 3</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>        <span class="cf">if</span> j <span class="op">==</span> g:</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a>            trouve <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a>        ...                                  <span class="co"># 4</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a>    <span class="cf">return</span> trouve</span></code></pre></div>
+<p><strong>Notes</strong></p>
+<ul>
+<li>on ne peut pas dire qu’on soit gâtés par les notations choisies. On peut comprendre <code>g</code> pour la longueur de <code>gene</code>, mais ça ne paraît pas cohérent avec <code>n</code> pour la longueur de <code>seq_adn</code>.</li>
+<li>on induit facilement que <code>trouve</code> devrait être un booléen (on lui affecte <code>True</code> et <code>False</code>), la comparaison “<code>trouve == ...</code>” sent assez mauvais…</li>
+</ul>
+<h2 data-number="4.1" id="résolution-1"><span class="header-section-number">4.1</span> Résolution</h2>
+<p>Le plus simple est de repartir d’une description du résultat attendu :</p>
+<blockquote>
+<p>on dit que la chaîne <code>a</code> est dans la chaîne <code>b</code> si il existe un indice <code>i</code> tel que <code>a[0]==b[i]</code>, <code>a[1]==b[i+1]</code>, etc.</p>
+</blockquote>
+<p>en allant jusqu’à la fin de <code>a</code>, c’est à dire</p>
+<blockquote>
+<p><code>a[j]==b[i + j]</code>, pour tout <code>j</code> de 0 à len(a)-1`</p>
+</blockquote>
+<p>Il faut aussi tenir compte du fait que l’indice <code>i+j</code> doit être valide dans <code>b</code>, c’est à dire inférieur où égal à <code>len(b)-1</code></p>
+<p>De ces inégalités, on conclut que <code>i</code> doit être entre 0 et <code>len(b)-len(a)</code> compris.</p>
+<p>Exemple : si les chaînes <code>a</code> et <code>b</code> sont respectivement de tailles 3 et 8, la dernière position possible pour <code>a[0]</code> est <code>i</code> = 5, <code>a</code> occuperait alors les positions d’indice 5, 6 et 7 dans <code>b</code>:</p>
+<h2 data-number="4.2" id="solution-1"><span class="header-section-number">4.2</span> Solution</h2>
+<p>Identifions cette analyse et le code à trous.</p>
+<p>La boucle <code>while</code> <strong>intérieure</strong> :</p>
+<ul>
+<li>sert visiblement à comparer les chaînes. Par miracle, les indices ont le même nom.</li>
+<li>elle doit s’arrêter dans deux cas : soit une différence a été détectée, soit toutes les comparaisons ont été faites</li>
+<li>le corps de boucle (trou 3) consiste à passer au <code>j</code> suivant <code>j += 1 # 3</code></li>
+<li>si <code>j</code> a atteint la longueur de <code>gene</code>, la chaine <code>seq_adn</code> contenait bien une copie de <code>gene</code>, à partir de l’indice <code>i</code></li>
+</ul>
+<p>La boucle <code>while</code> <strong>extérieure</strong> :</p>
+<ul>
+<li>sert à essayer différents endroits où pourraient se trouver une copie de <code>gene</code> ;</li>
+<li>elle est contrôlée par la variable <code>i</code> :
+<ul>
+<li>qu’on fait partir de O dans le trou 1</li>
+<li>qui doit augmenter de 1 à chaque tour (trou 4)</li>
+<li>et qui doit s’arrêter quand la valeur <code>n-g</code> est dépassée</li>
+</ul></li>
+<li>une autre raison d’arrêter la boucle sur <code>i</code>, c’est si on a trouvé.</li>
+</ul>
+<p>En se conformant strictement à l’énoncé, on obtient</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="kw">def</span> recherche(gene, seq_adn):</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>    n <span class="op">=</span> <span class="bu">len</span>(seq_adn)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>    g <span class="op">=</span> <span class="bu">len</span>(gene)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>    i <span class="op">=</span> <span class="dv">0</span>                                        <span class="co"># 1</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>    trouve <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>    <span class="cf">while</span> i <span class="op">&lt;</span> n<span class="op">-</span>g<span class="op">+</span><span class="dv">1</span> <span class="kw">and</span> trouve <span class="op">==</span> <span class="va">False</span> :        <span class="co"># 2</span></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>        j <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>        <span class="cf">while</span> j <span class="op">&lt;</span> g <span class="kw">and</span> gene[j] <span class="op">==</span> seq_adn[i<span class="op">+</span>j]:</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a>            j <span class="op">+=</span> <span class="dv">1</span>                               <span class="co"># 3</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a>        <span class="cf">if</span> j <span class="op">==</span> g:</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a>            trouve <span class="op">=</span> <span class="va">True</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a>        i <span class="op">+=</span> <span class="dv">1</span>                                   <span class="co"># 4</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a>    <span class="cf">return</span> trouve</span></code></pre></div>
+<h2 data-number="4.3" id="solution-nettoyée"><span class="header-section-number">4.3</span> Solution nettoyée</h2>
+<p>On obtient une solution plus propre en appliquant quelques recettes de nettoyage</p>
+<ul>
+<li>nommer correctement la fonction</li>
+<li>choisir des notations cohérentes : <code>a</code>, <code>b</code> pour les chaînes,<code>la</code> et <code>lb</code> pour leurs longueurs, <code>ia</code> et <code>ib</code> pour les indices.</li>
+<li>tester correctement les booléens (<code>not</code> au lieu de comparaison par <code>==</code>)</li>
+<li>affecter le résultat d’une condition plutot que faire un <code>if</code></li>
+</ul>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="co"># retourne True si et seulement si la chaîne a </span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a><span class="co"># apparait dans la chaîne b</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a><span class="kw">def</span> est_contenue_dans(a, b):</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>    la <span class="op">=</span> <span class="bu">len</span>(a)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a>    lb <span class="op">=</span> <span class="bu">len</span>(b)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a>    ib <span class="op">=</span> <span class="dv">0</span>                                  <span class="co"># 1</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a>    trouve <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a>    <span class="cf">while</span> ib <span class="op">&lt;=</span> lb<span class="op">-</span>la <span class="kw">and</span> <span class="kw">not</span>(trouve)       <span class="co"># 2</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a>        ia <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a>        <span class="cf">while</span> ia <span class="op">&lt;</span> la <span class="kw">and</span> a[ia] <span class="op">==</span> b[ib<span class="op">+</span>ia]:</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a>            ia <span class="op">+=</span> <span class="dv">1</span>                          <span class="co"># 3</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a>        trouve <span class="op">=</span> (ia <span class="op">==</span> la)</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a>        ib <span class="op">+=</span> <span class="dv">1</span>                              <span class="co"># 4</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true"></a>    <span class="cf">return</span> trouve</span></code></pre></div>
+<h2 data-number="4.4" id="décomposer-pour-simplifier"><span class="header-section-number">4.4</span> Décomposer pour simplifier</h2>
+<p>Une des règles d’or de la programmation est de se simplifier la vie en découpant en fonctions qui font peu de choses, mais le font bien.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="kw">def</span> est_contenue_dans(a, b):</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>    <span class="cf">for</span> ib <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(b)<span class="op">-</span><span class="bu">len</span>(a)<span class="op">+</span><span class="dv">1</span>):</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>        <span class="cf">if</span> est_contenu_a_la_position(a, b, ib):</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>           <span class="cf">return</span> <span class="va">True</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>    <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>    </span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a><span class="kw">def</span> est_contenu_a_la_position(a, b, ib):</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a>    <span class="cf">if</span> i<span class="op">+</span><span class="bu">len</span>(a) <span class="op">&gt;</span> <span class="bu">len</span>(b):         <span class="co"># précaution</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a>        <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a>    <span class="cf">for</span> ia <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(a)):</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a>        <span class="cf">if</span> a[ia] <span class="op">!=</span> b[ib<span class="op">+</span>ia]:</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a>            <span class="cf">return</span> <span class="va">False</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a>    <span class="cf">return</span> <span class="va">True</span></span></code></pre></div>
+</body>
+</html>
