@@ -4,6 +4,7 @@
 
 
 - mise à jour 1er février, complément sur les versions récursives
+- 2 février, ajout versions itératives du rendu de monnaie.
 
 # Licence
 
@@ -346,11 +347,87 @@ PIECES = [100, 50, 20, 10, 5, 2, 1]
 def rendu_glouton(a_rendre, solution = [], i = 0):
 	if a_rendre == 0:
 		return solution                                  # 1
-	p = PIECES[i]               
+	p = PIECES[i]             
 	if p <= a_rendre:                                    # 2
 		solution.append(p)                               # 3
 		return rendu_glouton(a_rendre - p, solution, i)
 	else :
 		return rendu_glouton(a_rendre, solution, i + 1)  # 4
 ~~~
+
+
+## Retour à une solution itérative
+
+Dans le code ci-dessus les appels à `rendu_glouton` sont terminaux (on
+ne fait rien après).
+
+Ce qui veut dire qu'on peut convertir ce code sous forme itérative (avec
+des boucle).
+
+Un appel terminal signifie : recommencer avec les valeurs indiquée en
+paramètres. En détail
+
+- `rendu_glouton(a_rendre - p, solution, i)` : diminuer la somme à
+  rendre, et recommencer avec la même pièce
+- `rendu_glouton(a_rendre, solution, i + 1)` : recommencer avec la
+  pièce suivante
+
+D'où l'idée d'avoir deux boucles imbriquées
+
+- la boucle extérieure passe en revue les pièces
+- la boucle intérieure sur l'utilisation d'une pièce autant que
+  possible pour diminuer la somme à rendre
+
+Le paramètre tampon `solution` se transforme en variable locale de la fonction,
+retournée à la sortie de la fonction
+
+Une solution simple :
+
+~~~python
+PIECES = [100,50,20,10,5,2,1]
+
+def rendu_iteratif(a_rendre):
+    solution = []
+    for piece in PIECES:
+        while a_rendre >= piece:
+            solution.append(piece)
+            a_rendre = a_rendre - piece
+	return solution
+	
+print ("Tests :")
+assert rendu_iteratif(68) ==  [50, 10, 5, 2, 1]
+assert rendu_iteratif(291) == [100, 100, 50, 20, 20, 1]
+print ("Ok !")
+~~~
+
+
+Que l'on peut accélérer légèrement en retournant dès qu'une pièce a suffi
+pour épuiser la somme à rendre
+
+~~~python
+def rendu_iteratif(a_rendre):
+    solution = []
+    for piece in PIECES:
+        while a_rendre >= piece:
+            solution.append(piece)
+            a_rendre = a_rendre - piece
+        if a_rendre == 0:
+            return solution
+	# on ne passe jamais ici
+~~~
+
+Dans
+cette version, on ne sort jamais "par la fin" de la boucle `for`.
+Le fait que
+
+- la somme à rendre est un entier positif ou nul,
+- la valeur 1 est dans `PIECES`,
+
+permet de conclure qu'il arrivera nécessairement que la condition
+`arendre == 0` soit vraie, au plus tard en rencontrant la pièce 1.  Et
+donc le `return solution` sera forcément exécuté, qui fera sortir
+"sauvagement" de la boucle `for` et de la fonction.
+
+
+
 

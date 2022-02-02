@@ -348,11 +348,13 @@ padding: 0.5em;
 <li><a href="#la-question-1"><span class="toc-section-number">4.1</span> La question</a></li>
 <li><a href="#résolution"><span class="toc-section-number">4.2</span> Résolution</a></li>
 <li><a href="#corrigé"><span class="toc-section-number">4.3</span> Corrigé</a></li>
+<li><a href="#retour-à-une-solution-itérative"><span class="toc-section-number">4.4</span> Retour à une solution itérative</a></li>
 </ul></li>
 </ul>
 </nav>
 <ul>
 <li>mise à jour 1er février, complément sur les versions récursives</li>
+<li>2 février, ajout versions itératives du rendu de monnaie.</li>
 </ul>
 <h1 data-number="1" id="licence"><span class="header-section-number">1</span> Licence</h1>
 <p><img src="data:image/png;base64,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" /></p>
@@ -533,11 +535,56 @@ padding: 0.5em;
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a><span class="kw">def</span> rendu_glouton(a_rendre, solution <span class="op">=</span> [], i <span class="op">=</span> <span class="dv">0</span>):</span>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a>    <span class="cf">if</span> a_rendre <span class="op">==</span> <span class="dv">0</span>:</span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a>        <span class="cf">return</span> solution                                  <span class="co"># 1</span></span>
-<span id="cb14-6"><a href="#cb14-6" aria-hidden="true"></a>    p <span class="op">=</span> PIECES[i]               </span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true"></a>    p <span class="op">=</span> PIECES[i]             </span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true"></a>    <span class="cf">if</span> p <span class="op">&lt;=</span> a_rendre:                                    <span class="co"># 2</span></span>
 <span id="cb14-8"><a href="#cb14-8" aria-hidden="true"></a>        solution.append(p)                               <span class="co"># 3</span></span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true"></a>        <span class="cf">return</span> rendu_glouton(a_rendre <span class="op">-</span> p, solution, i)</span>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true"></a>    <span class="cf">else</span> :</span>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true"></a>        <span class="cf">return</span> rendu_glouton(a_rendre, solution, i <span class="op">+</span> <span class="dv">1</span>)  <span class="co"># 4</span></span></code></pre></div>
+<h2 data-number="4.4" id="retour-à-une-solution-itérative"><span class="header-section-number">4.4</span> Retour à une solution itérative</h2>
+<p>Dans le code ci-dessus les appels à <code>rendu_glouton</code> sont terminaux (on ne fait rien après).</p>
+<p>Ce qui veut dire qu’on peut convertir ce code sous forme itérative (avec des boucle).</p>
+<p>Un appel terminal signifie : recommencer avec les valeurs indiquée en paramètres. En détail</p>
+<ul>
+<li><code>rendu_glouton(a_rendre - p, solution, i)</code> : diminuer la somme à rendre, et recommencer avec la même pièce</li>
+<li><code>rendu_glouton(a_rendre, solution, i + 1)</code> : recommencer avec la pièce suivante</li>
+</ul>
+<p>D’où l’idée d’avoir deux boucles imbriquées</p>
+<ul>
+<li>la boucle extérieure passe en revue les pièces</li>
+<li>la boucle intérieure sur l’utilisation d’une pièce autant que possible pour diminuer la somme à rendre</li>
+</ul>
+<p>Le paramètre tampon <code>solution</code> se transforme en variable locale de la fonction, retournée à la sortie de la fonction</p>
+<p>Une solution simple :</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a>PIECES <span class="op">=</span> [<span class="dv">100</span>,<span class="dv">50</span>,<span class="dv">20</span>,<span class="dv">10</span>,<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">1</span>]</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a><span class="kw">def</span> rendu_iteratif(a_rendre):</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a>    solution <span class="op">=</span> []</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a>    <span class="cf">for</span> piece <span class="kw">in</span> PIECES:</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true"></a>        <span class="cf">while</span> a_rendre <span class="op">&gt;=</span> piece:</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true"></a>            solution.append(piece)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true"></a>            a_rendre <span class="op">=</span> a_rendre <span class="op">-</span> piece</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true"></a>    <span class="cf">return</span> solution</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true"></a>    </span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true"></a><span class="bu">print</span> (<span class="st">&quot;Tests :&quot;</span>)</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true"></a><span class="cf">assert</span> rendu_iteratif(<span class="dv">68</span>) <span class="op">==</span>  [<span class="dv">50</span>, <span class="dv">10</span>, <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">1</span>]</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true"></a><span class="cf">assert</span> rendu_iteratif(<span class="dv">291</span>) <span class="op">==</span> [<span class="dv">100</span>, <span class="dv">100</span>, <span class="dv">50</span>, <span class="dv">20</span>, <span class="dv">20</span>, <span class="dv">1</span>]</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true"></a><span class="bu">print</span> (<span class="st">&quot;Ok !&quot;</span>)</span></code></pre></div>
+<p>Que l’on peut accélérer légèrement en retournant dès qu’une pièce a suffi pour épuiser la somme à rendre</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="kw">def</span> rendu_iteratif(a_rendre):</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a>    solution <span class="op">=</span> []</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a>    <span class="cf">for</span> piece <span class="kw">in</span> PIECES:</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a>        <span class="cf">while</span> a_rendre <span class="op">&gt;=</span> piece:</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a>            solution.append(piece)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true"></a>            a_rendre <span class="op">=</span> a_rendre <span class="op">-</span> piece</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true"></a>        <span class="cf">if</span> a_rendre <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true"></a>            <span class="cf">return</span> solution</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true"></a>    <span class="co"># on ne passe jamais ici</span></span></code></pre></div>
+<p>Dans cette version, on ne sort jamais “par la fin” de la boucle <code>for</code>. Le fait que</p>
+<ul>
+<li>la somme à rendre est un entier positif ou nul,</li>
+<li>la valeur 1 est dans <code>PIECES</code>,</li>
+</ul>
+<p>permet de conclure qu’il arrivera nécessairement que la condition <code>arendre == 0</code> soit vraie, au plus tard en rencontrant la pièce 1. Et donc le <code>return solution</code> sera forcément exécuté, qui fera sortir “sauvagement” de la boucle <code>for</code> et de la fonction.</p>
 </body>
 </html>
