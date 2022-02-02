@@ -21,9 +21,19 @@ Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France]
 Sujet dans <https://eduscol.education.fr/document/33193/download> :
 
 - conversion d'un entier en liste de bits
-- tri à bulles
+- insertion dans une liste ordonnée
 
 Document : [corrige-22-NSI-07.html](corrige-22-NSI-07.html)
+
+
+# Corrigé sujet 7 épreuves pratiques NSI
+
+Sujet dans <https://eduscol.education.fr/document/33202/download> :
+
+- indice d'un élément dans une liste
+- 
+
+Document : [corrige-22-NSI-08.html](corrige-22-NSI-08.html)
 
 # Corrigé sujet 6 épreuves pratiques NSI
 
