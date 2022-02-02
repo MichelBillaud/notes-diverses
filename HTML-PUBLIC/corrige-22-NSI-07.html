@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Michel Billaud (michel.billaud@laposte.net)" />
+  <title>Corrigé Sujet 7 épreuve pratique NSI</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">a.sourceLine {
+display: inline-block;
+line-height: 1.25;
+}
+a.sourceLine {
+pointer-events: none;
+color: inherit;
+text-decoration: inherit;
+}
+a.sourceLine:empty {
+height: 1.2em;
+}
+.sourceCode {
+overflow: visible;
+}
+code.sourceCode {
+white-space: pre;
+position: relative;
+}
+div.sourceCode {
+margin: 1em 0;
+}
+pre.sourceCode {
+margin: 0;
+}
+@media screen {
+div.sourceCode {
+overflow: auto;
+}
+}
+@media print {
+code.sourceCode {
+white-space: pre-wrap;
+}
+a.sourceLine {
+text-indent: -1em;
+padding-left: 1em;
+}
+}
+pre.numberSource a.sourceLine {
+position: relative;
+left: -4em;
+}
+pre.numberSource a.sourceLine::before {
+content: attr(title);
+position: relative;
+left: -1em;
+text-align: right;
+vertical-align: baseline;
+border: none;
+pointer-events: all;
+display: inline-block;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+padding: 0 4px;
+width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource {
+margin-left: 3em;
+border-left: 1px solid #aaaaaa;
+padding-left: 4px;
+}
+div.sourceCode {}
+@media screen {
+a.sourceLine::before {
+text-decoration: underline;
+}
+}
+code span.al {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.an {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.at {
+color: #7d9029;
+}
+
+code span.bn {
+color: #40a070;
+}
+
+code span.bu {}
+
+code span.cf {
+color: #007020;
+font-weight: bold;
+}
+
+code span.ch {
+color: #4070a0;
+}
+
+code span.cn {
+color: #880000;
+}
+
+code span.co {
+color: #60a0b0;
+font-style: italic;
+}
+
+code span.cv {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.do {
+color: #ba2121;
+font-style: italic;
+}
+
+code span.dt {
+color: #902000;
+}
+
+code span.dv {
+color: #40a070;
+}
+
+code span.er {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.ex {}
+
+code span.fl {
+color: #40a070;
+}
+
+code span.fu {
+color: #06287e;
+}
+
+code span.im {}
+
+code span.in {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.kw {
+color: #007020;
+font-weight: bold;
+}
+
+code span.op {
+color: #666666;
+}
+
+code span.ot {
+color: #007020;
+}
+
+code span.pp {
+color: #bc7a00;
+}
+
+code span.sc {
+color: #4070a0;
+}
+
+code span.ss {
+color: #bb6688;
+}
+
+code span.st {
+color: #4070a0;
+}
+
+code span.va {
+color: #19177c;
+}
+
+code span.vs {
+color: #4070a0;
+}
+
+code span.wa {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+
+:root {
+--title-color: #202080;
+--source-bg-color: rgb(240, 240, 255);
+}
+h1, h2, h3, h4, h5, h6 {
+border-bottom: solid 1px silver;
+color: var(--title-color);
+}
+body {
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div.sourceCode {
+background-color: var(--source-bg-color);
+padding: 1em;
+}
+#TOC {
+padding: 0.5em;
+border: solid 1px silver;
+}
+#TOC ul {
+list-style-type: none;
+padding-left: 1em;
+}
+nav:before {
+text-indent: 2em;
+content: "Sommaire";
+color: var(--title-color);
+font-weight: bold;
+font-size: large;
+}
+#TOC a {
+text-decoration: none;
+}
+header {
+text-align: center;
+}
+.title {
+}
+.author, .date {
+font-style: italic;
+}
+table, th, td {
+border-collapse: collapse;
+border: solid black 1px;
+padding: 0.5em;
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Corrigé Sujet 7 épreuve pratique NSI</h1>
+<p class="author">Michel Billaud (<code>michel.billaud@laposte.net</code>)</p>
+<p class="date">1er février 2022</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#licence"><span class="toc-section-number">1</span> Licence</a></li>
+<li><a href="#le-sujet"><span class="toc-section-number">2</span> Le sujet</a></li>
+<li><a href="#conversion-en-binaire"><span class="toc-section-number">3</span> Conversion en binaire</a>
+<ul>
+<li><a href="#solution"><span class="toc-section-number">3.1</span> Solution</a></li>
+<li><a href="#cas-du-zeo"><span class="toc-section-number">3.2</span> Cas du zeo</a></li>
+</ul></li>
+<li><a href="#exercice-2-linfâme-tri-à-bulles"><span class="toc-section-number">4</span> Exercice 2, l’infâme tri à bulles</a></li>
+<li><a href="#résolution"><span class="toc-section-number">5</span> Résolution</a>
+<ul>
+<li><a href="#code-complété"><span class="toc-section-number">5.1</span> Code complété</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 data-number="1" id="licence"><span class="header-section-number">1</span> Licence</h1>
+<p><img src="data:image/png;base64,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" /></p>
+<p>Cette collection de notes est mise à disposition selon les termes de la <a href="http://creativecommons.org/licenses/by-nc-sa/2.0/fr/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France</a>.</p>
+<ul>
+<li>Les notes sont publiées dans <a href="https://www.mbillaud.fr/notes/" class="uri">https://www.mbillaud.fr/notes/</a></li>
+<li>Sources dans <a href="https://github.com/MichelBillaud/notes-diverses" class="uri">https://github.com/MichelBillaud/notes-diverses</a></li>
+</ul>
+<h1 data-number="2" id="le-sujet"><span class="header-section-number">2</span> Le sujet</h1>
+<p>Se trouve sur la page <a href="https://eduscol.education.fr/2661/banque-des-epreuves-pratiques-de-specialite-nsi" class="uri">https://eduscol.education.fr/2661/banque-des-epreuves-pratiques-de-specialite-nsi</a>, dans <a href="https://eduscol.education.fr/document/33196/download" class="uri">https://eduscol.education.fr/document/33196/download</a></p>
+<ul>
+<li>conversions d’un entier positif en binaire</li>
+<li>tri à bulles</li>
+</ul>
+<h1 data-number="3" id="conversion-en-binaire"><span class="header-section-number">3</span> Conversion en binaire</h1>
+<p><strong>Résumé du sujet</strong> écrire une fonction qui prend un entier positif <code>n</code> et retourne un couple formé d’une liste <code>b</code> d’entiers représentant <code>n</code> en binaire, et de <code>bit</code> le nombre de bits. L’exemple fourni</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="op">&gt;&gt;&gt;</span> conv_bin(<span class="dv">9</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a>([<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>],<span class="dv">4</span>)</span></code></pre></div>
+<p>est particulièrement mal choisi, parce que la liste est un palindrome.</p>
+<p>Les explications données ne précisent pas la question de l’ordre, mais on peut soupçonner qu’il va être utile d’employer la méthode <code>reverse</code> décrite, après avoir largement dévoilé le pot aux roses</p>
+<blockquote>
+<p>On remarquera qu’on récupère la représentation binaire d’un entier n en partant de la gauche en appliquant successivement les instructions :</p>
+</blockquote>
+<pre><code>b = n%2 
+n = n//2 </code></pre>
+<p>répétées autant que nécessaire.</p>
+<p><strong>Critiques</strong> :</p>
+<ul>
+<li>L’indication présentée oublie le cas du zéro, codé sur <em>un</em> bit. Dans la première phrase du sujet, il aurait fallu insister sur <strong>strictement</strong> positif</li>
+<li>le nom <code>b</code> était déjà utilisé pour la liste de bits. Une fois de plus, on constate le manque de soin dans le choix des identificateurs.</li>
+</ul>
+<h2 data-number="3.1" id="solution"><span class="header-section-number">3.1</span> Solution</h2>
+<p>Le nombre de bits correspond à la longueur de la liste, il n’y a pas de raison de ne pas utiliser <code>len</code> lors de la construction du couple résultat :</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co"># pour n entier strictement positif</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="kw">def</span> conv_bin(n):</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>    bits <span class="op">=</span> []</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>    <span class="cf">while</span> n <span class="op">!=</span> <span class="dv">0</span>:</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a>        bit <span class="op">=</span> n <span class="op">%</span> <span class="dv">2</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>        n <span class="op">=</span> n <span class="op">//</span> <span class="dv">2</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>        bits.append(bit)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>    bits.reverse()</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>    <span class="cf">return</span> (bits, <span class="bu">len</span>(bits))</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>        </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a><span class="bu">print</span> (<span class="st">&quot;Tests :&quot;</span>)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a><span class="cf">assert</span> conv_bin(<span class="dv">1</span>) <span class="op">==</span>  ([<span class="dv">1</span>], <span class="dv">1</span>)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a><span class="cf">assert</span> conv_bin(<span class="dv">2</span>) <span class="op">==</span>  ([<span class="dv">1</span>, <span class="dv">0</span>], <span class="dv">2</span>)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a><span class="cf">assert</span> conv_bin(<span class="dv">9</span>) <span class="op">==</span>  ([<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>], <span class="dv">4</span>)</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a><span class="cf">assert</span> conv_bin(<span class="dv">10</span>) <span class="op">==</span> ([<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>], <span class="dv">4</span>)</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&quot;Ok!&quot;</span>)</span></code></pre></div>
+<h2 data-number="3.2" id="cas-du-zeo"><span class="header-section-number">3.2</span> Cas du zeo</h2>
+<p>Le cas particulier de l’entier nul peut être traité en début de fonction</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co"># pour n entier positif ou nul</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="kw">def</span> conv_bin(n):</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a>    <span class="cf">if</span> n <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a>        <span class="cf">return</span> ([<span class="dv">0</span>], <span class="dv">1</span>)</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>    ....</span></code></pre></div>
+<h1 data-number="4" id="exercice-2-linfâme-tri-à-bulles"><span class="header-section-number">4</span> Exercice 2, l’infâme tri à bulles</h1>
+<p>Le tri à bulles est un exemple pas spécialement facile à comprendre d’algorithme de tri intrinséquement inefficace (quadratique). On lira avec intérêt l’article d’Owan Astrakan <a href="https://users.cs.duke.edu/~ola/bubble/bubble.html" class="uri">https://users.cs.duke.edu/~ola/bubble/bubble.html</a> à propos de son histoire, ses caractéristiques et l’échec malheureux jusqu’ici de son éradication dans l’enseignement (malgré les recommandations de nombreux auteurs, dont D. Knuth, par exemple).</p>
+<p>Bref, on le retrouve ici.</p>
+<p><strong>Sujet</strong> : compléter la fonction</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">def</span> tri_bulles(T):</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>    n <span class="op">=</span> <span class="bu">len</span>(T)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(...,...,<span class="op">-</span><span class="dv">1</span>):  <span class="co">#1</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(i):</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>            <span class="cf">if</span> T[j] <span class="op">&gt;</span> T[...]:    <span class="co">#2</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>                ... <span class="op">=</span> T[j]       <span class="co">#3</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>                T[j] <span class="op">=</span> T[...]    <span class="co">#4</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>                T[j<span class="op">+</span><span class="dv">1</span>] <span class="op">=</span> temp</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a>    <span class="cf">return</span> T</span></code></pre></div>
+<p>qui prend une liste d’entiers et renvoie la liste dans l’ordre croissant.</p>
+<p><strong>Remarque</strong> la fonction fait en réalité 2 choses, retourner une liste ordonnée, elle modifie son paramètre. En programmation, il est préférable de choisir entre les deux.</p>
+<h1 data-number="5" id="résolution"><span class="header-section-number">5</span> Résolution</h1>
+<p>Le principe du tri à bulles est de repérer un couple d’éléments voisins qui ne seraient pas dans l’ordre voulu, de les échanger pour arranger ça, et de recommencer jusqu’à ce que tout soit dans l’ordre.</p>
+<p>En regardant les 3 lignes relatives à l’échange, on voit que</p>
+<ul>
+<li>les éléments concernés sont <code>T[j]</code> et <code>T[j+1]</code>,</li>
+<li>la variable d’échange est <code>temp</code></li>
+</ul>
+<p>Ce qui fournit assez d’information pour compléter d’un coup ce fragment</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>           <span class="cf">if</span> T[j] <span class="op">&gt;</span> T[j<span class="op">+</span><span class="dv">1</span>]:    <span class="co">#2</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>                temp <span class="op">=</span> T[j]      <span class="co">#3</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>                T[j] <span class="op">=</span> T[j<span class="op">+</span><span class="dv">1</span>]    <span class="co">#4</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>                T[j<span class="op">+</span><span class="dv">1</span>] <span class="op">=</span> temp</span></code></pre></div>
+<p>En regardant la boucle <code>for j in range(i):</code></p>
+<ul>
+<li><code>j</code> va varier de 0 à <code>i-1</code></li>
+<li>la première comparaison qu’elle fera sera entre <code>T[0]</code> et <code>T[1]</code>, la dernière entre <code>T[i-1]</code> et <code>T[i-1 + 1]</code>, c’est à dire <code>T[i]</code></li>
+<li>pour que <code>T[i]</code> soit un accès légal au tableau <code>T</code>, il faut que <code>i</code> soit entre <code>0</code> et <code>n-1 = len(T)-1</code></li>
+</ul>
+<p>La boucle sur <code>i</code> est descendante (le troisième paramètre de range est -1) - elle doit partir de <code>n-1</code>, la plus grande valeur pour <code>i</code> - la boucle intérieure est exécutée <code>i-1</code> fois. C’est à dire 0 fois quand <code>i</code> vaut 1. - il est donc inutile de rentrer dans le corps de la boucle extérieure pour cette valeur. - on choisit donc les paramètres du <code>range</code> pour qu’il parcoure les valeurs de <code>n-1</code> à 2.</p>
+<p>Le second paramètre de <code>range</code> indiquant la valeur à ne pas atteindre, on écrit :</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a>  <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>):  <span class="co">#1</span></span></code></pre></div>
+<h2 data-number="5.1" id="code-complété"><span class="header-section-number">5.1</span> Code complété</h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="kw">def</span> tri_bulles(T):</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>    n <span class="op">=</span> <span class="bu">len</span>(T)</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(n<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="op">-</span><span class="dv">1</span>):  <span class="co">#1</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>        <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(i):</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>            <span class="cf">if</span> T[j] <span class="op">&gt;</span> T[j<span class="op">+</span><span class="dv">1</span>]:    <span class="co">#2</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a>                temp <span class="op">=</span> T[j]      <span class="co">#3</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a>                T[j] <span class="op">=</span> T[j<span class="op">+</span><span class="dv">1</span>]    <span class="co">#4</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a>                T[j<span class="op">+</span><span class="dv">1</span>] <span class="op">=</span> temp</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a>    <span class="cf">return</span> T</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&quot;Test tri&quot;</span>)</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a><span class="cf">assert</span> tri_bulles([<span class="dv">4</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">3</span>]) <span class="op">==</span>  [<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>]</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a><span class="bu">print</span>(<span class="st">&quot;Ok&quot;</span>)</span></code></pre></div>
+</body>
+</html>
