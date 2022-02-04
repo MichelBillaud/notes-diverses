@@ -272,18 +272,18 @@ des liens
 1. menu Project / Build options / **Search libraries** ...
 2. Dans l'onglet **Linker**, cliquer sur Add
 3. Naviguer jusqu'au répertoire `lib/` de la bibliothèque
-4. Open, keps as a relative path, Yes, "`../Foo/lib`",  Ok Ok
+4. Open, keep as a relative path, Yes, "`../Foo/lib`",  Ok Ok
 
 Après le répertoire de la bibliothèque, la bibliothèque elle-même :
 
 5. menu Project / Build options / **Linker settings** ...
 6. Other Linker Options : `-lfoo`, Ok
 
-La compilation se fait maintenant sans problème
+La compilation se fait maintenant sans problème.
 
 ## Exécution
 
-L'exécution fonctionne aussi immédiatement, sans nécessiter d'autres
+L'exécution fonctionne aussi sans nécessiter d'autres
 interventions.
 
 Ce merveilleux mystère s'explique en consultant le `Build log`.

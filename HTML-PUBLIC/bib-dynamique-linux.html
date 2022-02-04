@@ -516,16 +516,16 @@ collect2: error: ld returned 1 exit status</code></pre>
 <li>menu Project / Build options / <strong>Search libraries</strong> …</li>
 <li>Dans l’onglet <strong>Linker</strong>, cliquer sur Add</li>
 <li>Naviguer jusqu’au répertoire <code>lib/</code> de la bibliothèque</li>
-<li>Open, keps as a relative path, Yes, “<code>../Foo/lib</code>”, Ok Ok</li>
+<li>Open, keep as a relative path, Yes, “<code>../Foo/lib</code>”, Ok Ok</li>
 </ol>
 <p>Après le répertoire de la bibliothèque, la bibliothèque elle-même :</p>
 <ol start="5" type="1">
 <li>menu Project / Build options / <strong>Linker settings</strong> …</li>
 <li>Other Linker Options : <code>-lfoo</code>, Ok</li>
 </ol>
-<p>La compilation se fait maintenant sans problème</p>
+<p>La compilation se fait maintenant sans problème.</p>
 <h2 data-number="3.4" id="exécution"><span class="header-section-number">3.4</span> Exécution</h2>
-<p>L’exécution fonctionne aussi immédiatement, sans nécessiter d’autres interventions.</p>
+<p>L’exécution fonctionne aussi sans nécessiter d’autres interventions.</p>
 <p>Ce merveilleux mystère s’explique en consultant le <code>Build log</code>. Pour la lisibilité j’ai fragmenté les lignes et remplacé un long chemin d’accès par “…” :</p>
 <pre><code>Checking for existence: .../Projet/bin/Debug/Projet
 Set variable: LD_LIBRARY_PATH=.:.../Foo/lib:
