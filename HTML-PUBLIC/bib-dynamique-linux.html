@@ -406,21 +406,21 @@ padding: 0.5em;
 5 directories, 8 files</code></pre>
 <p>Le programme de test sert à vérifier que la bibliothèque fonctionne.</p>
 <h2 data-number="2.3" id="le-makefile"><span class="header-section-number">2.3</span> Le Makefile</h2>
-<pre class="make"><code>CFLAGS   += -fPIC
-CPPFLAGS += -Iinclude
-LDFLAGS  += -shared
-
-lib/libfoo.so: build/foo.o
-    $(LINK.c) $^ -o $@
-
-build/%.o: src/%.c
-        $(COMPILE.c) $&lt; -o $@
-
-run-tests:
-    (cd tests; make mrproper ; make run)
-
-clean:
-    $(RM) *~ */*~ build/*</code></pre>
+<div class="sourceCode" id="cb4"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="dt">CFLAGS   </span><span class="ch">+=</span><span class="st"> -fPIC</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="dt">CPPFLAGS </span><span class="ch">+=</span><span class="st"> -Iinclude</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="dt">LDFLAGS  </span><span class="ch">+=</span><span class="st"> -shared</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a><span class="dv">lib/libfoo.so:</span><span class="dt"> build/foo.o</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a>    <span class="ch">$(</span><span class="dt">LINK.c</span><span class="ch">)</span> <span class="ch">$^</span> -o <span class="ch">$@</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a><span class="dv">build/%.o:</span><span class="dt"> src/%.c</span></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a>        <span class="ch">$(</span><span class="dt">COMPILE.c</span><span class="ch">)</span> <span class="ch">$&lt;</span> -o <span class="ch">$@</span></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a><span class="dv">run-tests:</span></span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a>    (cd tests; make mrproper ; make run)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a></span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a><span class="dv">clean:</span></span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>    <span class="ch">$(</span><span class="dt">RM</span><span class="ch">)</span> *~ */*~ build/*</span></code></pre></div>
 <p>Explications :</p>
 <ul>
 <li>les deux premières cibles fabriquent <code>lib/libfoo.so</code> en compilant <code>src/foo.c</code> qui inclut <code>include/foo.h</code>.</li>
@@ -435,23 +435,23 @@ clean:
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>    foo();</span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>}</span></code></pre></div>
 <p>et un <code>Makefile</code></p>
-<pre class="make"><code>CFLAGS = -std=c17 -Wall -Wextra -Werror
-
-FOO_LIB_DIR =     ../lib
-FOO_INCLUDE_DIR = ../include
-
-CPPFLAGS += -I$(FOO_INCLUDE_DIR)
-
-LDFLAGS +=  -L$(FOO_LIB_DIR)
-LDLIBS  = -lfoo
-
-main: main.o
-
-run: main
-    LD_LIBRARY_PATH=$(FOO_LIB_DIR) ./main
-
-mrproper:
-    $(RM) *~ *.o main</code></pre>
+<div class="sourceCode" id="cb6"><pre class="sourceCode makefile"><code class="sourceCode makefile"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="dt">CFLAGS </span><span class="ch">=</span><span class="st"> -std=c17 -Wall -Wextra -Werror</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="dt">FOO_LIB_DIR </span><span class="ch">=</span><span class="st">     ../lib</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="dt">FOO_INCLUDE_DIR </span><span class="ch">=</span><span class="st"> ../include</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="dt">CPPFLAGS </span><span class="ch">+=</span><span class="st"> -I</span><span class="ch">$(</span><span class="dt">FOO_INCLUDE_DIR</span><span class="ch">)</span></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a><span class="dt">LDFLAGS </span><span class="ch">+=</span><span class="st">  -L</span><span class="ch">$(</span><span class="dt">FOO_LIB_DIR</span><span class="ch">)</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a><span class="dt">LDLIBS  </span><span class="ch">=</span><span class="st"> -lfoo</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a><span class="dv">main:</span><span class="dt"> main.o</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a><span class="dv">run:</span><span class="dt"> main</span></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a>    LD_LIBRARY_PATH=<span class="ch">$(</span><span class="dt">FOO_LIB_DIR</span><span class="ch">)</span> ./main</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true"></a></span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true"></a><span class="dv">mrproper:</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true"></a>    <span class="ch">$(</span><span class="dt">RM</span><span class="ch">)</span> *~ *.o main</span></code></pre></div>
 <p>qui montre les options nécessaires à la compilation (dans <code>CPPFLAGS</code>), à l’édition des liens (<code>LDFLAGS</code> et <code>LDLIBS</code>), ansi que le positionnement de la variable d’environnement <code>LD_LIBRARY_PATH</code> pour que le “chargeur dynamique” trouve la bibliothèque au moment de l’exécution.</p>
 <p>Cette étape est utile pour les bibliothèques qui n’ont pas été installées par les procédures standard, qui enregistrent (par la commande <code>ldconfig</code>, voir manuel) les bibliothèques disponibles dans le fichier <code>/etc/ld.so.cache</code>.</p>
 <h1 data-number="3" id="utilisation-de-la-bibliothèque-foo-à-partir-de-codeblocks"><span class="header-section-number">3</span> Utilisation de la bibliothèque <em>Foo</em> à partir de CodeBlocks</h1>

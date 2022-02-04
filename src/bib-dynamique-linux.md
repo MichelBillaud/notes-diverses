@@ -97,7 +97,7 @@ Le programme de test sert à vérifier que la bibliothèque fonctionne.
 
 ## Le Makefile
 
-~~~make
+~~~makefile
 CFLAGS   += -fPIC
 CPPFLAGS += -Iinclude
 LDFLAGS  += -shared
@@ -137,7 +137,7 @@ int main()
   
 et un `Makefile`
 
-~~~make
+~~~makefile
 CFLAGS = -std=c17 -Wall -Wextra -Werror
 
 FOO_LIB_DIR =     ../lib
