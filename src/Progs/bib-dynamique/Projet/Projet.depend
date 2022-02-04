@@ -1,0 +1,7 @@
+# depslib dependency file v1.0
+1643980497 source:/home/billaud/GITHUB/notes-diverses/src/Progs/bib-dynamique/Projet/main.c
+	<stdio.h>
+	"foo.h"
+
+1643968384 /home/billaud/GITHUB/notes-diverses/src/Progs/bib-dynamique/Foo/include/foo.h
+

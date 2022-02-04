@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Michel Billaud (michel.billaud@laposte.net)" />
+  <title>Bibliothèque dynamique sous linux, utilisation sous CodeBlocks</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">a.sourceLine {
+display: inline-block;
+line-height: 1.25;
+}
+a.sourceLine {
+pointer-events: none;
+color: inherit;
+text-decoration: inherit;
+}
+a.sourceLine:empty {
+height: 1.2em;
+}
+.sourceCode {
+overflow: visible;
+}
+code.sourceCode {
+white-space: pre;
+position: relative;
+}
+div.sourceCode {
+margin: 1em 0;
+}
+pre.sourceCode {
+margin: 0;
+}
+@media screen {
+div.sourceCode {
+overflow: auto;
+}
+}
+@media print {
+code.sourceCode {
+white-space: pre-wrap;
+}
+a.sourceLine {
+text-indent: -1em;
+padding-left: 1em;
+}
+}
+pre.numberSource a.sourceLine {
+position: relative;
+left: -4em;
+}
+pre.numberSource a.sourceLine::before {
+content: attr(title);
+position: relative;
+left: -1em;
+text-align: right;
+vertical-align: baseline;
+border: none;
+pointer-events: all;
+display: inline-block;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+padding: 0 4px;
+width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource {
+margin-left: 3em;
+border-left: 1px solid #aaaaaa;
+padding-left: 4px;
+}
+div.sourceCode {}
+@media screen {
+a.sourceLine::before {
+text-decoration: underline;
+}
+}
+code span.al {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.an {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.at {
+color: #7d9029;
+}
+
+code span.bn {
+color: #40a070;
+}
+
+code span.bu {}
+
+code span.cf {
+color: #007020;
+font-weight: bold;
+}
+
+code span.ch {
+color: #4070a0;
+}
+
+code span.cn {
+color: #880000;
+}
+
+code span.co {
+color: #60a0b0;
+font-style: italic;
+}
+
+code span.cv {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.do {
+color: #ba2121;
+font-style: italic;
+}
+
+code span.dt {
+color: #902000;
+}
+
+code span.dv {
+color: #40a070;
+}
+
+code span.er {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.ex {}
+
+code span.fl {
+color: #40a070;
+}
+
+code span.fu {
+color: #06287e;
+}
+
+code span.im {}
+
+code span.in {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.kw {
+color: #007020;
+font-weight: bold;
+}
+
+code span.op {
+color: #666666;
+}
+
+code span.ot {
+color: #007020;
+}
+
+code span.pp {
+color: #bc7a00;
+}
+
+code span.sc {
+color: #4070a0;
+}
+
+code span.ss {
+color: #bb6688;
+}
+
+code span.st {
+color: #4070a0;
+}
+
+code span.va {
+color: #19177c;
+}
+
+code span.vs {
+color: #4070a0;
+}
+
+code span.wa {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+
+:root {
+--title-color: #202080;
+--source-bg-color: rgb(240, 240, 255);
+}
+h1, h2, h3, h4, h5, h6 {
+border-bottom: solid 1px silver;
+color: var(--title-color);
+}
+body {
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div.sourceCode {
+background-color: var(--source-bg-color);
+padding: 1em;
+}
+#TOC {
+padding: 0.5em;
+border: solid 1px silver;
+}
+#TOC ul {
+list-style-type: none;
+padding-left: 1em;
+}
+nav:before {
+text-indent: 2em;
+content: "Sommaire";
+color: var(--title-color);
+font-weight: bold;
+font-size: large;
+}
+#TOC a {
+text-decoration: none;
+}
+header {
+text-align: center;
+}
+.title {
+}
+.author, .date {
+font-style: italic;
+}
+table, th, td {
+border-collapse: collapse;
+border: solid black 1px;
+padding: 0.5em;
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Bibliothèque dynamique sous linux, utilisation sous CodeBlocks</h1>
+<p class="author">Michel Billaud (michel.billaud@laposte.net)</p>
+<p class="date">4 février 2022</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#une-question-fréquemment-posée"><span class="toc-section-number">1</span> Une question fréquemment posée</a></li>
+<li><a href="#une-bibliothèque-simple"><span class="toc-section-number">2</span> Une bibliothèque simple</a>
+<ul>
+<li><a href="#objectif"><span class="toc-section-number">2.1</span> Objectif</a></li>
+<li><a href="#organisation-du-sous-projet-foo"><span class="toc-section-number">2.2</span> Organisation du sous-projet Foo</a></li>
+<li><a href="#le-makefile"><span class="toc-section-number">2.3</span> Le Makefile</a></li>
+<li><a href="#le-programme-de-tests"><span class="toc-section-number">2.4</span> Le programme de tests</a></li>
+</ul></li>
+<li><a href="#utilisation-de-la-bibliothèque-foo-à-partir-de-codeblocks"><span class="toc-section-number">3</span> Utilisation de la bibliothèque <em>Foo</em> à partir de CodeBlocks</a>
+<ul>
+<li><a href="#création-du-projet"><span class="toc-section-number">3.1</span> Création du projet</a></li>
+<li><a href="#inclusion-de-lentête"><span class="toc-section-number">3.2</span> Inclusion de l’entête</a></li>
+<li><a href="#appel-de-la-fonction-foo"><span class="toc-section-number">3.3</span> Appel de la fonction <code>foo()</code></a></li>
+<li><a href="#exécution"><span class="toc-section-number">3.4</span> Exécution</a></li>
+</ul></li>
+</ul>
+</nav>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFgAAAAfCAMAAABUFvrSAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAAEZ0FNQQAAsY58+1GTAAAAAXNSR0IB2cksfwAAAfJQTFRF////////////////8fHx7+/v6Ofn4+Pj4N/g39/f1tXV09bS0tXS0tXR0dTR0dTQ0NTQ0NPPz9PPztLOztHNzdHNzdHMz8/PzdDMzNDMzNDLzM/Ly8/Ly8/Ky87Kys3Jyc3Jyc3Iy8rLyMzIyMzHx8vHxsrGycjIxsrFxcnFyMfHxcnExMnExMjDw8jDxMfDw8fCwsfCwcXAwMXAwMW/wMS/v8S+v8O+vsO+vsK9vcK9vcK8v7+/vMG8vMG7vMC8u8C7u8C6ur+6ur+5ub65ub64uL23t7y2urm5tru1tbq0tLqztLmzs7iysrixtbW1srexsbewsLavsLWvr7Wur7SusLOvrrStrrOtr7KvrbOsrLKrr6+vq7GqrKurpqqmo6ijoqaho6Ghn6OenqCdn5+fnp2dn5aalpuVlpmWlZmUmJaXk5iTkZSRkZORkY+Pj4+Pi5CKiYyJjoeLhIaEhIWEgoWChIGCf4F+gICAfX98fH98en15eXx5enp6dXV1dnN0cHJvcHBwa25qbmxsY19hYGBgXV5dWVlZUlJSUFFQUFBQQ0RDQEBAPj8+Pzc5NTY1MzMzMjMxMDAwMS0uLS0tKioqKSopKSkpKCkoKCgoKicnJCQkICEgIx8gICAgGxsbEBAQDg4ODQ4NCwsLAAAAK1tPPwAAAAN0Uk5TAAoO5yEBUwAABBdJREFUeNq1Vg1X21QYrr5EzArLshWxLc2o67TCyrBjsNnYDaF0VJiAKBMo6jbmpqOyuYll4lzRDinBj6hr1aZk7Pmfnps0/YidHpm7pzn35Mn7Pvfe5/24dTyLpzIcDiARj0VPhXuCgU7J63Z7fYcDwVB4IDocT4xPvjMzOzuX/O8DcCARH4qc7A36fS5RaHE6W/aLrg5/sLcvMsSYp2dm5/bE7EB8KHIidFRyCbe3dtkhdrduCYd8gWPh14fiifNT0xdm59by7EN+req3XmRIcb2K2GzgQCxyIhTwiKmdqkA7S6Lb3x2ODMfHJqZmPikASiajAIXrpteNooUUb5jIdbsNHIieDAXcwiYAPZuW5XRWB7B5/AX/sb5obHR88qOHyPFERHwODw2vq48MRGbII4P50t9s4MCp3qMexqunOTLHog4UjrsDvQODI4mJPLJEBLAPKDCnIrLEZdnR+EUUGVJgNs1dXc0VGzgQDkriJqDyVBmcCmyKvmA4EhtdRW6fRUw5rCWT6yjxpBiaMWQ9mVxjNhc1TdPOlW0Ycc8RVwpQOaJ65qVD/lD/YPwBalbkkWcbBhRgnniZIcVkMg+eurQfvvtG0z4zbRhx0CfsQG+nusHp2BE6guE3YlDYexaGIKQgmYTKwqBvbGxUEIWaPtY+J7qi/WIijDjQdhtIk20sArdcgd7TQ8iQoYSpRYbRZCj9EwMUroo0/an9TtSsac8ZCCPuPLgFnSOSc4qSNqdlItKxJR4O9Q82JP7eTEs9zVsIvf2rbBA/XyGWhF12TNkwVeaNKcsOv7vf1913toEUCt3NQZXnc8xSNRE6d/EVogVNq0rhbQWWiVSUeLm0qELl50uLhhYt3mA4+psZPHPD5eDx7Gs7cctf67CCd0XTVlb+0D6tBs/jBGTmmTYJynLLgNP9cjj6JXJkT7cc2wcU6MSVyulGtMLS7dumarr9C/HIg2qBZGoKhCWyTpmaAnlpYWFfxaZOCq69lFahsqkqxcgHjylpTub+uaTLwStHrRK8DHYFqbvv7MhbH+YBNZtRq03oatFCrCZ0qWCzMdJtEzpV0m1eMSYqYUvsDPW/GR+bfPerPbXNQFvK0KJRgbx2enh0fGpmD5cIHHjVKGn+cSWdOL9X4p4jrsuNmlDK5e8ZGIyPTUxfmNsTMe5I4n1ArWlDvNE2pS+e6JoGcM97oLbRc2kd+FHw3MGTEmPVfeC+7WoSXrxWsTHrA+ZjIuZDBJsR1RNj1Sterr1MU6LnWo1P+Uc1LOX3uqXqAJMY9ySXkLKu/yXBJdXqYLXN2qWobiFrLSI7MX5+39d2UGh1OlsF0dXx3nadj00ISwaqw2xHcFTw7ZtnJK/H45XO3Nyuj0OjHds1tuLQgPj//lf4zFPi/QuCOmdUsGyqRQAAAABJRU5ErkJggg==" /></p>
+<p>Ce texte fait partie d’une petite <a href="index.html">collection de notes</a> mise à disposition selon les termes de la <a href="http://creativecommons.org/licenses/by-nc-sa/2.0/fr/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France</a>.</p>
+<ul>
+<li>Les notes sont publiées dans <a href="https://www.mbillaud.fr/notes/" class="uri">https://www.mbillaud.fr/notes/</a></li>
+<li>Sources dans <a href="https://github.com/MichelBillaud/notes-diverses" class="uri">https://github.com/MichelBillaud/notes-diverses</a></li>
+</ul>
+<h1 data-number="1" id="une-question-fréquemment-posée"><span class="header-section-number">1</span> Une question fréquemment posée</h1>
+<p>Dans de nombreux cours de programmation en C on demande aux élèves</p>
+<ul>
+<li>de travailler avec CodeBlocks (CB),</li>
+<li>d’utiliser une bibliothèque “maison” qu’on me fournit.</li>
+</ul>
+<p>Je m’abstiens de discuter le choix de CB . Je vais juste montrer comment le configurer pour arriver, sous CB, à compiler et faire fonctionner un projet qui utilise une bibliothèque.</p>
+<p>Mais d’abord, comment on fait une bibliothèque. C’est sous Linux.</p>
+<h1 data-number="2" id="une-bibliothèque-simple"><span class="header-section-number">2</span> Une bibliothèque simple</h1>
+<h2 data-number="2.1" id="objectif"><span class="header-section-number">2.1</span> Objectif</h2>
+<p>Void comment réaliser proprement (relativement) une bibliothèque dynamique (<code>.so</code>) utilisable par d’autres projets.</p>
+<p>Ici la bibliothèque contiendra un seul “module”</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;foo.h&quot;</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="dt">void</span> foo(<span class="dt">void</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>{</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>    printf(<span class="st">&quot;Foo !</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>}</span></code></pre></div>
+<p>qui certes ne casse pas trois pattes à un canard, mais suffira pour la démonstration.</p>
+<p>Pour cela il faut fournir aux projets “utilisateurs” :</p>
+<ul>
+<li>des fichiers d’entête (ici <code>foo.h</code>), qu’on met dans un répertoire <code>include/</code> ;</li>
+<li>la bibliothèque compilée (<code>libfoo.so</code>), dans <code>lib/</code>.</li>
+</ul>
+<p>Le fichier <code>foo.h</code> est sans surprise</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="pp">#ifndef FOO_H</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="pp">#define FOO_H</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="dt">void</span> foo(<span class="dt">void</span>);</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a><span class="pp">#endif</span></span></code></pre></div>
+<h2 data-number="2.2" id="organisation-du-sous-projet-foo"><span class="header-section-number">2.2</span> Organisation du sous-projet Foo</h2>
+<p>Tout ce qui concerne la bibliothèque est dans un répertoire <code>Foo</code>, qui contient tout ceci après compilation</p>
+<pre><code>Foo/
+|-- Makefile            # fabrication de la bibliothèque
+|-- build               # répertoire de travail
+|   `-- foo.o
+|-- include          
+|   `-- foo.h           # entête du module       (&quot;exportée&quot;)
+|-- lib
+|   `-- libfoo.so       # bibliotheque compilée  (&quot;exportée&quot;)
+|-- src
+|   `-- foo.c           # source du module
+`-- tests
+    |-- Makefile
+    |-- main            # un programme de test
+    |-- main.o          
+    `-- main.c          # source
+
+5 directories, 8 files</code></pre>
+<p>Le programme de test sert à vérifier que la bibliothèque fonctionne.</p>
+<h2 data-number="2.3" id="le-makefile"><span class="header-section-number">2.3</span> Le Makefile</h2>
+<pre class="make"><code>CFLAGS   += -fPIC
+CPPFLAGS += -Iinclude
+LDFLAGS  += -shared
+
+lib/libfoo.so: build/foo.o
+    $(LINK.c) $^ -o $@
+
+build/%.o: src/%.c
+        $(COMPILE.c) $&lt; -o $@
+
+run-tests:
+    (cd tests; make mrproper ; make run)
+
+clean:
+    $(RM) *~ */*~ build/*</code></pre>
+<p>Explications :</p>
+<ul>
+<li>les deux premières cibles fabriquent <code>lib/libfoo.so</code> en compilant <code>src/foo.c</code> qui inclut <code>include/foo.h</code>.</li>
+<li>la troisième fait exécuter le programme qui est dans <code>tests/</code>, après avoir lancé sa reconstruction complète. Voir les détails plus loin.</li>
+</ul>
+<h2 data-number="2.4" id="le-programme-de-tests"><span class="header-section-number">2.4</span> Le programme de tests</h2>
+<p>Comporte un source on ne peut plus simple</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;foo.h&quot;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="dt">int</span> main()</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>{</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a>    foo();</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a>}</span></code></pre></div>
+<p>et un <code>Makefile</code></p>
+<pre class="make"><code>CFLAGS = -std=c17 -Wall -Wextra -Werror
+
+FOO_LIB_DIR =     ../lib
+FOO_INCLUDE_DIR = ../include
+
+CPPFLAGS += -I$(FOO_INCLUDE_DIR)
+
+LDFLAGS +=  -L$(FOO_LIB_DIR)
+LDLIBS  = -lfoo
+
+main: main.o
+
+run: main
+    LD_LIBRARY_PATH=$(FOO_LIB_DIR) ./main
+
+mrproper:
+    $(RM) *~ *.o main</code></pre>
+<p>qui montre les options nécessaires à la compilation (dans <code>CPPFLAGS</code>), à l’édition des liens (<code>LDFLAGS</code> et <code>LDLIBS</code>), ansi que le positionnement de la variable d’environnement <code>LD_LIBRARY_PATH</code> pour que le “chargeur dynamique” trouve la bibliothèque au moment de l’exécution.</p>
+<p>Cette étape est utile pour les bibliothèques qui n’ont pas été installées par les procédures standard, qui enregistrent (par la commande <code>ldconfig</code>, voir manuel) les bibliothèques disponibles dans le fichier <code>/etc/ld.so.cache</code>.</p>
+<h1 data-number="3" id="utilisation-de-la-bibliothèque-foo-à-partir-de-codeblocks"><span class="header-section-number">3</span> Utilisation de la bibliothèque <em>Foo</em> à partir de CodeBlocks</h1>
+<p>Essentiellement on souhaite faire la même chose que le programme de test (<code>tests/main.c</code>), à savoir appeler le fonction <code>foo()</code> de la bibliothèque, mais dans le cadre de l’IDE CodeBlocks.</p>
+<h2 data-number="3.1" id="création-du-projet"><span class="header-section-number">3.1</span> Création du projet</h2>
+<p>On crée un projet (nommé <code>Projet</code>, pourquoi pas) <strong>à côté</strong> du répertoire qui contient la bibliothèque. En fait n’importe où, sauf dans le répertoire de la bibliothèque lui-même.</p>
+<p>Étapes :</p>
+<ol type="1">
+<li>lancer CB</li>
+<li>Menu : File / New / Project… / Console Application / Next / C / Next</li>
+<li>Donner le titre “<code>Projet</code>” et sélectionner le “folder” qui est “au dessus” de la bibliothèque, Next</li>
+<li>Sélectionner le compilateur (<code>gcc</code> pour moi), et Finish.</li>
+</ol>
+<p>Dans les sources du projet, un fichier <code>main.c</code> a été rempli automatiquement. Normalement vous pouvez le compiler et le faire exécuter. Sinon, vous avez mal installé/configuré CB, et il va falloir vous débrouiller sans moi pour arranger ça, parce que ce n’est pas l’objet de ce document.</p>
+<h2 data-number="3.2" id="inclusion-de-lentête"><span class="header-section-number">3.2</span> Inclusion de l’entête</h2>
+<p>Première étape : modifions légèrement ce fichier source pour qu’il inclue l’entête</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;foo.h&quot;</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a><span class="dt">int</span> main()</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a>{</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a>    printf(<span class="st">&quot;Hello world!</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a>    <span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a>}</span></code></pre></div>
+<p>Si on tente de compiler, on a bien sûr un message d’erreur dans le <strong>Build log</strong> :</p>
+<pre><code>gcc -Wall -g -pedantic -Wextra -Wall  -c .../Projet/main.c -o obj/Debug/main.o
+gcc  -o bin/Debug/Projet obj/Debug/main.o   
+.../Projet/main.c:2:10: fatal error: foo.h: Aucun fichier ou dossier de ce type
+    2 | #include &quot;foo.h&quot;
+      |          ^~~~~~~
+compilation terminated.
+Process terminated with status 1 (0 minute(s), 0 second(s))
+1 error(s), 0 warning(s) (0 minute(s), 0 second(s))</code></pre>
+<p>Pour y remédier, il faut indiquer où se trouve le fichier d’entête.</p>
+<ol type="1">
+<li>menu Project / Build options / <strong>Search Directories</strong> …</li>
+<li>Dans l’onglet <strong>Compiler</strong>, cliquer sur Add</li>
+<li>Naviguer jusqu’au répertoire voulu</li>
+<li>Je choisis “keep relative path”, et ça me propose “../Foo/include”, ce qui parait correct.</li>
+<li>Ok.</li>
+</ol>
+<p>Maintenant, le programme passe l’étape de la compilation, et de l’exécution. Ne crions pas victoire trop tôt, il n’appelle pas encore la fonction <code>foo()</code>. C’est l’étape suivante.</p>
+<h2 data-number="3.3" id="appel-de-la-fonction-foo"><span class="header-section-number">3.3</span> Appel de la fonction <code>foo()</code></h2>
+<p>Si on a bien sauvé le projet, l’auto-complétion est active : si on tape <code>fo</code> suivi de contrôle-espace, l’éditeur propose de compléter par <code>foo()</code> parce qu’il a chargé les définitions de fonctions qui sont dans l’entête. C’est pratique.</p>
+<p>Maintenant compilons :</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a>include &lt;stdio.h&gt;</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&quot;foo.h&quot;</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="dt">int</span> main()</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a>{</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>    printf(<span class="st">&quot;Hello world!</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a>    foo();</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a>    <span class="cf">return</span> <span class="dv">0</span>;</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a>}</span></code></pre></div>
+<p>et bam, encore une erreur : le <strong>Build log</strong> indique de quoi il s’agit précisément :</p>
+<pre><code>gcc  -o bin/Debug/Projet obj/Debug/main.o   
+/usr/bin/ld : obj/Debug/main.o : dans la fonction « main » :
+.../Projet/main.c:7 : référence indéfinie vers « foo »
+collect2: error: ld returned 1 exit status</code></pre>
+<p>La fonction <code>foo</code> n’a pas été trouvée lors de l’édition des liens. Ca ne vous surprendra pas parce que vous voyez que la commande <code>gcc</code> ne mentionne pas la bibliothèque. Il va donc falloir arranger ça avec les options d’édition des liens</p>
+<ol type="1">
+<li>menu Project / Build options / <strong>Search libraries</strong> …</li>
+<li>Dans l’onglet <strong>Linker</strong>, cliquer sur Add</li>
+<li>Naviguer jusqu’au répertoire <code>lib/</code> de la bibliothèque</li>
+<li>Open, keps as a relative path, Yes, “<code>../Foo/lib</code>”, Ok Ok</li>
+</ol>
+<p>Après le répertoire de la bibliothèque, la bibliothèque elle-même :</p>
+<ol start="5" type="1">
+<li>menu Project / Build options / <strong>Linker settings</strong> …</li>
+<li>Other Linker Options : <code>-lfoo</code>, Ok</li>
+</ol>
+<p>La compilation se fait maintenant sans problème</p>
+<h2 data-number="3.4" id="exécution"><span class="header-section-number">3.4</span> Exécution</h2>
+<p>L’exécution fonctionne aussi immédiatement, sans nécessiter d’autres interventions.</p>
+<p>Ce merveilleux mystère s’explique en consultant le <code>Build log</code>. Pour la lisibilité j’ai fragmenté les lignes et remplacé un long chemin d’accès par “…” :</p>
+<pre><code>Checking for existence: .../Projet/bin/Debug/Projet
+Set variable: LD_LIBRARY_PATH=.:.../Foo/lib:
+Executing: xterm -T Projet -e /usr/bin/cb_console_runner \
+  LD_LIBRARY_PATH=:.:.../Foo/lib .../Projet/bin/Debug/Projet \
+  (in .../Projet/.)</code></pre>
+<p>Pour lancer l’exécution de “Projet” dans une fenêtre terminal (<code>xterm</code>), CB a positionné la variable <code>LD_LIBRARY_PATH</code> avec le chemin d’accès qu’on lui a donné. Il l’a fait avec un chemin absolu plutôt que relatif, mais peu importe : ça marche.</p>
+</body>
+</html>

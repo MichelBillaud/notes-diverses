@@ -15,6 +15,22 @@ Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France]
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
 
 
+# Bibliothèque dynamique sous Linux, CodeBlocks
+
+Dans de nombreux cours de programmation en C on demande aux élèves
+
+- de travailler avec CodeBlocks (CB),
+- d'utiliser une bibliothèque "maison" qu'on me fournit.
+
+
+Je montre comment
+
+- fabriquer une bibliothèque dynamique
+- comment configurer CB pour faire fonctionner 
+un projet qui utilise une telle bibliothèque.
+
+Document : [bib-dynamique-linux.html](bib-dynamique-linux.html)
+
 
 # Corrigé sujet 7 épreuves pratiques NSI
 
