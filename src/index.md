@@ -1,6 +1,6 @@
 % Notes diverses
 % Michel Billaud (`michel.billaud@laposte.net`)
-% 30 janvier 2022
+% 1er marsr 2022
 
 
 # Licence
@@ -14,6 +14,28 @@ Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France]
 - Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
 
+
+# Permutation qui ordonne un tableau, en C
+
+On veut trouver la permutation qui ordonne un tableau. 
+
+Exemple : pour le tableau
+
+~~~C
+int array[9] = { 66, 11, 44, 22, 88, 55, 77, 99, 33};
+~~~
+
+la suite d'indices `{1, 3, 8, 2, 5, 0, 6, 4, 7}`
+
+parce que `array[1]=11, array[3]=22, array[8]=33`, etc.
+
+1. C'est facile à faire avec `qsort_r` qui est une extension GNU.
+2. Un bricolage permet de le faire avec `qsort`, mais ça donne du code
+   non réentrant.
+3. On montre comment adapter un algo de tri en fonction de tri
+"réentrante" paramétrée par une fonction de comparaison.
+
+Document : [permutation-tri.html](permutation-tri.html)
 
 # Bibliothèque dynamique sous Linux, CodeBlocks
 
