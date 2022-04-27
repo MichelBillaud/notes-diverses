@@ -15,6 +15,43 @@ Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France]
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
 
 
+
+# Vérifier le résultat des élections
+
+
+Sur les réseaux sociaux, on trouve régulièrement des messages promouvant
+l'usage des machines à voter, ou du vote en ligne.
+
+Pour faire bref, je suis contre les deux, mais ce n'est pas le point.
+L'objet de cette note c'est de réfuter l'affirmation à propos du vote
+"papier" :
+
+> Ok, on peut surveiller le vote et le dépouillement (en étant présent
+> dans les bureaux) , mais pour la totalisation nationale, on ne peut
+> pas faire faire confiance.
+
+en montrant
+
+- où on peut obtenir les données de vote des bureaux
+- comment vérifier la totalisation.
+
+sur l'exemple du premier tour de la présidentielle 2022.
+
+Pour ça, on verra comment
+
+- analyser les données du fichier qu'on récupère au format CSV
+- écrire un petit programme Python qui fait la totalisation.
+
+Pourquoi Python ? Parce que c'est un langage de programmation
+
+- à portée du non-professionnel (il y a une initiation à Python au
+  Lycée, voire au collège)
+- qui va assez bien pour faire ça. C'est un programme "one-shot" dont
+on ne se resservira pas tel quel, la vitesse de calcul n'a pas
+d'importance.
+
+Document : [calculs-elections.html](calculs-elections.html)
+
 # Permutation qui ordonne un tableau, en C
 
 On veut trouver la permutation qui ordonne un tableau. 
@@ -35,7 +72,7 @@ parce que `array[1]=11, array[3]=22, array[8]=33`, etc.
 3. On montre comment adapter un algo de tri en fonction de tri
 "réentrante" paramétrée par une fonction de comparaison.
 
-Document : [permutation-tri.html](permutation-tri.html)
+Document : [calculs-elections.html](calcluls-elections.html)
 
 # Bibliothèque dynamique sous Linux, CodeBlocks
 

@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Michel Billaud (michel.billaud@laposte.net)" />
+  <title>Vérifier le résultat des élections</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">a.sourceLine {
+display: inline-block;
+line-height: 1.25;
+}
+a.sourceLine {
+pointer-events: none;
+color: inherit;
+text-decoration: inherit;
+}
+a.sourceLine:empty {
+height: 1.2em;
+}
+.sourceCode {
+overflow: visible;
+}
+code.sourceCode {
+white-space: pre;
+position: relative;
+}
+div.sourceCode {
+margin: 1em 0;
+}
+pre.sourceCode {
+margin: 0;
+}
+@media screen {
+div.sourceCode {
+overflow: auto;
+}
+}
+@media print {
+code.sourceCode {
+white-space: pre-wrap;
+}
+a.sourceLine {
+text-indent: -1em;
+padding-left: 1em;
+}
+}
+pre.numberSource a.sourceLine {
+position: relative;
+left: -4em;
+}
+pre.numberSource a.sourceLine::before {
+content: attr(title);
+position: relative;
+left: -1em;
+text-align: right;
+vertical-align: baseline;
+border: none;
+pointer-events: all;
+display: inline-block;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+padding: 0 4px;
+width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource {
+margin-left: 3em;
+border-left: 1px solid #aaaaaa;
+padding-left: 4px;
+}
+div.sourceCode {}
+@media screen {
+a.sourceLine::before {
+text-decoration: underline;
+}
+}
+code span.al {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.an {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.at {
+color: #7d9029;
+}
+
+code span.bn {
+color: #40a070;
+}
+
+code span.bu {}
+
+code span.cf {
+color: #007020;
+font-weight: bold;
+}
+
+code span.ch {
+color: #4070a0;
+}
+
+code span.cn {
+color: #880000;
+}
+
+code span.co {
+color: #60a0b0;
+font-style: italic;
+}
+
+code span.cv {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.do {
+color: #ba2121;
+font-style: italic;
+}
+
+code span.dt {
+color: #902000;
+}
+
+code span.dv {
+color: #40a070;
+}
+
+code span.er {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.ex {}
+
+code span.fl {
+color: #40a070;
+}
+
+code span.fu {
+color: #06287e;
+}
+
+code span.im {}
+
+code span.in {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.kw {
+color: #007020;
+font-weight: bold;
+}
+
+code span.op {
+color: #666666;
+}
+
+code span.ot {
+color: #007020;
+}
+
+code span.pp {
+color: #bc7a00;
+}
+
+code span.sc {
+color: #4070a0;
+}
+
+code span.ss {
+color: #bb6688;
+}
+
+code span.st {
+color: #4070a0;
+}
+
+code span.va {
+color: #19177c;
+}
+
+code span.vs {
+color: #4070a0;
+}
+
+code span.wa {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+
+:root {
+--title-color: #202080;
+--source-bg-color: rgb(240, 240, 255);
+}
+h1, h2, h3, h4, h5, h6 {
+border-bottom: solid 1px silver;
+color: var(--title-color);
+}
+body {
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div.sourceCode {
+background-color: var(--source-bg-color);
+padding: 1em;
+}
+#TOC {
+padding: 0.5em;
+border: solid 1px silver;
+}
+#TOC ul {
+list-style-type: none;
+padding-left: 1em;
+}
+nav:before {
+text-indent: 2em;
+content: "Sommaire";
+color: var(--title-color);
+font-weight: bold;
+font-size: large;
+}
+#TOC a {
+text-decoration: none;
+}
+header {
+text-align: center;
+}
+.title {
+}
+.author, .date {
+font-style: italic;
+}
+table, th, td {
+border-collapse: collapse;
+border: solid black 1px;
+padding: 0.5em;
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Vérifier le résultat des élections</h1>
+<p class="author">Michel Billaud (michel.billaud@laposte.net)</p>
+<p class="date">27 avril 2022</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#résumé"><span class="toc-section-number">1</span> Résumé</a></li>
+<li><a href="#récupération-des-données"><span class="toc-section-number">2</span> Récupération des données</a></li>
+<li><a href="#analyse-du-fichier"><span class="toc-section-number">3</span> Analyse du fichier</a>
+<ul>
+<li><a href="#les-colonnes"><span class="toc-section-number">3.1</span> Les colonnes</a></li>
+<li><a href="#les-données"><span class="toc-section-number">3.2</span> Les données</a></li>
+</ul></li>
+<li><a href="#communes-ou-bureaux"><span class="toc-section-number">4</span> Communes ou bureaux ?</a></li>
+<li><a href="#le-programme-de-totalisation"><span class="toc-section-number">5</span> Le programme de totalisation</a>
+<ul>
+<li><a href="#outils-de-base"><span class="toc-section-number">5.1</span> Outils de base</a></li>
+<li><a href="#phase-1-lecture-des-données"><span class="toc-section-number">5.2</span> Phase 1 : Lecture des données</a>
+<ul>
+<li><a href="#algorithme"><span class="toc-section-number">5.2.1</span> Algorithme</a></li>
+<li><a href="#programme-python-phase-1"><span class="toc-section-number">5.2.2</span> Programme Python (phase 1)</a></li>
+<li><a href="#exécution-du-test"><span class="toc-section-number">5.2.3</span> Exécution du test</a></li>
+</ul></li>
+<li><a href="#phase-2-lecture-comptabilisation"><span class="toc-section-number">5.3</span> Phase 2 : lecture + comptabilisation</a>
+<ul>
+<li><a href="#algorithme-1"><span class="toc-section-number">5.3.1</span> Algorithme</a></li>
+<li><a href="#code-python"><span class="toc-section-number">5.3.2</span> Code Python</a></li>
+<li><a href="#exécution"><span class="toc-section-number">5.3.3</span> Exécution</a></li>
+</ul></li>
+<li><a href="#programme-final"><span class="toc-section-number">5.4</span> Programme final</a>
+<ul>
+<li><a href="#code"><span class="toc-section-number">5.4.1</span> Code</a></li>
+<li><a href="#exécution-1"><span class="toc-section-number">5.4.2</span> Exécution</a></li>
+<li><a href="#comparaison-des-résultats"><span class="toc-section-number">5.4.3</span> Comparaison des résultats</a></li>
+</ul></li>
+</ul></li>
+</ul>
+</nav>
+<p><img src="data:image/png;base64,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" /></p>
+<p>Ce texte fait partie d’une petite <a href="index.html">collection de notes</a> mise à disposition selon les termes de la <a href="http://creativecommons.org/licenses/by-nc-sa/2.0/fr/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France</a>.</p>
+<ul>
+<li>Les notes sont publiées dans <a href="https://www.mbillaud.fr/notes/" class="uri">https://www.mbillaud.fr/notes/</a></li>
+<li>Sources dans <a href="https://github.com/MichelBillaud/notes-diverses" class="uri">https://github.com/MichelBillaud/notes-diverses</a></li>
+</ul>
+<h1 data-number="1" id="résumé"><span class="header-section-number">1</span> Résumé</h1>
+<p>Sur les réseaux sociaux, on trouve régulièrement des messages promouvant l’usage des machines à voter, ou du vote en ligne.</p>
+<p>Pour faire bref, je suis contre les deux, mais ce n’est pas le point. L’objet de cette note c’est de réfuter l’affirmation à propos du vote “papier” :</p>
+<blockquote>
+<p>Ok, on peut surveiller le vote et le dépouillement (en étant présent dans les bureaux) , mais pour la totalisation nationale, on ne peut pas faire faire confiance.</p>
+</blockquote>
+<p>en montrant</p>
+<ul>
+<li>où on peut obtenir les données de vote des bureaux</li>
+<li>comment vérifier la totalisation.</li>
+</ul>
+<p>Su l’exemple de la présidentielle 2022.</p>
+<p>Pour ça, on verra comment</p>
+<ul>
+<li>analyser les données du fichier qu’on récupère au format CSV</li>
+<li>écrire un petit programme Python qui fait la totalisation.</li>
+</ul>
+<p>Pourquoi Python ? Parce que c’est un langage de programmation</p>
+<ul>
+<li>à portée du non-professionnel (il y a une initiation à Python au Lycée, voire au collège)</li>
+<li>qui va assez bien pour faire ça. C’est un programme “one-shot” dont on ne se resservira pas<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>, la vitesse de calcul n’a pas d’importance.</li>
+</ul>
+<h1 data-number="2" id="récupération-des-données"><span class="header-section-number">2</span> Récupération des données</h1>
+<p>Une recherche Google, “open data vote présidentielle 2022” donne comme second résultat<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> le lien <a href="https://www.data.gouv.fr/fr/datasets/resultats-du-premier-tour-de-lelection-presidentielle-2022-par-commune-et-par-departement/" class="uri">https://www.data.gouv.fr/fr/datasets/resultats-du-premier-tour-de-lelection-presidentielle-2022-par-commune-et-par-departement/</a></p>
+<p>Puisqu’on tient à vérifier les totaux, voyons grand : on part du fichier <code>presidentielle-2022-t1-resultats-par-commune.csv</code> qui pèse 104Mo et a été télé-chargé 2905 fois à ce jour.</p>
+<p>En cliquant sur le lien <a href="https://www.data.gouv.fr/fr/datasets/r/54782507-e795-4f9d-aa70-ed06feba22e3" class="uri">https://www.data.gouv.fr/fr/datasets/r/54782507-e795-4f9d-aa70-ed06feba22e3</a> (bouton bleu à droite), ça nous ramène un fichier qui s’appelle en fait <code>04-resultats-par-commune.csv</code>.</p>
+<p>On le place dans un répertoire de travail, où il sera rejoint plus tard par le programme Python.</p>
+<h1 data-number="3" id="analyse-du-fichier"><span class="header-section-number">3</span> Analyse du fichier</h1>
+<p>C’est un fichier CSV classique, qui présente les données sous forme de table. On peut l’importer avec un tableau, sans problème.</p>
+<h2 data-number="3.1" id="les-colonnes"><span class="header-section-number">3.1</span> Les colonnes</h2>
+<p><strong>La première ligne</strong> fournit les noms des colonnes, et permet aussi de voir que les données d’une ligne sont séparées par des virgules</p>
+<p>C’est une très longue ligne, pour la lisibilité, elle est coupée en lignes de 5 champs ci-dessous</p>
+<div class="line-block">   url,reg_code,reg_code_3,reg_name,dep_code,<br />
+   dep_code_min,dep_code_3,dep_name,commune_code,commune_name,<br />
+   num_tour,inscrits_nb,abstention_nb,abstention_pourc,votants_nb,<br />
+   blancs_nb,blancs_pourc_inscrits,blancs_pourc_votants,nuls_nb,nuls_pourc_inscrits,<br />
+   nuls_pourc_votants,exprimes_nb,exprimes_pourc_inscrits,exprimes_pourc_votants,cand_num_panneau,<br />
+   <strong>cand_nom</strong>,cand_prenom,cand_civil,<strong>cand_nb_voix</strong>,cand_rapport_exprim,<br />
+   cand_rapport_inscrits</div>
+<h2 data-number="3.2" id="les-données"><span class="header-section-number">3.2</span> Les données</h2>
+<p>En regardant les <strong>deux premières lignes de données</strong></p>
+<div class="line-block">https://www.resultats-elections.interieur.gouv.fr/telechargements/PR2022/resultatsT1/084/001/001com.xml,84,084,Auvergne-Rhône-Alpes,01,<br />
+01,001,Ain,001,L’Abergement-Clémenciat,<br />
+1,645,108,16.74,537,<br />
+16,2.48,2.98,1,0.16,<br />
+0.19,520,80.62,96.83,1,<br />
+<strong>ARTHAUD</strong>,Nathalie,Mme,<strong>3</strong>,0.58,<br />
+0.47</div>
+<div class="line-block">https://www.resultats-elections.interieur.gouv.fr/telechargements/PR2022/resultatsT1/084/001/001com.xml,84,084,Auvergne-Rhône-Alpes,01,<br />
+01,001,Ain,001,L’Abergement-Clémenciat,<br />
+1,645,108,16.74,537,<br />
+16,2.48,2.98,1,0.16,<br />
+0.19,520,80.62,96.83,2,<br />
+<strong>ROUSSEL</strong>,Fabien,M.,<strong>6</strong>,1.15,<br />
+0.93</div>
+<p>on constate que chaque ligne montre le nombre de voix obtenues par un candidat dans une commune. Et que les lignes reprennent les informations de la commune (identification, nombre d’inscrits etc.)</p>
+<p>En regardant la fin du fichier, on voit que les données vont jusqu’à la dernière ligne.</p>
+<p>Bref, on va simplement faire les totaux de la colonne “<code>cand_nb_voix</code>” en les différenciant sur le “<code>cand_nom</code>”<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a>, à partir de la seconde ligne. Ce sont les colonnes 26 et 29 respectivement.</p>
+<h1 data-number="4" id="communes-ou-bureaux"><span class="header-section-number">4</span> Communes ou bureaux ?</h1>
+<p>Une autre chose : ce sont bien des résultats <strong>par commune</strong>. Le fichier comporte 420961 lignes. 360000 communes à peu près, multiplié par 12 candidats, ça fait 432000, qui est de cet ordre (les lignes avec 0 voix n’y figurent pas).</p>
+<p>Si on sait se servir des commandes, on peut vérifier qu’il n’y a que 12 lignes pour Bordeaux<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>, par exemple</p>
+<pre><code>$ grep ,Bordeaux, Calculs-Elections/04-resultats-par-commune.csv | wc -l
+12</code></pre>
+<p>donc il s’agit bien de chiffres par commune, <strong>pas par bureau</strong>. Autre moyen de vérifier : regarder avec un tableur.</p>
+<h1 data-number="5" id="le-programme-de-totalisation"><span class="header-section-number">5</span> Le programme de totalisation</h1>
+<p>L’objectif est de totaliser, selon le nom des candidats, les voix qu’ils ont obtenues.</p>
+<p>Ce programme va être développé par étapes, pour vérifier plus facilement qu’il n’y a pas d’erreurs. Il sera testé sur un échantillon (un certain nombre de lignes du fichier).</p>
+<h2 data-number="5.1" id="outils-de-base"><span class="header-section-number">5.1</span> Outils de base</h2>
+<p>Pour faire ce travail on va employer</p>
+<ul>
+<li>le module <code>csv</code> de Python pour lire les données,</li>
+<li>un <strong>dictionnaire</strong> pour cumuler les votes de chaque candidat.</li>
+</ul>
+<h2 data-number="5.2" id="phase-1-lecture-des-données"><span class="header-section-number">5.2</span> Phase 1 : Lecture des données</h2>
+<p>La première étape consiste à lire le fichier ligne par ligne et isoler, puis afficher, les noms des candidats et leur nombre de voix.</p>
+<h3 data-number="5.2.1" id="algorithme"><span class="header-section-number">5.2.1</span> Algorithme</h3>
+<pre><code>limite = 5              # nb de lignes pour le tesst                  
+pour chaque ligne:
+    si c&#39;est la ligne 1:
+       rien
+    sinon si c&#39;est la ligne limite + 1:
+       sortir de la boucle
+    sinon
+       extraire et afficher le nom et le nombre de voix</code></pre>
+<p>Normalement, il devrait s’afficher limite-1 résultats puisque la ligne 1 est ignorée.</p>
+<h3 data-number="5.2.2" id="programme-python-phase-1"><span class="header-section-number">5.2.2</span> Programme Python (phase 1)</h3>
+<p>L’exécution de ce code</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">#</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a><span class="co"># Phase 1 : vérifier qu&#39;on arrive à extraire </span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="co"># correctement les noms et nombre de voix obtenus</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="im">import</span> csv</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>nom_fichier <span class="op">=</span> <span class="st">&#39;04-resultats-par-commune.csv&#39;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>col_nom     <span class="op">=</span> <span class="dv">26</span><span class="op">-</span><span class="dv">1</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>col_nb_voix <span class="op">=</span> <span class="dv">29</span><span class="op">-</span><span class="dv">1</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>limite_ligne <span class="op">=</span> <span class="dv">5</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a><span class="cf">with</span> <span class="bu">open</span>(nom_fichier) <span class="im">as</span> fichier:</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a>    lecteur <span class="op">=</span> csv.reader(fichier)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a>    numero_ligne <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a>    <span class="cf">for</span> ligne <span class="kw">in</span> lecteur:</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a>        numero_ligne <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true"></a>        <span class="cf">if</span> numero_ligne <span class="op">&gt;</span> limite_ligne:</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true"></a>            <span class="cf">break</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true"></a>        <span class="cf">if</span> numero_ligne <span class="op">&gt;</span> <span class="dv">1</span>:</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true"></a>            <span class="bu">print</span> (<span class="st">&quot;nom =&quot;</span>, ligne[col_nom], <span class="st">&quot;voix =&quot;</span>, ligne[col_nb_voix])</span></code></pre></div>
+<p>Notes :</p>
+<ul>
+<li>rappel : le tableau <code>ligne</code> est indicé à partir de 0, la 26ième colonne est à l’indice 26-1.</li>
+<li>la présentation des 3 cas dans la boucle a été modifiée pour réduire le code.</li>
+</ul>
+<h3 data-number="5.2.3" id="exécution-du-test"><span class="header-section-number">5.2.3</span> Exécution du test</h3>
+<p>L’exécution produit l’affichage</p>
+<pre><code>nom = ARTHAUD voix = 3
+nom = ROUSSEL voix = 6
+nom = MACRON voix = 150
+nom = LASSALLE voix = 18</code></pre>
+<p>dont on peut vérifier (avec un tableur) qu’il correspond bien aux 5 premières lignes du fichier.</p>
+<h2 data-number="5.3" id="phase-2-lecture-comptabilisation"><span class="header-section-number">5.3</span> Phase 2 : lecture + comptabilisation</h2>
+<p>Pour la comptabilisation, on totalise les voix de chaque candidat</p>
+<h3 data-number="5.3.1" id="algorithme-1"><span class="header-section-number">5.3.1</span> Algorithme</h3>
+<p>Pour tester il faudra avoir au moins deux communes, une vingtaine de lignes devraient suffire</p>
+<pre><code>limite = 20              # nb de lignes pour le test
+totaux_voix   = { }       # dictionnaire vide
+
+pour chaque ligne:
+    si c&#39;est la ligne 1:
+       rien
+    sinon si c&#39;est la ligne limite + 1:
+       sortir de la boucle
+    sinon
+       extraire et afficher le nom et le nombre de voix
+       ajouter nombre de voix à totaux_voix[nom]
+       afficher totaux_voix
+afficher total_voix (final)</code></pre>
+<h3 data-number="5.3.2" id="code-python"><span class="header-section-number">5.3.2</span> Code Python</h3>
+<p>Une grande partie du code vient du programme précédent :</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="co">#</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a><span class="co"># Phase 2 : extraire les noms et nombre de voix obtenus</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a><span class="co"># vérifier le cumul</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a><span class="im">import</span> csv</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a></span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>nom_fichier <span class="op">=</span> <span class="st">&#39;04-resultats-par-commune.csv&#39;</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>col_nom     <span class="op">=</span> <span class="dv">26</span><span class="op">-</span><span class="dv">1</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a>col_nb_voix <span class="op">=</span> <span class="dv">29</span><span class="op">-</span><span class="dv">1</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a></span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a>limite_ligne <span class="op">=</span> <span class="dv">20</span></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a>totaux_voix <span class="op">=</span> {}</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a></span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a><span class="cf">with</span> <span class="bu">open</span>(nom_fichier) <span class="im">as</span> fichier:</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true"></a>    lecteur <span class="op">=</span> csv.reader(fichier)</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true"></a>    numero_ligne <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true"></a>    <span class="cf">for</span> ligne <span class="kw">in</span> lecteur:</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true"></a>        numero_ligne <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true"></a>        <span class="cf">if</span> numero_ligne <span class="op">&gt;</span> limite_ligne:</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true"></a>            <span class="cf">break</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true"></a>        <span class="cf">if</span> numero_ligne <span class="op">&gt;</span> <span class="dv">1</span>:</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true"></a>            nom <span class="op">=</span> ligne[col_nom]</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true"></a>            nb_voix <span class="op">=</span> <span class="bu">int</span>(ligne[col_nb_voix])</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true"></a>            <span class="bu">print</span> (<span class="st">&quot;nom =&quot;</span>, nom, <span class="st">&quot;voix =&quot;</span>, nb_voix)</span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true"></a>            totaux_voix[nom] <span class="op">=</span> totaux_voix.setdefault(nom, <span class="dv">0</span>) <span class="op">+</span> nb_voix</span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true"></a>            <span class="bu">print</span> (<span class="st">&quot;=&quot;</span>, totaux_voix)</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true"></a><span class="bu">print</span> (<span class="st">&quot;totaux&quot;</span>, totaux_voix)</span></code></pre></div>
+<p><strong>Notes :</strong></p>
+<ul>
+<li>les variables intermédiaires <code>nom</code> et <code>nb_voix</code> sont introduites pour ne pas avoir à répéter des sous-expressions ;</li>
+<li>la lecture du fichier CSV retourne un tableau de chaînes. Le nombre de voix doit etre converti en entier :</li>
+<li>pour le cumul, on utilise une structure de dictionnaire, tableau de nombre indexé par les noms. La méthode <code>setdefault</code> est employée pour retourner la valeur présente pour un nom présent, et 0 si il est absent ;</li>
+<li>les affichages intermédiaires permettent de suivre ce qui se passe.</li>
+</ul>
+<h3 data-number="5.3.3" id="exécution"><span class="header-section-number">5.3.3</span> Exécution</h3>
+<p>Avec 20 lignes, on obtient <strong>au début</strong> :</p>
+<pre><code>nom = ARTHAUD voix = 3
+= {&#39;ARTHAUD&#39;: 3}
+nom = ROUSSEL voix = 6
+= {&#39;ARTHAUD&#39;: 3, &#39;ROUSSEL&#39;: 6}
+nom = MACRON voix = 150
+= {&#39;ARTHAUD&#39;: 3, &#39;ROUSSEL&#39;: 6, &#39;MACRON&#39;: 150}
+...</code></pre>
+<p>qui montre le remplissage avec des noms qui n’ont pas encore été rencontrés.</p>
+<p><strong>À la fin</strong>, les dernières lignes</p>
+<pre><code>...
+= {&#39;ARTHAUD&#39;: 5, &#39;ROUSSEL&#39;: 13, &#39;MACRON&#39;: 200, &#39;LASSALLE&#39;: 28, &#39;LE PEN&#39;: 172, &#39;ZEMMOUR&#39;: 57,
+ &#39;MÉLENCHON&#39;: 66, &#39;HIDALGO&#39;: 5, &#39;JADOT&#39;: 30, &#39;PÉCRESSE&#39;: 26, &#39;POUTOU&#39;: 3, &#39;DUPONT-AIGNAN&#39;: 21}
+nom = MÉLENCHON voix = 41
+= {&#39;ARTHAUD&#39;: 5, &#39;ROUSSEL&#39;: 13, &#39;MACRON&#39;: 200, &#39;LASSALLE&#39;: 28, &#39;LE PEN&#39;: 172, &#39;ZEMMOUR&#39;: 57, 
+ &#39;MÉLENCHON&#39;: 107, &#39;HIDALGO&#39;: 5, &#39;JADOT&#39;: 30, &#39;PÉCRESSE&#39;: 26, &#39;POUTOU&#39;: 3, &#39;DUPONT-AIGNAN&#39;: 21}
+totaux {&#39;ARTHAUD&#39;: 5, &#39;ROUSSEL&#39;: 13, &#39;MACRON&#39;: 200, &#39;LASSALLE&#39;: 28, &#39;LE PEN&#39;: 172, &#39;ZEMMOUR&#39;: 57,
+ &#39;MÉLENCHON&#39;: 107, &#39;HIDALGO&#39;: 5, &#39;JADOT&#39;: 30, &#39;PÉCRESSE&#39;: 26, &#39;POUTOU&#39;: 3, &#39;DUPONT-AIGNAN&#39;: 21}</code></pre>
+<p>font voir l’ajout de 41 voix au score de Mélenchon, qui passe de 66 à 107.</p>
+<h2 data-number="5.4" id="programme-final"><span class="header-section-number">5.4</span> Programme final</h2>
+<p>Pour le programme final, on retire</p>
+<ul>
+<li>la limitation du traitement aux premières lignes,</li>
+<li>les affichages intermédiaires,</li>
+</ul>
+<p>et on soigne la présentation du résultat.</p>
+<h3 data-number="5.4.1" id="code"><span class="header-section-number">5.4.1</span> Code</h3>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co">#</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="co"># Totalisation des voix au premier tour de l&#39;élection présidentielle 2022</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a><span class="co">#</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a><span class="im">import</span> csv</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a>nom_fichier <span class="op">=</span> <span class="st">&#39;04-resultats-par-commune.csv&#39;</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a>col_nom     <span class="op">=</span> <span class="dv">26</span><span class="op">-</span><span class="dv">1</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a>col_nb_voix <span class="op">=</span> <span class="dv">29</span><span class="op">-</span><span class="dv">1</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a>totaux_voix <span class="op">=</span> {}</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a><span class="bu">print</span> (<span class="st">&quot;= totaux voix premier tour présidentielle 2022&quot;</span>)</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true"></a><span class="cf">with</span> <span class="bu">open</span>(nom_fichier) <span class="im">as</span> fichier:</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true"></a>    lecteur <span class="op">=</span> csv.reader(fichier)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true"></a>    numero_ligne <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true"></a>    <span class="cf">for</span> ligne <span class="kw">in</span> lecteur:</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true"></a>        numero_ligne <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true"></a>        <span class="cf">if</span> numero_ligne <span class="op">&gt;</span> <span class="dv">1</span>:</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true"></a>            nom <span class="op">=</span> ligne[col_nom]</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true"></a>            nb_voix <span class="op">=</span> <span class="bu">int</span>(ligne[col_nb_voix])</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true"></a>            totaux_voix[nom] <span class="op">=</span> totaux_voix.setdefault(nom, <span class="dv">0</span>) <span class="op">+</span> nb_voix</span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true"></a></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true"></a><span class="co"># affichage final</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true"></a><span class="cf">for</span> (nom, nb_voix) <span class="kw">in</span> totaux_voix.items():</span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true"></a>    <span class="bu">print</span> (<span class="st">&#39;</span><span class="sc">{:10d}</span><span class="st"> </span><span class="sc">{}</span><span class="st">&#39;</span>.<span class="bu">format</span>(nb_voix, nom))</span></code></pre></div>
+<h3 data-number="5.4.2" id="exécution-1"><span class="header-section-number">5.4.2</span> Exécution</h3>
+<p>L’exécution, qui porte maintenant sur l’ensemble des données, ne prend que quelques secondes. On voit s’afficher :</p>
+<pre><code>= totaux voix premier tour présidentielle 2022
+    200662 ARTHAUD
+    827497 ROUSSEL
+  10087245 MACRON
+   1116933 LASSALLE
+   8261595 LE PEN
+   2585422 ZEMMOUR
+   8104784 MÉLENCHON
+    635705 HIDALGO
+   1700458 JADOT
+   1751714 PÉCRESSE
+    274938 POUTOU
+    735698 DUPONT-AIGNAN</code></pre>
+<p>Avec un effort, on pourrait classer par ordre alphabétique, ou par score, selon les besoins. Le besoin n’étant pas précisé, il est jugé inutile de s’en occuper.</p>
+<h3 data-number="5.4.3" id="comparaison-des-résultats"><span class="header-section-number">5.4.3</span> Comparaison des résultats</h3>
+<p>Ces chiffres diffèrent un petit peu <a href="https://fr.wikipedia.org/wiki/%C3%89lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2022#R%C3%A9sultats_nationaux" class="uri">https://fr.wikipedia.org/wiki/%C3%89lection_pr%C3%A9sidentielle_fran%C3%A7aise_de_2022#R%C3%A9sultats_nationaux</a> des résultats nationaux affichés sur Wikipedia, par exemple.</p>
+<p>Possibilités</p>
+<ul>
+<li>erreur dans le programme</li>
+<li>données incorrectes</li>
+<li>résultats invalidés partiellement</li>
+<li>complot international</li>
+<li>…</li>
+</ul>
+<p>Il est assez probable que les chiffres de Wikipédia, ainsi que l’annonce officielle des résultats au soir du premier tour, aient été établis à partir de données incomplètes.</p>
+<p>Rien d’anormal : il faut en réalité quelques jours pour que le Conseil Constitutionnel se prononce sur la validité des resultats dans certains bureaux litigieux.</p>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>pour comptabiliser d’autres élections, il faudra le modifier un peu, chaque élection donnant lieu à une présentation légèrement différente des données dans le fichier.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>Le premier donne les résultats pour Paris uniquement.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p>par chance, on n’a pas d’homonymes à la présidentielle. On pourrait aussi utiliser le numéro de panneau, qui est attribué nationalement, pour identifier les candidats.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4" role="doc-endnote"><p>Ville assez grande pour avoir plusieurs bureaux, et assez de gens qui votent n’importe que quoi pour qu’il soit très probable que chaque candidat a obtenu au moins une voix.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+</body>
+</html>
