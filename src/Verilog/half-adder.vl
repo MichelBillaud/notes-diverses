@@ -1,0 +1,12 @@
+// https://technobyte.org/verilog-full-adder-behavioral-modeling/
+
+module half_adder
+  (
+   output  r, s, 
+   input   a, b
+   );
+
+   xor (s, a, b);
+   and (r, a, b);
+endmodule // half_adder
+

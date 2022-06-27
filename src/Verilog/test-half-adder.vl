@@ -1,0 +1,20 @@
+// https://technobyte.org/verilog-full-adder-behavioral-modeling/
+
+`include "half-adder.vl"
+
+module test_half_adder;
+   reg  a, b;
+   wire r, s;
+   half_adder h(r, s, a, b);
+
+   initial begin
+	  $monitor("%04t\t%b + %b = %b %b", 
+			   $time, a, b, r, s);
+	  #0 a = 0; b = 0;
+	  #10 a = 0; b = 1;
+	  #10 a = 1; b = 0;
+	  #10 a = 1; b = 1;
+   end
+endmodule // test_half_adder
+
+	  

@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Michel Billaud (michel.billaud@laposte.net)" />
+  <title>Additionneur en Verilog, style structurel</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">a.sourceLine {
+display: inline-block;
+line-height: 1.25;
+}
+a.sourceLine {
+pointer-events: none;
+color: inherit;
+text-decoration: inherit;
+}
+a.sourceLine:empty {
+height: 1.2em;
+}
+.sourceCode {
+overflow: visible;
+}
+code.sourceCode {
+white-space: pre;
+position: relative;
+}
+div.sourceCode {
+margin: 1em 0;
+}
+pre.sourceCode {
+margin: 0;
+}
+@media screen {
+div.sourceCode {
+overflow: auto;
+}
+}
+@media print {
+code.sourceCode {
+white-space: pre-wrap;
+}
+a.sourceLine {
+text-indent: -1em;
+padding-left: 1em;
+}
+}
+pre.numberSource a.sourceLine {
+position: relative;
+left: -4em;
+}
+pre.numberSource a.sourceLine::before {
+content: attr(title);
+position: relative;
+left: -1em;
+text-align: right;
+vertical-align: baseline;
+border: none;
+pointer-events: all;
+display: inline-block;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+padding: 0 4px;
+width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource {
+margin-left: 3em;
+border-left: 1px solid #aaaaaa;
+padding-left: 4px;
+}
+div.sourceCode {}
+@media screen {
+a.sourceLine::before {
+text-decoration: underline;
+}
+}
+code span.al {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.an {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.at {
+color: #7d9029;
+}
+
+code span.bn {
+color: #40a070;
+}
+
+code span.bu {}
+
+code span.cf {
+color: #007020;
+font-weight: bold;
+}
+
+code span.ch {
+color: #4070a0;
+}
+
+code span.cn {
+color: #880000;
+}
+
+code span.co {
+color: #60a0b0;
+font-style: italic;
+}
+
+code span.cv {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.do {
+color: #ba2121;
+font-style: italic;
+}
+
+code span.dt {
+color: #902000;
+}
+
+code span.dv {
+color: #40a070;
+}
+
+code span.er {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.ex {}
+
+code span.fl {
+color: #40a070;
+}
+
+code span.fu {
+color: #06287e;
+}
+
+code span.im {}
+
+code span.in {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.kw {
+color: #007020;
+font-weight: bold;
+}
+
+code span.op {
+color: #666666;
+}
+
+code span.ot {
+color: #007020;
+}
+
+code span.pp {
+color: #bc7a00;
+}
+
+code span.sc {
+color: #4070a0;
+}
+
+code span.ss {
+color: #bb6688;
+}
+
+code span.st {
+color: #4070a0;
+}
+
+code span.va {
+color: #19177c;
+}
+
+code span.vs {
+color: #4070a0;
+}
+
+code span.wa {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+
+:root {
+--title-color: #202080;
+--source-bg-color: rgb(240, 240, 255);
+}
+h1, h2, h3, h4, h5, h6 {
+border-bottom: solid 1px silver;
+color: var(--title-color);
+}
+body {
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div.sourceCode {
+background-color: var(--source-bg-color);
+padding: 1em;
+}
+#TOC {
+padding: 0.5em;
+border: solid 1px silver;
+}
+#TOC ul {
+list-style-type: none;
+padding-left: 1em;
+}
+nav:before {
+text-indent: 2em;
+content: "Sommaire";
+color: var(--title-color);
+font-weight: bold;
+font-size: large;
+}
+#TOC a {
+text-decoration: none;
+}
+header {
+text-align: center;
+}
+.title {
+}
+.author, .date {
+font-style: italic;
+}
+table, th, td {
+border-collapse: collapse;
+border: solid black 1px;
+padding: 0.5em;
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Additionneur en Verilog, style structurel</h1>
+<p class="author">Michel Billaud (michel.billaud@laposte.net)</p>
+<p class="date">27 juin 2022</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#objectifs"><span class="toc-section-number">1</span> Objectifs</a></li>
+<li><a href="#demi-additionneur"><span class="toc-section-number">2</span> Demi-additionneur</a>
+<ul>
+<li><a href="#fonction-de-transfert"><span class="toc-section-number">2.1</span> Fonction de transfert</a></li>
+<li><a href="#description-structurelle-du-demi-additionneur"><span class="toc-section-number">2.2</span> Description structurelle du demi-additionneur</a></li>
+<li><a href="#tester-le-module"><span class="toc-section-number">2.3</span> Tester le module</a></li>
+<li><a href="#compilation-et-exécution"><span class="toc-section-number">2.4</span> Compilation et exécution</a></li>
+</ul></li>
+<li><a href="#additionneur-complet"><span class="toc-section-number">3</span> Additionneur complet</a>
+<ul>
+<li><a href="#fonction-de-transfert-1"><span class="toc-section-number">3.1</span> Fonction de transfert</a></li>
+<li><a href="#câblage-du-ladditionneur"><span class="toc-section-number">3.2</span> Câblage du l’additionneur</a></li>
+<li><a href="#description-structurelle-en-verilog"><span class="toc-section-number">3.3</span> Description structurelle en Verilog</a></li>
+<li><a href="#simulation"><span class="toc-section-number">3.4</span> Simulation</a></li>
+<li><a href="#compilation-et-exécution-1"><span class="toc-section-number">3.5</span> Compilation et exécution</a></li>
+</ul></li>
+</ul>
+</nav>
+<p><img src="data:image/png;base64,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" /></p>
+<p>Ce texte fait partie d’une petite <a href="index.html">collection de notes</a> mise à disposition selon les termes de la <a href="http://creativecommons.org/licenses/by-nc-sa/2.0/fr/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France</a>.</p>
+<ul>
+<li>Les notes sont publiées dans <a href="https://www.mbillaud.fr/notes/" class="uri">https://www.mbillaud.fr/notes/</a></li>
+<li>Sources dans <a href="https://github.com/MichelBillaud/notes-diverses" class="uri">https://github.com/MichelBillaud/notes-diverses</a></li>
+</ul>
+<h1 data-number="1" id="objectifs"><span class="header-section-number">1</span> Objectifs</h1>
+<p>Dans cette note, on regarde comment</p>
+<ul>
+<li>décrire un additionneur en Verilog en style “structurel” ;</li>
+<li>tester son fonctionnement ;</li>
+</ul>
+<p>en utilisant le compilateur <code>iverilog</code> que l’on trouve dans les packages Debian.</p>
+<h1 data-number="2" id="demi-additionneur"><span class="header-section-number">2</span> Demi-additionneur</h1>
+<p>Le circuit minimal pour faire une addition</p>
+<ul>
+<li>prend en entrée deux nombres <code>a</code>, <code>b</code> de 1 bit chacun,</li>
+<li>fournit un nombre de deux bits : le chiffre de gauche <code>r</code> est la retenue, le chiffre de droite <code>s</code> la somme.</li>
+</ul>
+<p>Ce circuit est appelé <strong>demi-additionneur</strong>, on verra pourquoi plus loin.</p>
+<h2 data-number="2.1" id="fonction-de-transfert"><span class="header-section-number">2.1</span> Fonction de transfert</h2>
+<p>La fonction de transfert indique la valeur des sorties en fonction de celle des entrées. Sous forme de table :</p>
+<table>
+<thead>
+<tr class="header">
+<th>a b</th>
+<th>r s</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0 0</td>
+<td>0 0</td>
+</tr>
+<tr class="even">
+<td>0 1</td>
+<td>0 1</td>
+</tr>
+<tr class="odd">
+<td>1 0</td>
+<td>0 1</td>
+</tr>
+<tr class="even">
+<td>1 1</td>
+<td>1 0</td>
+</tr>
+</tbody>
+</table>
+<h2 data-number="2.2" id="description-structurelle-du-demi-additionneur"><span class="header-section-number">2.2</span> Description structurelle du demi-additionneur</h2>
+<p>Ce circuit peut être construit par assemblage de <strong>portes logiques</strong> de base. Ici la sortie <code>r</code> s’obtient par un “et” des deux entrées, la sortie <code>s</code> par un ou-exclusif.</p>
+<figure>
+<img src="data:image/png;base64,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" title="Circuit Demi-Additionneur" alt /><figcaption>Circuit Demi-Additionneur</figcaption>
+</figure>
+<p>Cette description peut être codée en Verilog, en mettant le code suivante dans un fichier source que nous nommerons <code>half-adder.vl</code> :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode verilog"><code class="sourceCode verilog"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">// half-adder.vl</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="co">// description structurelle d&#39;un demi-additionneur</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="kw">module</span> half_adder</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>  (</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>   <span class="dt">output</span>  r, s, </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>   <span class="dt">input</span>   a, b</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>   );</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a>   <span class="dt">xor</span> (s, a, b);</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a>   <span class="dt">and</span> (r, a, b);</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="kw">endmodule</span> <span class="co">// half_adder</span></span></code></pre></div>
+<p>décrit un “module” qui</p>
+<ul>
+<li>a 4 ports de branchement : 2 entrées <code>a</code> et <code>b</code>, et 2 sorties <code>r</code> et <code>s</code>.</li>
+<li><strong>contient</strong> une porte <code>xor</code> et une porte <code>and</code> qui ont <code>a</code> et <code>b</code> en entrée, et dont les sorties sont reliées respectivement à <code>s</code> et <code>r</code>.</li>
+</ul>
+<p>C’est une description <strong>structurelle</strong> : le circuit est décrit comme une composition d’autres circuits. Verilog permet d’autres styles de description.</p>
+<p><strong>Notes</strong></p>
+<ul>
+<li>les portes <code>and</code>, <code>or</code> sont prédéfinies en Verilog ;</li>
+<li>il en existe d’autres (<code>not</code>, <code>xor</code>, <code>nand</code>, <code>nor</code>) ;</li>
+<li>le premier paramètre est la sortie.</li>
+</ul>
+<p>C’est pour des raisons d’homogénéité que nous avons choisi, pour <code>half_adder</code>, de mettre les sorties en premier.</p>
+<h2 data-number="2.3" id="tester-le-module"><span class="header-section-number">2.3</span> Tester le module</h2>
+<p>Pour tester le module <code>half_adder</code>, nous allons écrire une <strong>simulation</strong>, qui</p>
+<ul>
+<li>envoie successivement toutes les combinaisons de 0 et de 1 en entrée d’un circuit demi-additionneur ;</li>
+<li>affiche les valeurs des entrées et sorties du circuit</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode verilog"><code class="sourceCode verilog"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a># test-half-adder.vl</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a># test d&#39;un circuit half_adder</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="ot">`include </span><span class="fl">&quot;half-adder.vl&quot;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a><span class="kw">module</span> test_half_adder;</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>   <span class="dt">reg</span>  a, b;</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>   <span class="dt">wire</span> r, s;</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>   half_adder h(r, s, a, b);</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>   <span class="kw">initial</span> <span class="kw">begin</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a>      <span class="dt">$monitor</span>(<span class="st">&quot;%04t</span><span class="ch">\t</span><span class="st">%b + %b = %b %b&quot;</span>, </span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a>               <span class="dt">$time</span>, a, b, r, s);</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a>          a = <span class="dv">0</span>; b = <span class="dv">0</span>;</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a>      <span class="bn">#10</span> a = <span class="dv">0</span>; b = <span class="dv">1</span>;</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a>      <span class="bn">#10</span> a = <span class="dv">1</span>; b = <span class="dv">0</span>;</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a>      <span class="bn">#10</span> a = <span class="dv">1</span>; b = <span class="dv">1</span>;</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a>   <span class="kw">end</span></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a><span class="kw">endmodule</span> <span class="co">// test_half_adder</span></span></code></pre></div>
+<p>Explications : ce module de test décrit</p>
+<ul>
+<li>le matériel utilisé : un demi-additionneur (nommé <code>h</code>) connecté à deux entrées et deux sorties ;</li>
+<li>dans un bloc “<code>initial</code>”, la séquence d’actions sur les entrées :
+<ul>
+<li>mettre a et b à 0;</li>
+<li>attendre 10 unités de temps, puis mettre a à 0 et b à 1</li>
+<li>attendre 10 unités de temps, puis mettre a à 1 et b à 0</li>
+<li>etc. tout en affichant les changements de valeurs quand ils se produisent (<code>$monitor</code>)</li>
+</ul></li>
+</ul>
+<p>Les variable <code>a</code> et <code>b</code> ont des valeurs que nous pilotons explicitement à notre gré au moment voulu de la simulation. Ce sont des <code>registres</code> dans la terminologie Verilog.</p>
+<p>Pour <code>r</code> et <code>s</code>, ce sont de simples fils (<code>wire</code>) dont l’état ne dépend que des sorties auxquelles ils sont reliés.</p>
+<p>Complément : l’instruction <code>$monitor</code> utilise une chaîne de format similaire à celle de <code>printf</code> en C. Ici on trouve</p>
+<ul>
+<li>“<code>%04t</code>” pour afficher le temps (<code>$time</code>) sur 4 chiffres avec des 0 en tête ;</li>
+<li>“<code>\t</code>” pour une tabulation,</li>
+<li>“<code>%b</code>” pour chacun des bits <code>a</code>, <code>b</code>, <code>r</code> et <code>s</code>.</li>
+</ul>
+<h2 data-number="2.4" id="compilation-et-exécution"><span class="header-section-number">2.4</span> Compilation et exécution</h2>
+<p>La suite de commandes</p>
+<pre><code>$ iverilog -o test-half-adder test-half-adder.vl
+$ ./test-half-adder </code></pre>
+<p>compile le fichier source et le fait exécuter, ce qui affiche</p>
+<pre><code>0000    0 + 0 = 0 0
+0010    0 + 1 = 0 1
+0020    1 + 0 = 0 1
+0030    1 + 1 = 1 0</code></pre>
+<h1 data-number="3" id="additionneur-complet"><span class="header-section-number">3</span> Additionneur complet</h1>
+<p>Si on veut additionner des nombres de plus d’un bit, le demi-additionneur ne suffit pas. En effet, il y a de retenues à prendre en compte.</p>
+<p>Exemple d’addition en binaire <code>1010 + 1111 = 11001</code> (en décimal 10 + 15 = 25).</p>
+<p>Si on procède selon la méthode habituelle qui va de droite à gauche, à chaque étape (sauf tout à fait à droite), on doit additionner <strong>trois</strong> bits : un pour chaque nombre, et la retenue entrante obtenue au chiffre précédents.</p>
+<h2 data-number="3.1" id="fonction-de-transfert-1"><span class="header-section-number">3.1</span> Fonction de transfert</h2>
+<p>Dans le tableau ci-dessous, on distingue les retenues entrante <code>re</code> et sortante <code>rs</code>,</p>
+<table>
+<thead>
+<tr class="header">
+<th>a b re</th>
+<th>rs s</th>
+<th></th>
+<th>a b re</th>
+<th>rs s</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0 0 0</td>
+<td>0 0</td>
+<td></td>
+<td>1 0 0</td>
+<td>0 1</td>
+</tr>
+<tr class="even">
+<td>0 0 1</td>
+<td>0 1</td>
+<td></td>
+<td>1 0 1</td>
+<td>1 0</td>
+</tr>
+<tr class="odd">
+<td>0 1 0</td>
+<td>0 1</td>
+<td></td>
+<td>1 1 0</td>
+<td>1 0</td>
+</tr>
+<tr class="even">
+<td>0 1 1</td>
+<td>1 0</td>
+<td></td>
+<td>1 1 1</td>
+<td>1 1</td>
+</tr>
+</tbody>
+</table>
+<h2 data-number="3.2" id="câblage-du-ladditionneur"><span class="header-section-number">3.2</span> Câblage du l’additionneur</h2>
+<p>Le schéma montre comment, avec deux demi-additionneurs et une porte <code>ou</code>, on peut construire un additionneur complet.</p>
+<figure>
+<img src="data:image/png;base64,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" title="Circuit Additionneur" alt /><figcaption>Circuit Additionneur</figcaption>
+</figure>
+<h2 data-number="3.3" id="description-structurelle-en-verilog"><span class="header-section-number">3.3</span> Description structurelle en Verilog</h2>
+<p>En suivant le schéma, nous construisant l’additionneur avec deux instances nommées <code>h1</code> et <code>h2</code> du module demi-aditionneur, et une porte <code>ou</code> :</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode verilog"><code class="sourceCode verilog"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a># full-adder.vl</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a># additionneur complet (<span class="dv">3</span> bits en entrée, somme et retenue en sortie)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="ot">`include </span><span class="fl">&quot;half-adder.vl&quot;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a><span class="kw">module</span> full_adder</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>  (</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>   <span class="dt">output</span>  rs, s,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a>   <span class="dt">input</span>   a, b, re</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a>   );</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a>  </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a>   <span class="dt">wire</span>    r1, r2, s1, s2;</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a>   </span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a>   half_adder ha1(r1, s1, a, b);</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a>   half_adder ha2(r2, s , s1, re);</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a>   <span class="dt">or</span>(rs, r1, r2);</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a>   </span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a><span class="kw">endmodule</span>  <span class="co">// full_adder</span></span></code></pre></div>
+<h2 data-number="3.4" id="simulation"><span class="header-section-number">3.4</span> Simulation</h2>
+<p>la simulation est construite selon le même principe que précédemment</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode verilog"><code class="sourceCode verilog"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a># test-full-adder.vl</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a># test de l&#39;additionneur</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="ot">`include </span><span class="fl">&quot;full-adder.vl&quot;</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="kw">module</span> test_full_adder;</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>   <span class="dt">reg</span> a, b, re;</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>   <span class="dt">wire</span> rs, s;</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>   full_adder adder(rs, s, a, b, re);</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a>   <span class="kw">initial</span> <span class="kw">begin</span></span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a>      <span class="dt">$monitor</span>(<span class="st">&quot;%04t</span><span class="ch">\t</span><span class="st">%b + %b + %b = %b%b&quot;</span>, <span class="dt">$time</span>,  a, b, re, rs, s);</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a>      </span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true"></a>      <span class="bn">#0</span>      a = <span class="dv">0</span>; b = <span class="dv">0</span>; re = <span class="dv">0</span>;</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true"></a>      <span class="bn">#10</span>                   re = <span class="dv">1</span>;</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true"></a>      <span class="bn">#10</span>            b = <span class="dv">1</span>; re = <span class="dv">0</span>;</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true"></a>      <span class="bn">#10</span>                   re = <span class="dv">1</span>;</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true"></a>      <span class="bn">#10</span>     a = <span class="dv">1</span>; b = <span class="dv">0</span>; re = <span class="dv">0</span>;</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true"></a>      <span class="bn">#10</span>                   re = <span class="dv">1</span>;</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true"></a>      <span class="bn">#10</span>            b = <span class="dv">1</span>; re = <span class="dv">0</span>;</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true"></a>      <span class="bn">#10</span>                   re = <span class="dv">1</span>;</span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true"></a>   <span class="kw">end</span></span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true"></a>   </span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true"></a><span class="kw">endmodule</span> <span class="co">// test_full_adder</span></span></code></pre></div>
+<h2 data-number="3.5" id="compilation-et-exécution-1"><span class="header-section-number">3.5</span> Compilation et exécution</h2>
+<pre><code>$ iverilog -o test-full-adder test-full-adder.vl
+$ ./test-full-adder 
+0000    0 + 0 + 0 = 00
+0010    0 + 0 + 1 = 01
+0020    0 + 1 + 0 = 01
+0030    0 + 1 + 1 = 10
+0040    1 + 0 + 0 = 01
+0050    1 + 0 + 1 = 10
+0060    1 + 1 + 0 = 10
+0070    1 + 1 + 1 = 11</code></pre>
+</body>
+</html>

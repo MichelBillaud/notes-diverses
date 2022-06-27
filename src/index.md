@@ -1,6 +1,6 @@
 % Notes diverses
 % Michel Billaud (`michel.billaud@laposte.net`)
-% 1er marsr 2022
+% 27 juin 2022
 
 
 # Licence
@@ -13,8 +13,22 @@ Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France]
 
 - Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
+²
 
+# Description structurelle d'un additionneur en Verilog
 
+On montre comment
+
+- décrire un circuit en Verilog selon le style structurel, en représentant
+un module comme un assemblage de sous-modules et de portes logiques ;
+- effectuer une simulation pour se convaincre du bon fonctionnement.
+
+Exemples :
+
+- un demi-additionneur formé d'une porte "et" et d'un "ou-exclusif",
+- additionneur composé de deux demi-additionneurs et d'une porte "ou".
+
+Document : [additionneur-verilog](additionneur-verilog.html)
 
 # Vérifier le résultat des élections
 

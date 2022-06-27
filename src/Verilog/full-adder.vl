@@ -1,0 +1,18 @@
+// https://technobyte.org/verilog-full-adder-behavioral-modeling/
+
+`include "half-adder.vl"
+
+module full_adder
+  (
+   output  rs, s,
+   input   a, b, re
+   );
+  
+   wire    r1, r2, s1, s2;
+   
+   half_adder ha1(r1, s1, a, b);
+   half_adder ha2(r2, s , s1, re);
+   or(rs, r1, r2);
+   
+endmodule  // full_adder
+
