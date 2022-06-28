@@ -4,15 +4,15 @@
 
 module full_adder
   (
-   output  rs, s,
-   input   a, b, re
+   output co, s,
+   input  a, b, ci
    );
   
-   wire    r1, r2, s1, s2;
+   wire   c1, c2, s1, s2;
    
-   half_adder ha1(r1, s1, a, b);
-   half_adder ha2(r2, s , s1, re);
-   or(rs, r1, r2);
+   half_adder ha1(c1, s1, a, b);
+   half_adder ha2(c2, s , s1, ci);
+   or(co, c1, c2);
    
 endmodule  // full_adder
 

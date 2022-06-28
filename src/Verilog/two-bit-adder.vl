@@ -1,0 +1,49 @@
+//  two-bit-adder.vl
+
+`include "full-adder.vl"
+
+module two_bit_adder
+  (
+   output 		co, 
+   output [1:0] s,
+   
+   input [1:0] 	a,
+   input [1:0] 	b,
+   input 		ci
+   );
+   wire c;  // retenue intermédiaire
+   
+   full_adder fh0(c,  s[0], a[0], b[0], ci);
+   full_adder fh1(co, s[1], a[1], b[1], c);
+
+   // initial begin
+   // 	  $monitor("a=%b b=%b s=%b", a, b, s);
+   // end
+   
+endmodule // two_bit_adder
+
+module test_two_bit_adder;
+   reg [1:0]  a;
+   reg [1:0]  b;
+   reg        ci;
+   wire [1:0] s;
+   wire 	  co;
+   two_bit_adder adder(co, s, a, b, ci);
+   
+   initial begin : simulation
+	  integer i, j;
+	  $monitor("%2d + %2d  %B + %B  = %B %B" ,
+			   i, j,  a, b,  co, s);
+	  
+	  for (i = 0; i < 4; i = i+1) begin
+		 for (j = 0; j < 4; j = j+1) begin
+			 a = i; b = j; ci = 0;
+			#1 ;
+			
+		 end
+	  end
+   end
+endmodule // test_two_bit_adder
+
+
+   

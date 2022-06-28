@@ -1,24 +1,22 @@
-// https://technobyte.org/verilog-full-adder-behavioral-modeling/
-
 `include "full-adder.vl"
 
 module test_full_adder;
-   reg a, b, re;
-   wire rs, s;
+   reg a, b, ci;
+   wire co, s;
 
-   full_adder adder(rs, s, a, b, re);
+   full_adder adder(co, s, a, b, ci);
 
    initial begin
-	  $monitor("%04t\t%b + %b + %b = %b%b", $time,  a, b, re, rs, s);
+	  $monitor("%04t\t%b + %b + %b = %b%b", $time,  a, b, ci, co, s);
 	  
-	  #0      a = 0; b = 0; re = 0;
-	  #10	                re = 1;
-	  #10            b = 1; re = 0;
-	  #10	                re = 1;
-	  #10     a = 1; b = 0; re = 0;
-	  #10	                re = 1;
-	  #10            b = 1; re = 0;
-	  #10	                re = 1;
+	  #0      a = 0; b = 0; ci = 0;
+	  #10	                ci = 1;
+	  #10            b = 1; ci = 0;
+	  #10	                ci = 1;
+	  #10     a = 1; b = 0; ci = 0;
+	  #10	                ci = 1;
+	  #10            b = 1; ci = 0;
+	  #10	                ci = 1;
    end
    
 endmodule // test_full_adder

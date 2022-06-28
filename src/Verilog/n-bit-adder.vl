@@ -1,0 +1,21 @@
+// four-bit-adder.vl
+
+`include "full-adder.vl"
+
+module four_bit_adder(co, s, a, b, ci);
+   parameter N = 4;
+   input [N-1 : 0]  a, b;
+   input 		    ci;
+   output [N-1 : 0] s;
+   output 			co;
+   wire [N-2 : 0] 	c;
+   
+   full_adder fh0(c[0], s[0], a[0], b[0], ci);
+   full_adder fh1(c[1], s[1], a[1], b[1], c[0]);
+   full_adder fh2(c[2], s[2], a[2], b[2], c[1]); 
+//   full_adder fh3(co, s[3], a[3], b[3], c[3]);
+   
+endmodule // four_bit_adder
+
+
+   

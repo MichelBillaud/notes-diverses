@@ -2,11 +2,11 @@
 
 module half_adder
   (
-   output  r, s, 
-   input   a, b
+   output  co, s, 
+   input   a,  b
    );
 
-   xor (s, a, b);
-   and (r, a, b);
+   xor (s,  a, b);
+   and (co, a, b);
 endmodule // half_adder
 

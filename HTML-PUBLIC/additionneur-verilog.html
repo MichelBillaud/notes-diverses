@@ -326,7 +326,7 @@ padding: 0.5em;
 <header id="title-block-header">
 <h1 class="title">Additionneur en Verilog, style structurel</h1>
 <p class="author">Michel Billaud (michel.billaud@laposte.net)</p>
-<p class="date">27 juin 2022</p>
+<p class="date">28 juin 2022</p>
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
@@ -346,6 +346,10 @@ padding: 0.5em;
 <li><a href="#simulation"><span class="toc-section-number">3.4</span> Simulation</a></li>
 <li><a href="#compilation-et-exécution-1"><span class="toc-section-number">3.5</span> Compilation et exécution</a></li>
 </ul></li>
+<li><a href="#additionneur-4-bits"><span class="toc-section-number">4</span> Additionneur 4 bits</a>
+<ul>
+<li><a href="#description-en-verilog"><span class="toc-section-number">4.1</span> Description en Verilog</a></li>
+</ul></li>
 </ul>
 </nav>
 <p><img src="data:image/png;base64,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" /></p>
@@ -358,14 +362,19 @@ padding: 0.5em;
 <p>Dans cette note, on regarde comment</p>
 <ul>
 <li>décrire un additionneur en Verilog en style “structurel” ;</li>
-<li>tester son fonctionnement ;</li>
+<li>tester son fonctionnement en affichant tous les cas possibles.</li>
 </ul>
-<p>en utilisant le compilateur <code>iverilog</code> que l’on trouve dans les packages Debian.</p>
+<p>Ceci en utilisant le compilateur <code>iverilog</code> que l’on trouve dans les packages Debian.</p>
+<p>Pour compléter, on construit un additionneur 2 x 4 bits, avec une autre méthode de vérification. Avec 9 entrées (2 nombres de 4 bits et une retenue entrante),</p>
+<ul>
+<li>entrer les 512 cas à la main serait fastidieux (on va faire des boucles)</li>
+<li>afficher les 512 lignes ne permettrait pas de repérer les problèmes. on ne fera afficher que les lignes où il y a des anomalies.</li>
+</ul>
 <h1 data-number="2" id="demi-additionneur"><span class="header-section-number">2</span> Demi-additionneur</h1>
 <p>Le circuit minimal pour faire une addition</p>
 <ul>
 <li>prend en entrée deux nombres <code>a</code>, <code>b</code> de 1 bit chacun,</li>
-<li>fournit un nombre de deux bits : le chiffre de gauche <code>r</code> est la retenue, le chiffre de droite <code>s</code> la somme.</li>
+<li>fournit un nombre de deux bits : le chiffre de gauche <code>co</code> est la retenue sortante (output carry), le chiffre de droite <code>s</code> la somme.</li>
 </ul>
 <p>Ce circuit est appelé <strong>demi-additionneur</strong>, on verra pourquoi plus loin.</p>
 <h2 data-number="2.1" id="fonction-de-transfert"><span class="header-section-number">2.1</span> Fonction de transfert</h2>
@@ -374,7 +383,7 @@ padding: 0.5em;
 <thead>
 <tr class="header">
 <th>a b</th>
-<th>r s</th>
+<th>co s</th>
 </tr>
 </thead>
 <tbody>
@@ -401,23 +410,23 @@ padding: 0.5em;
 <figure>
 <img src="data:image/png;base64,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" title="Circuit Demi-Additionneur" alt /><figcaption>Circuit Demi-Additionneur</figcaption>
 </figure>
-<p>Cette description peut être codée en Verilog, en mettant le code suivante dans un fichier source que nous nommerons <code>half-adder.vl</code> :</p>
+<p>Cette description peut être codée en Verilog, en mettant le code suivant dans un fichier source que nous nommerons <code>half-adder.vl</code> :</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode verilog"><code class="sourceCode verilog"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">// half-adder.vl</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="co">// description structurelle d&#39;un demi-additionneur</span></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a></span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="kw">module</span> half_adder</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a>  (</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>   <span class="dt">output</span>  r, s, </span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a>   <span class="dt">output</span>  co, s, </span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>   <span class="dt">input</span>   a, b</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>   );</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a>   <span class="dt">xor</span> (s, a, b);</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a>   <span class="dt">and</span> (r, a, b);</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a>   <span class="dt">and</span> (co, a, b);</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a><span class="kw">endmodule</span> <span class="co">// half_adder</span></span></code></pre></div>
 <p>décrit un “module” qui</p>
 <ul>
-<li>a 4 ports de branchement : 2 entrées <code>a</code> et <code>b</code>, et 2 sorties <code>r</code> et <code>s</code>.</li>
-<li><strong>contient</strong> une porte <code>xor</code> et une porte <code>and</code> qui ont <code>a</code> et <code>b</code> en entrée, et dont les sorties sont reliées respectivement à <code>s</code> et <code>r</code>.</li>
+<li>a 4 ports de branchement : 2 entrées <code>a</code> et <code>b</code>, et 2 sorties <code>co</code> et <code>s</code>.</li>
+<li><strong>contient</strong> une porte <code>xor</code> et une porte <code>and</code> qui ont <code>a</code> et <code>b</code> en entrée, et dont les sorties sont reliées respectivement à <code>s</code> et <code>co</code>.</li>
 </ul>
 <p>C’est une description <strong>structurelle</strong> : le circuit est décrit comme une composition d’autres circuits. Verilog permet d’autres styles de description.</p>
 <p><strong>Notes</strong></p>
@@ -440,12 +449,12 @@ padding: 0.5em;
 <span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a></span>
 <span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a><span class="kw">module</span> test_half_adder;</span>
 <span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a>   <span class="dt">reg</span>  a, b;</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>   <span class="dt">wire</span> r, s;</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>   half_adder h(r, s, a, b);</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>   <span class="dt">wire</span> co, s;</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>   half_adder h(co, s, a, b);</span>
 <span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a></span>
 <span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>   <span class="kw">initial</span> <span class="kw">begin</span></span>
 <span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a>      <span class="dt">$monitor</span>(<span class="st">&quot;%04t</span><span class="ch">\t</span><span class="st">%b + %b = %b %b&quot;</span>, </span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a>               <span class="dt">$time</span>, a, b, r, s);</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a>               <span class="dt">$time</span>, a, b, co, s);</span>
 <span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a>          a = <span class="dv">0</span>; b = <span class="dv">0</span>;</span>
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a>      <span class="bn">#10</span> a = <span class="dv">0</span>; b = <span class="dv">1</span>;</span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a>      <span class="bn">#10</span> a = <span class="dv">1</span>; b = <span class="dv">0</span>;</span>
@@ -464,12 +473,12 @@ padding: 0.5em;
 </ul></li>
 </ul>
 <p>Les variable <code>a</code> et <code>b</code> ont des valeurs que nous pilotons explicitement à notre gré au moment voulu de la simulation. Ce sont des <code>registres</code> dans la terminologie Verilog.</p>
-<p>Pour <code>r</code> et <code>s</code>, ce sont de simples fils (<code>wire</code>) dont l’état ne dépend que des sorties auxquelles ils sont reliés.</p>
+<p>Pour <code>co</code> et <code>s</code>, ce sont de simples fils (<code>wire</code>) dont l’état ne dépend que des sorties auxquelles ils sont reliés.</p>
 <p>Complément : l’instruction <code>$monitor</code> utilise une chaîne de format similaire à celle de <code>printf</code> en C. Ici on trouve</p>
 <ul>
 <li>“<code>%04t</code>” pour afficher le temps (<code>$time</code>) sur 4 chiffres avec des 0 en tête ;</li>
 <li>“<code>\t</code>” pour une tabulation,</li>
-<li>“<code>%b</code>” pour chacun des bits <code>a</code>, <code>b</code>, <code>r</code> et <code>s</code>.</li>
+<li>“<code>%b</code>” pour chacun des bits <code>a</code>, <code>b</code>, <code>co</code> et <code>s</code>.</li>
 </ul>
 <h2 data-number="2.4" id="compilation-et-exécution"><span class="header-section-number">2.4</span> Compilation et exécution</h2>
 <p>La suite de commandes</p>
@@ -485,15 +494,15 @@ $ ./test-half-adder </code></pre>
 <p>Exemple d’addition en binaire <code>1010 + 1111 = 11001</code> (en décimal 10 + 15 = 25).</p>
 <p>Si on procède selon la méthode habituelle qui va de droite à gauche, à chaque étape (sauf tout à fait à droite), on doit additionner <strong>trois</strong> bits : un pour chaque nombre, et la retenue entrante obtenue au chiffre précédents.</p>
 <h2 data-number="3.1" id="fonction-de-transfert-1"><span class="header-section-number">3.1</span> Fonction de transfert</h2>
-<p>Dans le tableau ci-dessous, on distingue les retenues entrante <code>re</code> et sortante <code>rs</code>,</p>
+<p>Dans le tableau ci-dessous, on distingue les retenues entrante <code>ci</code> et sortante <code>co</code>,</p>
 <table>
 <thead>
 <tr class="header">
-<th>a b re</th>
-<th>rs s</th>
+<th>a b ci</th>
+<th>co s</th>
 <th></th>
-<th>a b re</th>
-<th>rs s</th>
+<th>a b ci</th>
+<th>co s</th>
 </tr>
 </thead>
 <tbody>
@@ -541,41 +550,41 @@ $ ./test-half-adder </code></pre>
 <span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a></span>
 <span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a><span class="kw">module</span> full_adder</span>
 <span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>  (</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>   <span class="dt">output</span>  rs, s,</span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a>   <span class="dt">input</span>   a, b, re</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>   <span class="dt">output</span>  co, s,</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a>   <span class="dt">input</span>   a, b, ci</span>
 <span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a>   );</span>
 <span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a>  </span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a>   <span class="dt">wire</span>    r1, r2, s1, s2;</span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a>   <span class="dt">wire</span>    c1, c2, s1, s2;</span>
 <span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a>   </span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a>   half_adder ha1(r1, s1, a, b);</span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a>   half_adder ha2(r2, s , s1, re);</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a>   <span class="dt">or</span>(rs, r1, r2);</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a>   half_adder ha1(c1, s1, a, b);</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a>   half_adder ha2(c2, s , s1, ci);</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a>   <span class="dt">or</span>(co, c1, c2);</span>
 <span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a>   </span>
 <span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a><span class="kw">endmodule</span>  <span class="co">// full_adder</span></span></code></pre></div>
 <h2 data-number="3.4" id="simulation"><span class="header-section-number">3.4</span> Simulation</h2>
-<p>la simulation est construite selon le même principe que précédemment</p>
+<p>La simulation est construite selon le même principe que précédemment</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode verilog"><code class="sourceCode verilog"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a># test-full-adder.vl</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a># test de l&#39;additionneur</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a><span class="ot">`include </span><span class="fl">&quot;full-adder.vl&quot;</span></span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a></span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a><span class="kw">module</span> test_full_adder;</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>   <span class="dt">reg</span> a, b, re;</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>   <span class="dt">wire</span> rs, s;</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true"></a>   <span class="dt">reg</span> a, b, ci;</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true"></a>   <span class="dt">wire</span> co, s;</span>
 <span id="cb6-9"><a href="#cb6-9" aria-hidden="true"></a></span>
-<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>   full_adder adder(rs, s, a, b, re);</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true"></a>   full_adder adder(co, s, a, b, ci);</span>
 <span id="cb6-11"><a href="#cb6-11" aria-hidden="true"></a></span>
 <span id="cb6-12"><a href="#cb6-12" aria-hidden="true"></a>   <span class="kw">initial</span> <span class="kw">begin</span></span>
-<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a>      <span class="dt">$monitor</span>(<span class="st">&quot;%04t</span><span class="ch">\t</span><span class="st">%b + %b + %b = %b%b&quot;</span>, <span class="dt">$time</span>,  a, b, re, rs, s);</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true"></a>      <span class="dt">$monitor</span>(<span class="st">&quot;%04t</span><span class="ch">\t</span><span class="st">%b + %b + %b = %b%b&quot;</span>, <span class="dt">$time</span>,  a, b, ci, co, s);</span>
 <span id="cb6-14"><a href="#cb6-14" aria-hidden="true"></a>      </span>
-<span id="cb6-15"><a href="#cb6-15" aria-hidden="true"></a>      <span class="bn">#0</span>      a = <span class="dv">0</span>; b = <span class="dv">0</span>; re = <span class="dv">0</span>;</span>
-<span id="cb6-16"><a href="#cb6-16" aria-hidden="true"></a>      <span class="bn">#10</span>                   re = <span class="dv">1</span>;</span>
-<span id="cb6-17"><a href="#cb6-17" aria-hidden="true"></a>      <span class="bn">#10</span>            b = <span class="dv">1</span>; re = <span class="dv">0</span>;</span>
-<span id="cb6-18"><a href="#cb6-18" aria-hidden="true"></a>      <span class="bn">#10</span>                   re = <span class="dv">1</span>;</span>
-<span id="cb6-19"><a href="#cb6-19" aria-hidden="true"></a>      <span class="bn">#10</span>     a = <span class="dv">1</span>; b = <span class="dv">0</span>; re = <span class="dv">0</span>;</span>
-<span id="cb6-20"><a href="#cb6-20" aria-hidden="true"></a>      <span class="bn">#10</span>                   re = <span class="dv">1</span>;</span>
-<span id="cb6-21"><a href="#cb6-21" aria-hidden="true"></a>      <span class="bn">#10</span>            b = <span class="dv">1</span>; re = <span class="dv">0</span>;</span>
-<span id="cb6-22"><a href="#cb6-22" aria-hidden="true"></a>      <span class="bn">#10</span>                   re = <span class="dv">1</span>;</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true"></a>      <span class="bn">#0</span>      a = <span class="dv">0</span>; b = <span class="dv">0</span>; ci = <span class="dv">0</span>;</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true"></a>      <span class="bn">#10</span>                   ci = <span class="dv">1</span>;</span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true"></a>      <span class="bn">#10</span>            b = <span class="dv">1</span>; ci = <span class="dv">0</span>;</span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true"></a>      <span class="bn">#10</span>                   ci = <span class="dv">1</span>;</span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true"></a>      <span class="bn">#10</span>     a = <span class="dv">1</span>; b = <span class="dv">0</span>; ci = <span class="dv">0</span>;</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true"></a>      <span class="bn">#10</span>                   ci = <span class="dv">1</span>;</span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true"></a>      <span class="bn">#10</span>            b = <span class="dv">1</span>; ci = <span class="dv">0</span>;</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true"></a>      <span class="bn">#10</span>                   ci = <span class="dv">1</span>;</span>
 <span id="cb6-23"><a href="#cb6-23" aria-hidden="true"></a>   <span class="kw">end</span></span>
 <span id="cb6-24"><a href="#cb6-24" aria-hidden="true"></a>   </span>
 <span id="cb6-25"><a href="#cb6-25" aria-hidden="true"></a><span class="kw">endmodule</span> <span class="co">// test_full_adder</span></span></code></pre></div>
@@ -590,5 +599,49 @@ $ ./test-full-adder
 0050    1 + 0 + 1 = 10
 0060    1 + 1 + 0 = 10
 0070    1 + 1 + 1 = 11</code></pre>
+<h1 data-number="4" id="additionneur-4-bits"><span class="header-section-number">4</span> Additionneur 4 bits</h1>
+<p>Un additionneur de 4 bits est constitué de 4 additionneurs 1 bit, en connectant la retenue sortante de l’un à la retenue entrante de son voisin.</p>
+<p>Pour pouvoir chainer des additionneurs 4 bits, en plus des 2 nombres de 4 bits on a aussi une retenue entrante et une retenue sortante.</p>
+<figure>
+<img src="data:image/png;base64,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1NSsX78+UZNZMfFcu49rtyiEoSGsSWA3UiOemjxmsEVFRUOHDl2zJlMGm5/uDmSZSZMmxTZKSkrmzZs3cuTIRx555GQHr1ixYuTIkYcPH05I02VlZTfddFMI4d/+7d9WrFhx3333/fKXv/ymdjuFsDyE9gnpQMrs37//nnvuefTRR6+99toQQs+ePRs4uG6wnTp1Wr58efv2WTZYgCZo1OskcV67q6urDx061LFjxwQ2Hc+1+0Ttdgzh8wR2IwXirMnjB9uxY8fPP8+UwZotbpz169ePHDky9tmFsrKyXbt2NfC3mAsvvHDDhg2vvPJKQpq+8MIL67bLysreeeedONotD2FsCNsT0oGU2bx584EDB773ve/Fc3DdYMvLy8eOHbt9e5YNFqAJGvU6SaOu3YkV/7U72zWPmhSLG6GmpmbMmDEDBgx44403ampqYstYDx06dLLji4qKSktLL7744oS0HkVRAzdP0u6iEL4M4cSTyhmugQHWVzfYRYsWffnllyebQQdofuJ8ncxx8V+727Vr17Jly6qqqgS2Hs+1+0TtVoXQKYHdSJlvrMnjB1tVVdWpU6YMVixuhC1btnz++eczZ84866yz8vLy6n/TTQrUX3mzZs2avn37xvFDR0KoCeFg8nqVDL179y4sLFyxYkWjfurIkSM1NTUHD2bZYAGaoGmvk7kp/mt3fn7+oEGDEvuoxnPtPq7dvSG8FkJZAruRAnHW5DGD3bt372uvvVZWlimDtba4Ec4666zi4uIXXnjh+9///gcffHD77bc3cPDkyZNHjx7dpUuXHTt2JKT111577Z577rn66qt/97vfPfvss6tXr46j3YdC2BXC1QnpQMoUFhbOmDFj6tSpeXl5gwcP/uijj7Zv337NNdccf2T9wT700EO7du26+uosGyxAE8T/Orlz584PPvgg9nWw7777bgihe/fu7dq1S3WP06dR1+5p06ZNmDChrKxsyJAhCWk9zmv30e3eFkLbECoS0oGUib8m6w/2tttua9u2bUVFpgxWLG6E0047bdGiRdOnT585c2anTp1mzpxZt4r/hG688cZPP/30zDPPTEjr06ZNW7du3Y9//OMzzzzzoYceqr9c6eTtDglhVQh9EtKBVJo9e3YURTfddFNVVVX37t1nzZp1siPrBjtkyJBVq1b16ZN9gwVogjhfJ1955ZWrrroqtj127NgQQmVlZcMXr2amUdfuioqKzz77bO7cuYn6EFic1+6j2x0cwoshFCekA6kUZ03WH+zgwYNffPHF4uKMGWwtiXDeeedVVlae7N5jHu3Yu/YPPvgg2U2H8NV/yWg39Rp+kI+R7YNNtnS9AhxTk1BHTSaE18lGce0+qt05IfZfYk+bXTVpbXFi5OfnT5ky5Zh/5/mEKioqevXqlZeXl6iPSsTZdMLbTb00PsgAWcHrZKO4dqdAdtVkVFvv/RBJUvcLTvGjXVdXfskcQ02SadQkmSbXajK69evxzs7dJ4PZYgAAEIsBAEAsBgCAIBYDAEAQiwEAIIjFAAAQxGIAAAhiMQAABLEYAACCWAwAAEEsBgCAIBYDAEAQiwEAIIjFAAAQxGIAAAhiMQAAhBDy090BmqEoitLdhfSora1Ndxc4sayuSXXVLKlJyEBmiwEAQCwGAACLKEiqHPlDW1b/MTTXZFFNqqscoSYhc5gtBgAAsRgAAMRiAAAIYjEAAASxOHmiKDrZpxOS+qmFKAonO31SPyyRrvESPzVZ/64kNkzc1GT9u5LYMHHLuZq8NYpuPcl4T7K/eROLk6LuyXP8syi2p4En3qm1e+zGMXc18MQ7tXbTM17ipyaPuUtNpp2aPOYuNZl2OVeTXwff4xNwbE8Dobm5EouTIp4v3EnGl/LEc8pkfBdQusZL/NRk044hedRk044heXKuJmfHMd44jmlOxOKkq//OMpUzAfWbSuUERLrGS/zUJJlGTZJpcq4m680K59oMcX1icbI0/IYyeVMCDZ84eTMR6Rov8VOT8d9LaqjJ+O8lNXKuJhucDM61qeIgFgMAQBCLk6r+28qTbSen3W/eTk676Rkv8VOTx2+TXmry+G3SK+dqst6U8Mm2c4dYnCLpWj2WrkVrVstlPjVJplGTZJqcq8kcXlUcIxYn1/FvLlMzJXB8I6mZiUjXeImfmlSTmUZNqslMk3M1edzEcG5OFQexGAAAglicAulaPZbKlUlHt2u1XKZTk2QaNUmmybmazPlVxTFiMQAAhCin3qfm5OcbakPIuVGnuKrr6qoJ7arJHHEqtZGues4lajIuajKF0lSTc0KYk4ZmYzIhkZotBgAAs8U0R2aLyTRm5sg0apJMkwmJND/dHUiPTHjoSbisfulUk82SmiTTqEkyTUbVpEUUAAAgFgMAgFgMAABBLAYAgCAWAwBAEIsBACCIxQAAEMRiAAAIYjEAAASxGAAAglgMAABBLAYAgCAWAwBAEIsBACCIxQAAEMRiAAAIYjEAAASxGAAAglgMAABBLAYAgCAWAwBAEIsBACCIxQAAEMTiHFFVVTVhwoRvfetbURT93d/93a9+9asoin7/+9+nu18AwIm5dqeeWJwTbrjhhiVLlkydOnXRokU333xzPD+ybdu2KVOmDBw4sH379q1bt+7du/fkyZPff//9ZHcVAAhNunbHVFZWDhw4sHXr1h07dvznf/7nTz75JHmdbGby090BUmH58uVXXHFF3ZPqww8//MYf2bJly4oVK4YMGTJy5MhWrVq9++67jz/++FNPPbV69erzzz8/yf0FgFzXhGt3COGnP/3pLbfcUlZWdvvtt3/88ccPPvjgypUr161b16FDh2R2tpkQi5u/gwcP/uUvfznzzDMb9VPf/e5333vvvfp7nn/++TFjxsybN++xxx5LaAcBgKM07dq9devWOXPmDBo0aOXKlS1btgwhDB069Nprr73tttvuvffe5PS0WbGIopm7/vrrCwoKQggLFiyIoqj+sqTa2tr58+f37t27oKCgV69eDz/8cMOnik0S/+Uvf0l2nwEglzX52v30009/+eWXU6dOjWXiEEJFRcU555zz61//+siRIykeRTYSi5u56dOnv/zyyyGEv//7v3/11VdfffXVwYMHx+669dZbH3jgge9///tz587Nz8//4Q9/uGLFimN+fO/evVu2bNm0adOyZcvGjx8fQhg9enSKhwAAOaXJ1+61a9eGEIYNG1b/bN/97ne/+OKLLVu2pG4AWcsiimaupKTkrLPOCiF07tz5oosuqn9XdXX1hg0bWrduHUKYNGlSjx497rvvvhEjRtQ/5tlnnx03blxsu3379nfcccfkyZNT1XcAyEVNvnZv27YthNC1a9f6PxK7uXXr1pKSktT0P3uJxbnr+uuvjz2vQggdO3YcMGDAMYuJQwjDhw9fsmTJ3r17//SnPy1dunTfvn2HDx/Oz1c2AJAGDV+79+3bF0VRq1at6v9I7Ph9+/alsp9ZSr7JXce8a2zfvv3xf2Hp0qVLly5dQggTJkwYN27ckCFDdu/ebdk+AKRFw9fu0047rba29tChQ3Vri0MI+/fvj92Vqj5mMWuLc9fxk761tbUNHD9w4MDS0tLKyspkdgoAOKmGr92xmaytW7fWP+CEKys4IbGYRti9e/eePXsOHz6c7o4AAMcaMmRICOEPf/hD/Z2rV6/u0KFDjx490tOnrCIWc2LvvvvuMfH3iSee2Lx583e+8528vLx09QoAOJl//Md/bNWq1fz582tqamJ7fvOb3/z5z38eP358ixYi3zeztpgTu/POO19++eXy8vLu3bsfOHBg/fr1K1euLCoqmj9/frq7BgCcQLdu3X784x/PmjXr4osvvvbaaz/++OP777+/e/fus2bNSnfXsoNYzImNHz9+//79q1ev/s1vflNbW9u9e/cpU6bMmDGjZ8+e6e4aAHBi//7v/965c+f58+fPmDGjTZs2//AP//DTn/70r/7qr9Ldr+wQNfwpq2YmiqLYRk6NOnek6/d7Ku2qyeYtG2tDTTZvapJMk1G/XwtNAABALAYAALEYAACCWAwAAEEsBgCAIBYDAEAQiwEAIIjFAAAQxGIAAAhiMQAABLEYAACCWJxKhw8f/slPftKjR4+CgoLevXsvXLgwhLB///5//dd/7dChw2mnnXbZZZdt3rw53d1MmCVLlpSWlhYWFnbo0OGyyy5Ld3cAoNFcu3OKWJw6c+bMuf/++++666633377wQcfLCoqCiHMmDHjhRdeeOqpp9auXZufnz9mzJiampp09zQBqqurx44d+6Mf/Wjz5s0rV668/PLL090jAGg01+6cEtXW1qa7D6kTRVFsI/Wj3r9/f7t27R599NHx48fX7dyzZ0+7du0WL1585ZVXhhCqq6u7du36xBNPXHXVVSnuXsK99dZb559//qefftqpU6eUNZqu3++ptJvGmiQFsrE21GTzpiYbxbU7BTLqNcdscYps3rz5wIED3/ve9+rvfP/99w8dOjRs2LDYzXbt2vXt2/edd95JRwcTrF+/fpdeemnfvn3HjRtXWVm5e/fudPcIABrHtTvdPUo1sTil6t4SNXstWrRYtmzZs88+e84559x9993nnXfe9u3b090pAGg01+7cIRanSO/evQsLC1esWFF/Z8+ePVu2bPmHP/whdrO6uvrdd9/t169fOjqYeFEUDR8+/I477ti4cePevXuPGTsAZDjX7ly7duenuwO5orCwcMaMGVOnTs3Lyxs8ePBHH320ffv2a6655gc/+MG0adPatm3boUOHW265pWvXrldccUW6O5sA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" title="Circuit Additionneur 4 bits" alt /><figcaption>Circuit Additionneur 4 bits</figcaption>
+</figure>
+<h2 data-number="4.1" id="description-en-verilog"><span class="header-section-number">4.1</span> Description en Verilog</h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode verilog"><code class="sourceCode verilog"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="ot">`include </span><span class="fl">&quot;full-adder.vl&quot;</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a><span class="kw">module</span> four_bit_adder</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>  (</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true"></a>   <span class="dt">output</span>              co, </span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true"></a>   <span class="dt">output</span>[NB_BITS<span class="dv">-1</span>:<span class="dv">0</span>] s, </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true"></a>   <span class="dt">input</span> [NB_BITS<span class="dv">-1</span>:<span class="dv">0</span>] a,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true"></a>   <span class="dt">input</span> [NB_BITS<span class="dv">-1</span>:<span class="dv">0</span>] b,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true"></a>   <span class="dt">input</span>               ci</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true"></a>   );</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true"></a></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true"></a>   <span class="dt">parameter</span> NB_BITS = <span class="dv">4</span>;</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true"></a>   <span class="dt">wire</span> [NB_BITS : <span class="dv">0</span>] c;</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true"></a></span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true"></a>   <span class="kw">assign</span> c[<span class="dv">0</span>] = ci;</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true"></a>   full_adder fh0(c[<span class="dv">1</span>], s[<span class="dv">0</span>], a[<span class="dv">0</span>], b[<span class="dv">0</span>], c[<span class="dv">0</span>]);</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true"></a>   full_adder fh1(c[<span class="dv">2</span>], s[<span class="dv">1</span>], a[<span class="dv">1</span>], b[<span class="dv">1</span>], c[<span class="dv">1</span>]);</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true"></a>   full_adder fh2(c[<span class="dv">3</span>], s[<span class="dv">2</span>], a[<span class="dv">2</span>], b[<span class="dv">2</span>], c[<span class="dv">2</span>]); </span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true"></a>   full_adder fh3(c[<span class="dv">4</span>], s[<span class="dv">3</span>], a[<span class="dv">3</span>], b[<span class="dv">3</span>], c[<span class="dv">3</span>]);</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true"></a>   <span class="kw">assign</span> co = c[<span class="dv">4</span>];</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true"></a>  </span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true"></a><span class="kw">endmodule</span> <span class="co">// four_bit_adder</span></span></code></pre></div>
+<p>Notes :</p>
+<ol type="1">
+<li>Pour la lisibilité, on utilise une constante <code>NB_BITS</code> qui vaut 4.</li>
+<li>Les entrées <code>a</code> et <code>b</code> et la sortie <code>s</code> sont des “bus”, des faisceaux de fils indicés de 0 à <code>NB_BITS-1</code>.</li>
+<li>Les retenues sont interconnectées par un bus interne <code>c</code>.</li>
+<li>La déclaration <code>assign c[0] = ci;</code> indique que <code>c[0]</code> (retenue entrante de <code>fh0</code>) prend sa valeur sur l’entrée <code>ci</code> du circuit. De même le <code>co</code> du circuit provient du <code>c[4]</code>, retenue sortante de <code>fh3</code>.</li>
+<li>pour les autres, la retenue entrante de l’un provient de la retenue sortante de son voisin.</li>
+</ol>
+<p>Il faut bien distinguer “<code>assign</code>” des affectations que nous avons utilisé dans les simulations.</p>
+<ul>
+<li>dans le cas d’<code>assign</code>, que l’on appelle “continuous assignement”, ça correspond au câblage d’une entrée à quelque chose.</li>
+<li>dans le cas des simulations, c’est une valeur affectée à un registre à un moment donné.</li>
+</ul>
+<p>Remarque : Les connexions des 4 instances de “full_adder” étant similaires, on pourrait utiliser une technique avancée, consistant à écrire une <strong>boucle de génération</strong>.</p>
 </body>
 </html>

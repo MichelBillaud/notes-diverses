@@ -1,6 +1,6 @@
 % Additionneur en Verilog, style structurel
 % Michel Billaud (michel.billaud@laposte.net)
-% 27 juin 2022
+% 28 juin 2022
 
 ![](https://i.creativecommons.org/l/by-nc-sa/2.0/fr/88x31.png)
 
@@ -19,10 +19,18 @@ France](http://creativecommons.org/licenses/by-nc-sa/2.0/fr/).
 Dans cette note, on regarde comment 
 
 - décrire un additionneur en Verilog en style "structurel" ;
-- tester son fonctionnement ;
+- tester son fonctionnement en affichant tous les cas possibles.
 
-en utilisant le compilateur `iverilog` que l'on trouve dans les
+Ceci en utilisant le compilateur `iverilog` que l'on trouve dans les
 packages Debian.
+
+Pour compléter, on construit un additionneur 2 x 4 bits, avec une
+autre méthode de vérification. Avec 9 entrées (2 nombres de 4 bits et
+une retenue entrante), 
+
+- entrer les 512 cas à la main serait fastidieux (on va faire des boucles)
+- afficher les 512 lignes ne permettrait pas de repérer les problèmes. 
+on ne fera afficher que les lignes où il y a des anomalies.
 
 
 # Demi-additionneur
@@ -30,8 +38,8 @@ packages Debian.
 Le circuit minimal pour faire une addition 
 
 - prend en entrée deux nombres `a`, `b` de 1 bit chacun,
-- fournit un nombre de deux bits : le chiffre de gauche `r` est la
-  retenue, le chiffre de droite `s` la somme.
+- fournit un nombre de deux bits : le chiffre de gauche `co` est la
+  retenue sortante (output carry), le chiffre de droite `s` la somme.
 
 Ce circuit est appelé **demi-additionneur**, on verra pourquoi plus loin.
 
@@ -40,12 +48,12 @@ Ce circuit est appelé **demi-additionneur**, on verra pourquoi plus loin.
 La fonction de transfert indique la valeur des sorties en fonction de celle
 des entrées. Sous forme de table :
 
-| a  b | r s |
-|------|-----|
-| 0 0  | 0 0 |
-| 0 1  | 0 1 |
-| 1 0  | 0 1 |
-| 1 1  | 1 0 |
+| a  b | co s |
+|------|------|
+| 0 0  | 0 0  |
+| 0 1  | 0 1  |
+| 1 0  | 0 1  |
+| 1 1  | 1 0  |
 
 
 
@@ -57,7 +65,7 @@ la sortie `s` par un ou-exclusif.
 
 ![Circuit Demi-Additionneur](Verilog/half-adder.png "Circuit Demi-Additionneur")
 
-Cette description peut être codée en Verilog, en mettant le code suivante dans  un fichier source que nous nommerons `half-adder.vl` :
+Cette description peut être codée en Verilog, en mettant le code suivant dans  un fichier source que nous nommerons `half-adder.vl` :
 
 ~~~verilog
 // half-adder.vl
@@ -65,21 +73,21 @@ Cette description peut être codée en Verilog, en mettant le code suivante dans
 
 module half_adder
   (
-   output  r, s, 
+   output  co, s, 
    input   a, b
    );
 
    xor (s, a, b);
-   and (r, a, b);
+   and (co, a, b);
 endmodule // half_adder
 ~~~
 
 décrit un "module" qui 
 
-- a 4 ports de branchement : 2 entrées `a` et `b`, et 2 sorties `r` et `s`.
+- a 4 ports de branchement : 2 entrées `a` et `b`, et 2 sorties `co` et `s`.
 - **contient** une porte `xor` et une porte `and` qui ont `a` et `b`
   en entrée, et dont les sorties sont reliées respectivement à `s` et
-  `r`.
+  `co `.
   
 C'est une description **structurelle** : le circuit est décrit comme
 une composition d'autres circuits. Verilog permet d'autres styles de
@@ -114,12 +122,12 @@ d'un circuit demi-additionneur ;
 
 module test_half_adder;
    reg  a, b;
-   wire r, s;
-   half_adder h(r, s, a, b);
+   wire co, s;
+   half_adder h(co, s, a, b);
 
    initial begin
 	  $monitor("%04t\t%b + %b = %b %b", 
-			   $time, a, b, r, s);
+			   $time, a, b, co, s);
 	      a = 0; b = 0;
 	  #10 a = 0; b = 1;
 	  #10 a = 1; b = 0;
@@ -144,7 +152,7 @@ Les variable `a` et `b` ont des valeurs que nous pilotons
 explicitement à notre gré au moment voulu de la simulation. Ce sont
 des `registres` dans la terminologie Verilog.
 
-Pour `r` et `s`, ce sont de simples fils (`wire`) dont l'état ne
+Pour `co` et `s`, ce sont de simples fils (`wire`) dont l'état ne
 dépend que des sorties auxquelles ils sont reliés.
 
 
@@ -153,7 +161,7 @@ similaire à celle de `printf` en C. Ici on trouve
 
 - "`%04t`" pour afficher le temps (`$time`) sur 4 chiffres avec des 0 en tête ;
 - "`\t`" pour une tabulation,
-- "`%b`" pour chacun des bits `a`, `b`, `r` et `s`.
+- "`%b`" pour chacun des bits `a`, `b`, `co` et `s`.
 
 ## Compilation et exécution
 
@@ -193,10 +201,10 @@ chiffre précédents.
 
 ## Fonction de transfert
 
-Dans le tableau ci-dessous, on distingue les retenues entrante `re` et
-sortante `rs`,
+Dans le tableau ci-dessous, on distingue les retenues entrante `ci` et
+sortante `co`,
 
-| a b re | rs s |   | a b re | rs s |
+| a b ci | co s |   | a b ci | co s |
 |--------|------|---|--------|------|
 | 0 0 0  | 0 0  |   | 1 0 0  | 0 1  |
 | 0 0 1  | 0 1  |   | 1 0 1  | 1 0  |
@@ -227,22 +235,22 @@ porte `ou` :
 
 module full_adder
   (
-   output  rs, s,
-   input   a, b, re
+   output  co, s,
+   input   a, b, ci
    );
   
-   wire    r1, r2, s1, s2;
+   wire    c1, c2, s1, s2;
    
-   half_adder ha1(r1, s1, a, b);
-   half_adder ha2(r2, s , s1, re);
-   or(rs, r1, r2);
+   half_adder ha1(c1, s1, a, b);
+   half_adder ha2(c2, s , s1, ci);
+   or(co, c1, c2);
    
 endmodule  // full_adder
 ~~~
 
 ## Simulation
 
-la simulation est construite selon le même principe que précédemment
+La simulation est construite selon le même principe que précédemment
 
 ~~~verilog
 # test-full-adder.vl
@@ -251,22 +259,22 @@ la simulation est construite selon le même principe que précédemment
 `include "full-adder.vl"
 
 module test_full_adder;
-   reg a, b, re;
-   wire rs, s;
+   reg a, b, ci;
+   wire co, s;
 
-   full_adder adder(rs, s, a, b, re);
+   full_adder adder(co, s, a, b, ci);
 
    initial begin
-	  $monitor("%04t\t%b + %b + %b = %b%b", $time,  a, b, re, rs, s);
+	  $monitor("%04t\t%b + %b + %b = %b%b", $time,  a, b, ci, co, s);
 	  
-	  #0      a = 0; b = 0; re = 0;
-	  #10	                re = 1;
-	  #10            b = 1; re = 0;
-	  #10	                re = 1;
-	  #10     a = 1; b = 0; re = 0;
-	  #10	                re = 1;
-	  #10            b = 1; re = 0;
-	  #10	                re = 1;
+	  #0      a = 0; b = 0; ci = 0;
+	  #10	                ci = 1;
+	  #10            b = 1; ci = 0;
+	  #10	                ci = 1;
+	  #10     a = 1; b = 0; ci = 0;
+	  #10	                ci = 1;
+	  #10            b = 1; ci = 0;
+	  #10	                ci = 1;
    end
    
 endmodule // test_full_adder
@@ -286,5 +294,73 @@ $ ./test-full-adder
 0060	1 + 1 + 0 = 10
 0070	1 + 1 + 1 = 11
 ~~~
+
+
+# Additionneur  4 bits
+
+Un additionneur de  4 bits est constitué de 4 additionneurs 1 bit, en
+connectant la retenue sortante de l'un à la retenue entrante de son
+voisin.
+
+Pour pouvoir chainer des additionneurs 4 bits, en plus des 2 nombres de 4 bits on
+a aussi une retenue entrante et une retenue sortante.
+
+![Circuit Additionneur 4 bits](Verilog/four-bit-adder.png "Circuit Additionneur 4 bits")
+
+## Description en Verilog
+
+
+~~~verilog
+`include "full-adder.vl"
+
+module four_bit_adder
+  (
+   output 	           co, 
+   output[NB_BITS-1:0] s, 
+   input [NB_BITS-1:0] a,
+   input [NB_BITS-1:0] b,
+   input 		       ci
+   );
+
+   parameter NB_BITS = 4;
+
+   wire [NB_BITS : 0] c;
+
+   assign c[0] = ci;
+   full_adder fh0(c[1], s[0], a[0], b[0], c[0]);
+   full_adder fh1(c[2], s[1], a[1], b[1], c[1]);
+   full_adder fh2(c[3], s[2], a[2], b[2], c[2]); 
+   full_adder fh3(c[4], s[3], a[3], b[3], c[3]);
+   assign co = c[4];
+  
+endmodule // four_bit_adder
+~~~
+   
+Notes : 
+
+1. Pour la lisibilité, on utilise une constante `NB_BITS` qui vaut 4.
+2. Les entrées `a` et `b` et la sortie `s` sont des "bus", des faisceaux de fils
+   indicés de 0 à `NB_BITS-1`.
+3. Les retenues sont interconnectées par un bus interne `c`.
+4. La déclaration `assign c[0] = ci;` indique que `c[0]` (retenue
+entrante de `fh0`) prend sa valeur sur l'entrée `ci` du circuit.  De
+même le `co` du circuit provient du `c[4]`, retenue sortante de `fh3`.
+5. pour les autres, la retenue entrante de l'un provient de la retenue
+   sortante de son voisin.
+
+Il faut bien distinguer "`assign`" des affectations que nous avons utilisé dans les
+simulations.
+
+- dans le cas d'`assign`, que l'on appelle "continuous assignement", ça
+correspond au câblage d'une entrée à quelque chose.
+- dans le cas des simulations, c'est une valeur affectée à un registre
+  à un moment donné.
+  
+
+
+Remarque : Les connexions des 4 instances de "full_adder" étant
+similaires, on pourrait utiliser une technique avancée, consistant à
+écrire une **boucle de génération**.
+
 
 
