@@ -1,0 +1,30 @@
+// four-bit-adder.vl
+// 
+
+`include "full-adder.vl"
+
+module four_bit_adder
+  (
+   output 	           co, 
+   output[NB_BITS-1:0] s, 
+   input [NB_BITS-1:0] a,
+   input [NB_BITS-1:0] b,
+   input 		       ci
+   );
+
+   parameter NB_BITS = 4;
+
+   wire [NB_BITS : 0] c;
+   
+   assign c[0] = ci;
+   assign co = c[NB_BITS];
+
+   generate 
+      genvar i;
+	  for (i = 0; i < NB_BITS; i = i + 1) begin
+		 full_adder fh(c[i + 1], s[i], a[i], b[i], c[i]);
+	  end
+   endgenerate
+  
+endmodule // four_bit_adder
+

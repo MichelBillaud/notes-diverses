@@ -1,0 +1,48 @@
+// test-gen-four-bit-adder.vl
+
+`include "gen-four-bit-adder.vl"
+
+module test_four_bit_adder;
+   parameter NB_BITS = 4;
+   parameter MAX_INT = (1 << NB_BITS) - 1;
+   
+   reg [NB_BITS - 1:0]  a;
+   reg [NB_BITS - 1:0]  b;
+   reg        ci;
+   wire [NB_BITS - 1:0] s;
+   wire 	  co;
+   four_bit_adder adder(co, s, a, b, ci);
+   
+   initial begin : simulation
+	  integer i, j, k;
+	  integer expected;	  
+	  integer errors, cases;
+	  $display("# Testing generated four-bit adder");
+	  errors = 0;
+	  cases = 0;
+
+	  for (i = 0; i <= MAX_INT; i = i + 1) begin
+		for (j = 0; j <= MAX_INT ; j = j + 1) begin
+		   for (k = 0; k <= 1; k = k + 1) begin
+			  a = i;
+			  b = j;
+			  ci = k;
+			  expected = i + j + k;
+			  cases = cases + 1;
+			  #1 ;
+
+			  if ({co,s}  != expected) begin
+				 $display("- error %1d + %1d + %1d is %1d instead of %1d", 
+										 a, b, ci, {co, s}, expected);
+				 errors = errors + 1;
+			  end
+			  
+		   end // k loop
+		end // j loop
+	  end // i loop
+
+	  $display("- %1d failures over %1d test cases", errors, cases);
+   end
+endmodule // test_four_bit_adder
+
+   

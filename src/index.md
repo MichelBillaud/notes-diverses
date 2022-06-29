@@ -1,6 +1,6 @@
 % Notes diverses
 % Michel Billaud (`michel.billaud@laposte.net`)
-% 27 juin 2022
+% 29 juin 2022
 
 
 # Licence
@@ -13,20 +13,32 @@ Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France]
 
 - Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
-²
+
+# Génération en Verilog
+
+Dans un épisode précédent on a vu comment obtenir un additionneur 2 x
+4 bits + retenues à partir de 4 additionneurs 2 x 1 bit + retenues,
+en les listant explicitement.
+
+Avec l'instruction `generate` de Verilog, nous allons éviter de
+construire ce type de code grâce à une boucle de génération, au lieu de
+faire du copier-coller-modifier.
 
 # Description structurelle d'un additionneur en Verilog
 
 On montre comment
 
-- décrire un circuit en Verilog selon le style structurel, en représentant
-un module comme un assemblage de sous-modules et de portes logiques ;
-- effectuer une simulation pour se convaincre du bon fonctionnement.
+- décrire un circuit en Verilog selon le style structurel,
+c'est-à-dire en représentant un module comme un assemblage de
+sous-modules et de portes logiques ;
+- écrire des tests pour vérifier le bon fonctionnement, en simulant
+l'envoi de valeurs sur les entrées.
 
 Exemples :
 
 - un demi-additionneur formé d'une porte "et" et d'un "ou-exclusif",
-- additionneur composé de deux demi-additionneurs et d'une porte "ou".
+- additionneur composé de deux demi-additionneurs et d'une porte "ou",
+- additionneur 2 x 4 bits.
 
 Document : [additionneur-verilog](additionneur-verilog.html)
 
