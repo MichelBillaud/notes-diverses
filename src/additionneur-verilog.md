@@ -311,6 +311,9 @@ a aussi une retenue entrante et une retenue sortante.
 
 
 ~~~verilog
+// four-bit-adder.vl
+// Additionneur 2 x 4 bits, avec retenues entrante et sortante
+
 `include "full-adder.vl"
 
 module four_bit_adder
@@ -324,43 +327,122 @@ module four_bit_adder
 
    parameter NB_BITS = 4;
 
-   wire [NB_BITS : 0] c;
+   wire [NB_BITS : 1] c;
 
-   assign c[0] = ci;
-   full_adder fh0(c[1], s[0], a[0], b[0], c[0]);
+   full_adder fh0(c[1], s[0], a[0], b[0], ci);
    full_adder fh1(c[2], s[1], a[1], b[1], c[1]);
    full_adder fh2(c[3], s[2], a[2], b[2], c[2]); 
-   full_adder fh3(c[4], s[3], a[3], b[3], c[3]);
-   assign co = c[4];
-  
+   full_adder fh3(co,   s[3], a[3], b[3], c[3]);
+
 endmodule // four_bit_adder
 ~~~
    
 Notes : 
 
 1. Pour la lisibilité, on utilise une constante `NB_BITS` qui vaut 4.
-2. Les entrées `a` et `b` et la sortie `s` sont des "bus", des faisceaux de fils
+2. Les entrées `a` et `b` et la sortie `s` sont des "bus", des 
+faisceaux de fils
    indicés de 0 à `NB_BITS-1`.
-3. Les retenues sont interconnectées par un bus interne `c`.
-4. La déclaration `assign c[0] = ci;` indique que `c[0]` (retenue
-entrante de `fh0`) prend sa valeur sur l'entrée `ci` du circuit.  De
-même le `co` du circuit provient du `c[4]`, retenue sortante de `fh3`.
-5. pour les autres, la retenue entrante de l'un provient de la retenue
-   sortante de son voisin.
-
-Il faut bien distinguer "`assign`" des affectations que nous avons utilisé dans les
-simulations.
-
-- dans le cas d'`assign`, que l'on appelle "continuous assignement", ça
-correspond au câblage d'une entrée à quelque chose.
-- dans le cas des simulations, c'est une valeur affectée à un registre
-  à un moment donné.
-  
+3. Les retenues sont interconnectées par un bus interne `c` dont les
+   fils sont numérotés de 1 à `NB_BITS-1`.
 
 
 Remarque : Les connexions des 4 instances de "full_adder" étant
-similaires, on pourrait utiliser une technique avancée, consistant à
-écrire une **boucle de génération**.
+similaires, on pourrait utiliser une possibilité plus avancée de
+Verilog, consistant à écrire une **boucle de génération**.
+
+## Vérification du fonctionnement
+
+Ce circuit possède 2 entrées de 4 bits, plus une pour la retenue
+entrante, soit 9 bits.
+
+Le test va consister à verifier que pour chaque combinaison possible
+(qui représente deux entiers entre 0 et 15 et une retenue entrante qui
+vaut 0 ou 1), ce que le circuit calcule correspond bien à la somme de
+ces trois valeurs.
+
+Au lieu de tout faire afficher (512 cas, soit une dizaine de pages de
+texte à raison d'une ligne par cas...), nous faisons seulement
+afficher les anomalies.
 
 
+~~~verilog
+// test-four-bit-adder.vl
+
+`include "four-bit-adder.vl"
+
+module test_four_bit_adder;
+   parameter NB_BITS = 4;
+   parameter MAX_INT = (1 << NB_BITS) - 1;
+   
+   reg [NB_BITS - 1:0]  a;
+   reg [NB_BITS - 1:0]  b;
+   reg        ci;
+   wire [NB_BITS - 1:0] s;
+   wire 	  co;
+   four_bit_adder adder(co, s, a, b, ci);
+   
+   initial begin : simulation
+	  integer i, j, k;
+	  integer expected;	
+	  integer errors, cases;
+	  $display("# Testing four-bit adder");
+	  errors = 0;
+	  cases = 0;
+
+	  for (i = 0; i <= MAX_INT; i = i + 1) begin
+		for (j = 0; j <= MAX_INT ; j = j + 1) begin
+		   for (k = 0; k <= 1; k = k + 1) begin
+			  a = i;
+			  b = j;
+			  ci = k;
+			  expected = i + j + k;
+			  cases = cases + 1;
+			  #1 ;
+
+			  if ({co,s}  != expected) begin
+				 $display("- error %1d + %1d + %1d is %1d instead of %1d", 
+										 a, b, ci, {co, s}, expected);
+				 errors = errors + 1;
+			  end
+			  
+		   end // k loop
+		end // j loop
+	  end // i loop
+
+	  $display("- %1d failures over %1d test cases", errors, cases);
+   end
+endmodule // test_four_bit_adder
+~~~
+
+Pour bien faire, nous affichons à la fin un récapitulatif du nombre de
+cas testés et du nombre d'anomalies détectées.
+
+**Explications**
+
+- Les cas sont générées par la triple boucle sur `i`, `j` et `k`.
+- L'affectation (exemple `a = i`) d'un entier à un bus revient à
+  placer les bits de sa représentation binaire sur les fils du bus.
+- une expression comme `{co,s}` représente la concaténation du bit de `co` avec ceux du bus `s`. 
+- Sa valeur numérique - par exemple dans le test `if ({co,s} !=
+  expected)` - correspond aussi au codage binaire des entiers.
+  
+
+**Importance du délai** : dans la boucle, nous insérons un délai
+(`#1`) parce qu'après avoir placé les données dans les registres en
+entrée du circuit (`a = i; b = j; ci = k;`) il faut un peu de temps
+avant que les ésultats soient disponibles sur les fils de sortie.  La
+commutation de portes logiques n'est pas instantanée.
+
+
+## Exécution du test
+
+~~~
+$ iverilog -o test-four-bit-adder test-four-bit-adder.vl
+$ ./test-four-bit-adder 
+# Testing four-bit adder
+- 0 failures over 512 test cases
+~~~
+
+Tout va bien.
 
