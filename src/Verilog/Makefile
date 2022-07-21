@@ -1,8 +1,9 @@
-execs = test-half-adder test-full-adder
-execs += four-bit-adder
-execs += two-bit-adder
-execs += test-four-bit-adder
-execs += test-gen-four-bit-adder
+# execs = test-half-adder test-full-adder
+# execs += four-bit-adder
+# execs += two-bit-adder
+# execs += test-four-bit-adder
+# execs += test-gen-four-bit-adder
+execs += test-rs
 
 .PHONY = clean mrproper
 
