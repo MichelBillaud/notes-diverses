@@ -1,0 +1,53 @@
+module rs
+  (
+   output q,
+   input  r, s
+   );
+
+   reg 	  state;
+   assign q = state;
+   
+   // always @ ( * ) begin
+   // 	  if (r) state <= 0;
+   // 	  else if (s) state <= 1;
+   // end
+
+   always @(*) begin
+	  state <= r ? 0 
+			   : s ? 1 
+			   : state;	  
+   end
+   
+   
+endmodule // rs
+
+
+
+module test_rs;
+   reg r, s;
+   wire q;
+   rs dut(q, r, s);
+   
+   initial begin
+	  $monitor("%2t r=%b s=%b  q=%b", $time, r, s, q);
+	  
+	  r = 0;
+	  s = 0;
+	  #1 r = 1;
+	  #1 r = 0;
+	  
+	  #1 r = 1;
+	  #1 r = 0;
+	  
+	  #1 s = 1;
+	  #1 s = 0;
+
+	  #1 s = 1;
+	  #1 s = 0;
+ 
+	  #1 r = 1;
+	  #1 r = 0;
+   end // initial begin
+	       
+endmodule // test_rs
+

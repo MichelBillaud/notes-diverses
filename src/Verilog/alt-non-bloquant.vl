@@ -1,0 +1,49 @@
+
+
+module alt
+  (
+   output q1, q2,
+   input  reset, clock
+   );
+   
+   reg 	r1, r2;
+   assign q1 = r1, q2 = r2;
+   
+   always @(posedge clock) begin
+	  
+	  if (reset) begin
+		 r1 <= 1;
+		 r2 <= 0;
+	  end else begin 
+		 r1 <= r2;  // échange des états des registres 
+		 r2 <= r1;  // en partie droite référence à l'ancien état.
+	  end
+   end
+   
+endmodule // alt
+
+module simulation;
+   wire q1, q2;
+   reg 	reset, clock;
+   
+   alt a(q1, q2, reset, clock);
+
+   initial begin
+	  $monitor("%2t clock=%b reset=%b q1=%b q2=%b",
+			   $time, clock, reset, q1, q2);
+	  clock = 0;
+	  reset = 1;
+	  #1 clock = 1;
+	  #1 clock = 0; reset = 0;
+	  #1 clock = 1;
+	  #1 clock = 0;
+	  #1 clock = 1;
+	  #1 clock = 0;
+	 	  
+   end
+
+
+endmodule
+ // simultation
+
+ 
