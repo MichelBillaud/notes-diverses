@@ -6,11 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="Michel Billaud (michel.billaud@u-bordeaux.fr, michel.billaud@laposte.net)" />
   <title>Notes ipv6</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
   </style>
   <style type="text/css">a.sourceLine {
 display: inline-block;
@@ -259,17 +261,19 @@ padding: 0.5em;
 </style>
 </head>
 <body>
-<header>
+<header id="title-block-header">
 <h1 class="title">Notes ipv6</h1>
 <p class="author">Michel Billaud (michel.billaud@u-bordeaux.fr, michel.billaud@laposte.net)</p>
 <p class="date">24 juin 2020</p>
 </header>
-<nav id="TOC">
+<nav id="TOC" role="doc-toc">
 <ul>
-<li><a href="#adresses-ipv6-notation"><span class="toc-section-number">1</span> Adresses IPv6, notation</a><ul>
+<li><a href="#adresses-ipv6-notation"><span class="toc-section-number">1</span> Adresses IPv6, notation</a>
+<ul>
 <li><a href="#adresses"><span class="toc-section-number">1.1</span> Adresses</a></li>
 <li><a href="#préfixes"><span class="toc-section-number">1.2</span> Préfixes</a></li>
-<li><a href="#types-dadresses"><span class="toc-section-number">1.3</span> Types d’adresses</a><ul>
+<li><a href="#types-dadresses"><span class="toc-section-number">1.3</span> Types d’adresses</a>
+<ul>
 <li><a href="#adresses-réservées-08"><span class="toc-section-number">1.3.1</span> Adresses réservées <code>0::/8</code></a></li>
 <li><a href="#adresses-unicast-globales-20003"><span class="toc-section-number">1.3.2</span> Adresses unicast globales <code>2000::/3</code></a></li>
 <li><a href="#adresses-link-local"><span class="toc-section-number">1.3.3</span> Adresses link-local</a></li>
@@ -280,8 +284,8 @@ padding: 0.5em;
 </ul></li>
 </ul>
 </nav>
-<h1 id="adresses-ipv6-notation"><span class="header-section-number">1</span> Adresses IPv6, notation</h1>
-<h2 id="adresses"><span class="header-section-number">1.1</span> Adresses</h2>
+<h1 data-number="1" id="adresses-ipv6-notation"><span class="header-section-number">1</span> Adresses IPv6, notation</h1>
+<h2 data-number="1.1" id="adresses"><span class="header-section-number">1.1</span> Adresses</h2>
 <p>Les adresses IPV6 sont sur 128 bits. On les note par une écriture hexadécimale, par groupes de 16 bits (soit 2 octets = 4 chiffres hexadécimaux). Exemple</p>
 <pre><code>2001:0db8:0000:85a3:0000:0000:ac1f:8001</code></pre>
 <p>que l’on raccourcit en</p>
@@ -295,11 +299,11 @@ padding: 0.5em;
 
 forme courte:  2001:db8:0:85a3::ac1f:8001</code></pre>
 <p>Rappel : pour les adresses IPv4 (32 bits) on utilise la notation décimale pointée, exemple <code>172.17.94.33</code>, chaque octet étant codé par sa valeur en décimal.</p>
-<h2 id="préfixes"><span class="header-section-number">1.2</span> Préfixes</h2>
+<h2 data-number="1.2" id="préfixes"><span class="header-section-number">1.2</span> Préfixes</h2>
 <p>Un <strong>préfixe</strong> sert à identifier un “sous-réseau”, un ensemble d’adresses “qui commencent pareil” (bits de poids fort). Il indique donc les bits communs à ces adresses.</p>
 <p>On le note par la première adresse, suivie par un “/” et la longueur du préfixe. Par exemple, le préfixe <code>2001:db8:1f89::/48</code> représente l’ensemble des adresses qui commence à <code>2001:db8:1f89:0:0:0:0:0</code> et finit à <code>2001:db8:1f89:ffff:ffff:ffff:ffff:ffff</code>.</p>
 <p><strong>Rappel</strong> : on retrouve ici la notation <em>Classless Inter-Domain Routing</em> (CIDR), présentée en 1993 dans la RFC 1518 pour IPv4. Exemple <code>172.17.94.0/24</code> représente les adresses de <code>192.16.94.0</code> à <code>192.16.94.255</code>, ce qui correspond à un “masque de sous-réseau” de <code>255.255.255.0</code>.</p>
-<h2 id="types-dadresses"><span class="header-section-number">1.3</span> Types d’adresses</h2>
+<h2 data-number="1.3" id="types-dadresses"><span class="header-section-number">1.3</span> Types d’adresses</h2>
 <table>
 <thead>
 <tr class="header">
@@ -336,13 +340,13 @@ forme courte:  2001:db8:0:85a3::ac1f:8001</code></pre>
 </tr>
 </tbody>
 </table>
-<h3 id="adresses-réservées-08"><span class="header-section-number">1.3.1</span> Adresses réservées <code>0::/8</code></h3>
+<h3 data-number="1.3.1" id="adresses-réservées-08"><span class="header-section-number">1.3.1</span> Adresses réservées <code>0::/8</code></h3>
 <p>Ont le premier octet à 0 (donc le premier groupe de <code>0000</code> à <code>00FF</code>). Parmi les adresses réservées :</p>
 <ul>
 <li>l’<strong>adresse non spécifiée</strong> <code>::/128</code> (qui ne contient que des zeros) analogue à <code>0.0.0.0</code></li>
 <li>l’<strong>adresse de loopback</strong> <code>::1/128</code>, semblable à <code>127.0.0.1</code>.</li>
 </ul>
-<h3 id="adresses-unicast-globales-20003"><span class="header-section-number">1.3.2</span> Adresses unicast globales <code>2000::/3</code></h3>
+<h3 data-number="1.3.2" id="adresses-unicast-globales-20003"><span class="header-section-number">1.3.2</span> Adresses unicast globales <code>2000::/3</code></h3>
 <p>Ce sont les adresses “normales”, attribuées par des fournisseurs d’accès, routables sur internet et destinées à la communication point à point (<strong>unicast</strong>)</p>
 <ul>
 <li>les adresses <code>2001::/32</code> et <code>2002::/16</code> sont utilisées pour des mécanismes de compatibilité avec IPv4</li>
@@ -354,22 +358,22 @@ forme courte:  2001:db8:0:85a3::ac1f:8001</code></pre>
 <li>un <strong>identificateur de sous-réseau</strong>, qui vous permet d’aiguiller les transferts entre les parties de votre réseau.</li>
 <li>un <strong>identificateur d’interface</strong>.</li>
 </ul>
-<h3 id="adresses-link-local"><span class="header-section-number">1.3.3</span> Adresses link-local</h3>
+<h3 data-number="1.3.3" id="adresses-link-local"><span class="header-section-number">1.3.3</span> Adresses link-local</h3>
 <p>Au démarrage, les machines attribuent elles-mêmes (SLAAC = IPv6 Stateless <strong>Address Autoconfiguration</strong>) à leur(s) interface(s) une adresse IPv6 dite “local-link” pour communiquer de suite avec les autres machines du même réseau local. Elles ne sont pas routées vers d’autres réseaux physiques.</p>
 <p>Ces adresses sont construites en combinant le préfixe <code>fe80::/10</code> et un identifiant d’interface. L’identifiant est souvent calculé à partir de l’adresse MAC de la carte réseau, exemple :</p>
 <pre><code>adresse mac             :  f4:8e:38:de:ab:7a 
 adresse ipv6 local-link :  fe80::f68e:38ff:fede:ab7a/64 </code></pre>
 <p>on y retrouve l’adresse MAC, à un bit inversé près. L’adresse IPv6 étant prévisible, il est recommandé d’utiliser un identifiant “aléatoire” calculé par un autre algorithme (rfc7217), et un test pour le cas très improbable où l’adresse aurait déjà été utilisée. Cette recommandation n’est pas toujours suivie.</p>
-<h3 id="multicast"><span class="header-section-number">1.3.4</span> Multicast</h3>
+<h3 data-number="1.3.4" id="multicast"><span class="header-section-number">1.3.4</span> Multicast</h3>
 <p>Qu’est-ce que c’est : la possibilité d’envoyer un même message à plusieurs machines, qui ne sont pas forcément sur le même réseau physique (contrairement au broadcast). Ces machines forment un groupe, identifié par un numéro IP spécifique.</p>
 <p>C’est ce qui est utilisé par exemple pour la réception de la télévision par IP dans un réseau domestique. Si vous regardez la même chaîne depuis plusieurs appareils, votre fournisseur ne transmet les flux qu’en un exemplaire à votre routeur domestique.</p>
 <p>Les machines qui rejoignent (s’abonnent) à un groupe multicast préviennent leur routeur qu’il doit leur faire parvenir les messages du groupe, si il les voit passer (et récursivement, …)</p>
 <p>Sur le réseau local, les messages envoyés en multicast sont transmis dans des trames dont l’adresse MAC de destination contient <code>33:33:xx:xx:xx:xx</code>, où les x sont les 32 bits de poids faible du numéro de groupe multicast IPV6.</p>
 <p>Quand un processus d’une machine s’abonne à un groupe, elle configure sa carte réseau pour que l’arrivée d’une telle trame soit détectée, et signalée au système d’exploitation, qui transmettra au processus.</p>
 <p><strong>Pour IPv4</strong>, les adresses multicast vont de <code>224.0.0.0</code> à <code>239.255.255.255</code>, ce qui fait 28 bits de “numéro de groupe multicast”. Les messages sont envoyées à l’adresse MAC <code>00:01:50:yy:yy:yy</code> où les yy contiennent, pour de sordides raisons historiques, les 23 bits de poids faible du numéro de groupe (le bit le plus à gauche est forcé à 0).</p>
-<h3 id="network-discovery-protocol"><span class="header-section-number">1.3.5</span> Network discovery protocol</h3>
+<h3 data-number="1.3.5" id="network-discovery-protocol"><span class="header-section-number">1.3.5</span> Network discovery protocol</h3>
 <p>Une fois que la machine qui démarre s’est attribuée une adresse “local link”, elle s’en sert pour envoyer une “requête de sollicitation des routeurs” au <strong>groupe multicast</strong> des routeurs.</p>
 <p>Normalement, un routeur présent sur le réseau local répond en indiquant l’adresse IPv6 que la machine peut utiliser et des informations de configuration (c’est l’équivalent d’un DHCP).</p>
-<h3 id="adresses-locales-uniques"><span class="header-section-number">1.3.6</span> Adresses locales uniques,</h3>
+<h3 data-number="1.3.6" id="adresses-locales-uniques"><span class="header-section-number">1.3.6</span> Adresses locales uniques,</h3>
 </body>
 </html>

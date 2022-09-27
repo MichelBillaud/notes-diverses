@@ -6,11 +6,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
   <meta name="author" content="Michel Billaud (michel.billaud@u-bordeaux.fr, michel.billaud@laposte.net)" />
   <title>Mail DNS - Résolution des noms - Filius</title>
-  <style type="text/css">
-      code{white-space: pre-wrap;}
-      span.smallcaps{font-variant: small-caps;}
-      span.underline{text-decoration: underline;}
-      div.column{display: inline-block; vertical-align: top; width: 50%;}
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
   </style>
   <style type="text/css">a.sourceLine {
 display: inline-block;
@@ -259,25 +261,29 @@ padding: 0.5em;
 </style>
 </head>
 <body>
-<header>
+<header id="title-block-header">
 <h1 class="title">Mail DNS - Résolution des noms - Filius</h1>
 <p class="author">Michel Billaud (michel.billaud@u-bordeaux.fr, michel.billaud@laposte.net)</p>
 <p class="date">3 juillet 2020</p>
 </header>
-<nav id="TOC">
+<nav id="TOC" role="doc-toc">
 <ul>
-<li><a href="#ce-qui-est-dispo-sous-filius"><span class="toc-section-number">1</span> Ce qui est dispo sous FILIUS</a><ul>
+<li><a href="#ce-qui-est-dispo-sous-filius"><span class="toc-section-number">1</span> Ce qui est dispo sous FILIUS</a>
+<ul>
 <li><a href="#le-serveur-de-courrier"><span class="toc-section-number">1.1</span> Le serveur de courrier</a></li>
 <li><a href="#le-client-de-courrier"><span class="toc-section-number">1.2</span> Le client de courrier</a></li>
 </ul></li>
-<li><a href="#manips"><span class="toc-section-number">2</span> Manips</a><ul>
-<li><a href="#manip-de-base-sur-un-réseau-local"><span class="toc-section-number">2.1</span> Manip de base, sur un réseau local</a><ul>
+<li><a href="#manips"><span class="toc-section-number">2</span> Manips</a>
+<ul>
+<li><a href="#manip-de-base-sur-un-réseau-local"><span class="toc-section-number">2.1</span> Manip de base, sur un réseau local</a>
+<ul>
 <li><a href="#installation-configuration-générale"><span class="toc-section-number">2.1.1</span> Installation, configuration générale</a></li>
 <li><a href="#configuration-du-serveur-de-courrier"><span class="toc-section-number">2.1.2</span> Configuration du serveur de courrier</a></li>
 <li><a href="#configuration-du-client-de-messagerie"><span class="toc-section-number">2.1.3</span> Configuration du client de messagerie</a></li>
 </ul></li>
 <li><a href="#cas-derreur"><span class="toc-section-number">2.2</span> Cas d’erreur</a></li>
-<li><a href="#travail"><span class="toc-section-number">2.3</span> Travail</a><ul>
+<li><a href="#travail"><span class="toc-section-number">2.3</span> Travail</a>
+<ul>
 <li><a href="#ajouter-un-serveur-de-courrier"><span class="toc-section-number">2.3.1</span> Ajouter un serveur de courrier</a></li>
 <li><a href="#observer-les-communications"><span class="toc-section-number">2.3.2</span> Observer les communications</a></li>
 </ul></li>
@@ -286,12 +292,12 @@ padding: 0.5em;
 </nav>
 <p><strong>Objectif</strong></p>
 <p>Expliquer quelques bases sur le Mail avec des manips faisables avec Filius et ses limitations</p>
-<h1 id="ce-qui-est-dispo-sous-filius"><span class="header-section-number">1</span> Ce qui est dispo sous FILIUS</h1>
+<h1 data-number="1" id="ce-qui-est-dispo-sous-filius"><span class="header-section-number">1</span> Ce qui est dispo sous FILIUS</h1>
 <ul>
 <li>un logiciel client de courrier (SMTP/POP3)</li>
 <li>un serveur de courrier</li>
 </ul>
-<h2 id="le-serveur-de-courrier"><span class="header-section-number">1.1</span> Le serveur de courrier</h2>
+<h2 data-number="1.1" id="le-serveur-de-courrier"><span class="header-section-number">1.1</span> Le serveur de courrier</h2>
 <p>Mail Delivery Agent (MDA) qui</p>
 <ul>
 <li>reçoit le courrier via SMTP pour un domaine</li>
@@ -299,20 +305,20 @@ padding: 0.5em;
 <li>donne accès à ces boites par POP3</li>
 </ul>
 <p>Également MTA qui retransmet les mails qui ne lui sont pas destinés.</p>
-<h2 id="le-client-de-courrier"><span class="header-section-number">1.2</span> Le client de courrier</h2>
+<h2 data-number="1.2" id="le-client-de-courrier"><span class="header-section-number">1.2</span> Le client de courrier</h2>
 <p>Mail User Agent (MUA) qui permet</p>
 <ul>
 <li>d’envoyer un mail, en passant par un serveur SMTP (MTA)</li>
 <li>de consulter une boite par POP3.</li>
 </ul>
-<h1 id="manips"><span class="header-section-number">2</span> Manips</h1>
-<h2 id="manip-de-base-sur-un-réseau-local"><span class="header-section-number">2.1</span> Manip de base, sur un réseau local</h2>
+<h1 data-number="2" id="manips"><span class="header-section-number">2</span> Manips</h1>
+<h2 data-number="2.1" id="manip-de-base-sur-un-réseau-local"><span class="header-section-number">2.1</span> Manip de base, sur un réseau local</h2>
 <p>Le but de la manip est de vérifier</p>
 <ul>
 <li>l’envoi du courrier dans une boite,</li>
 <li>sa récupération par POP.</li>
 </ul>
-<h3 id="installation-configuration-générale"><span class="header-section-number">2.1.1</span> Installation, configuration générale</h3>
+<h3 data-number="2.1.1" id="installation-configuration-générale"><span class="header-section-number">2.1.1</span> Installation, configuration générale</h3>
 <ul>
 <li>poste client, avec client messagerie (<code>pc-alice</code>, 192.168.1.1)</li>
 <li>serveur messagerie (<code>mailhost</code>, 192.168.1.2)</li>
@@ -346,7 +352,7 @@ padding: 0.5em;
 </tr>
 </tbody>
 </table>
-<h3 id="configuration-du-serveur-de-courrier"><span class="header-section-number">2.1.2</span> Configuration du serveur de courrier</h3>
+<h3 data-number="2.1.2" id="configuration-du-serveur-de-courrier"><span class="header-section-number">2.1.2</span> Configuration du serveur de courrier</h3>
 <p>Sur <code>mailhost.work</code>,</p>
 <ul>
 <li>installez le logiciel “serveur de messagerie”</li>
@@ -374,14 +380,14 @@ padding: 0.5em;
 </tr>
 </tbody>
 </table>
-<h3 id="configuration-du-client-de-messagerie"><span class="header-section-number">2.1.3</span> Configuration du client de messagerie</h3>
+<h3 data-number="2.1.3" id="configuration-du-client-de-messagerie"><span class="header-section-number">2.1.3</span> Configuration du client de messagerie</h3>
 <p>Sur <code>pc-alice</code>, configurez le client de messagerie pour qu’il utilise <code>mailhost.work</code> comme serveur SMTP et POP3.</p>
 <p>Envoyez un mail à <code>alice@work</code>.</p>
 <ul>
 <li>vérifiez qu’il est arrivé dans la boite sur <code>mailhost.work</code>,</li>
 <li>sur <code>pc-alice</code>, récupérez-le.</li>
 </ul>
-<h2 id="cas-derreur"><span class="header-section-number">2.2</span> Cas d’erreur</h2>
+<h2 data-number="2.2" id="cas-derreur"><span class="header-section-number">2.2</span> Cas d’erreur</h2>
 <p>Si ça marche, intéressons-nous aux cas d’erreur :</p>
 <ol start="2" type="1">
 <li>envoyez un mail à <code>zoe@home</code>, boite inexistante.</li>
@@ -396,14 +402,14 @@ padding: 0.5em;
 <ul>
 <li>idem.</li>
 </ul>
-<h2 id="travail"><span class="header-section-number">2.3</span> Travail</h2>
-<h3 id="ajouter-un-serveur-de-courrier"><span class="header-section-number">2.3.1</span> Ajouter un serveur de courrier</h3>
+<h2 data-number="2.3" id="travail"><span class="header-section-number">2.3</span> Travail</h2>
+<h3 data-number="2.3.1" id="ajouter-un-serveur-de-courrier"><span class="header-section-number">2.3.1</span> Ajouter un serveur de courrier</h3>
 <p>Maintenant vous allez</p>
 <ul>
 <li>ajouter un serveur de courrier (<code>mailhost.home</code>) pour le domaine <code>home.</code>, de façon à ce qu’<code>alice@work</code> puisse correspondre avec <code>bob@home</code>.</li>
 <li>configurer aussi un portable pour <code>bob</code>, afin qu’il puisse faire son courrier.</li>
 </ul>
-<h3 id="observer-les-communications"><span class="header-section-number">2.3.2</span> Observer les communications</h3>
+<h3 data-number="2.3.2" id="observer-les-communications"><span class="header-section-number">2.3.2</span> Observer les communications</h3>
 <p>Détaillez les communications DNS, SMTP et POP qui ont lieu quand</p>
 <ul>
 <li>alice envoie un message à bob</li>

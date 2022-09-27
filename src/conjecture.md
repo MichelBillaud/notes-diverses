@@ -234,6 +234,7 @@ concept further, use it to rephrase the Billaud Conjecture and study
 its difficulty.
 
 - <https://repository.lboro.ac.uk/articles/conference_contribution/On_Billaud_words_and_their_companions/14872188>
+
 ## Reidenbach D., Schneider J.C. (2009)
 
 Daniel Reidenbach and Johannes C. Schneider. Morphically primitive
