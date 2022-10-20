@@ -15,10 +15,17 @@ France](http://creativecommons.org/licenses/by-nc-sa/2.0/fr/).
 - Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
 
+**Historique**
+
+- Ajout présentation informelle le 20 octobre 2022
+- Version initiale 21 juillet 2020
+
 
 # Introduction 
 
-Il y a très longtemps (vers 1988), je m'étais posé un petit problème,
+## Il y a très longtemps 
+
+Vers 1988, je m'étais posé un petit problème,
 que je n'ai pas réussi à résoudre. Rien d'étonnant, c'était pas dans
 mon domaine, et je n'y ai travaillé que mollement. Donc j'ai laissé
 tomber rapidement, mais après avoir appelé à l'aide sur Usenet, qui ne
@@ -39,15 +46,10 @@ son manuscript, écrite à la main, quelque part !).
 > exists a non-trivial morphism $f$ such that $w$ is a fixed point of $f$.
 
 Et bon, surprise, on est en 2022, mais apparemment c'est toujours pas
-résolu.
+résolu. Et il y a des gens qui travaillent actuellement dessus.
 
 
-**Historique**
-
-- Ajout présentation informelle le 20 octobre 2022
-- Version initiale 21 juillet 2020
-
-# Explication informelle
+## Explication informelle
 
 Bon, peut-être que c'est pas très clair, alors j'explique, d'abord
 informellement.
@@ -84,7 +86,10 @@ de `'a'` et `'b'` sont respectivement
 - Si j'efface le `b`, j'obtiens  `acac` qui n'est pas primitif
 - mais si j'efface le `a`, j'ai `bccb` qui est primitif.
 
-D'où la question
+
+## Voila la question 
+
+
 
 - si j'ai un mot primitif (construit sur au moins deux lettres
 différentes), est-ce qu'il contient toujours au moins une lettre que
@@ -92,26 +97,29 @@ je peux effacer pour trouver un autre mot primitif ?
 
 ou inversement
 
-- tout mot primitf construit sur n lettres peut être obtenu en
-insérant judicieusement des occurrences d'une lettre supplémentaire
-dans un mot primitif à n-1 lettres.
+- tout mot primitif construit sur n lettres distinctes peut être
+obtenu en insérant (judicieusement) des occurrences d'une lettre
+supplémentaire dans un mot primitif à n-1 lettres.
+
+
+## Petits programmes pour vérifier
 
 Ça me paraissait amusant, alors j'ai écrit des petits programmes
 vite fait pour
 
 - décider si un mot est primitif ou non,
 - trouver tous les mots primitifs d'une certaine taille (à un
-  renommage des lettres près,
+  renommage des lettres près),
 - chercher un contre-exemple à la propriété voulue.
+
+## Apparition de la conjecture
 
 Et comme je n'en trouvais pas, je me suis dit que la question pouvait
 être une conjecture intéressants à démontrer, mais je n'ai pas su
-faire (la combinatoire des mots n'est pas mon truc).
+faire (programmer c'est cool, mais la combinatoire des mots n'est pas
+mon truc).
 
-
-
-
-
+Donc j'ai demandé à des gens.
 
 
 
