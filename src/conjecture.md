@@ -1,8 +1,10 @@
 % Une Conjecture sur les Mots
 % Michel Billaud (michel.billaud@laposte.net)
-% 21 juillet 2022
+% 20 octobre 2022
 
 ![](https://i.creativecommons.org/l/by-nc-sa/2.0/fr/88x31.png)
+
+
 
 Ce texte fait partie d'une petite [collection de notes](index.html)
 mise à disposition selon les termes de la [Licence Creative Commons
@@ -13,6 +15,8 @@ France](http://creativecommons.org/licenses/by-nc-sa/2.0/fr/).
 - Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
 
+
+# Introduction 
 
 Il y a très longtemps (vers 1988), je m'étais posé un petit problème,
 que je n'ai pas réussi à résoudre. Rien d'étonnant, c'était pas dans
@@ -34,11 +38,71 @@ son manuscript, écrite à la main, quelque part !).
 > all the occurrences of $x$ in $x$ is a fixed point of $f_x$, then there
 > exists a non-trivial morphism $f$ such that $w$ is a fixed point of $f$.
 
-Et bon, surprise, on est en 2022, mais apparemment c'est toujours pas résolu.
+Et bon, surprise, on est en 2022, mais apparemment c'est toujours pas
+résolu.
 
-Bon, peut-être que c'est pas très clair, alors j'explique :
+
+**Historique**
+
+- Ajout présentation informelle le 20 octobre 2022
+- Version initiale 21 juillet 2020
+
+# Explication informelle
+
+Bon, peut-être que c'est pas très clair, alors j'explique, d'abord
+informellement.
+
+1. Si vous regardez la chaîne de caractères `s = "abab"`, et que vous
+substituez *simultanément*
+
+- le caractère `'a'` par la chaîne vide `""`,
+- le caractère `'b'` par `"ab"`
+
+vous retrouvez la chaîne `s = "abab"`.  La chaîne `s` est un point-fixe de
+la transformation.
+
+2. Les transformations qu'on considère, c'est le remplacement d'un
+caractère par une chaîne. Elles correspondent à des morphismes sur les
+mots, par concaténation : on a $f(u).f(v) = f(u.v)$ pour tous mots $u$
+et $v$.
+
+3. Il y en a de 3 types qui ont `"abab"` commme point fixe : les images
+de `'a'` et `'b'` sont respectivement
+
+- soit `""` et `"ab"`
+- soit inversement `"ab"` et `""`
+- soit `"a"` et `"b"` (morphisme identité sur les lettres du mot).
+
+4. On s'intérêsse aux mots ne sont des points fixes **que** par
+   identité. Exemples `"aaaa"`, `"abba"`, `"abcacb"`, ... qu'on va
+   appeler, pour faire court mots "primitifs".
+
+5. Regardez  `"abcacb"`, construit sur 3 lettres :
+
+- Si j'efface le `c`, j'obtiens  `abab` qui n'est pas primitif
+- Si j'efface le `b`, j'obtiens  `acac` qui n'est pas primitif
+- mais si j'efface le `a`, j'ai `bccb` qui est primitif.
+
+D'où la question
+
+- si j'ai un mot primitif (construit sur au moins deux lettres
+différentes), est-ce qu'il contient toujours au moins une lettre que
+je peux effacer pour trouver un autre mot primitif ?
+
+ou inversement
+
+- tout mot primitf construit sur n lettres peut être obtenu en
+insérant judicieusement des occurrences d'une lettre supplémentaire
+dans un mot primitif à n-1 lettres.
+
+
+
+
+
 
 # Quelques définitions 
+
+Reprenons proprement : 
 
 Je suppose que vous avez quand même entendu parler de mots construits
 sur un alphabet. Sinon, c'est pas compliqué
@@ -60,8 +124,8 @@ sur un alphabet. Sinon, c'est pas compliqué
   
 ## Morphisme
 
-En général, un **morphisme** est une application d'un ensemble vers un autre qui
-préserve une opération.
+En général, un **morphisme** est une application d'un ensemble vers un
+autre qui préserve une opération.
 
 Ici on considére les morphismes entre deux ensembles de mots
 (construits sur des alphabets différents ou pas) qui préservent la
@@ -90,8 +154,9 @@ Un **point fixe du morphisme** $f$, c'est un mot $w$ qui est sa propre image par
 
 Exemple $ab$ est un point fixe pour $f(a) = ab$ et $f(b) = \epsilon$.
 
-Un morphisme n'admet pas forcément de point fixe, exemple évident : le
-morphisme qui double chaque lettre : $f(a) = aa, f(b) = bb, ;...$.
+Un morphisme n'admet pas forcément de point fixe (autre que le mot
+vide, évidemment), exemple évident : le morphisme qui double chaque
+lettre : $f(a) = aa, f(b) = bb, ;...$.
 
 Mais quand il en admet un, il en admet une infinité : si $f(w) = w$,
 alors $f(w^n) = w^n$.
@@ -99,8 +164,8 @@ alors $f(w^n) = w^n$.
 
 # Morphismes qui ont un mot comme point-fixe
 
-On aurait pu s'amuser avec les propriétés de l'ensemble des points fixes d'un
-morphisme, mais on part dans la direction inverse :
+On aurait pu s'amuser avec les propriétés de l'ensemble des points
+fixes d'un morphisme, mais on part dans la direction inverse :
 
 - on prend un mot $w$ au départ
 - quels morphismes l'admettent comme point fixe ?
