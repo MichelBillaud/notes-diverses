@@ -1,6 +1,6 @@
 % Notes diverses
 % Michel Billaud (`michel.billaud@laposte.net`)
-% 29 juin 2022
+% 20 Octobre 2022
 
 
 # Licence
@@ -14,6 +14,44 @@ Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France]
 - Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
 
+# Conjecture sur les mots
+
+Il y a très longtemps (vers 1988), je m'étais posé un petit problème,
+que je n'ai pas réussi à résoudre. Rien d'étonnant, c'était pas dans
+mon domaine, et je n'y ai travaillé que mollement. Donc j'ai laissé
+tomber rapidement, mais après avoir appelé à l'aide sur Usenet, qui ne
+manque pas de gens plus compétents.
+
+
+> Given a word $w$, if for each letter $x$ occurring in $w$, there 
+> exists non-trivial morphism $f_x$ such that the word obtained by erasing
+> all the occurrences of $x$ in $x$ is a fixed point of $f_x$, then there
+> exists a non-trivial morphism $f$ such that $w$ is a fixed point of $f$.
+
+Et bon, surprise, on est en 2022, mais apparemment c'est toujours pas
+résolu, et il y a des gens qui publient sur le sujet.
+
+
+
+
+
+
+
+# Arbres binaires quasi-complets
+
+
+Suite à un exercice présenté sur Twitter, on veut connaitre la taille
+du sous-arbre gauche d'un arbre binaire de recherche quasi-complet à N
+sommets.
+
+Quasi-complet : tous les niveaux de l'arbre sont remplis à part
+(éventuellement) le dernier, qui est rempli à partir de la gauche.
+
+Note: je garde le terme "complet" pour ceux qui sont complètement
+complets.
+
+Document : [conjecture](conjecture.html)
+
 # Génération en Verilog
 
 Dans un épisode précédent on a vu comment obtenir un additionneur 2 x
@@ -23,6 +61,9 @@ en les listant explicitement.
 Avec l'instruction `generate` de Verilog, nous allons éviter de
 construire ce type de code grâce à une boucle de génération, au lieu de
 faire du copier-coller-modifier.
+
+Document : [arbres-binaires](arbres-binaires.html)
+
 
 # Description structurelle d'un additionneur en Verilog
 

@@ -73,7 +73,8 @@ de `'a'` et `'b'` sont respectivement
 - soit inversement `"ab"` et `""`
 - soit `"a"` et `"b"` (morphisme identité sur les lettres du mot).
 
-4. On s'intérêsse aux mots ne sont des points fixes **que** par
+4. On s'intéresse aux mots qio ne sont des points fixes 
+**seulement par l'identité**
    identité. Exemples `"aaaa"`, `"abba"`, `"abcacb"`, ... qu'on va
    appeler, pour faire court mots "primitifs".
 
@@ -94,6 +95,20 @@ ou inversement
 - tout mot primitf construit sur n lettres peut être obtenu en
 insérant judicieusement des occurrences d'une lettre supplémentaire
 dans un mot primitif à n-1 lettres.
+
+Ça me paraissait amusant, alors j'ai écrit des petits programmes
+vite fait pour
+
+- décider si un mot est primitif ou non,
+- trouver tous les mots primitifs d'une certaine taille (à un
+  renommage des lettres près,
+- chercher un contre-exemple à la propriété voulue.
+
+Et comme je n'en trouvais pas, je me suis dit que la question pouvait
+être une conjecture intéressants à démontrer, mais je n'ai pas su
+faire (la combinatoire des mots n'est pas mon truc).
+
+
 
 
 
