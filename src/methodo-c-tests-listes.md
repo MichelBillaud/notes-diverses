@@ -778,15 +778,17 @@ Dans my-todo.c ligne 19 (fonction fib) code manquant : "valeurs > à 2".
 
 
 
-[^1]: on utilise `typedef` pour simplifier l'écriture des déclarations
+[^1]: On utilise ici `typedef` pour simplifier l'écriture des déclarations
     de structures.
 
-[^2]: dans la pratique, si on a besoin souvent d'ajouter des valeurs à
-    la fin d'une liste, il ne fait pas partir sur l'idée utiliser une
-    liste chaînée simple, mais par exemple une liste avec pointeur sur
-    le dernier élément (et peut être une liste à double chaînage).
+[^2]: En pratique, si on a besoin souvent d'ajouter des valeurs à la
+    fin d'une liste, c'est qu'une liste chaînée simple n'est pas la
+    structure de données qui convient. Envisagez par exemple une liste
+    avec un pointeur qui donne un accès direct au dernier élément (et
+    peut-être une liste à double chaînage si on a besoin de retirer le
+    dernier).
 	
-[^3]: pour leurs enseignants c'est souvent trop tard.
+[^3]: Pour leurs enseignants c'est souvent trop tard.
 
 [^4]: L'idée de commencer à apprendre la programmation par un langage
     aussi rustique que bourré de défauts est clairement une

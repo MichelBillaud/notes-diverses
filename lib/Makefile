@@ -1,5 +1,5 @@
 HTMLDIR = ../HTML-PUBLIC
-PDFDIR  = ../PDF-PRIVE
+PDFDIR  = ../PDF-PUBLIC
 
 include ../lib/common.mk
 
