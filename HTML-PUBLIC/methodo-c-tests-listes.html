@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Michel Billaud" />
+  <title>Méthodologie de la programmation : tests en C (exemple des listes)</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">a.sourceLine {
+display: inline-block;
+line-height: 1.25;
+}
+a.sourceLine {
+pointer-events: none;
+color: inherit;
+text-decoration: inherit;
+}
+a.sourceLine:empty {
+height: 1.2em;
+}
+.sourceCode {
+overflow: visible;
+}
+code.sourceCode {
+white-space: pre;
+position: relative;
+}
+div.sourceCode {
+margin: 1em 0;
+}
+pre.sourceCode {
+margin: 0;
+}
+@media screen {
+div.sourceCode {
+overflow: auto;
+}
+}
+@media print {
+code.sourceCode {
+white-space: pre-wrap;
+}
+a.sourceLine {
+text-indent: -1em;
+padding-left: 1em;
+}
+}
+pre.numberSource a.sourceLine {
+position: relative;
+left: -4em;
+}
+pre.numberSource a.sourceLine::before {
+content: attr(title);
+position: relative;
+left: -1em;
+text-align: right;
+vertical-align: baseline;
+border: none;
+pointer-events: all;
+display: inline-block;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+padding: 0 4px;
+width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource {
+margin-left: 3em;
+border-left: 1px solid #aaaaaa;
+padding-left: 4px;
+}
+div.sourceCode {}
+@media screen {
+a.sourceLine::before {
+text-decoration: underline;
+}
+}
+code span.al {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.an {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.at {
+color: #7d9029;
+}
+
+code span.bn {
+color: #40a070;
+}
+
+code span.bu {}
+
+code span.cf {
+color: #007020;
+font-weight: bold;
+}
+
+code span.ch {
+color: #4070a0;
+}
+
+code span.cn {
+color: #880000;
+}
+
+code span.co {
+color: #60a0b0;
+font-style: italic;
+}
+
+code span.cv {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.do {
+color: #ba2121;
+font-style: italic;
+}
+
+code span.dt {
+color: #902000;
+}
+
+code span.dv {
+color: #40a070;
+}
+
+code span.er {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.ex {}
+
+code span.fl {
+color: #40a070;
+}
+
+code span.fu {
+color: #06287e;
+}
+
+code span.im {}
+
+code span.in {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.kw {
+color: #007020;
+font-weight: bold;
+}
+
+code span.op {
+color: #666666;
+}
+
+code span.ot {
+color: #007020;
+}
+
+code span.pp {
+color: #bc7a00;
+}
+
+code span.sc {
+color: #4070a0;
+}
+
+code span.ss {
+color: #bb6688;
+}
+
+code span.st {
+color: #4070a0;
+}
+
+code span.va {
+color: #19177c;
+}
+
+code span.vs {
+color: #4070a0;
+}
+
+code span.wa {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+
+:root {
+--title-color: #202080;
+--source-bg-color: rgb(240, 240, 255);
+}
+h1, h2, h3, h4, h5, h6 {
+border-bottom: solid 1px silver;
+color: var(--title-color);
+}
+body {
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div.sourceCode {
+background-color: var(--source-bg-color);
+padding: 1em;
+}
+#TOC {
+padding: 0.5em;
+border: solid 1px silver;
+}
+#TOC ul {
+list-style-type: none;
+padding-left: 1em;
+}
+nav:before {
+text-indent: 2em;
+content: "Sommaire";
+color: var(--title-color);
+font-weight: bold;
+font-size: large;
+}
+#TOC a {
+text-decoration: none;
+}
+header {
+text-align: center;
+}
+.title {
+}
+.author, .date {
+font-style: italic;
+}
+table, th, td {
+border-collapse: collapse;
+border: solid black 1px;
+padding: 0.5em;
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Méthodologie de la programmation : tests en C (exemple des listes)</h1>
+<p class="author">Michel Billaud</p>
+<p class="date">20 novembre 2022</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#pourquoi-ce-document"><span class="toc-section-number">1</span> Pourquoi ce document</a></li>
+<li><a href="#utiliser-la-macro-assert"><span class="toc-section-number">2</span> Utiliser la macro <code>assert()</code></a>
+<ul>
+<li><a href="#utilisation-basique"><span class="toc-section-number">2.1</span> Utilisation basique</a>
+<ul>
+<li><a href="#un-exemple-de-code-source"><span class="toc-section-number">2.1.1</span> Un exemple de code source</a></li>
+<li><a href="#exécution"><span class="toc-section-number">2.1.2</span> Exécution</a></li>
+</ul></li>
+<li><a href="#astuce-dutilisation"><span class="toc-section-number">2.2</span> Astuce d’utilisation</a></li>
+</ul></li>
+<li><a href="#un-projet-traditionnel-les-listes-chainées-simples"><span class="toc-section-number">3</span> Un projet traditionnel : les listes chainées simples</a>
+<ul>
+<li><a href="#démarrage"><span class="toc-section-number">3.1</span> Démarrage</a></li>
+<li><a href="#fonctions-de-base-liste-vide"><span class="toc-section-number">3.2</span> Fonctions de base : liste vide</a></li>
+<li><a href="#ajouter-un-élément-au-début"><span class="toc-section-number">3.3</span> Ajouter un élément au début</a></li>
+<li><a href="#ajout-à-la-fin"><span class="toc-section-number">3.4</span> Ajout à la fin</a></li>
+<li><a href="#comparaison-liste-tableau"><span class="toc-section-number">3.5</span> Comparaison liste / tableau</a></li>
+<li><a href="#remplissage-dune-liste-depuis-un-tableau"><span class="toc-section-number">3.6</span> Remplissage d’une liste depuis un tableau</a></li>
+</ul></li>
+<li><a href="#indications-pour-les-exercices"><span class="toc-section-number">4</span> Indications pour les exercices</a>
+<ul>
+<li><a href="#fonctions-de-base"><span class="toc-section-number">4.1</span> Fonctions de base</a></li>
+<li><a href="#ajouter-un-élément-au-début-de-la-liste"><span class="toc-section-number">4.2</span> Ajouter un élément au début de la liste</a></li>
+<li><a href="#ajouter-à-la-fin"><span class="toc-section-number">4.3</span> Ajouter à la fin</a></li>
+<li><a href="#comparaison-liste-tableau-1"><span class="toc-section-number">4.4</span> Comparaison liste tableau</a></li>
+<li><a href="#remplissage-dune-liste-depuis-un-tableau-1"><span class="toc-section-number">4.5</span> Remplissage d’une liste depuis un tableau</a></li>
+</ul></li>
+<li><a href="#solution-des-exercices"><span class="toc-section-number">5</span> Solution des exercices</a>
+<ul>
+<li><a href="#fonctions-de-base-1"><span class="toc-section-number">5.1</span> Fonctions de base</a></li>
+<li><a href="#ajouter-un-élément-au-début-1"><span class="toc-section-number">5.2</span> Ajouter un élément au début</a></li>
+<li><a href="#ajouter-à-la-fin-1"><span class="toc-section-number">5.3</span> Ajouter à la fin</a></li>
+<li><a href="#comparaison-liste-tableau-2"><span class="toc-section-number">5.4</span> Comparaison liste / tableau</a></li>
+<li><a href="#remplissage-dune-liste-depuis-un-tableau-2"><span class="toc-section-number">5.5</span> Remplissage d’une liste depuis un tableau</a></li>
+</ul></li>
+<li><a href="#compléments"><span class="toc-section-number">6</span> Compléments</a>
+<ul>
+<li><a href="#implémentation-dassert"><span class="toc-section-number">6.1</span> Implémentation d’<code>assert</code></a></li>
+<li><a href="#implémentation-de-todo"><span class="toc-section-number">6.2</span> Implémentation de <code>TODO</code></a></li>
+</ul></li>
+</ul>
+</nav>
+<p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFgAAAAfCAMAAABUFvrSAAAAIGNIUk0AAHolAACAgwAA+f8AAIDpAAB1MAAA6mAAADqYAAAXb5JfxUYAAAAEZ0FNQQAAsY58+1GTAAAAAXNSR0IB2cksfwAAAfJQTFRF////////////////8fHx7+/v6Ofn4+Pj4N/g39/f1tXV09bS0tXS0tXR0dTR0dTQ0NTQ0NPPz9PPztLOztHNzdHNzdHMz8/PzdDMzNDMzNDLzM/Ly8/Ly8/Ky87Kys3Jyc3Jyc3Iy8rLyMzIyMzHx8vHxsrGycjIxsrFxcnFyMfHxcnExMnExMjDw8jDxMfDw8fCwsfCwcXAwMXAwMW/wMS/v8S+v8O+vsO+vsK9vcK9vcK8v7+/vMG8vMG7vMC8u8C7u8C6ur+6ur+5ub65ub64uL23t7y2urm5tru1tbq0tLqztLmzs7iysrixtbW1srexsbewsLavsLWvr7Wur7SusLOvrrStrrOtr7KvrbOsrLKrr6+vq7GqrKurpqqmo6ijoqaho6Ghn6OenqCdn5+fnp2dn5aalpuVlpmWlZmUmJaXk5iTkZSRkZORkY+Pj4+Pi5CKiYyJjoeLhIaEhIWEgoWChIGCf4F+gICAfX98fH98en15eXx5enp6dXV1dnN0cHJvcHBwa25qbmxsY19hYGBgXV5dWVlZUlJSUFFQUFBQQ0RDQEBAPj8+Pzc5NTY1MzMzMjMxMDAwMS0uLS0tKioqKSopKSkpKCkoKCgoKicnJCQkICEgIx8gICAgGxsbEBAQDg4ODQ4NCwsLAAAAK1tPPwAAAAN0Uk5TAAoO5yEBUwAABBdJREFUeNq1Vg1X21QYrr5EzArLshWxLc2o67TCyrBjsNnYDaF0VJiAKBMo6jbmpqOyuYll4lzRDinBj6hr1aZk7Pmfnps0/YidHpm7pzn35Mn7Pvfe5/24dTyLpzIcDiARj0VPhXuCgU7J63Z7fYcDwVB4IDocT4xPvjMzOzuX/O8DcCARH4qc7A36fS5RaHE6W/aLrg5/sLcvMsSYp2dm5/bE7EB8KHIidFRyCbe3dtkhdrduCYd8gWPh14fiifNT0xdm59by7EN+req3XmRIcb2K2GzgQCxyIhTwiKmdqkA7S6Lb3x2ODMfHJqZmPikASiajAIXrpteNooUUb5jIdbsNHIieDAXcwiYAPZuW5XRWB7B5/AX/sb5obHR88qOHyPFERHwODw2vq48MRGbII4P50t9s4MCp3qMexqunOTLHog4UjrsDvQODI4mJPLJEBLAPKDCnIrLEZdnR+EUUGVJgNs1dXc0VGzgQDkriJqDyVBmcCmyKvmA4EhtdRW6fRUw5rCWT6yjxpBiaMWQ9mVxjNhc1TdPOlW0Ycc8RVwpQOaJ65qVD/lD/YPwBalbkkWcbBhRgnniZIcVkMg+eurQfvvtG0z4zbRhx0CfsQG+nusHp2BE6guE3YlDYexaGIKQgmYTKwqBvbGxUEIWaPtY+J7qi/WIijDjQdhtIk20sArdcgd7TQ8iQoYSpRYbRZCj9EwMUroo0/an9TtSsac8ZCCPuPLgFnSOSc4qSNqdlItKxJR4O9Q82JP7eTEs9zVsIvf2rbBA/XyGWhF12TNkwVeaNKcsOv7vf1913toEUCt3NQZXnc8xSNRE6d/EVogVNq0rhbQWWiVSUeLm0qELl50uLhhYt3mA4+psZPHPD5eDx7Gs7cctf67CCd0XTVlb+0D6tBs/jBGTmmTYJynLLgNP9cjj6JXJkT7cc2wcU6MSVyulGtMLS7dumarr9C/HIg2qBZGoKhCWyTpmaAnlpYWFfxaZOCq69lFahsqkqxcgHjylpTub+uaTLwStHrRK8DHYFqbvv7MhbH+YBNZtRq03oatFCrCZ0qWCzMdJtEzpV0m1eMSYqYUvsDPW/GR+bfPerPbXNQFvK0KJRgbx2enh0fGpmD5cIHHjVKGn+cSWdOL9X4p4jrsuNmlDK5e8ZGIyPTUxfmNsTMe5I4n1ArWlDvNE2pS+e6JoGcM97oLbRc2kd+FHw3MGTEmPVfeC+7WoSXrxWsTHrA+ZjIuZDBJsR1RNj1Sterr1MU6LnWo1P+Uc1LOX3uqXqAJMY9ySXkLKu/yXBJdXqYLXN2qWobiFrLSI7MX5+39d2UGh1OlsF0dXx3nadj00ISwaqw2xHcFTw7ZtnJK/H45XO3Nyuj0OjHds1tuLQgPj//lf4zFPi/QuCOmdUsGyqRQAAAABJRU5ErkJggg==" /> Ce texte fait partie d’une petite <a href="index.html">collection de notes</a> mise à disposition selon les termes de la <a href="http://creativecommons.org/licenses/by-nc-sa/2.0/fr/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France</a>.</p>
+<ul>
+<li>Les notes sont publiées dans <a href="https://www.mbillaud.fr/notes/" class="uri">https://www.mbillaud.fr/notes/</a></li>
+<li>Sources dans <a href="https://github.com/MichelBillaud/notes-diverses" class="uri">https://github.com/MichelBillaud/notes-diverses</a></li>
+</ul>
+<p>Première version 20 novembre 2022. Corrections typos 21 nov.</p>
+<h1 data-number="1" id="pourquoi-ce-document"><span class="header-section-number">1</span> Pourquoi ce document</h1>
+<p>Le langage C n’est pas jeune, a plein de défauts, et est souvent très mal enseigné, surtout au regard des enjeux actuels : produire du code qui n’a pas trop d’erreurs.</p>
+<p>Pour cela, il convient de sensibiliser les débutants<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> qui découvrent la programmation en C<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> (les malheureux). Un point qui est très souvent négligé, c’est l’idée de tester systématiquement le code que l’on écrit.</p>
+<p>Mieux :</p>
+<ul>
+<li>d’<strong>automatiser</strong> les tests, pour qu’ils s’exécutent à chaque modification des sources, et pas seulement quand on n’aura que ça à faire d’y penser ;</li>
+<li>d’écrire les tests <strong>avant</strong> le code. Ca permet de réfléchir à ce que le code est censé faire, avant dêtre mentalement encombré par les détails de comment on envisage de le réaliser.</li>
+</ul>
+<p>Pour enseigner ça, il n’est pas utile de montrer un “framework de test” à des débutants. Les bibliothèques industrielles c’est très utile pour les professionnels, mais là on s’adresse à des débutants qui sont déjà largement perdus dans les bases de C. Consacrer du temps à appréhender l’utilisation d’un framework (une mystérieuse usine à gaz qui offre plein de possibilités), c’est autant d’heures en moins consacrées aux bases de la programmation et de l’algorithmique.</p>
+<p>En pratique, ils pourront à utiliser un framework le moment venu si jamais ils en ont besoin. Et ils apprendront d’autant plus vite qu’ils auront maîtrisé les bases de la programmation, sans être ralentis par l’apprentissage d’une usine à gaz.</p>
+<p>Bref, ce document montre</p>
+<ul>
+<li>ce que fait <code>assert</code> ;</li>
+<li>comment on l’utilise dans le cadre d’exercices de programmation ;</li>
+</ul>
+<p>sur un exemple classique : quelques exercices sur les listes chaînées.</p>
+<h1 data-number="2" id="utiliser-la-macro-assert"><span class="header-section-number">2</span> Utiliser la macro <code>assert()</code></h1>
+<h2 data-number="2.1" id="utilisation-basique"><span class="header-section-number">2.1</span> Utilisation basique</h2>
+<h3 data-number="2.1.1" id="un-exemple-de-code-source"><span class="header-section-number">2.1.1</span> Un exemple de code source</h3>
+<p>Examinez le code suivant :</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">// demo-assert.c </span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;assert.h&gt;</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a><span class="dt">int</span> main() </span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a>{</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a>    printf(<span class="st">&quot;Début</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a>    assert(<span class="dv">2</span>+<span class="dv">2</span> == <span class="dv">4</span>);</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a>    assert(<span class="dv">2</span>+<span class="dv">3</span> == <span class="dv">6</span>); </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a>    assert(<span class="dv">3</span>+<span class="dv">3</span> == <span class="dv">6</span>);</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a>    printf(<span class="st">&quot;Fin</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a>}</span></code></pre></div>
+<p>Il contient</p>
+<ul>
+<li>3 appels à <code>assert()</code>, avec comme paramètre une condition ;</li>
+<li>une directive d’inclusion de <code>assert.h</code>, où <code>assert()</code> est déclarée.</li>
+</ul>
+<h3 data-number="2.1.2" id="exécution"><span class="header-section-number">2.1.2</span> Exécution</h3>
+<p>Compilez et exécutez, il se produit</p>
+<pre><code>$ gcc demo-assert.c -o demo-assert
+./demo-assert
+Début
+demo-assert: demo-assert.c:8: main: Assertion `2+3 == 6&#39; failed.
+Abandon</code></pre>
+<p>Vous remarquez que</p>
+<ul>
+<li>le programme affiche un message d’erreur à propos d’une condition condition (assertion) qui s’est trouvée fausse à l’exécution ;</li>
+<li>le premier test (vérification <code>2+2 == 4</code>) a réussi, silencieusement ;</li>
+<li>l’exécution est abandonnée au premier échec (sinon le message “Fin” aurait été affiché.</li>
+</ul>
+<p>En résumé : à l’exécution, l’appel <code>assert(condition)</code></p>
+<ul>
+<li>évalue la condition ;</li>
+<li>si la condition est fausse, affiche le code source de la condition, et termine le programme ;</li>
+<li>sinon, passe à la suite.</li>
+</ul>
+<p>La macro prédéfinie <code>assert</code> fait partie du standard C. Les curieux trouveront dans l’annexe une <a href="#implémentation-dassert">implémentation simple</a>.</p>
+<h2 data-number="2.2" id="astuce-dutilisation"><span class="header-section-number">2.2</span> Astuce d’utilisation</h2>
+<p>Une astuce traditionnelle est d’ajouter une chaîne de caractères qui sert de commentaire dans l’assertion. Exemple</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>    assert(<span class="st">&quot;cas de base&quot;</span> &amp;&amp; fib(<span class="dv">1</span>) == <span class="dv">1</span>);</span></code></pre></div>
+<p>Du point de vue du langage C</p>
+<ul>
+<li>la chaîne de caractère est un pointeur non nul,</li>
+<li>converti en booléen comme paramètre de <code>&amp;&amp;</code>, ce pointeur non nul correspond à <code>true</code>,</li>
+<li>et par conséquent, l’assertion est équivalente à <code>fib(1) == 1</code>.</li>
+</ul>
+<p>La présence de la chaîne ne change donc rien au test qui est effectué. Par contre, pour le programmeur qui teste, la chaîne s’affiche</p>
+<pre><code>fib: fib.c:13: tests_fib: Assertion `&quot;cas de base&quot; &amp;&amp; fib(1) == 1&#39; failed.
+                                     -------------</code></pre>
+<p>et fournit <strong>immédiatement</strong> une indication supplémentaire, plutôt que d’avoir à aller consulter le fichier source à la recherche d’un commentaire expliquant la raison du test.</p>
+<p>Ça parait peu de choses, mais la compréhension des erreurs est une activité intellectuelle intense, dans laquelle une petite tâche annexe comme “ouvrir un autre fichier pour aller voir les commentaires” est une distraction qui fait perdre de la concentration. Et ce n’est vraiment pas le moment.</p>
+<p>Donc, on peut recommander de mettre un message dans les assertions.</p>
+<h1 data-number="3" id="un-projet-traditionnel-les-listes-chainées-simples"><span class="header-section-number">3</span> Un projet traditionnel : les listes chainées simples</h1>
+<p>Ici on se place dans le cadre d’un projet traditionnel, écrire - à titre d’exercices -un certain nombre de fonctions qui agissent sur une liste de nombres.</p>
+<p>Nous allons le faire, en suivant une méthodologie de tests systématiques.</p>
+<h2 data-number="3.1" id="démarrage"><span class="header-section-number">3.1</span> Démarrage</h2>
+<p>Une liste est une suite de noeuds chaînés entre eux. Nous définissions deux types de données<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> :</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="kw">typedef</span> <span class="kw">struct</span> Node {</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a>    <span class="dt">int</span> value;</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a>    <span class="kw">struct</span> Node *next;</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a>} Node;</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a><span class="kw">typedef</span> <span class="kw">struct</span> List {</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a>    <span class="kw">struct</span> Node *first;</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a>} List;</span></code></pre></div>
+<p>Il faudra écrire des fonctions pour ajouter, enlever, etc. dans des listes.</p>
+<p>Pour homogénéiser les fonctions, on va leur donner des noms</p>
+<ul>
+<li>en anglais,</li>
+<li>qui commencent par le préfixe <code>sl</code> (pour simple list),</li>
+<li>dont le premier paramètre est toujours un pointeur sur une <code>List</code></li>
+</ul>
+<h2 data-number="3.2" id="fonctions-de-base-liste-vide"><span class="header-section-number">3.2</span> Fonctions de base : liste vide</h2>
+<p>Commençons par le début : une fonction (<code>sl_init</code>) qui initialise une liste. Pour vérifier qu’elle fonctionne, on écrit aussi une fonction qui regarde si la liste est vide.</p>
+<p>Si vous ne voyez pas comment faire, regardez la section “Indications” à la fin du document.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="dt">void</span> test_init()</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>{</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>    List l;</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true"></a>    sl_init(&amp;l);</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true"></a>    assert(<span class="st">&quot;liste vide après initialisation&quot;</span> &amp;&amp; sl_is_empty(&amp;l));</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true"></a>}</span></code></pre></div>
+<p><strong>Exercice</strong> : écrire la fonction</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="dt">void</span> sl_init(List * list)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>{</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>   ...</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>}</span></code></pre></div>
+<p>Attention : on se permet d’appeler le paramètre <code>list</code> alors qu’il ne contient pas une structure <code>List</code>, mais <strong>l’adresse</strong> d’une telle structure.</p>
+<p><strong>Exercice</strong> : en ayant inclus <code>stdbool.h</code>, écrire :</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="dt">bool</span>  sl_is_empty(<span class="dt">const</span> List * list)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>{</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true"></a>   ...</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true"></a>}</span></code></pre></div>
+<p>On spécifie <code>const</code> parce que tester si une liste est vide ne doit pas modifier la liste.</p>
+<p>Si vous n’y arrivez pas, voir dans l’annexe “Solutions”.</p>
+<h2 data-number="3.3" id="ajouter-un-élément-au-début"><span class="header-section-number">3.3</span> Ajouter un élément au début</h2>
+<p>Pour cette fonction, on peut imaginer le test suivant</p>
+<ul>
+<li>mise en place
+<ul>
+<li>créer une liste vide</li>
+<li>ajouter la valeur 10 au début</li>
+<li>ajouter la valeur 30 au début</li>
+<li>ajouter la valeur 20 au début</li>
+</ul></li>
+<li>vérifications
+<ul>
+<li>la liste a 3 éléments</li>
+<li>le premier est 20 (le dernier ajouté)</li>
+<li>le second est 30</li>
+<li>le troisième est 10</li>
+</ul></li>
+</ul>
+<p>Le test pourrait s’écrire</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="dt">void</span> test_add_first()</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a>{</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a>    List list;</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a>    sl_init(&amp;list);</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a>    sl_add_first(&amp;list, <span class="dv">10</span>);</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a>    sl_add_first(&amp;list, <span class="dv">30</span>);</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a>    sl_add_first(&amp;list, <span class="dv">20</span>);</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a>    assert(<span class="st">&quot;après 3 ajouts&quot;</span> &amp;&amp; sl_size(&amp;list) == <span class="dv">3</span>);</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a>    </span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a>    assert(<span class="st">&quot;premier de la liste&quot;</span>   &amp;&amp; sl_value_at(&amp;list, <span class="dv">0</span>) == <span class="dv">20</span>);</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a>    assert(<span class="st">&quot;second de la liste&quot;</span>    &amp;&amp; sl_value_at(&amp;list, <span class="dv">1</span>) == <span class="dv">30</span>);</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true"></a>    assert(<span class="st">&quot;troisième de la liste&quot;</span> &amp;&amp; sl_value_at(&amp;list, <span class="dv">2</span>) == <span class="dv">10</span>);</span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true"></a>}</span></code></pre></div>
+<p>en suivant la convention -raisonnable en C- d’indicer les éléments de la liste à partir de 0.</p>
+<p><strong>Exercice</strong> : partir du code suivant</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="dt">void</span> sl_add_first(List *list, <span class="dt">int</span> value) </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>{</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true"></a>    assert(<span class="st">&quot;A faire&quot;</span> &amp;&amp; false);</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true"></a>}</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true"></a><span class="dt">int</span> sl_size(<span class="dt">const</span> List *list)</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true"></a>{</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true"></a>    assert(<span class="st">&quot;A faire&quot;</span> &amp;&amp; false);</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true"></a>}</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true"></a></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true"></a><span class="dt">int</span> sl_value_at(<span class="dt">const</span> List *list, <span class="dt">int</span> index) </span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true"></a>{</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true"></a>    assert(<span class="st">&quot;A faire&quot;</span> &amp;&amp; false);</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true"></a>}</span></code></pre></div>
+<p>Ici <code>assert</code> est utilisée pour faire des “stubs” (bouchons), c’est-à-dire écrire des fonctions syntaxiquement correctes (donc compilables), mais qui font juste acte de présence, sans faire le boulot.</p>
+<p>Le travail devient un cycle : compiler le source (qui est correct), exécuter, s’occuper de la première erreur qui apparaît, recommencer.</p>
+<p>On peut aussi utiliser une macro <code>TODO</code> pour faciliter l’écriture des stubs :</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="dt">int</span> sl_size(<span class="dt">const</span> List *list)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>{</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a>    TODO(<span class="st">&quot;calcul de la taille d&#39;une liste&quot;</span>);</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>}</span></code></pre></div>
+<p>Ce n’est pas un macro standard, on peut se la définir soi-même en s’inspirant du code d’<code>assert</code>. Voir <a href="#implémentation-TODO">code en annexe</a>.</p>
+<h2 data-number="3.4" id="ajout-à-la-fin"><span class="header-section-number">3.4</span> Ajout à la fin</h2>
+<p>On donne inévitablement comme exercice l’ajout d’un élément en fin d’une liste chaînée simple. L’objectif est de faire manipuler les chaînages<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
+<p>Voici le test</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="dt">void</span> test_add_last()</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a>{</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true"></a>    List list;</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true"></a>    sl_init(&amp; list);</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true"></a>    sl_add_last(&amp;list, <span class="dv">11</span>);</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true"></a>    assert(<span class="st">&quot;après 1 ajout&quot;</span> &amp;&amp; sl_size(&amp;list) == <span class="dv">1</span>);</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true"></a>    assert(<span class="st">&quot;après 1 ajout&quot;</span> &amp;&amp;sl_value_at(&amp;list, <span class="dv">0</span>) == <span class="dv">11</span>);</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true"></a></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true"></a>    sl_add_last(&amp;list, <span class="dv">333</span>);</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true"></a>    assert(<span class="st">&quot;après 2 ajouts&quot;</span> &amp;&amp; sl_size(&amp;list) == <span class="dv">2</span>);</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true"></a>    assert(<span class="st">&quot;après 2 ajouts&quot;</span> &amp;&amp;sl_value_at(&amp;list, <span class="dv">1</span>) == <span class="dv">333</span>);</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true"></a></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true"></a>    sl_add_last(&amp;list, <span class="dv">2</span>);</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true"></a>    assert(<span class="st">&quot;après 3 ajouts&quot;</span> &amp;&amp; sl_size(&amp;list) == <span class="dv">3</span>);</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true"></a>    assert(<span class="st">&quot;après 3 ajouts&quot;</span> &amp;&amp; sl_value_at(&amp;list, <span class="dv">2</span>) == <span class="dv">2</span>);</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true"></a>}</span></code></pre></div>
+<p><strong>Exercice</strong> : écrire la fonction <code>sl_add_last</code></p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true"></a><span class="dt">void</span> sl_add_last(List *list, <span class="dt">int</span> value) {</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true"></a>    <span class="co">// A Faire</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true"></a>}</span></code></pre></div>
+<h2 data-number="3.5" id="comparaison-liste-tableau"><span class="header-section-number">3.5</span> Comparaison liste / tableau</h2>
+<p>Vérifier qu’une liste contient bien les valeurs attendues serait bien plus simple ainsi :</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true"></a><span class="dt">void</span> test_add_last()</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true"></a>{</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true"></a>    List list;</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true"></a>    sl_init(&amp; list);</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true"></a>    sl_add_last(&amp;list, <span class="dv">11</span>);</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true"></a>    sl_add_last(&amp;list, <span class="dv">333</span>);</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true"></a>    sl_add_last(&amp;list, <span class="dv">2</span>);</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true"></a>    <span class="dt">int</span> expected[] = { <span class="dv">11</span>, <span class="dv">333</span>, <span class="dv">2</span>};                  <span class="co">// ici </span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true"></a>    assert(<span class="st">&quot;après 3 ajouts à la fin&quot;</span> </span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true"></a>           &amp;&amp; sl_list_contains(&amp;list, expected, <span class="dv">3</span>));</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true"></a>}</span></code></pre></div>
+<p>Exercice : écrire la fonction</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="dt">bool</span> sl_list_contains(<span class="dt">const</span> List *list, <span class="dt">int</span> values[], <span class="dt">int</span> nb_values)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a>{</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true"></a>}</span></code></pre></div>
+<h2 data-number="3.6" id="remplissage-dune-liste-depuis-un-tableau"><span class="header-section-number">3.6</span> Remplissage d’une liste depuis un tableau</h2>
+<p>L’écriture des tests fait souvent apparaître des besoins, au niveau des fonctions sur le type de données.</p>
+<p>C’était le cas ci-dessus pour <code>sl_list_contains</code>, qui nous permet de tester facilement qu’une liste contient les valeurs attendues.</p>
+<p>Dans les tests, nous avions besoin d’ajouter des éléments, ce qui nous faisions laborieusement à la petite cuiller, un par un.</p>
+<p>Pour simplifier, on peut imaginer une fonction qui ajoute un tableau de valeurs à la fin d’une liste.</p>
+<p>Exemple de test :</p>
+<ul>
+<li>on crée une liste avec les valeurs 11, 22, 33</li>
+<li>on y ajoute 44 et 55</li>
+<li>on vérifie qu’on a bien 11, 22, 33, 44 et 55, dans cet ordre.</li>
+</ul>
+<div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="dt">void</span> test_add_values() {</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true"></a>    List list;</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true"></a>    sl_init(&amp; list);</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true"></a>    <span class="dt">int</span> v1[] = {<span class="dv">11</span>, <span class="dv">22</span>, <span class="dv">33</span>};</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true"></a>    sl_add_values(&amp;list, v1, <span class="dv">3</span>);</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true"></a></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true"></a>    assert(<span class="st">&quot;construction liste&quot;</span> &amp;&amp; sl_list_contains(&amp;list, v1, <span class="dv">3</span>));</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true"></a>    <span class="dt">int</span> v2[] = {<span class="dv">44</span>, <span class="dv">55</span>};</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true"></a>    sl_add_values(&amp;list, v2, <span class="dv">2</span>);</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true"></a></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true"></a>    <span class="dt">int</span> expected[] = { <span class="dv">11</span>, <span class="dv">22</span>, <span class="dv">33</span>, <span class="dv">44</span>, <span class="dv">55</span>};</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true"></a>    assert(<span class="st">&quot;ajout tableau&quot;</span> &amp;&amp; sl_list_contains(&amp;list, expected, <span class="dv">5</span>));</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true"></a>}</span></code></pre></div>
+<p>Exercice : écrire la fonction</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="dt">void</span> sl_add_values(List *list, <span class="dt">int</span> values[], <span class="dt">int</span> nb_values)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a>{</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a>   <span class="co">// A faire</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true"></a></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true"></a>}</span></code></pre></div>
+<h1 data-number="4" id="indications-pour-les-exercices"><span class="header-section-number">4</span> Indications pour les exercices</h1>
+<h2 data-number="4.1" id="fonctions-de-base"><span class="header-section-number">4.1</span> Fonctions de base</h2>
+<p>Pour l’initialisation, il suffit d’affecter le membre <code>first</code> de la structure dont l’adresse est reçue en paramètre.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true"></a>    list-&gt;first = .... ;</span></code></pre></div>
+<p>Tester si la liste est vide se ramène à tester si <code>first</code> contient <code>NULL</code>.</p>
+<h2 data-number="4.2" id="ajouter-un-élément-au-début-de-la-liste"><span class="header-section-number">4.2</span> Ajouter un élément au début de la liste</h2>
+<ul>
+<li>allouer un nouveau maillon, y mettre la valeur ;</li>
+<li>ce maillon est maintenant le premier :</li>
+<li>la chaîne de maillons qui existait est dans le suivant de ce maillon.</li>
+</ul>
+<h2 data-number="4.3" id="ajouter-à-la-fin"><span class="header-section-number">4.3</span> Ajouter à la fin</h2>
+<ul>
+<li>Trouver le dernier maillon de la liste (si il existe)</li>
+<li>créer un nouveau maillon avec la valeur à ajouter</li>
+<li>accrocher le nouveau maillon
+<ul>
+<li>soit comme premier de la liste si elle était vide</li>
+<li>soit comme suivant du dernier maillon.</li>
+</ul></li>
+</ul>
+<p>Pour trouver le dernier maillon, vous pouvez faire une boucle avec une variable <code>n</code></p>
+<ul>
+<li>qui pointe successivement sur tous les maillons de la chaîne (comme pour le calcul de la taille),</li>
+<li>dans le corps de la boucle, vous notez l’ancienne valeur de <code>n</code> dans une variable <code>last</code>.</li>
+</ul>
+<p>Ainsi, à la sortie de la boucle, on a dans <code>last</code> l’adresse du dernier maillon.</p>
+<p>A voir : initialisation de <code>last</code> ?</p>
+<h2 data-number="4.4" id="comparaison-liste-tableau-1"><span class="header-section-number">4.4</span> Comparaison liste tableau</h2>
+<p>Vous pouvez par exemple faire une boucle avec un index qui varie de 0 à la taille du tableau moins 1.</p>
+<p>Dans cette boucle, vous ferez aussi progresser un pointeur le long de la liste, et vous comparerez la valeur désignée par l’indice dans le tableau, et celle de l’élément pointé.</p>
+<p>Attention :</p>
+<ul>
+<li>si ce pointeur est <code>NULL</code> <em>dans</em> la boucle, la liste est trop courte.</li>
+<li>si il n’est pas <code>NULL</code> <em>après</em> la boucle, la liste est trop longue.</li>
+</ul>
+<h2 data-number="4.5" id="remplissage-dune-liste-depuis-un-tableau-1"><span class="header-section-number">4.5</span> Remplissage d’une liste depuis un tableau</h2>
+<p>La solution de facilité consiste à faire une boucle sur le tableau, et appeler <code>sl_add_last</code> pour chaque élément.</p>
+<p>Ça ferait l’affaire pour une fonction qu’on n’appellerait que pour des tests. Vous pouvez commencer par faire comme ça.</p>
+<p>Mais il y a un problème : pour le premier élément, <code>sl_add_last</code> n’exécute pas sa boucle. Pour le second, elle fait 1 tour. Pour le troisième, deux tours. Etc.</p>
+<p>Si on fait le total, pour ajouter 100 éléments, ça fera 0+1+2+….+99 = 4950 tours. Avec de grosses listes, Le temps nécessaire grandit comme le <strong>carré de la taille</strong> de la liste. Pour de grosses listes, c’est trop.</p>
+<p>Pour faire ça bien, dans <code>sl_add_values</code>, il faut se rappeler du dernier élément ajouté.</p>
+<h1 data-number="5" id="solution-des-exercices"><span class="header-section-number">5</span> Solution des exercices</h1>
+<h2 data-number="5.1" id="fonctions-de-base-1"><span class="header-section-number">5.1</span> Fonctions de base</h2>
+<div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdbool.h&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;assert.h&gt;</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true"></a><span class="co">// ... mettre les déclarations ici</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true"></a><span class="dt">void</span> sl_init(List *list)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true"></a>{</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true"></a>    list-&gt;first = NULL;</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true"></a>}</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true"></a><span class="dt">bool</span> sl_is_empty(<span class="dt">const</span> List *list)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true"></a>{</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true"></a>    <span class="cf">return</span> list-&gt;first == NULL;</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true"></a>}</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true"></a></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true"></a><span class="dt">void</span> test_init()</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true"></a>{</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true"></a>    List l;</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true"></a>    sl_init(&amp;l);</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true"></a>    assert(<span class="st">&quot;liste vide après initialisation&quot;</span> &amp;&amp; sl_is_empty(&amp;l));</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true"></a>}</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true"></a></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true"></a><span class="dt">int</span> main()</span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true"></a>{</span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true"></a>    printf(<span class="st">&quot;# Tests</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true"></a>    test_init();</span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true"></a>    printf(<span class="st">&quot;# OK</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true"></a>}</span></code></pre></div>
+<h2 data-number="5.2" id="ajouter-un-élément-au-début-1"><span class="header-section-number">5.2</span> Ajouter un élément au début</h2>
+<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="dt">void</span> sl_add_first(List *list, <span class="dt">int</span> value)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true"></a>{</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true"></a>    Node *n = malloc(<span class="kw">sizeof</span>(Node));</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true"></a>    <span class="co">// A traiter : cas où l&#39;allocation échoue</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true"></a>    n-&gt;value = value;</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true"></a>    n-&gt;next = list-&gt;first;</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true"></a>    list-&gt;first = n;</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true"></a>}</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true"></a><span class="dt">int</span> sl_size(<span class="dt">const</span> List *list)</span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true"></a>{</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true"></a>    <span class="dt">int</span> size = <span class="dv">0</span>;</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true"></a>    <span class="cf">for</span> (Node *n = list-&gt;first; n != NULL; n = n-&gt;next) {</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true"></a>        size += <span class="dv">1</span>;</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true"></a>    }</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true"></a>    <span class="cf">return</span> size;</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true"></a>}</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true"></a></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true"></a><span class="dt">int</span> sl_value_at(<span class="dt">const</span> List *list, <span class="dt">int</span> index)</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true"></a>{</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true"></a>    Node *n = list-&gt;first;</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true"></a>    <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; index; i++) {</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true"></a>        n = n-&gt;next;</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true"></a>    }</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true"></a>    <span class="cf">return</span> n-&gt;value;</span>
+<span id="cb20-26"><a href="#cb20-26" aria-hidden="true"></a>}</span></code></pre></div>
+<h2 data-number="5.3" id="ajouter-à-la-fin-1"><span class="header-section-number">5.3</span> Ajouter à la fin</h2>
+<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true"></a><span class="dt">void</span> sl_add_last(List *list, <span class="dt">int</span> value)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true"></a>{</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true"></a>    <span class="co">// recherche du dernier maillon</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true"></a>    Node *last = NULL;</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true"></a>    <span class="cf">for</span> (Node *n = list-&gt;first; n != NULL; n = n-&gt;next) {</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true"></a>        last = n;</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true"></a>    }</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true"></a>    <span class="co">// allocation nouveau maillon</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true"></a>    Node *new_node = malloc(<span class="kw">sizeof</span>(Node));</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true"></a>    new_node-&gt;value = value;</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true"></a>    new_node-&gt;next = NULL;</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true"></a></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true"></a>    <span class="co">// accrochage</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true"></a>    <span class="cf">if</span> (last == NULL) {</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true"></a>        <span class="co">// au début (la liste était vide)</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true"></a>        list-&gt;first = new_node;</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true"></a>    } <span class="cf">else</span> {</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true"></a>        <span class="co">// après le dernier</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true"></a>        last-&gt;next = new_node;</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true"></a>    }</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true"></a>}</span></code></pre></div>
+<h2 data-number="5.4" id="comparaison-liste-tableau-2"><span class="header-section-number">5.4</span> Comparaison liste / tableau</h2>
+<div class="sourceCode" id="cb22"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a><span class="dt">bool</span> sl_list_contains(<span class="dt">const</span> List *list, <span class="dt">int</span> values[], <span class="dt">int</span> nb_values)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true"></a>{</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true"></a>    Node *node = list-&gt;first;</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true"></a>    <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; nb_values; i++) {</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true"></a>        <span class="cf">if</span> (node == NULL) {</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true"></a>            <span class="cf">return</span> false;</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true"></a>        }</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true"></a>        <span class="cf">if</span> (node-&gt;value != values[i]) {</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true"></a>            <span class="cf">return</span> false;</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true"></a>        }</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true"></a>        node = node -&gt; next;</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true"></a>    }</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true"></a>    <span class="cf">return</span> node == NULL;</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true"></a>}</span></code></pre></div>
+<h2 data-number="5.5" id="remplissage-dune-liste-depuis-un-tableau-2"><span class="header-section-number">5.5</span> Remplissage d’une liste depuis un tableau</h2>
+<p>Pour ajouter plusieurs éléments à la fin, on commence par localiser le dernier maillon. Les éléments du tableau s’accrocheront</p>
+<ul>
+<li>soit par le champ <code>next</code> de ce maillon si il existe ;</li>
+<li>soit par le champ <code>first</code> de la liste si la liste était vide.</li>
+</ul>
+<p>Comme ces deux champs sont de même type, on peut uniformiser en notant l’adresse de ce champ.</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true"></a><span class="dt">void</span> sl_add_values(List *list, <span class="dt">int</span> values[], <span class="dt">int</span> nb_values)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true"></a>{</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true"></a>    <span class="co">// recherche de l&#39;adresse du pointeur auquel on accrochera le</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true"></a>    <span class="co">// premier élément supplémentaire</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true"></a>    Node **addr_ptr = &amp; list-&gt;first;</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true"></a>    <span class="cf">for</span> (Node *n = list-&gt;first; n != NULL; n = n-&gt;next) {</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true"></a>        addr_ptr = &amp;(n-&gt;next);</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true"></a>    }</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true"></a></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true"></a>    <span class="co">// ajout des éléments du tableau</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true"></a>    <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; nb_values; i++) {</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true"></a>        Node *new_node = malloc(<span class="kw">sizeof</span>(Node));</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true"></a>        new_node-&gt;value = values[i];</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true"></a>        new_node-&gt;next = NULL;</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true"></a>        <span class="co">// chainage du maillon</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true"></a>        *addr_ptr = new_node;</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true"></a>        <span class="co">// c&#39;est à lui qu&#39;on accrochera les suivants</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true"></a>        addr_ptr = &amp; new_node-&gt;next;</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true"></a>    }</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true"></a>}</span></code></pre></div>
+<h1 data-number="6" id="compléments"><span class="header-section-number">6</span> Compléments</h1>
+<h2 data-number="6.1" id="implémentation-dassert"><span class="header-section-number">6.1</span> Implémentation d’<code>assert</code></h2>
+<p>Voici une version d’<code>assert</code></p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true"></a><span class="co">// my-assert.c</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true"></a><span class="pp">#define my_assert(condition) { \</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true"></a><span class="pp">    if(!(condition)) { \</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true"></a><span class="pp">       fprintf(stderr, &quot;Dans %s ligne %d (fonction %s) l&#39;assertion &#39;%s&#39; est fausse.\n&quot;,\</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true"></a><span class="pp">        __FILE__, __LINE__, __func__, #condition); \</span></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true"></a><span class="pp">       exit(1); \</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true"></a><span class="pp">    }\</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true"></a><span class="pp">}</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true"></a></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true"></a><span class="dt">int</span> main()</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true"></a>{</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true"></a>    printf(<span class="st">&quot;Début</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true"></a>    my_assert(<span class="dv">2</span>+<span class="dv">2</span> == <span class="dv">4</span>);</span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true"></a>    my_assert(<span class="dv">2</span>+<span class="dv">3</span> == <span class="dv">6</span>);</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true"></a>    my_assert(<span class="dv">3</span>+<span class="dv">3</span> == <span class="dv">6</span>);</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true"></a>    printf(<span class="st">&quot;Fin</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true"></a>}</span></code></pre></div>
+<p>qui produit presque la même chose que le programme du début.</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true"></a>$ gcc my-assert.c   -o my-assert</span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true"></a>./my-assert</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true"></a>Début</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true"></a>Dans my-assert.c ligne <span class="dv">18</span> (fonction main) l&#39;assertion &#39;<span class="dv">2</span>+<span class="dv">3</span> == <span class="dv">6</span><span class="er">&#39;</span> est fausse.</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true"></a>Abandon.</span></code></pre></div>
+<p>Explications</p>
+<ul>
+<li><code>my_assert</code> ne peut pas être une fonction. C’est une <strong>macro</strong> pour afficher le code source de la condition, le nom du fichier et le numéro de ligne où elle est appelée, etc.</li>
+<li><code>__FILE__</code>, <code>__LINE__</code> et <code>__func__</code> sont des macros standards du langage C.</li>
+</ul>
+<h2 data-number="6.2" id="implémentation-de-todo"><span class="header-section-number">6.2</span> Implémentation de <code>TODO</code></h2>
+<p>Les mêmes mécanismes peuvent servir à réaliser une macro <code>TODO</code> qui accélère l’écriture des stubs.</p>
+<p>Exemple :</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true"></a><span class="co">// my-todo.c</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true"></a></span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true"></a><span class="pp">#define TODO(message) { \</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true"></a><span class="pp">       fprintf(stderr,  &quot;Dans %s ligne %d (fonction %s) &quot;\</span></span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true"></a><span class="pp">                        &quot;code manquant : %s.\n&quot;, \</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true"></a><span class="pp">        __FILE__, __LINE__, __func__, #message ); \</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true"></a><span class="pp">       exit(1); \</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true"></a><span class="pp">    }</span></span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true"></a></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true"></a><span class="co">// exemple d&#39;utilisation</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true"></a><span class="dt">int</span> fib(<span class="dt">int</span> n)</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true"></a>{</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true"></a>    <span class="cf">if</span> (n &lt;=<span class="dv">1</span>) {</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true"></a>        <span class="cf">return</span> n;</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true"></a>    } <span class="cf">else</span> {</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true"></a>        TODO(<span class="st">&quot;valeurs &gt; à 2&quot;</span>);</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true"></a>    }</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true"></a>}</span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true"></a></span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true"></a><span class="dt">int</span> main()</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true"></a>{</span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true"></a>    printf(<span class="st">&quot;fib(0) = %d</span><span class="sc">\n</span><span class="st">&quot;</span>, fib(<span class="dv">0</span>));</span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true"></a>    printf(<span class="st">&quot;fib(1) = %d</span><span class="sc">\n</span><span class="st">&quot;</span>, fib(<span class="dv">1</span>));</span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true"></a>    printf(<span class="st">&quot;fib(2) = %d</span><span class="sc">\n</span><span class="st">&quot;</span>, fib(<span class="dv">2</span>));</span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true"></a>}</span></code></pre></div>
+<p>Exécution</p>
+<pre><code>./my-todo
+fib(0) = 0
+fib(1) = 1
+Dans my-todo.c ligne 19 (fonction fib) code manquant : &quot;valeurs &gt; à 2&quot;.</code></pre>
+<section class="footnotes" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>pour leurs enseignants c’est souvent trop tard.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2" role="doc-endnote"><p>L’idée de commencer à apprendre la programmation par un langage aussi rustique que bourré de défauts est clairement une abomination dans la deuxième décennie du troisième millénaire.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3" role="doc-endnote"><p>on utilise <code>typedef</code> pour simplifier l’écriture des déclarations de structures.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4" role="doc-endnote"><p>dans la pratique, si on a besoin souvent d’ajouter des valeurs à la fin d’une liste, il ne fait pas partir sur l’idée utiliser une liste chaînée simple, mais par exemple une liste avec pointeur sur le dernier élément (et peut être une liste à double chaînage).<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+</body>
+</html>

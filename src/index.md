@@ -1,6 +1,6 @@
 % Notes diverses
 % Michel Billaud (`michel.billaud@laposte.net`)
-% 20 Octobre 2022
+% 20 Novembre 2022
 
 
 # Licence
@@ -13,6 +13,46 @@ Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France]
 
 - Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
+
+# Méthodologie de la programmation, tests, langage C
+
+Le langage C n'est pas jeune, a plein de défauts, et est souvent très
+mal enseigné, surtout au regard des enjeux actuels : produire du code
+qui n'a pas trop d'erreurs.
+
+Pour cela, il convient de sensibiliser les débutants[^3] qui
+découvrent la programmation en C[^4] (les malheureux).  Un point qui
+est très souvent négligé, c'est l'idée de tester systématiquement le
+code que l'on écrit.
+
+Mieux : 
+
+- d'**automatiser** les tests, pour qu'ils s'exécutent à chaque
+modification des sources, et pas seulement quand on n'aura que ça à faire
+d'y penser ;
+- d'écrire les tests **avant** le code. Ca permet de réfléchir à ce
+que le code est censé faire, avant dêtre mentalement encombré par les
+détails de comment on envisage de le réaliser.
+
+Pour enseigner ça, il n'est pas utile de montrer un "framework de
+test" à des débutants. Les bibliothèques industrielles c'est très
+utile pour les professionnels, mais là on s'adresse à des débutants
+qui sont déjà largement perdus dans les bases de C. Quand ils les
+maîtriseront ils apprendront à s'en servir si jamais ils en ont
+besoin. Et ils apprendront d'autant plus vite qu'ils auront maîtrisé
+les bases de la programmation, sans être ralentis par l'apprentissage
+d'une usine à gaz.
+
+
+Bref, ce document montre
+
+- ce que fait `assert` ;
+- comment on l'utilise dans le cadre d'exercices de programmation ;
+
+sur un exemple classique :  quelques exercices sur les listes chaînées.
+
+Document : [methodo-c-tests-listes](methodo-c-tests-listes.html)
+
 
 # Conjecture sur les mots
 
@@ -31,7 +71,7 @@ manque pas de gens plus compétents.
 Et bon, surprise, on est en 2022, mais apparemment c'est toujours pas
 résolu, et il y a des gens qui publient sur le sujet.
 
-
+Document : [conjecture](conjecture.html)
 
 
 
@@ -50,7 +90,8 @@ Quasi-complet : tous les niveaux de l'arbre sont remplis à part
 Note: je garde le terme "complet" pour ceux qui sont complètement
 complets.
 
-Document : [conjecture](conjecture.html)
+Document : [arbres-binaires](arbres-binaires.html)
+
 
 # Génération en Verilog
 
@@ -59,11 +100,11 @@ Dans un épisode précédent on a vu comment obtenir un additionneur 2 x
 en les listant explicitement.
 
 Avec l'instruction `generate` de Verilog, nous allons éviter de
-construire ce type de code grâce à une boucle de génération, au lieu de
-faire du copier-coller-modifier.
+construire ce type de code grâce à une boucle de génération, au lieu
+de faire du copier-coller-modifier.
 
-Document : [arbres-binaires](arbres-binaires.html)
 
+Document : [géneration-verilog](génération-verilog.html)
 
 # Description structurelle d'un additionneur en Verilog
 
