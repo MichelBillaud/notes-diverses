@@ -20,8 +20,8 @@ Le langage C n'est pas jeune, a plein de défauts, et est souvent très
 mal enseigné, surtout au regard des enjeux actuels : produire du code
 qui n'a pas trop d'erreurs.
 
-Pour cela, il convient de sensibiliser les débutants[^3] qui
-découvrent la programmation en C[^4] (les malheureux).  Un point qui
+Pour cela, il convient de sensibiliser les débutants qui
+découvrent la programmation en C.  Un point qui
 est très souvent négligé, c'est l'idée de tester systématiquement le
 code que l'on écrit.
 

@@ -14,7 +14,7 @@ France](http://creativecommons.org/licenses/by-nc-sa/2.0/fr/).
 - Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
 
-Première version 20 novembre 2022. Corrections typos 21 nov.
+Première version 20 novembre 2022. Corrections typos 22 nov.
 
 
 # Pourquoi ce document
@@ -46,7 +46,7 @@ gaz qui offre plein de possibilités), c'est autant d'heures en moins
 consacrées aux bases de la programmation et de l'algorithmique.
 
 En pratique, ils pourront à utiliser un framework le moment venu si
-jamais ils en ont besoin. Et ils apprendront d'autant plus vite qu'ils
+jamais ils en ont besoin. Ce qu'ils feront d'autant plus vite qu'ils
 auront maîtrisé les bases de la programmation, sans être ralentis par
 l'apprentissage d'une usine à gaz.
 
@@ -103,10 +103,10 @@ Abandon
 Vous remarquez que 
 
 - le programme affiche un message d'erreur à propos d'une condition
-condition (assertion) qui s'est trouvée fausse à l'exécution ;
+(assertion) qui s'est trouvée fausse à l'exécution ;
 - le premier test (vérification `2+2 == 4`) a réussi, silencieusement ;
 - l'exécution est abandonnée au premier échec (sinon le message "Fin"
-  aurait été affiché.
+  aurait été affiché).
 
 
 En résumé : à l'exécution, l'appel `assert(condition)`
@@ -121,7 +121,7 @@ La macro prédéfinie `assert` fait partie du standard C. Les curieux
 trouveront dans l'annexe
 une [implémentation simple](#implémentation-dassert).
 
-## Astuce d'utilisation
+## Astuce d'utilisation : `assert(`*message* `&&` *condition*`)`
 
 Une astuce traditionnelle est d'ajouter une chaîne de caractères qui
 sert de commentaire dans l'assertion. Exemple
@@ -150,19 +150,19 @@ et fournit **immédiatement** une indication supplémentaire, plutôt que
 d'avoir à aller consulter le fichier source à la recherche d'un
 commentaire expliquant la raison du test.
 
-Ça parait peu de choses, mais la compréhension des erreurs est une
+En pratique, la compréhension des erreurs est une
 activité intellectuelle intense, dans laquelle une petite tâche annexe
 comme "ouvrir un autre fichier pour aller voir les commentaires" est
 une distraction qui fait perdre de la concentration. Et ce n'est vraiment
 pas le moment.
 
-Donc, on peut recommander de mettre un message dans les assertions.
+Donc, on recommande de mettre un message dans les assertions.
 
 # Un projet traditionnel : les listes chainées simples
 
 Ici on se place dans le cadre d'un projet traditionnel, écrire - à
-titre d'exercices -un certain nombre de fonctions qui agissent sur une
-liste de nombres.
+titre d'exercices - un certain nombre de fonctions qui agissent sur une
+liste chaînée de nombres.
 
 Nous allons le faire, en suivant une méthodologie de tests systématiques.
 
@@ -192,12 +192,12 @@ Pour homogénéiser les fonctions, on va leur donner des noms
 
 ## Fonctions de base : liste vide
 
-Commençons par le début : une fonction (`sl_init`) qui initialise une
+Commençons par le début : une fonction `sl_init` qui initialise une
 liste. Pour vérifier qu'elle fonctionne, on écrit aussi une fonction
-qui regarde si la liste est vide.
+`sl_is_empty` qui regarde si la liste est vide.
 
 Si vous ne voyez pas comment faire, regardez la section "Indications"
-à la fin du document.  
+à la fin du document.
 
 
 ~~~C
@@ -218,9 +218,9 @@ void sl_init(List * list)
 }
 ~~~
 
-Attention : on se permet d'appeler le paramètre `list` alors qu'il ne
+Attention : on se permet de nommer le paramètre `list` alors qu'il ne
 contient pas une structure `List`, mais **l'adresse** d'une telle
-structure.
+structure.[^5]
 
 **Exercice** : en ayant inclus `stdbool.h`, écrire :
 
@@ -240,12 +240,12 @@ Si vous n'y arrivez pas, voir dans l'annexe "Solutions".
 
 Pour cette fonction, on peut imaginer le test suivant
 
-- mise en place
+- Mise en place d'une liste contenant (20, 30, 10) :
   - créer une liste vide
   - ajouter la valeur 10 au début
   - ajouter la valeur 30 au début
   - ajouter la valeur 20 au début
-- vérifications
+- Vérifications :
   - la liste a 3 éléments
   - le premier est 20 (le dernier ajouté)
   - le second est 30
@@ -271,7 +271,7 @@ void test_add_first()
 }
 ~~~
 
-en suivant la convention -raisonnable en C- d'indicer les éléments
+en suivant la convention - raisonnable en C - d'indicer les éléments
 de la liste à partir de 0.
 
 **Exercice** : partir du code suivant
@@ -301,8 +301,8 @@ boulot.
 Le travail devient un cycle : compiler le source (qui est correct),
 exécuter, s'occuper de la première erreur qui apparaît, recommencer.
 
-On peut aussi utiliser une
-macro `TODO` pour faciliter l'écriture des stubs :
+On peut aussi utiliser une macro `TODO` (à faire) pour faciliter
+l'écriture des stubs :
 
 ~~~C
 int sl_size(const List *list)
@@ -311,9 +311,9 @@ int sl_size(const List *list)
 }
 ~~~
 
-Ce n'est pas un macro standard, on peut se la définir soi-même
-en s'inspirant du code d'`assert`.
-Voir [code en annexe](#implémentation-TODO).
+`TODO` n'est malheureusement pas une macro standard, mais il est facile de 
+définir soi-même en s'inspirant du code d'`assert`.  Voir [code en
+annexe](#implémentation-TODO).
 
 
 ## Ajout à la fin
@@ -360,8 +360,6 @@ void sl_add_last(List *list, int value) {
 ## Comparaison liste / tableau
 
 
-
-
 Vérifier qu'une liste contient bien les valeurs attendues serait bien
 plus simple ainsi :
 
@@ -381,7 +379,7 @@ void test_add_last()
 }
 ~~~
 
-Exercice : écrire la fonction 
+**Exercice** : écrire la fonction 
 
 ~~~C
 bool sl_list_contains(const List *list, int values[], int nb_values)
@@ -399,19 +397,19 @@ bool sl_list_contains(const List *list, int values[], int nb_values)
 L'écriture des tests fait souvent apparaître des besoins, au niveau
 des fonctions sur le type de données.
 
-C'était le cas ci-dessus pour `sl_list_contains`, qui nous permet de tester
-facilement qu'une liste contient les valeurs attendues.
+C'était le cas ci-dessus pour `sl_list_contains`, qui nous permet de
+tester facilement qu'une liste contient les valeurs attendues.
 
-Dans les tests, nous avions besoin d'ajouter des éléments, ce qui nous faisions
-laborieusement à la petite cuiller, un par un.
+Dans les tests, nous avions besoin d'ajouter des éléments, ce qui nous
+faisions laborieusement à la petite cuiller, un par un.
 
 Pour simplifier, on peut imaginer une fonction qui ajoute un tableau
 de valeurs à la fin d'une liste.
 
 Exemple de test :
 
-- on crée une liste avec les valeurs 11, 22, 33
-- on y ajoute 44 et 55
+- on crée une liste avec les valeurs 11, 22, 33 ;
+- on y ajoute 44 et 55 ;
 - on vérifie qu'on a bien 11, 22, 33, 44 et 55, dans cet ordre.
 
 ~~~C
@@ -433,7 +431,7 @@ void test_add_values() {
 ~~~
 
 
-Exercice : écrire la fonction
+**Exercice** : écrire la fonction
 
 ~~~C
 void sl_add_values(List *list, int values[], int nb_values)
@@ -464,43 +462,46 @@ Tester si la liste est vide se ramène à tester si `first` contient `NULL`.
 
 
 - allouer un nouveau maillon, y mettre la valeur ;
-- ce maillon est maintenant le premier :
-- la chaîne de maillons qui existait est dans le suivant de ce maillon.
+- ce maillon devient le premier ;
+- la chaîne de maillons qui existait se retrouve à la suite de ce
+  maillon.
 
 
 ## Ajouter à la fin
 
-- Trouver le dernier maillon de la liste (si il existe)
-- créer un nouveau maillon avec la valeur à ajouter
+- Trouver le dernier maillon de la liste (si il existe),
+- créer un nouveau maillon avec la valeur à ajouter,
 - accrocher le nouveau maillon
-	- soit comme premier de la liste si elle était vide
+	- soit comme premier de la liste si elle était vide,
 	- soit comme suivant du dernier maillon.
 
 
-Pour trouver le dernier maillon, vous pouvez faire  une boucle avec une variable `n` 
+Pour trouver le dernier maillon, vous pouvez faire une boucle avec une
+variable `n`
 
 - qui pointe successivement sur tous les maillons de la chaîne (comme
 pour le calcul de la taille),
-- dans le corps de la boucle, vous notez l'ancienne valeur de `n` dans une variable `last`.
+- dans le corps de la boucle, notez l'ancienne valeur de `n` dans
+  une variable `last`.
 
 Ainsi, à la sortie de la boucle, on a dans `last` l'adresse du
 dernier maillon.
 
-A voir : initialisation de `last` ?
+À voir : initialisation de `last` ?
 
 ## Comparaison liste tableau
 
-Vous pouvez par exemple faire une boucle avec un index qui varie de 0
-à la taille du tableau moins 1.
+Vous pouvez faire une boucle pour parcourir le tableau case par case.
 
 Dans cette boucle, vous ferez aussi progresser un pointeur le long de
-la liste, et vous comparerez la valeur désignée par l'indice dans le
-tableau, et celle de l'élément pointé.
+la liste, et vous comparerez le contenu d'une case, et d'un élement
+de la liste.
 
 Attention : 
 
 - si ce pointeur est `NULL` *dans* la boucle, la liste est trop courte.
 - si il n'est pas `NULL` *après* la boucle, la liste est trop longue.
+
 
 
 ## Remplissage d'une liste depuis un tableau
@@ -525,7 +526,7 @@ dernier élément ajouté.
 
 
 
-# Solution des exercices
+# Solutions des exercices
 
 ## Fonctions de base
 
@@ -793,3 +794,5 @@ Dans my-todo.c ligne 19 (fonction fib) code manquant : "valeurs > à 2".
 [^4]: L'idée de commencer à apprendre la programmation par un langage
     aussi rustique que bourré de défauts est clairement une
     abomination dans la deuxième décennie du troisième millénaire.
+
+[^5]: C'est un abus de langage courant, mais un abus quand même.

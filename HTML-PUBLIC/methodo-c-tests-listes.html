@@ -338,7 +338,7 @@ padding: 0.5em;
 <li><a href="#un-exemple-de-code-source"><span class="toc-section-number">2.1.1</span> Un exemple de code source</a></li>
 <li><a href="#exécution"><span class="toc-section-number">2.1.2</span> Exécution</a></li>
 </ul></li>
-<li><a href="#astuce-dutilisation"><span class="toc-section-number">2.2</span> Astuce d’utilisation</a></li>
+<li><a href="#astuce-dutilisation-assertmessage-condition"><span class="toc-section-number">2.2</span> Astuce d’utilisation : <code>assert(</code><em>message</em> <code>&amp;&amp;</code> <em>condition</em><code>)</code></a></li>
 </ul></li>
 <li><a href="#un-projet-traditionnel-les-listes-chainées-simples"><span class="toc-section-number">3</span> Un projet traditionnel : les listes chainées simples</a>
 <ul>
@@ -357,7 +357,7 @@ padding: 0.5em;
 <li><a href="#comparaison-liste-tableau-1"><span class="toc-section-number">4.4</span> Comparaison liste tableau</a></li>
 <li><a href="#remplissage-dune-liste-depuis-un-tableau-1"><span class="toc-section-number">4.5</span> Remplissage d’une liste depuis un tableau</a></li>
 </ul></li>
-<li><a href="#solution-des-exercices"><span class="toc-section-number">5</span> Solution des exercices</a>
+<li><a href="#solutions-des-exercices"><span class="toc-section-number">5</span> Solutions des exercices</a>
 <ul>
 <li><a href="#fonctions-de-base-1"><span class="toc-section-number">5.1</span> Fonctions de base</a></li>
 <li><a href="#ajouter-un-élément-au-début-1"><span class="toc-section-number">5.2</span> Ajouter un élément au début</a></li>
@@ -377,7 +377,7 @@ padding: 0.5em;
 <li>Les notes sont publiées dans <a href="https://www.mbillaud.fr/notes/" class="uri">https://www.mbillaud.fr/notes/</a></li>
 <li>Sources dans <a href="https://github.com/MichelBillaud/notes-diverses" class="uri">https://github.com/MichelBillaud/notes-diverses</a></li>
 </ul>
-<p>Première version 20 novembre 2022. Corrections typos 21 nov.</p>
+<p>Première version 20 novembre 2022. Corrections typos 22 nov.</p>
 <h1 data-number="1" id="pourquoi-ce-document"><span class="header-section-number">1</span> Pourquoi ce document</h1>
 <p>Le langage C n’est pas jeune, a plein de défauts, et est souvent très mal enseigné, surtout au regard des enjeux actuels : produire du code qui n’a pas trop d’erreurs.</p>
 <p>Pour cela, il convient de sensibiliser les débutants<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> qui découvrent la programmation en C<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> (les malheureux). Un point qui est très souvent négligé, c’est l’idée de tester systématiquement le code que l’on écrit.</p>
@@ -387,7 +387,7 @@ padding: 0.5em;
 <li>d’écrire les tests <strong>avant</strong> le code. Ca permet de réfléchir à ce que le code est censé faire, avant dêtre mentalement encombré par les détails de comment on envisage de le réaliser.</li>
 </ul>
 <p>Pour enseigner ça, il n’est pas utile de montrer un “framework de test” à des débutants. Les bibliothèques industrielles c’est très utile pour les professionnels, mais là on s’adresse à des débutants qui sont déjà largement perdus dans les bases de C. Consacrer du temps à appréhender l’utilisation d’un framework (une mystérieuse usine à gaz qui offre plein de possibilités), c’est autant d’heures en moins consacrées aux bases de la programmation et de l’algorithmique.</p>
-<p>En pratique, ils pourront à utiliser un framework le moment venu si jamais ils en ont besoin. Et ils apprendront d’autant plus vite qu’ils auront maîtrisé les bases de la programmation, sans être ralentis par l’apprentissage d’une usine à gaz.</p>
+<p>En pratique, ils pourront à utiliser un framework le moment venu si jamais ils en ont besoin. Ce qu’ils feront d’autant plus vite qu’ils auront maîtrisé les bases de la programmation, sans être ralentis par l’apprentissage d’une usine à gaz.</p>
 <p>Bref, ce document montre</p>
 <ul>
 <li>ce que fait <code>assert</code> ;</li>
@@ -425,9 +425,9 @@ demo-assert: demo-assert.c:8: main: Assertion `2+3 == 6&#39; failed.
 Abandon</code></pre>
 <p>Vous remarquez que</p>
 <ul>
-<li>le programme affiche un message d’erreur à propos d’une condition condition (assertion) qui s’est trouvée fausse à l’exécution ;</li>
+<li>le programme affiche un message d’erreur à propos d’une condition (assertion) qui s’est trouvée fausse à l’exécution ;</li>
 <li>le premier test (vérification <code>2+2 == 4</code>) a réussi, silencieusement ;</li>
-<li>l’exécution est abandonnée au premier échec (sinon le message “Fin” aurait été affiché.</li>
+<li>l’exécution est abandonnée au premier échec (sinon le message “Fin” aurait été affiché).</li>
 </ul>
 <p>En résumé : à l’exécution, l’appel <code>assert(condition)</code></p>
 <ul>
@@ -436,7 +436,7 @@ Abandon</code></pre>
 <li>sinon, passe à la suite.</li>
 </ul>
 <p>La macro prédéfinie <code>assert</code> fait partie du standard C. Les curieux trouveront dans l’annexe une <a href="#implémentation-dassert">implémentation simple</a>.</p>
-<h2 data-number="2.2" id="astuce-dutilisation"><span class="header-section-number">2.2</span> Astuce d’utilisation</h2>
+<h2 data-number="2.2" id="astuce-dutilisation-assertmessage-condition"><span class="header-section-number">2.2</span> Astuce d’utilisation : <code>assert(</code><em>message</em> <code>&amp;&amp;</code> <em>condition</em><code>)</code></h2>
 <p>Une astuce traditionnelle est d’ajouter une chaîne de caractères qui sert de commentaire dans l’assertion. Exemple</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a>    assert(<span class="st">&quot;cas de base&quot;</span> &amp;&amp; fib(<span class="dv">1</span>) == <span class="dv">1</span>);</span></code></pre></div>
 <p>Du point de vue du langage C</p>
@@ -449,10 +449,10 @@ Abandon</code></pre>
 <pre><code>fib: fib.c:13: tests_fib: Assertion `&quot;cas de base&quot; &amp;&amp; fib(1) == 1&#39; failed.
                                      -------------</code></pre>
 <p>et fournit <strong>immédiatement</strong> une indication supplémentaire, plutôt que d’avoir à aller consulter le fichier source à la recherche d’un commentaire expliquant la raison du test.</p>
-<p>Ça parait peu de choses, mais la compréhension des erreurs est une activité intellectuelle intense, dans laquelle une petite tâche annexe comme “ouvrir un autre fichier pour aller voir les commentaires” est une distraction qui fait perdre de la concentration. Et ce n’est vraiment pas le moment.</p>
-<p>Donc, on peut recommander de mettre un message dans les assertions.</p>
+<p>En pratique, la compréhension des erreurs est une activité intellectuelle intense, dans laquelle une petite tâche annexe comme “ouvrir un autre fichier pour aller voir les commentaires” est une distraction qui fait perdre de la concentration. Et ce n’est vraiment pas le moment.</p>
+<p>Donc, on recommande de mettre un message dans les assertions.</p>
 <h1 data-number="3" id="un-projet-traditionnel-les-listes-chainées-simples"><span class="header-section-number">3</span> Un projet traditionnel : les listes chainées simples</h1>
-<p>Ici on se place dans le cadre d’un projet traditionnel, écrire - à titre d’exercices -un certain nombre de fonctions qui agissent sur une liste de nombres.</p>
+<p>Ici on se place dans le cadre d’un projet traditionnel, écrire - à titre d’exercices - un certain nombre de fonctions qui agissent sur une liste chaînée de nombres.</p>
 <p>Nous allons le faire, en suivant une méthodologie de tests systématiques.</p>
 <h2 data-number="3.1" id="démarrage"><span class="header-section-number">3.1</span> Démarrage</h2>
 <p>Une liste est une suite de noeuds chaînés entre eux. Nous définissions deux types de données<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> :</p>
@@ -472,7 +472,7 @@ Abandon</code></pre>
 <li>dont le premier paramètre est toujours un pointeur sur une <code>List</code></li>
 </ul>
 <h2 data-number="3.2" id="fonctions-de-base-liste-vide"><span class="header-section-number">3.2</span> Fonctions de base : liste vide</h2>
-<p>Commençons par le début : une fonction (<code>sl_init</code>) qui initialise une liste. Pour vérifier qu’elle fonctionne, on écrit aussi une fonction qui regarde si la liste est vide.</p>
+<p>Commençons par le début : une fonction <code>sl_init</code> qui initialise une liste. Pour vérifier qu’elle fonctionne, on écrit aussi une fonction <code>sl_is_empty</code> qui regarde si la liste est vide.</p>
 <p>Si vous ne voyez pas comment faire, regardez la section “Indications” à la fin du document.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a><span class="dt">void</span> test_init()</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>{</span>
@@ -485,7 +485,7 @@ Abandon</code></pre>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a>{</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a>   ...</span>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a>}</span></code></pre></div>
-<p>Attention : on se permet d’appeler le paramètre <code>list</code> alors qu’il ne contient pas une structure <code>List</code>, mais <strong>l’adresse</strong> d’une telle structure.</p>
+<p>Attention : on se permet de nommer le paramètre <code>list</code> alors qu’il ne contient pas une structure <code>List</code>, mais <strong>l’adresse</strong> d’une telle structure.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
 <p><strong>Exercice</strong> : en ayant inclus <code>stdbool.h</code>, écrire :</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true"></a><span class="dt">bool</span>  sl_is_empty(<span class="dt">const</span> List * list)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true"></a>{</span>
@@ -496,14 +496,14 @@ Abandon</code></pre>
 <h2 data-number="3.3" id="ajouter-un-élément-au-début"><span class="header-section-number">3.3</span> Ajouter un élément au début</h2>
 <p>Pour cette fonction, on peut imaginer le test suivant</p>
 <ul>
-<li>mise en place
+<li>Mise en place d’une liste contenant (20, 30, 10) :
 <ul>
 <li>créer une liste vide</li>
 <li>ajouter la valeur 10 au début</li>
 <li>ajouter la valeur 30 au début</li>
 <li>ajouter la valeur 20 au début</li>
 </ul></li>
-<li>vérifications
+<li>Vérifications :
 <ul>
 <li>la liste a 3 éléments</li>
 <li>le premier est 20 (le dernier ajouté)</li>
@@ -527,7 +527,7 @@ Abandon</code></pre>
 <span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a>    assert(<span class="st">&quot;second de la liste&quot;</span>    &amp;&amp; sl_value_at(&amp;list, <span class="dv">1</span>) == <span class="dv">30</span>);</span>
 <span id="cb9-14"><a href="#cb9-14" aria-hidden="true"></a>    assert(<span class="st">&quot;troisième de la liste&quot;</span> &amp;&amp; sl_value_at(&amp;list, <span class="dv">2</span>) == <span class="dv">10</span>);</span>
 <span id="cb9-15"><a href="#cb9-15" aria-hidden="true"></a>}</span></code></pre></div>
-<p>en suivant la convention -raisonnable en C- d’indicer les éléments de la liste à partir de 0.</p>
+<p>en suivant la convention - raisonnable en C - d’indicer les éléments de la liste à partir de 0.</p>
 <p><strong>Exercice</strong> : partir du code suivant</p>
 <div class="sourceCode" id="cb10"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true"></a><span class="dt">void</span> sl_add_first(List *list, <span class="dt">int</span> value) </span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true"></a>{</span>
@@ -545,14 +545,14 @@ Abandon</code></pre>
 <span id="cb10-14"><a href="#cb10-14" aria-hidden="true"></a>}</span></code></pre></div>
 <p>Ici <code>assert</code> est utilisée pour faire des “stubs” (bouchons), c’est-à-dire écrire des fonctions syntaxiquement correctes (donc compilables), mais qui font juste acte de présence, sans faire le boulot.</p>
 <p>Le travail devient un cycle : compiler le source (qui est correct), exécuter, s’occuper de la première erreur qui apparaît, recommencer.</p>
-<p>On peut aussi utiliser une macro <code>TODO</code> pour faciliter l’écriture des stubs :</p>
+<p>On peut aussi utiliser une macro <code>TODO</code> (à faire) pour faciliter l’écriture des stubs :</p>
 <div class="sourceCode" id="cb11"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true"></a><span class="dt">int</span> sl_size(<span class="dt">const</span> List *list)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true"></a>{</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true"></a>    TODO(<span class="st">&quot;calcul de la taille d&#39;une liste&quot;</span>);</span>
 <span id="cb11-4"><a href="#cb11-4" aria-hidden="true"></a>}</span></code></pre></div>
-<p>Ce n’est pas un macro standard, on peut se la définir soi-même en s’inspirant du code d’<code>assert</code>. Voir <a href="#implémentation-TODO">code en annexe</a>.</p>
+<p><code>TODO</code> n’est malheureusement pas une macro standard, mais il est facile de définir soi-même en s’inspirant du code d’<code>assert</code>. Voir <a href="#implémentation-TODO">code en annexe</a>.</p>
 <h2 data-number="3.4" id="ajout-à-la-fin"><span class="header-section-number">3.4</span> Ajout à la fin</h2>
-<p>On donne inévitablement comme exercice l’ajout d’un élément en fin d’une liste chaînée simple. L’objectif est de faire manipuler les chaînages<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a>.</p>
+<p>On donne inévitablement comme exercice l’ajout d’un élément en fin d’une liste chaînée simple. L’objectif est de faire manipuler les chaînages<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a>.</p>
 <p>Voici le test</p>
 <div class="sourceCode" id="cb12"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true"></a><span class="dt">void</span> test_add_last()</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true"></a>{</span>
@@ -592,7 +592,7 @@ Abandon</code></pre>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true"></a>           &amp;&amp; sl_list_contains(&amp;list, expected, <span class="dv">3</span>));</span>
 <span id="cb14-12"><a href="#cb14-12" aria-hidden="true"></a></span>
 <span id="cb14-13"><a href="#cb14-13" aria-hidden="true"></a>}</span></code></pre></div>
-<p>Exercice : écrire la fonction</p>
+<p><strong>Exercice</strong> : écrire la fonction</p>
 <div class="sourceCode" id="cb15"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true"></a><span class="dt">bool</span> sl_list_contains(<span class="dt">const</span> List *list, <span class="dt">int</span> values[], <span class="dt">int</span> nb_values)</span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true"></a>{</span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true"></a></span>
@@ -605,8 +605,8 @@ Abandon</code></pre>
 <p>Pour simplifier, on peut imaginer une fonction qui ajoute un tableau de valeurs à la fin d’une liste.</p>
 <p>Exemple de test :</p>
 <ul>
-<li>on crée une liste avec les valeurs 11, 22, 33</li>
-<li>on y ajoute 44 et 55</li>
+<li>on crée une liste avec les valeurs 11, 22, 33 ;</li>
+<li>on y ajoute 44 et 55 ;</li>
 <li>on vérifie qu’on a bien 11, 22, 33, 44 et 55, dans cet ordre.</li>
 </ul>
 <div class="sourceCode" id="cb16"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true"></a><span class="dt">void</span> test_add_values() {</span>
@@ -624,7 +624,7 @@ Abandon</code></pre>
 <span id="cb16-13"><a href="#cb16-13" aria-hidden="true"></a>    <span class="dt">int</span> expected[] = { <span class="dv">11</span>, <span class="dv">22</span>, <span class="dv">33</span>, <span class="dv">44</span>, <span class="dv">55</span>};</span>
 <span id="cb16-14"><a href="#cb16-14" aria-hidden="true"></a>    assert(<span class="st">&quot;ajout tableau&quot;</span> &amp;&amp; sl_list_contains(&amp;list, expected, <span class="dv">5</span>));</span>
 <span id="cb16-15"><a href="#cb16-15" aria-hidden="true"></a>}</span></code></pre></div>
-<p>Exercice : écrire la fonction</p>
+<p><strong>Exercice</strong> : écrire la fonction</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true"></a><span class="dt">void</span> sl_add_values(List *list, <span class="dt">int</span> values[], <span class="dt">int</span> nb_values)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true"></a>{</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true"></a>   <span class="co">// A faire</span></span>
@@ -639,29 +639,29 @@ Abandon</code></pre>
 <h2 data-number="4.2" id="ajouter-un-élément-au-début-de-la-liste"><span class="header-section-number">4.2</span> Ajouter un élément au début de la liste</h2>
 <ul>
 <li>allouer un nouveau maillon, y mettre la valeur ;</li>
-<li>ce maillon est maintenant le premier :</li>
-<li>la chaîne de maillons qui existait est dans le suivant de ce maillon.</li>
+<li>ce maillon devient le premier ;</li>
+<li>la chaîne de maillons qui existait se retrouve à la suite de ce maillon.</li>
 </ul>
 <h2 data-number="4.3" id="ajouter-à-la-fin"><span class="header-section-number">4.3</span> Ajouter à la fin</h2>
 <ul>
-<li>Trouver le dernier maillon de la liste (si il existe)</li>
-<li>créer un nouveau maillon avec la valeur à ajouter</li>
+<li>Trouver le dernier maillon de la liste (si il existe),</li>
+<li>créer un nouveau maillon avec la valeur à ajouter,</li>
 <li>accrocher le nouveau maillon
 <ul>
-<li>soit comme premier de la liste si elle était vide</li>
+<li>soit comme premier de la liste si elle était vide,</li>
 <li>soit comme suivant du dernier maillon.</li>
 </ul></li>
 </ul>
 <p>Pour trouver le dernier maillon, vous pouvez faire une boucle avec une variable <code>n</code></p>
 <ul>
 <li>qui pointe successivement sur tous les maillons de la chaîne (comme pour le calcul de la taille),</li>
-<li>dans le corps de la boucle, vous notez l’ancienne valeur de <code>n</code> dans une variable <code>last</code>.</li>
+<li>dans le corps de la boucle, notez l’ancienne valeur de <code>n</code> dans une variable <code>last</code>.</li>
 </ul>
 <p>Ainsi, à la sortie de la boucle, on a dans <code>last</code> l’adresse du dernier maillon.</p>
-<p>A voir : initialisation de <code>last</code> ?</p>
+<p>À voir : initialisation de <code>last</code> ?</p>
 <h2 data-number="4.4" id="comparaison-liste-tableau-1"><span class="header-section-number">4.4</span> Comparaison liste tableau</h2>
-<p>Vous pouvez par exemple faire une boucle avec un index qui varie de 0 à la taille du tableau moins 1.</p>
-<p>Dans cette boucle, vous ferez aussi progresser un pointeur le long de la liste, et vous comparerez la valeur désignée par l’indice dans le tableau, et celle de l’élément pointé.</p>
+<p>Vous pouvez faire une boucle pour parcourir le tableau case par case.</p>
+<p>Dans cette boucle, vous ferez aussi progresser un pointeur le long de la liste, et vous comparerez le contenu d’une case, et d’un élement de la liste.</p>
 <p>Attention :</p>
 <ul>
 <li>si ce pointeur est <code>NULL</code> <em>dans</em> la boucle, la liste est trop courte.</li>
@@ -673,7 +673,7 @@ Abandon</code></pre>
 <p>Mais il y a un problème : pour le premier élément, <code>sl_add_last</code> n’exécute pas sa boucle. Pour le second, elle fait 1 tour. Pour le troisième, deux tours. Etc.</p>
 <p>Si on fait le total, pour ajouter 100 éléments, ça fera 0+1+2+….+99 = 4950 tours. Avec de grosses listes, Le temps nécessaire grandit comme le <strong>carré de la taille</strong> de la liste. Pour de grosses listes, c’est trop.</p>
 <p>Pour faire ça bien, dans <code>sl_add_values</code>, il faut se rappeler du dernier élément ajouté.</p>
-<h1 data-number="5" id="solution-des-exercices"><span class="header-section-number">5</span> Solution des exercices</h1>
+<h1 data-number="5" id="solutions-des-exercices"><span class="header-section-number">5</span> Solutions des exercices</h1>
 <h2 data-number="5.1" id="fonctions-de-base-1"><span class="header-section-number">5.1</span> Fonctions de base</h2>
 <div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdbool.h&gt;</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;assert.h&gt;</span></span>
@@ -872,7 +872,8 @@ Dans my-todo.c ligne 19 (fonction fib) code manquant : &quot;valeurs &gt; à 2&q
 <li id="fn1" role="doc-endnote"><p>Pour leurs enseignants c’est souvent trop tard.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2" role="doc-endnote"><p>L’idée de commencer à apprendre la programmation par un langage aussi rustique que bourré de défauts est clairement une abomination dans la deuxième décennie du troisième millénaire.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3" role="doc-endnote"><p>On utilise ici <code>typedef</code> pour simplifier l’écriture des déclarations de structures.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4" role="doc-endnote"><p>En pratique, si on a besoin souvent d’ajouter des valeurs à la fin d’une liste, c’est qu’une liste chaînée simple n’est pas la structure de données qui convient. Envisagez par exemple une liste avec un pointeur qui donne un accès direct au dernier élément (et peut-être une liste à double chaînage si on a besoin de retirer le dernier).<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4" role="doc-endnote"><p>C’est un abus de langage courant, mais un abus quand même.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5" role="doc-endnote"><p>En pratique, si on a besoin souvent d’ajouter des valeurs à la fin d’une liste, c’est qu’une liste chaînée simple n’est pas la structure de données qui convient. Envisagez par exemple une liste avec un pointeur qui donne un accès direct au dernier élément (et peut-être une liste à double chaînage si on a besoin de retirer le dernier).<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 </body>
