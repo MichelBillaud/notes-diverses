@@ -5,18 +5,18 @@ CFLAGS += -D_XOPEN_SOURCE=700
 CFLAGS += -g
 
 
-TESTS += pipeline-general
-
-
+EXECS += pipeline-recursif
+EXECS +=  pipeline-general
 EXECS += demo-pipeline
 EXECS += demo-pipe demo-fork demo-pipeline
-EXECS += demo-exec prog shell-zero shell-un demo-exec-dup   
+EXECS += demo-exec shell-zero 
+EXECS += shell-un demo-exec-dup   
 
 
 all : $(EXECS)
 
-run : $(TESTS)
-	$(foreach p, $(TESTS), ./$(p))
+run : $(EXECS)
+	./$<
 
 #-include $(wildcard *.d)
 

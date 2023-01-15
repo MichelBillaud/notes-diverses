@@ -34,9 +34,15 @@ $n-1$ tuyaux qui interviennent dans un "pipeline" de $n$ commandes.
 Nous allons voir après quelques rappels.
 
 
+**Attention** : pour simplifier la présentation, dans le code
+ci-dessous on ne vérifie jamais que les appels systèmes ont réussi.
+Par exemple `fork`, `pipe` etc. peuvent théoriquement échouer, et
+retourner -1 dans ce cas.  En vrai, il faudrait vérifier.
+
+
 # Rappels
 
-## Exécuter une commande : `exec`
+## Exécuter une commande : `execv`
 
 Le programme suivant
 
@@ -65,12 +71,12 @@ int main()
 }
 ~~~
 
-La commande `execv` prend comme paramètres
+La fonction `execv` prend comme paramètres
 
 - le chemin d'accès d'un fichier exécutable,
 - une liste de paramètres terminée par le pointeur `NULL`.
 
-Il existe des variantes de cette commande, notamment `execvp` qui
+Il existe des variantes de cette fonction, notamment `execvp` qui
 recherche l'exécutable indiqué en premier paramètre dans les répertoires
 qui figurent dans la variable d'environnement `PATH`. Lire la page de
 manuel.
@@ -89,7 +95,7 @@ fonction `main`, qui a comme prototype `int main(int argc, char
 Le code qui s'exécute ayant été remplacé, la fin de l'exécution de
 `/bin/ls` termine le processus : on ne revient pas de `execv`.
 
-### Echec de `execv()
+### Échec de `execv()
 
 Si le fichier indiqué en premier paramètre est absent, pas accessible,
 pas exécutable etc. l'appel à `execv` retourne, et les instructions
@@ -114,14 +120,14 @@ La plupart des commandes
 
 - lisent des données sur leur entrée standard, qui a le
   descripteur 0 (constante `STDIN_FILENO`),
-- écrivent des résultats sur le sortie standard (descripteur
+- écrivent des résultats sur la sortie standard (descripteur
   `STDOUT_FILENO` = 1),
 - affichent des messages sur la sortie d'erreur (`STDERR_FILENO` = 2).
   2).
 
 L'exemple ci-dessous utilise l'appel `dup2` pour que la commande `tr`
 (avec les paramètres pour convertir les minuscules en majuscules),
-s'exécute avec son entrée standard connectée à un fichier  :
+s'exécute avec son entrée standard redirigée vers un fichier  :
 
 
 ~~~C
@@ -177,7 +183,7 @@ fichier de données.
 - Préalablement, un `close` de `file_fd` évite une **fuite de
 descripteur** : on ne veut transmettre que les descripteurs 0, 1 et 2.
 
-C'est ce problème de fuite de descripteur qui complique le problème de
+Ce problème de fuite de descripteur va compliquer la
 réalisation d'un pipeline.
 
 **Exécution** :
@@ -304,7 +310,7 @@ qui contiendra les informations sur la fin du processus fils. Dans
 `explain_child_status`, diverses macros permettent
 	- de savoir si il s'est terminé par `exit()` ou en recevant un
       signal qui a provoqué sa fin,
-	- de connaitre le code de retour dans le premier cas, ou le numéro
+	- de connaître le code de retour dans le premier cas, ou le numéro
       du signal.
 
 
@@ -407,7 +413,7 @@ int main(int argc, char *argv[])
 
 **Explications** :
 
-- la commande `pipe(pipe_fd)` crée un tuyau et place les descripteurs
+- l'appel système `pipe(pipe_fd)` crée un tuyau et place les descripteurs
 dans le tableau
 - le premier fils hérite des deux descripteurs 
 	- il duplique le descripteur d'écriture, pour que la sortie de la
@@ -428,7 +434,7 @@ immédiatement après le lancement du premier fils,  ce qui dispenserait
 d'avoir à le faire dans aussi le code du second. Mais on a privilégié
 ici la simplicité du code.
 
-----------
+
 
 
 ### Résumé : les mécanismes Unix utilisés
@@ -559,8 +565,8 @@ lancer processus fils:
 fermer T2[0] et T3[1]                  // 3
 ~~~
 
-pour la dernière commande, on ne crée pas de tuyau puis qu'on écrit sur la
-sortie standard.
+pour la dernière commande, on ne crée pas de tuyau puisqu'on écrit
+sur la sortie standard.
 
 
 ~~~
@@ -574,15 +580,16 @@ fermer T3[0]
 ## En termes de descripteurs
 
 
-Nous allons nous intéresser aux descripteurs plutot qu'aux tableaux, en 
-passant par des variables, on écrit la création d'une tuyau sous la forme
+Nous allons nous intéresser aux descripteurs plutot qu'aux tableaux,
+en passant par des variables, on écrit la création d'une tuyau sous la
+forme
 
 ~~~
 créer tuyau (sortie_tuyau, entrée_tuyau)
 ~~~
 
-en indiquant les deux variables qui contiennent les descripteurs d'écriture 
-et de lecture.
+en indiquant les deux variables qui contiennent les descripteurs
+d'écriture et de lecture.
 
 Une autre variable nous servira à désigner le descripteur
 utilisé en lecture par le prochain processus.
@@ -810,7 +817,7 @@ struct Pipeline {
 };
 ~~~
 
-La fonction main de l'exemple précédent se ramènemerait à 
+La fonction `main` de l'exemple précédent se ramènerait à 
 
 
 ~~~C
@@ -909,3 +916,34 @@ void execute_pipeline(const struct Pipeline *pipeline)
 A la fin, à la place de `waitpid`, on emploie `wait` qui attend la fin
 d'un processus fils quelconque, sans devoir préciser son  identifiant.
 
+
+# Exercice : une solution récursive
+
+On peut remarquer qu'un pipeline est composé
+
+- soit d'une commande seule
+- soit d'une commande qui envoie sa sortie standard dans un pipe qui
+  est lu par le pipeline des commandes suivantes.
+
+
+Ca peut donner l'idée d'une solution récursive, une fonction qui prend
+comme paramètres :
+
+- une liste de commandes,
+- des descripteurs pour l'entrée et la sortie du pipeline.
+
+Schématiquement : 
+
+~~~
+pour exécuter une liste de commandes:
+	si la liste contient une seule commande:
+        exécuter cette commande
+	sinon:
+	    créer un tuyau
+		lancer un processus fils qui:
+		     redirige la sortie vers le tuyau
+		     exécute la première commande
+		rediriger l'entrée vers le tuyau
+		exécuter le reste des commandes
+~~~
+       

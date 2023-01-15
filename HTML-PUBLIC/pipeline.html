@@ -333,10 +333,10 @@ padding: 0.5em;
 <li><a href="#objectif"><span class="toc-section-number">1</span> Objectif</a></li>
 <li><a href="#rappels"><span class="toc-section-number">2</span> Rappels</a>
 <ul>
-<li><a href="#exécuter-une-commande-exec"><span class="toc-section-number">2.1</span> Exécuter une commande : <code>exec</code></a>
+<li><a href="#exécuter-une-commande-execv"><span class="toc-section-number">2.1</span> Exécuter une commande : <code>execv</code></a>
 <ul>
 <li><a href="#succès-de-execv"><span class="toc-section-number">2.1.1</span> Succès de <code>execv()</code></a></li>
-<li><a href="#echec-de-execv"><span class="toc-section-number">2.1.2</span> Echec de `execv()</a></li>
+<li><a href="#échec-de-execv"><span class="toc-section-number">2.1.2</span> Échec de `execv()</a></li>
 </ul></li>
 <li><a href="#remarques"><span class="toc-section-number">2.2</span> Remarques</a></li>
 <li><a href="#redirection-dup2"><span class="toc-section-number">2.3</span> Redirection : <code>dup2</code></a></li>
@@ -358,6 +358,7 @@ padding: 0.5em;
 <li><a href="#principe"><span class="toc-section-number">4.1</span> Principe</a></li>
 <li><a href="#un-code-plus-général"><span class="toc-section-number">4.2</span> Un code plus général</a></li>
 </ul></li>
+<li><a href="#exercice-une-solution-récursive"><span class="toc-section-number">5</span> Exercice : une solution récursive</a></li>
 </ul>
 </nav>
 <h1 data-number="1" id="objectif"><span class="header-section-number">1</span> Objectif</h1>
@@ -375,8 +376,9 @@ padding: 0.5em;
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="fu">ls</span> -l <span class="kw">|</span> <span class="fu">grep</span> -v ^d <span class="kw">|</span> <span class="fu">more</span></span></code></pre></div>
 <p>La difficulté est essentiellement d’utiliser correctement les <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math> tuyaux qui interviennent dans un “pipeline” de <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> commandes.</p>
 <p>Nous allons voir après quelques rappels.</p>
+<p><strong>Attention</strong> : pour simplifier la présentation, dans le code ci-dessous on ne vérifie jamais que les appels systèmes ont réussi. Par exemple <code>fork</code>, <code>pipe</code> etc. peuvent théoriquement échouer, et retourner -1 dans ce cas. En vrai, il faudrait vérifier.</p>
 <h1 data-number="2" id="rappels"><span class="header-section-number">2</span> Rappels</h1>
-<h2 data-number="2.1" id="exécuter-une-commande-exec"><span class="header-section-number">2.1</span> Exécuter une commande : <code>exec</code></h2>
+<h2 data-number="2.1" id="exécuter-une-commande-execv"><span class="header-section-number">2.1</span> Exécuter une commande : <code>execv</code></h2>
 <p>Le programme suivant</p>
 <ul>
 <li>affiche un message</li>
@@ -400,12 +402,12 @@ padding: 0.5em;
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a>    perror(<span class="st">&quot;échec lancement&quot;</span>);</span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a>    exit(EXIT_FAILURE);</span>
 <span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a>}</span></code></pre></div>
-<p>La commande <code>execv</code> prend comme paramètres</p>
+<p>La fonction <code>execv</code> prend comme paramètres</p>
 <ul>
 <li>le chemin d’accès d’un fichier exécutable,</li>
 <li>une liste de paramètres terminée par le pointeur <code>NULL</code>.</li>
 </ul>
-<p>Il existe des variantes de cette commande, notamment <code>execvp</code> qui recherche l’exécutable indiqué en premier paramètre dans les répertoires qui figurent dans la variable d’environnement <code>PATH</code>. Lire la page de manuel.</p>
+<p>Il existe des variantes de cette fonction, notamment <code>execvp</code> qui recherche l’exécutable indiqué en premier paramètre dans les répertoires qui figurent dans la variable d’environnement <code>PATH</code>. Lire la page de manuel.</p>
 <h3 data-number="2.1.1" id="succès-de-execv"><span class="header-section-number">2.1.1</span> Succès de <code>execv()</code></h3>
 <p>Normalement le fichier indiqué (<code>/bin/ls</code>) sera chargé dans la mémoire du processus en remplacement du code de <code>demo-exec</code>, et sa fonction <code>main</code>, qui a comme prototype <code>int main(int argc, char **argv)</code> sera appelée avec</p>
 <ul>
@@ -413,7 +415,7 @@ padding: 0.5em;
 <li>la valeur 2 dans <code>argc</code> (argument count)</li>
 </ul>
 <p>Le code qui s’exécute ayant été remplacé, la fin de l’exécution de <code>/bin/ls</code> termine le processus : on ne revient pas de <code>execv</code>.</p>
-<h3 data-number="2.1.2" id="echec-de-execv"><span class="header-section-number">2.1.2</span> Echec de `execv()</h3>
+<h3 data-number="2.1.2" id="échec-de-execv"><span class="header-section-number">2.1.2</span> Échec de `execv()</h3>
 <p>Si le fichier indiqué en premier paramètre est absent, pas accessible, pas exécutable etc. l’appel à <code>execv</code> retourne, et les instructions suivantes sont exécutées.</p>
 <p>C’est l’occasion d’afficher un message d’erreur.</p>
 <h2 data-number="2.2" id="remarques"><span class="header-section-number">2.2</span> Remarques</h2>
@@ -425,10 +427,10 @@ padding: 0.5em;
 <p>La plupart des commandes</p>
 <ul>
 <li>lisent des données sur leur entrée standard, qui a le descripteur 0 (constante <code>STDIN_FILENO</code>),</li>
-<li>écrivent des résultats sur le sortie standard (descripteur <code>STDOUT_FILENO</code> = 1),</li>
+<li>écrivent des résultats sur la sortie standard (descripteur <code>STDOUT_FILENO</code> = 1),</li>
 <li>affichent des messages sur la sortie d’erreur (<code>STDERR_FILENO</code> = 2). 2).</li>
 </ul>
-<p>L’exemple ci-dessous utilise l’appel <code>dup2</code> pour que la commande <code>tr</code> (avec les paramètres pour convertir les minuscules en majuscules), s’exécute avec son entrée standard connectée à un fichier :</p>
+<p>L’exemple ci-dessous utilise l’appel <code>dup2</code> pour que la commande <code>tr</code> (avec les paramètres pour convertir les minuscules en majuscules), s’exécute avec son entrée standard redirigée vers un fichier :</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">// demo-exec-dup.c</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
@@ -463,7 +465,7 @@ padding: 0.5em;
 <li>Les descripteurs ouverts le restent lors de l’appel de <code>execv</code> : la commande <code>tr</code> s’exécute donc avec son entrée standard reliée au fichier de données.</li>
 <li>Préalablement, un <code>close</code> de <code>file_fd</code> évite une <strong>fuite de descripteur</strong> : on ne veut transmettre que les descripteurs 0, 1 et 2.</li>
 </ul>
-<p>C’est ce problème de fuite de descripteur qui complique le problème de réalisation d’un pipeline.</p>
+<p>Ce problème de fuite de descripteur va compliquer la réalisation d’un pipeline.</p>
 <p><strong>Exécution</strong> :</p>
 <p>Le programme affiche le code source en majuscules :</p>
 <pre><code># lancement demo-exec-dup.c
@@ -560,7 +562,7 @@ padding: 0.5em;
 <li>Le second paramètre de <code>waitpid</code> est l’adresse d’un entier qui contiendra les informations sur la fin du processus fils. Dans <code>explain_child_status</code>, diverses macros permettent
 <ul>
 <li>de savoir si il s’est terminé par <code>exit()</code> ou en recevant un signal qui a provoqué sa fin,</li>
-<li>de connaitre le code de retour dans le premier cas, ou le numéro du signal.</li>
+<li>de connaître le code de retour dans le premier cas, ou le numéro du signal.</li>
 </ul></li>
 </ol>
 <h2 data-number="2.5" id="faire-communiquer-deux-commandes-par-pipe"><span class="header-section-number">2.5</span> Faire communiquer deux commandes par <code>pipe</code></h2>
@@ -623,7 +625,7 @@ padding: 0.5em;
 <span id="cb9-46"><a href="#cb9-46" aria-hidden="true"></a>}</span></code></pre></div>
 <p><strong>Explications</strong> :</p>
 <ul>
-<li>la commande <code>pipe(pipe_fd)</code> crée un tuyau et place les descripteurs dans le tableau</li>
+<li>l’appel système <code>pipe(pipe_fd)</code> crée un tuyau et place les descripteurs dans le tableau</li>
 <li>le premier fils hérite des deux descripteurs
 <ul>
 <li>il duplique le descripteur d’écriture, pour que la sortie de la commande <code>date</code> se fasse dans le tuyau ;</li>
@@ -641,7 +643,6 @@ padding: 0.5em;
 </ul></li>
 </ul>
 <p><strong>Remarque :</strong> Comme le descripteur d’écriture <code>pipe_fd[1]</code> n’est utilisé que par le premier processus fils, le processus père pourrait le refermer immédiatement après le lancement du premier fils, ce qui dispenserait d’avoir à le faire dans aussi le code du second. Mais on a privilégié ici la simplicité du code.</p>
-<hr />
 <h3 data-number="2.5.1" id="résumé-les-mécanismes-unix-utilisés"><span class="header-section-number">2.5.1</span> Résumé : les mécanismes Unix utilisés</h3>
 <ul>
 <li><code>fork()</code> crée un processus “fils” qui est une copie de celui qui l’appelle (= père). Il retourne 0 au fils, et le numéro du fils au père. Les descripteurs ouverts sont partagés.</li>
@@ -722,7 +723,7 @@ lancer processus fils:
     - lit sur T2[0]
     - écrit dans T3[1]
 fermer T2[0] et T3[1]                  // 3</code></pre>
-<p>pour la dernière commande, on ne crée pas de tuyau puis qu’on écrit sur la sortie standard.</p>
+<p>pour la dernière commande, on ne crée pas de tuyau puisqu’on écrit sur la sortie standard.</p>
 <pre><code>lancer processus fils:
     exécuter D, qui 
     - lit sur T3[0]
@@ -904,7 +905,7 @@ fermer entrée</code></pre>
 <span id="cb22-7"><a href="#cb22-7" aria-hidden="true"></a>    <span class="dt">int</span> nb_steps;</span>
 <span id="cb22-8"><a href="#cb22-8" aria-hidden="true"></a>    <span class="kw">struct</span> Step *steps;</span>
 <span id="cb22-9"><a href="#cb22-9" aria-hidden="true"></a>};</span></code></pre></div>
-<p>La fonction main de l’exemple précédent se ramènemerait à</p>
+<p>La fonction <code>main</code> de l’exemple précédent se ramènerait à</p>
 <div class="sourceCode" id="cb23"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true"></a><span class="dt">int</span> main()</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true"></a>{</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true"></a>    <span class="kw">struct</span> Pipeline pipeline = {</span>
@@ -988,5 +989,27 @@ fermer entrée</code></pre>
 <span id="cb24-39"><a href="#cb24-39" aria-hidden="true"></a>    }</span>
 <span id="cb24-40"><a href="#cb24-40" aria-hidden="true"></a>}</span></code></pre></div>
 <p>A la fin, à la place de <code>waitpid</code>, on emploie <code>wait</code> qui attend la fin d’un processus fils quelconque, sans devoir préciser son identifiant.</p>
+<h1 data-number="5" id="exercice-une-solution-récursive"><span class="header-section-number">5</span> Exercice : une solution récursive</h1>
+<p>On peut remarquer qu’un pipeline est composé</p>
+<ul>
+<li>soit d’une commande seule</li>
+<li>soit d’une commande qui envoie sa sortie standard dans un pipe qui est lu par le pipeline des commandes suivantes.</li>
+</ul>
+<p>Ca peut donner l’idée d’une solution récursive, une fonction qui prend comme paramètres :</p>
+<ul>
+<li>une liste de commandes,</li>
+<li>des descripteurs pour l’entrée et la sortie du pipeline.</li>
+</ul>
+<p>Schématiquement :</p>
+<pre><code>pour exécuter une liste de commandes:
+    si la liste contient une seule commande:
+        exécuter cette commande
+    sinon:
+        créer un tuyau
+        lancer un processus fils qui:
+             redirige la sortie vers le tuyau
+             exécute la première commande
+        rediriger l&#39;entrée vers le tuyau
+        exécuter le reste des commandes</code></pre>
 </body>
 </html>
