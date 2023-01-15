@@ -1,6 +1,6 @@
 % Notes diverses
 % Michel Billaud (`michel.billaud@laposte.net`)
-% 20 Novembre 2022
+% 15 janvier 2023
 
 
 # Licence
@@ -13,6 +13,38 @@ Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France]
 
 - Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
+
+#  Réalisation d'un pipeline en C
+
+La réalisation d'un mini-*shell* (interprète de commandes) est un
+projet classique de programmation système en C.
+
+Dans sa version la plus simpliste, un shell est une boucle qui
+
+- affiche une chaîne d'invite (*prompt*),
+- lit **une** commande, 
+- lance son exécution,
+- et recommence.
+
+La réalisation d'un tel programme n'est pas très compliquée.
+
+Là où ça se gâte un peu, c'est si on veut exécuter des "pipelines" de
+commandes, c'est-à-dire plusieurs commandes dont la sortie standard
+est redirigée vers l'entrée de la suivante, comme dans
+
+~~~bash
+ls -l | grep -v ^d | more
+~~~
+
+La difficulté est essentiellement d'utiliser correctement les $n-1$
+tuyaux qui interviennent dans un "pipeline" de $n$ commandes, en les
+ouvrant ou fermant ni trop tôt, ni trop tard. Tous en évitant les
+fuites de descripteurs, etc.
+
+
+Document : [pipeline](pipeline.html)
+
+
 
 # Méthodologie de la programmation, tests, langage C
 

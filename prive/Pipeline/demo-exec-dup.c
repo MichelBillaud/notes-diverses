@@ -12,15 +12,11 @@ int main()
 {
     printf("# lancement " __FILE__ "\n");
 
-    char *path = "/bin/tr";
-    char *arguments[] = { "tr", "a-z", "A-Z",  NULL};
+    int file_fd = open("demo-exec-dup.c", O_RDONLY);
+    dup2(file_fd, STDOUT_FILENO);
+    close(file_fd);
     
-    int fd = open("demo-exec-dup.c", O_RDONLY);
-    dup2(fd, 0);
-    close(fd);
-    
-    execv(path, arguments);
-    close(fd);
+    execv("/bin/tr", (char *[]){ "tr", "a-z", "A-Z",  NULL} );
 
     perror("échec lancement");
     exit(EXIT_FAILURE);

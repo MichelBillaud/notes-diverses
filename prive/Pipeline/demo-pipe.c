@@ -10,18 +10,17 @@
 
 #include <fcntl.h>
 
-
 int main(int argc, char *argv[])
 {
-    int fd[2];
+    int pipe_fd[2];
     
-    pipe(fd);
+    pipe(pipe_fd);
 
     pid_t date_pid = fork();
     if (date_pid == 0) {
-        dup2(fd[1], STDOUT_FILENO);
-        close(fd[0]);
-        close(fd[1]);
+        dup2(pipe_fd[1], STDOUT_FILENO);
+        close(pipe_fd[0]);
+        close(pipe_fd[1]);
         execv("/bin/date", (char *[]){"date", NULL}); 
         perror("échec lancement de date");
         exit(EXIT_FAILURE);
@@ -29,16 +28,16 @@ int main(int argc, char *argv[])
     
     pid_t tr_pid = fork();
     if (tr_pid == 0) {
-        dup2(fd[0], STDIN_FILENO);
-        close(fd[0]);
-        close(fd[1]);
+        dup2(pipe_fd[0], STDIN_FILENO);
+        close(pipe_fd[0]);
+        close(pipe_fd[1]);
         execv("/bin/tr", (char *[]){"tr", "a-z", "A-Z", NULL}); 
         perror("échec lancement de tr");
         exit(EXIT_FAILURE);
     }
 
-    close(fd[0]);
-    close(fd[1]);
+    close(pipe_fd[0]);
+    close(pipe_fd[1]);
     waitpid(date_pid, NULL, 0);
     waitpid(tr_pid, NULL, 0);
     

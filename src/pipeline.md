@@ -1,6 +1,6 @@
-% Réalisation d'un pipeline rb
+% Réalisation d'un pipeline en C
 % Michel Billaud (michel.billaud@laposte.net)
-% 6 janvier 2023
+% 15 janvier 2023
  
 # Objectif
 
@@ -55,7 +55,7 @@ int main()
 {
     printf("# lancement " __FILE__ "\n");
 
-    char *path = "/bin/ls";
+    char *path        = "/bin/ls";
     char *arguments[] = { "ls", "/tmp", NULL};
 
     execv(path, arguments);
@@ -67,8 +67,14 @@ int main()
 
 La commande `execv` prend comme paramètres
 
-- le chemin d'accès d'un fichier exécutable
+- le chemin d'accès d'un fichier exécutable,
 - une liste de paramètres terminée par le pointeur `NULL`.
+
+Il existe des variantes de cette commande, notamment `execvp` qui
+recherche l'exécutable indiqué en premier paramètre dans les répertoires
+qui figurent dans la variable d'environnement `PATH`. Lire la page de
+manuel.
+
 
 ### Succès de `execv()`
 
@@ -106,11 +112,11 @@ retournant un code non nul).
 
 La plupart des commandes
 
-- lisent des données sur leur entrée standard (`stdin`), qui a le
-  descripteur 0,
-- écrivent des résultats sur le sortie standard (`stdout`, descripteur
-  1),
-- affichent des messages sur la sortie d'erreur (`stderr`, descripteur
+- lisent des données sur leur entrée standard, qui a le
+  descripteur 0 (constante `STDIN_FILENO`),
+- écrivent des résultats sur le sortie standard (descripteur
+  `STDOUT_FILENO` = 1),
+- affichent des messages sur la sortie d'erreur (`STDERR_FILENO` = 2).
   2).
 
 L'exemple ci-dessous utilise l'appel `dup2` pour que la commande `tr`
@@ -133,20 +139,24 @@ int main()
 {
     printf("# lancement " __FILE__ "\n");
 
-    char *path = "/bin/tr";
-    char *arguments[] = { "tr", "a-z", "A-Z",  NULL};
+    int file_fd = open("demo-exec-dup.c", O_RDONLY);
+    dup2(file_fd, STDOUT_FILENO);
+    close(file_fd);
     
-    int fd = open("demo-exec-dup.c", O_RDONLY);
-    dup2(fd, 0);
-    close(fd);
-    
-    execv(path, arguments);
+    execv("/bin/tr", (char *[]){ "tr", "a-z", "A-Z",  NULL} );
 
     perror("échec lancement");
     exit(EXIT_FAILURE);
 
 }
 ~~~
+
+Remarque : Dans `execv("/bin/tr", (char *[]){"tr", "a-z", "A-Z",
+NULL});` on utilise un "tableau anonyme" en C. Le contenu (entre
+accolades) est précédé par le type du tableau (entre
+parenthèses). Ici, c'est dans le but de résumer l'appel d'`execv` à
+une seule ligne, sans botter en touche sur des constantes, pour rendre
+plus visible la gestion des descripteurs (`dup2`, `close`).
 
 
 **Explications :**
@@ -158,12 +168,13 @@ lecture ou de l'écriture, etc.
 - Cette structure de données est identifiée par un numéro, le
   **descripteur de fichier** ouvert. En général le plus petit numéro non
   utilisé, sans doute 3 ici.
-- L'appel `dup2(fd, 0)`  fait en sorte que le descripteur 0 conduise au
-même fichier que le 3 (le descripteur 0 est fermé préalablement).
+- L'appel `dup2(file_fd, STDIN_FILENO)` fait en sorte que le
+descripteur 0 conduise au même fichier que le 3 (le descripteur 0 est
+fermé préalablement).
 - Les descripteurs ouverts le restent lors de l'appel de `execv` : la
-commande `tr` s'exécute donc avec son entrée standard (0) reliée au
+commande `tr` s'exécute donc avec son entrée standard  reliée au
 fichier de données.
-- Préalablement, un `close` de `fd` évite une **fuite de
+- Préalablement, un `close` de `file_fd` évite une **fuite de
 descripteur** : on ne veut transmettre que les descripteurs 0, 1 et 2.
 
 C'est ce problème de fuite de descripteur qui complique le problème de
@@ -211,13 +222,12 @@ créé à cet effet.
 
 void execute_task()
 {
-    char *path = "/bin/tr";
-    char *arguments[] = { "tr", "a-z", "A-Z",  NULL};
     int fd = open("demo-fork.c", O_RDONLY);
-    dup2(fd, 0);
+	dup2(fd, STDOUT_FILENO);
     close(fd);
-    execv(path, arguments);
-    // en cas de problème pour lancer tr
+    
+    execv("/bin/tr", (char *[]){ "tr", "a-z", "A-Z",  NULL} );
+	// en cas de problème pour lancer tr
     perror("erreur lancement commande tr");
     exit(EXIT_FAILURE);
 }
@@ -348,6 +358,7 @@ Voici le source :
 
 ~~~C
 // demo-pipe.c
+// demo-pipe.c
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -361,15 +372,15 @@ Voici le source :
 
 int main(int argc, char *argv[])
 {
-    int fd[2];
+    int pipe_fd[2];
     
-    pipe(fd);
+    pipe(pipe_fd);
 
     pid_t date_pid = fork();
     if (date_pid == 0) {
-        dup2(fd[1], 1);
-        close(fd[0]);
-        close(fd[1]);
+        dup2(pipe_fd[1], STDOUT_FILENO);
+        close(pipe_fd[0]);
+        close(pipe_fd[1]);
         execv("/bin/date", (char *[]){"date", NULL}); 
         perror("échec lancement de date");
         exit(EXIT_FAILURE);
@@ -377,16 +388,16 @@ int main(int argc, char *argv[])
     
     pid_t tr_pid = fork();
     if (tr_pid == 0) {
-        dup2(fd[0], 0);
-        close(fd[0]);
-        close(fd[1]);
+        dup2(pipe_fd[0], STDIN_FILENO);
+        close(pipe_fd[0]);
+        close(pipe_fd[1]);
         execv("/bin/tr", (char *[]){"tr", "a-z", "A-Z", NULL}); 
         perror("échec lancement de tr");
         exit(EXIT_FAILURE);
     }
 
-    close(fd[0]);
-    close(fd[1]);
+    close(pipe_fd[0]);
+    close(pipe_fd[1]);
     waitpid(date_pid, NULL, 0);
     waitpid(tr_pid, NULL, 0);
     
@@ -394,11 +405,10 @@ int main(int argc, char *argv[])
 }
 ~~~
 
-
 **Explications** :
 
-- la commande `pipe(fd)` crée un tuyau et place les descripteurs dans le
-tableau
+- la commande `pipe(pipe_fd)` crée un tuyau et place les descripteurs
+dans le tableau
 - le premier fils hérite des deux descripteurs 
 	- il duplique le descripteur d'écriture, pour que la sortie de la
       commande `date` se fasse dans le tuyau ;
@@ -412,297 +422,43 @@ tableau
   - attend la fin de l'exécution des deux fils.
   
 **Remarque :**
-
-- comme `fd[1]` n'est utilisé que par le premier fils, le
-processus père pourrait fermer le descripteur d'écriture `fd[1]` plus
-tôt, juste après avoir lancé le premier filsn, ce qui dispenserait
+Comme le descripteur d'écriture `pipe_fd[1]` n'est utilisé que par
+le premier processus fils, le processus père pourrait le refermer
+immédiatement après le lancement du premier fils,  ce qui dispenserait
 d'avoir à le faire dans aussi le code du second. Mais on a privilégié
-la simplicité du code.
-
-**NOTES** :
-
-- il serait sans doute préférable s'employer les constantes 
-`STDIN_FILENO` et `STDOUT_FILENO`, dans `dup2(fd[0], STDIN_FILENO);` 
-- dans `execv("/bin/tr", (char *[]){"tr", "a-z", "A-Z", NULL});` on
-voit un exemple de "tableau anonyme" en C. Le contenu (entre
-accolades) est précédé par le type du tableau (entre parenthèses).
-- Ici cela permet de résumer l'appel d'`execv` à une seule ligne, sans
-botter en touche sur des constantes, pour rendre plus visible la
-gestion des descripteurs (`dup2`, `close`) par les processus fils.
-
-
+ici la simplicité du code.
 
 ----------
 
-# Version 0 : un shell simple
 
-
-## Analyse de la ligne
-
-Cette première version n'exécute pas vraiment les commandes,
-elle montre essentiellement
-
-- comment faire la boucle avec `getline()`, qui lit une ligne de
-  taille arbitraire ;
-- comment décomposer la ligne en "tableau d'arguments",
-
-c'est-à-dire à partir d'une ligne comme
-
-> `char ligne = "  /bin/ls   -al  /tmp";`
-
-construire un tableau (alloué dynamiquement)
-
-`char ** tableau = { "/bin/ls", "-al", "/tmp", NULL};`
-
-contenant une copie des différents "mots" de la ligne, et terminé par
-un pointeur nul.
-
-
-
-~~~C
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-
-#include <assert.h>
-
-#include <ctype.h>
-#include <string.h>
-
-#define SHELL_NAME "Shell Zero V1"
-
-
-void print_prompt(int numero)
-{
-    printf("%d> ", numero);
-}
-
-/**
- * returns an array of pointers to copies of
- * the "words" extracted from a line.
- *
- * Words in the line are separated by spaces.
- * The array and copies are dynamically allocated. The array
- * contains a NULL pointer after the copies.
- *
- * @param line a nul terminated string
- * @return a dynamically array of pointers do strings
-*/
-
-char ** split_line(const char line[])
-{
-    int nb_args = 0;
-    int max_args = 4;
-    char **args = malloc(max_args * sizeof(char *));
-
-    const char *start = NULL;
-
-    for (const char *p = line; *p != '\0'; p++) {
-        if (start) {
-            if (isspace(*p)) { // end of a word detected
-                // extend array if needed
-                if (nb_args + 1>  max_args) {
-                    max_args = 2 * max_args;
-                    args = realloc(args, max_args * sizeof(char *));
-                }
-                // add string copy
-                args[nb_args] =  strndup(start, p - start);
-                nb_args += 1;
-                start = NULL;;
-            }
-        } else if (! isspace(*p)) { // start of a new word
-            start = p;
-        }
-    }
-    assert(start == NULL);
-    // no need to worry about the last word, as the line contains a
-    // \r ou \n char (which ends the last word) before the nul terminator
-
-    args[nb_args] = NULL;
-    return args;
-}
-
-void free_array_of_strings(char **args)
-{
-    for (char **a = args; *a != NULL; a++) {
-        free(*a);
-    }
-    free(args);
-}
-
-void fake_execute_command(char ** args)
-{
-    printf("Execution of\n");
-    for (char ** p = args; *p != NULL; p++) {
-        printf("- %s\n", *p);
-    }
-}
-
-int main()
-{
-    char *line = NULL;
-    size_t line_size = 0;
-    printf("--- Hello, this is " SHELL_NAME "!\n");
-
-    int numero = 1;
-    while (true) {
-        print_prompt(numero);
-
-        int length = getline(& line, &line_size, stdin);
-        if (length < 0) {
-            break;
-        }
-        char **args = split_line(line);
-        if (args[0] != NULL) {
-            if (strcmp(args[0], "exit") == 0) {
-                break;
-            } else {
-                fake_execute_command(args);
-            }
-            numero += 1;  // doesn't advance if empty command
-        }
-
-        free_array_of_strings(args);
-    }
-    printf("Bye!\n");
-	free(line);
-    return EXIT_SUCCESS;
-}
-~~~
-
-##  Compilation
-
-Ce source est compilé avec (notamment) les options 
-
->  `-std=c17 -D_XOPEN_SOURCE=700`
-
-la dernière permet de disposer de `getline()` et `strndup()` qui ne
-font pas pour l'instant partie du standard C "strict", mais de la bibliothèque
-standard POSIX.
-
-
-## Exemple d'exécution
-
-~~~
---- Hello, this is Shell Zero V1!
-1> /bin/ls -al /tmp
-Execution of
-- /bin/ls
-- -al
-- /tmp
-2> 
-2> exit
-Bye!
-~~~
-
-
-
-## Faire exécuter une commande
-
-Notre shell analyse la ligne de commande, mais ne lance pas le
-programme correspondant.
-
-Pour cela, dans le `main()` on appelle une fonction qui s'en occupe
-vraiment :
-
-~~~C
-	// fake_execute_command(args);
-	execute_command(args);
-~~~
-
-### Code de lancement d'une commande
-
-Le code de cette fonction contient plusieurs appels système
-
-~~~C
-void execute_command(char **args)
-{
-    pid_t child_pid = fork();
-    if (child_pid == 0) {
-        execvp(args[0], args);
-        perror("execvp failed"); 
-        exit (EXIT_FAILURE);
-    }
-    waitpid(child_pid, NULL, 0);
-}
-~~~
-
-
-qui nécessitent quelques explications. Supposons qu'au moment de
-l'exécution, le tableau `args` contient 
-
-> `{ "ls", "-l", "/tmp", NULL}`
-
-
-- l'appel de la fonction `execvp` charge en mémoire **à la place du
-processus qui l'appelle** l'exécutable nommé `"ls"` et si tout va bien
-le fait exécuter (appelle son `main`) en lui passant en paramètres le
-contenu du tableau.
-- parfois les choses se passent mal : la fonction `execvp` échoue si
-on lui indique un fichier non exécutable, ou non accessible, etc.
-Dans ce cas, on passe à la suite en faisant afficher un message.
-  
-
-Dans le cas d'un succès, le processus qui a lancé `execvp` n'est plus
-notre shell.
-
-- C'est pour cela qu'on fait lancer `execvp` par un autre processus
-dit "processus fils" crée par `fork()` pour l'occasion.
-- le processus fils sera transformé en exécution de la commande
-"`ls`", mais le processus shell continuera à exister de son côté.
-- Le processus "fils" crée par `fork()` est une copie (presque)
-intégrale du processus "père" shell.  Ils en sont au même point
-d'exécution **sauf que** `fork()` retourne 
-	- au processus fils la valeur 0,
-	- au processus père le numéro du processus fils,
-ce qui permet de les distinguer par le `if`.
-- Après avoir lancé le processus fils, le processus père "shell"
-attend, par `waitpid`, la fin du processus fils qui exécute la commande.
-
-Pour en revenir au cas d'erreur : après l'affichage d'un message par
-`perror()` si `execvp` a échoué, nous forçons la fin du processus fils
-en lui faisant appeler `exit()`.
-
-### Résumé
-
-En résumé, les mécanismes Unix utilisés
+### Résumé : les mécanismes Unix utilisés
 
 - `fork()` crée un processus "fils" qui est une copie de
 celui qui l'appelle (= père). Il retourne 0 au fils, et le numéro du
-fils au père.
+fils au père. Les descripteurs ouverts sont partagés.
 - `exit()` termine le processus qui l'appelle.
-- `waitpid` bloque un processus (ici le père) en attente de la
-fin d'un autre dont on donne le numéro (ici le fils).
-- `execvp()` tente de remplacer le processus courant par l'exécution
-d'un programme en lui transmettant des arguments. L'exit du programme
-terminera le processus. En cas d'échec de lancement (fichier absent,
-non exécutable, etc) l'appelant continue.
+- `waitpid()` bloque un processus en attente de la
+fin d'un autre dont on donne le numéro.
+- `pipe()` crée un tuyau, et retourne dans un tableau une paire de
+descripteurs vers les extrémités qui servent à y lire et y écrire.
+- `dup2()` duplique un descripteur, ce qui permet de rediriger
+une entrée ou une sortie vers un fichier ou un pipe.
+-  `close()` ferme un descripteur.
+- `execv()` remplace le processus courant par l'exécution d'un
+programme en lui transmettant des arguments, et en partageant les
+descripteurs ouverts. L'exit du programme terminera le processus. En
+cas d'échec de lancement (fichier absent, non exécutable, etc)
+l'appelant continue.
 
 
-**Compléments :**
+# Pipeline : analyse sur un exemple
 
+Quand on aborde un problème un peu compliqué, il est conseillé de
+commencer par regarder un exemple concret, petit mais significatif.  À
+partir de là, on pourra plus facilement construire une solution
+générale.
 
-- il existe une famille de fonctions "`exec`".
-	- `execv` prend comme paramètre le **chemin d'accès** de
-      l'exécutable et un tableau de paramètres ;
-	- celle de l'exemple (`execvp`) prend comme paramètre un **nom de
-	commande** et un tableau de paramètres.  L'exécutable est cherché
-	dans les répertoires indiqués par la variable d'environnement
-	`PATH`.
-	- Voir aussi `execl` et `execlp` qui utilisent une **liste** de
-      paramètres au lieu d'un **tableau**.
-- ici on n'a utilisé que le premier paramètre de `waitpid`. 
-    - le troisième permet d'attendre un **changement d'état** du
-      processus fils (pas seulement sa fin).
-    - Le second, si il n'est pas `NULL`, est l'adresse d'un entier qui
-permettra par exemple de récupèrer le code laissé par l'`exit` du
-processus fils. Avec quelques petites complications, donc on n'en
-parle pas pour le moment : voir la page de manuel.
-
-
-# Pipeline : analyse
-
-Commençons par regarder un exemple de pipeline qui met en oeuvre 4
+Considérons donc un exemple de pipeline qui met en oeuvre 4
 programmes :
 
 > `A | B | C | D`
@@ -713,19 +469,16 @@ pourquoi 4 ?
   commandes ;
 - parce que la première et la dernière commandes sont des cas
   particuliers qui respectivement lisent dans l'entrée standard, et
-  écrivent sur la sortie standard.
-- alors que toutes les commandes (sauf la dernière D) écrivent dans un
-  tuyau de communication qui est lu par la suivante. Et
-  inversement, toutes sauf la première (A) lisent dans un tuyau.
+  écrivent sur la sortie standard, alors que les autres opérations
+  se font sur un pipe.
 - avec 2 commandes "intermédiaires" B et C, on aura des chances
-  d'inférer ce qu'il faut faire avec un nombre quelconque de commandes
-intermédiaires.
+  d'inférer ce qu'il faut faire avec un nombre *quelconque* de
+  commandes intermédiaires.
 
 ## Idée de base : 4 processus fils, 3 tuyaux
 
-L'idée de base sera de lancer (par combinaison de `fork` et `exec`) un
-processus pour chaque commande, et d'utiliser trois tuyaux T1, T2, T3
-pour les faire communiquer
+L'idée de base sera de lancer un processus pour chaque commande, et
+d'utiliser trois tuyaux T1, T2, T3 pour les faire communiquer
 
 ~~~
 lancer processus fils:
@@ -752,7 +505,7 @@ attendre la fin des processus fils.
 ~~~
 
 
-## Créer et fermer les tuyaux au bon moment
+## Créer et fermer les descripteurs
 
 Détaillons le **lancement du premier** :
 
@@ -820,87 +573,339 @@ fermer T3[0]
 
 ## En termes de descripteurs
 
-L'appel systeme `pipe()` d'Unix demande au système
-de créer un tuyau et remplit un tableau `T`
-avec deux descripteurs :  
-
-- `T[0]` permet la lecture dans le tuyau 
-- `T[1]` sert à écrire.
 
 Nous allons nous intéresser aux descripteurs plutot qu'aux tableaux, en 
-passant par des variables
-
-~~~C
-int entree, sortie;
-
-int t[2];
-pipe(t);
-entree = t[0];
-sortie = t[1];
-~~~
-
-ce que nous abrègerons en écrivant
+passant par des variables, on écrit la création d'une tuyau sous la forme
 
 ~~~
-créer tuyau (sortie_tuyau, entree_tuyau)
+créer tuyau (sortie_tuyau, entrée_tuyau)
 ~~~
+
+en indiquant les deux variables qui contiennent les descripteurs d'écriture 
+et de lecture.
 
 Une autre variable nous servira à désigner le descripteur
 utilisé en lecture par le prochain processus.
 
-Au départ c'est l'entrée standard
+Au départ, c'est l'entrée standard :
 
 
 
 ~~~
-entree = entree_standard
+entrée = entrée_standard
 
-créer tuyau (sortie_tuyau, entree_tuyau) 
+créer tuyau (sortie_tuyau, entrée_tuyau) 
 lancer processus fils:
-    fermer entree_tuyau
+    fermer entrée_tuyau
 	exécuter A, qui 
-	- lit sur entree
+	- lit sur entrée
 	- écrit dans sortie_tuyau
-fermer sortie_tuyau et entree
-
+fermer sortie_tuyau et entrée
 ~~~
 
 
-Le code pour les processus B et C n'est pas très différent. 
+Le pseudo-code pour les processus B et C n'est pas très différent. 
 
 
 ~~~
-entree = entree_tuyau
+entrée = entrée_tuyau
 
-créer tuyau (sortie_tuyau, entree_tuyau) 
+créer tuyau (sortie_tuyau, entrée_tuyau) 
 lancer processus fils:
-    fermer entree_tuyau
+    fermer entrée_tuyau
 	exécuter B, qui 
-	- lit sur entree
+	- lit sur entrée
 	- écrit dans sortie_tuyau
-fermer sortie_tuyau et entree
+fermer sortie_tuyau et entrée
 
-entree = entree_tuyau
+entrée = entrée_tuyau
 
-créer tuyau (sortie_tuyau, entree_tuyau) 
+créer tuyau (sortie_tuyau, entrée_tuyau) 
 lancer processus fils:
-    fermer entree_tuyau
+    fermer entrée_tuyau
 	exécuter C, qui 
-	- lit sur entree
+	- lit sur entrée
 	- écrit dans sortie_tuyau
-fermer sortie_tuyau et entree
+fermer sortie_tuyau et entrée
 ~~~
 
 
-Quelques changements pour le dernier
+Pour le dernier processus fils, on ne crée pas de tuyau :
 
 ~~~
-entree = entree_tuyau
+entrée = entrée_tuyau
 
 lancer processus fils:
-    fermer entree_tuyau
-	exécuter C, qui 
-	- lit sur entree
+    fermer entrée_tuyau
+	exécuter D, qui 
+	- lit sur entrée
 	- écrit dans sortie_standard
-fermer entree
+fermer entrée
 ~~~
+
+
+## Programmation de l'exemple en  C
+
+
+Ici on réalise le pipeline
+
+~~~
+ls -l | grep ^- | cat | wc -l
+~~~
+
+qui affiche le nombre de fichiers présents dans le répertoire
+courant. (Le `cat` est inutile, il sert juste à avoir 4
+processus !).
+
+
+~~~C
+// demo-pipeline.c
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdbool.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <assert.h>
+
+int main()
+{
+    printf("Exécution " __FILE__ "\n");
+    printf("Nombre de fichiers dans le répertoire =\n");
+
+    int input_fd = STDIN_FILENO;
+    int pipe_fd[2];
+    
+    pipe(pipe_fd);                    // création pipe T1
+
+    pid_t a_pid = fork();
+    if (a_pid == 0) {
+        // le processus A écrit dans T1
+        dup2(pipe_fd[1], STDOUT_FILENO);
+        close(pipe_fd[0]);
+        close(pipe_fd[1]);
+        execv("/bin/ls", (char *[]) {
+            "ls", "-l", NULL
+        });
+        assert("lancement premier fils" && false);
+    }
+    close(pipe_fd[1]);          // fermeture desc. écriture de T1
+
+    input_fd = pipe_fd[0];      // sauvegarde descripteur lecture T1
+    pipe(pipe_fd);              // création pipe T2
+
+    pid_t b_pid = fork();
+    if (b_pid == 0) {
+        // le processus B lit dans T1, écrit dans T2
+        dup2(input_fd, STDIN_FILENO);
+        dup2(pipe_fd[1], STDOUT_FILENO);
+        close(input_fd);
+        close(pipe_fd[0]);
+        close(pipe_fd[1]);
+        execv("/bin/grep", (char *[]) {
+            "grep", "^-", NULL
+        });
+        assert("lancement second fils" && false);
+    }
+    close(input_fd);             // descripteur lecture T1
+    close(pipe_fd[1]);           // descripteur écriture T2
+
+    input_fd = pipe_fd[0];       // sauvegarde descripteur lecture T2
+    pipe(pipe_fd);               // création pipe T3
+
+    pid_t c_pid = fork();
+    if (c_pid == 0) {
+        // le processus C lit dans T2, écrit dans T3
+        dup2(input_fd, STDIN_FILENO);
+        dup2(pipe_fd[1], STDOUT_FILENO);
+        close(input_fd);         // desc lecture T2
+        close(pipe_fd[0]);       // desc lecture T3
+        close(pipe_fd[1]);       // desc écriture T3
+        execv("/bin/cat", (char *[]) {
+            "cat", NULL
+        });
+        assert("lancement troisième fils" && false);
+    }
+    close(input_fd);        // desc lecture  T2
+    close(pipe_fd[1]);      // desc écriture T3
+
+    input_fd = pipe_fd[0];  // sauvegarde descripteur lecture T3
+
+
+    pid_t d_pid = fork();
+    if (d_pid == 0) {
+        // le processus C lit dans T3 
+        dup2(input_fd, STDIN_FILENO);
+        close(input_fd);         // desc lecture T3
+        execv("/bin/wc", (char *[]) {
+            "wc", "-l", NULL
+        });
+        assert("lancement quatrième fils" && false);
+    }
+
+    close(input_fd);
+
+    waitpid(a_pid, NULL, 0);
+    waitpid(b_pid, NULL, 0);
+    waitpid(c_pid, NULL, 0);
+    waitpid(d_pid, NULL, 0);
+
+    printf("# fin\n");
+    return EXIT_SUCCESS;
+}
+~~~
+
+# Pipeline : cas général
+
+
+## Principe
+
+L'exemple ci-dessus nous permet de voir les actions à effectuer
+pour chacun des processus fils, avec les particularités
+du premier et du dernier.
+
+Le processus père :
+
+1. Avant de créer un processus fils (sauf le dernier), le processus
+père réserve un tuyau pour communiquer avec le processus suivant.
+2. Après avoir lancé un processus fils (sauf le premier), ferme `input_fd`.
+3. Après avoir lancé un processus fils (sauf le dernier) :
+   - ferme le descripteur d'écriture du tuyau
+   - sauve le descripteur de lecture du tuyau dans `input_fd`
+   
+Chaque processus fils :
+
+1. redirige (sauf le premier) son entrée vers `input_fd`, et ferme
+   `input_fd`
+2. redirige sa sortie (sauf le dernier) vers le tuyau, et ferme les
+   deux descripteurs du pipe.
+
+Il est assez facile de vérifier que ces règles fonctionnent même si il
+n'y a qu'un seul processus fils (le premier est aussi le dernier) ou
+deux (pas de processus intermédiaires).
+
+
+## Un code plus général
+
+Pour avoir un traitement plus général, nous allons définir une fonction
+
+~~~C
+void execute_pipeline(struct Pipeline *pipeline);
+~~~
+
+qui agit sur une structure qui représente un pipeline constitué d'étapes
+
+
+~~~C
+struct Step {
+    char *pathname;
+    char **argv;
+};
+
+struct Pipeline {
+    int nb_steps;
+    struct Step *steps;
+};
+~~~
+
+La fonction main de l'exemple précédent se ramènemerait à 
+
+
+~~~C
+int main()
+{
+    struct Pipeline pipeline = {
+        .nb_steps = 4,
+        .steps = (struct Step [])
+        {
+            {
+                .pathname = "/bin/ls",
+                .argv = (char *[]) {
+                    "ls", "-l", NULL
+                }
+            }, {
+                .pathname = "/bin/grep",
+                .argv = (char *[])
+                {
+                    "grep", "^-", NULL
+                }
+            }, {
+                .pathname = "/bin/cat",
+                .argv = (char *[])
+                {
+                    "cat", NULL
+                }
+            }, {
+                .pathname = "/bin/wc",
+                .argv = (char *[])
+                {
+                    "wc", "-l", NULL
+                }
+            },
+        }
+    };
+
+    printf("Exécution " __FILE__ "\n");
+    printf("Nombre de fichiers dans le répertoire =\n");
+	
+    execute_pipeline(& pipeline);
+    
+	printf("# fin\n");
+    return EXIT_SUCCESS;
+}
+~~~
+
+
+
+La fonction `execute_pipeline` boucle sur les éléments du pipeline,
+en tenant compte des cas particuliers du premier et du dernier :
+
+~~~C
+void execute_pipeline(const struct Pipeline *pipeline)
+{
+    const int first = 0,
+              last = pipeline->nb_steps - 1;
+
+    int input_fd = STDIN_FILENO;
+
+    for (int i = first; i <= last; i++) {
+        int pipe_fd[2];
+        if (i != last) {
+            pipe(pipe_fd);
+        }
+        if (fork() == 0) {
+            // exécution d'un processus fils
+            if (i != first) {
+                dup2(input_fd, STDIN_FILENO);
+                close(input_fd);
+            }
+            if (i != last) {
+                dup2(pipe_fd[1], STDOUT_FILENO);
+                close(pipe_fd[0]);
+                close(pipe_fd[1]);
+            }
+            execv(pipeline->steps[i].pathname,
+                  pipeline->steps[i].argv);
+            assert("lancement fils" && false);
+        }
+        if (i != first) {
+            close(input_fd);
+        }
+        if (i != last) {
+            close(pipe_fd[1]);
+            input_fd = pipe_fd[0];
+        }
+    }
+
+    for (int i = 0; i <= last; i++) {
+        wait(NULL);
+    }
+}
+~~~
+
+
+A la fin, à la place de `waitpid`, on emploie `wait` qui attend la fin
+d'un processus fils quelconque, sans devoir préciser son  identifiant.
+

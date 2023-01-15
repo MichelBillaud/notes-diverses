@@ -4,9 +4,12 @@ CFLAGS += -MMD
 CFLAGS += -D_XOPEN_SOURCE=700
 CFLAGS += -g
 
-TESTS += demo-pipe 
 
-EXECS += demo-pipe demo-fork
+TESTS += pipeline-general
+
+
+EXECS += demo-pipeline
+EXECS += demo-pipe demo-fork demo-pipeline
 EXECS += demo-exec prog shell-zero shell-un demo-exec-dup   
 
 
