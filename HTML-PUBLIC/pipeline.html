@@ -359,6 +359,7 @@ padding: 0.5em;
 <li><a href="#un-code-plus-général"><span class="toc-section-number">4.2</span> Un code plus général</a></li>
 </ul></li>
 <li><a href="#exercice-une-solution-récursive"><span class="toc-section-number">5</span> Exercice : une solution récursive</a></li>
+<li><a href="#remarques-finales"><span class="toc-section-number">6</span> Remarques finales</a></li>
 </ul>
 </nav>
 <h1 data-number="1" id="objectif"><span class="header-section-number">1</span> Objectif</h1>
@@ -1003,13 +1004,23 @@ fermer entrée</code></pre>
 <p>Schématiquement :</p>
 <pre><code>pour exécuter une liste de commandes:
     si la liste contient une seule commande:
-        exécuter cette commande
+        lancer un processus fils qui:
+            exécute la commande
+        attendre la fin de la commande
     sinon:
         créer un tuyau
         lancer un processus fils qui:
              redirige la sortie vers le tuyau
              exécute la première commande
         rediriger l&#39;entrée vers le tuyau
-        exécuter le reste des commandes</code></pre>
+        exécuter le reste des commandes
+        attendre la fin de la première commande</code></pre>
+<p>Comme souvent, la version récursive est plus simple que la version itérative !</p>
+<h1 data-number="6" id="remarques-finales"><span class="header-section-number">6</span> Remarques finales</h1>
+<p>Faire fonctionner un pipeline de commandes n’est pas un problème très compliqué, mais dont la solution comporte pas mal de détails techniques à manipuler avec précision.</p>
+<p>Pour ajouter des pipelines dans un interprète de commandes (shell), il est donc fortement recommandé d’étudier <strong>à part</strong> la manière de programmer leur exécution. Sinon, on va combiner les problèmes d’exécution du pipeline aux autres qui se posent déjà dans le projet (analyse syntaxique des commandes, par exemple), et ça ne fera pas gagner de temps.</p>
+<p>Cette remarque vaut évidemment pour tous les projets : séparer autant que possible les problèmes pour les étudier, avant d’essayer de les intégrer dans le projet.</p>
+<p>Un autre point : avant de se lancer dans la réalisation d’un mécanisme général (ici exécution d’un pipeline de N commandes quelconques), <strong>regarder en détail un ou plusieurs cas concrets</strong> (ici le pipeline de 4 commandes) pour bien voir les problèmes qui se posent. C’est comme ça qu’on acquiert les éléments de compréhension que l’on peut <strong>appliquer ensuite à la recherche d’une solution dans le cas général</strong>.</p>
+<p>Enfin : l’utilisation de pseudo-code permet de fixer sur papier (ou dans un fichier) les grandes lignes du code qu’on envisage d’écrire. Et donc de se concentrer ensuite sur les divers détails, sans perdre la vue d’ensemble qu’on n’arrivera pas à garder en mémoire dès qu’il y en un certain nombre, ou qu’ils requièrent une forte attention (limite de la charge cognitive).</p>
 </body>
 </html>

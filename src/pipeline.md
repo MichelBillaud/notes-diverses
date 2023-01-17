@@ -596,8 +596,6 @@ utilisé en lecture par le prochain processus.
 
 Au départ, c'est l'entrée standard :
 
-
-
 ~~~
 entrée = entrée_standard
 
@@ -937,7 +935,9 @@ Schématiquement :
 ~~~
 pour exécuter une liste de commandes:
 	si la liste contient une seule commande:
-        exécuter cette commande
+	    lancer un processus fils qui:
+			exécute la commande
+		attendre la fin de la commande
 	sinon:
 	    créer un tuyau
 		lancer un processus fils qui:
@@ -945,5 +945,43 @@ pour exécuter une liste de commandes:
 		     exécute la première commande
 		rediriger l'entrée vers le tuyau
 		exécuter le reste des commandes
+		attendre la fin de la première commande
 ~~~
        
+Comme souvent, la version récursive est plus simple que
+la version itérative !
+
+# Remarques finales
+
+
+Faire fonctionner un pipeline de commandes n'est pas un problème très
+compliqué, mais dont la solution comporte pas mal de détails
+techniques à manipuler avec précision.
+
+Pour ajouter des pipelines dans un interprète de commandes (shell), il
+est donc fortement recommandé d'étudier **à part** la manière de
+programmer leur exécution. Sinon, on va combiner les problèmes
+d'exécution du pipeline aux autres qui se posent déjà dans le projet
+(analyse syntaxique des commandes, par exemple), et ça ne fera pas
+gagner de temps.
+
+Cette remarque vaut évidemment pour tous les projets : séparer
+autant que possible les problèmes pour les étudier,   avant
+d'essayer de les intégrer dans le projet.
+
+
+Un autre point : avant de se lancer dans la réalisation d'un mécanisme
+général (ici exécution d'un pipeline de N commandes quelconques),
+**regarder en détail un ou plusieurs cas concrets** (ici le pipeline
+de 4 commandes) pour bien voir les problèmes qui se posent. C'est
+comme ça qu'on acquiert les éléments de compréhension que l'on peut
+**appliquer ensuite à la recherche d'une solution dans le cas
+général**.
+
+Enfin : l'utilisation de pseudo-code permet de fixer sur papier (ou
+dans un fichier) les grandes lignes du code qu'on envisage d'écrire.
+Et donc de se concentrer ensuite sur les divers détails, sans perdre
+la vue d'ensemble qu'on n'arrivera pas à garder en mémoire dès qu'il y
+en un certain nombre, ou qu'ils requièrent une forte attention (limite
+de la charge cognitive).
+
