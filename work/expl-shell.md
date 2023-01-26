@@ -1,6 +1,6 @@
-% Réalisation d'un shell en C : le pipeline
+% Réalisation d'un shell en C : la boucle d'interaction
 % Michel Billaud (michel.billaud@laposte.net)
-% 6 janvier 2023
+% 18 janvier 2023
  
 # Objectif
 
@@ -21,18 +21,14 @@ Il y a aussi des commandes dites *internes*, par exemple `exit`, qui
 fait arrêter la boucle du shell. Un autre exemple est la commande `cd`
 qui change le répertoire courant.
 
-Ce document montre d'abord un point de départ pour la réalisation
-d'un tel shell.
-
-Une première version est donnée, qui exécute des commandes simples.
-Ensuite on montre comment faire exécuter des "pipelines" de commandes,
-la sortie d'une commande alimentant l'entrée de la suivante.
+Ce document montre un point de départ pour la réalisation
+d'un tel shell, avec une version qui exécute des commandes simples.
 
 
-# Version 0 : un shell simple
 
 
-## Analyse de la ligne
+
+# Première étape : analyse de la ligne
 
 Cette première version n'exécute pas vraiment les commandes,
 elle montre essentiellement
@@ -53,6 +49,7 @@ contenant une copie des différents "mots" de la ligne, et terminé par
 un pointeur nul.
 
 
+## Code source
 
 ~~~C
 #include <stdio.h>
@@ -80,7 +77,7 @@ void print_prompt(int numero)
  * The array and copies are dynamically allocated. The array
  * contains a NULL pointer after the copies.
  *
- * @param line a nul terminated string
+ * @param line a \0 terminated string
  * @return a dynamically array of pointers do strings
 */
 
@@ -111,7 +108,7 @@ char ** split_line(const char line[])
     }
     assert(start == NULL);
     // no need to worry about the last word, as the line contains a
-    // \r ou \n char (which ends the last word) before the nul terminator
+    // \r ou \n char (which ends the last word) before the \0 terminator
 
     args[nb_args] = NULL;
     return args;
@@ -192,20 +189,20 @@ Bye!
 
 
 
-## Faire exécuter une commande
+# Seconde étape : faire exécuter une commande
 
 Notre shell analyse la ligne de commande, mais ne lance pas le
 programme correspondant.
 
 Pour cela, dans le `main()` on appelle une fonction qui s'en occupe
-vraiment :
+**vraiment** :
 
 ~~~C
 	// fake_execute_command(args);
 	execute_command(args);
 ~~~
 
-### Code de lancement d'une commande
+## Code de lancement d'une commande
 
 Le code de cette fonction contient plusieurs appels système
 
@@ -258,7 +255,7 @@ Pour en revenir au cas d'erreur : après l'affichage d'un message par
 `perror()` si `execvp` a échoué, nous forçons la fin du processus fils
 en lui faisant appeler `exit()`.
 
-### Résumé
+## Résumé
 
 En résumé, les mécanismes Unix utilisés
 
@@ -291,212 +288,75 @@ non exécutable, etc) l'appelant continue.
       processus fils (pas seulement sa fin).
     - Le second, si il n'est pas `NULL`, est l'adresse d'un entier qui
 permettra par exemple de récupèrer le code laissé par l'`exit` du
-processus fils. Avec quelques petites complications, donc on n'en
-parle pas pour le moment : voir la page de manuel.
+processus fils. Voir la page de manuel.
 
 
-# Pipeline : analyse
+# Voir plus grand
 
-Commençons par regarder un exemple de pipeline qui met en oeuvre 4
-programmes :
-
-> `A | B | C | D`
-
-pourquoi 4 ? 
-
-- parce que pour évoquer un pipeline, il faut au moins considérer 2
-  commandes ;
-- parce que la première et la dernière commandes sont des cas
-  particuliers qui respectivement lisent dans l'entrée standard, et
-  écrivent sur la sortie standard.
-- alors que toutes les commandes (sauf la dernière D) écrivent dans un
-  tuyau de communication qui est lu par la suivante. Et
-  inversement, toutes sauf la première (A) lisent dans un tuyau.
-- avec 2 commandes "intermédiaires" B et C, on aura des chances
-  d'inférer ce qu'il faut faire avec un nombre quelconque de commandes
-intermédiaires.
-
-## Idée de base : 4 processus fils, 3 tuyaux
-
-L'idée de base sera de lancer (par combinaison de `fork` et `exec`) un
-processus pour chaque commande, et d'utiliser trois tuyaux T1, T2, T3
-pour les faire communiquer
-
-~~~
-lancer processus fils:
-	exécuter A, qui 
-	- lit sur l'entrée standard
-	- écrit dans T1
-
-lancer processus fils:
-    exécuter B, qui 
-	- lit dans T1 
-	- écrit dans T2
-
-lancer processus fils:
-    exécuter C, qui 
-	- lit dans T2 
-	- écrit dans T3
-
-lancer processus fils:
-    exécuter D, qui 
-	- lit dans T4
-    - écrit sur la sortie standard
-
-attendre la fin des processus fils.
-~~~
-
-
-## Créer et fermer les tuyaux au bon moment
-
-Détaillons le **lancement du premier** :
-
-1. Le tuyau T1 doit exister avant le lancement du premier
-processus fils , puisque le tuyau doit être visible par le second
-processus.
-2. Le processus A ne lit pas dans T1, le processus fils peut
-fermer le bout qui sert à l'écriture.
-3. les autres processus ne doivent pas écrire dans ce tuyau : une fois
-   le fils lancé, on ferme le bout qui sert l'écriture dans le tuyau.
-
-
-~~~
-créer tuyau T1                         // 1
-lancer processus fils:
-    fermer T1[1]                       // 2
-	exécuter A, qui 
-	- lit sur l'entrée standard
-	- écrit dans T1[1]
-fermer T1[1] et entrée standard
-~~~
-
-Le second processus doit lire dans T1 et écrire dans T2. 
-
-1. Il faut donc créer T2 avant de lancer la commande B,
-2. la commande B2 ne lit pas dans T2, le processus fils ferme cette
-   extrémité
-3. les processus suivants ne lisent pas dans T1, et 
-n'écrivent pas dans T2.
-
-
-~~~
-créer tuyau T2                         // 1
-lancer processus fils:
-    fermer T2[1]                       // 2
-	exécuter B, qui 
-	- lit sur T1[0]
-	- écrit dans T2[1]
-fermer T1[0] et T2[1]                  // 3
-~~~
-
-La situation est similaire pour le troisième
-
-~~~
-créer tuyau T3                         // 1
-lancer processus fils:
-    fermer T3[1]                       // 2
-	exécuter C, qui 
-	- lit sur T2[0]
-	- écrit dans T3[1]
-fermer T2[0] et T3[1]                  // 3
-~~~
-
-pour la dernière commande, on ne crée pas de tuyau puis qu'on écrit sur la
-sortie standard.
-
-
-~~~
-lancer processus fils:
-	exécuter D, qui 
-	- lit sur T3[0]
-	- écrit sur la sortie standard
-fermer T3[0]
-~~~
-
-## En termes de descripteurs
-
-L'appel systeme `pipe()` d'Unix demande au système
-de créer un tuyau et remplit un tableau `T`
-avec deux descripteurs :  
-
-- `T[0]` permet la lecture dans le tuyau 
-- `T[1]` sert à écrire.
-
-Nous allons nous intéresser aux descripteurs plutot qu'aux tableaux, en 
-passant par des variables
+On va ajouter des commandes internes : `cd` et `help`.
+Si on envisage d'en avoir d'autre, il faut un peu 
+revoir cette partie du code 
 
 ~~~C
-int entree, sortie;  
-
-int t[2];
-pipe(t);
-entree = t[0];
-sortie = t[1];
+           if (strcmp(args[0], "exit") == 0) {
+                break;
+            } else {
+                execute_command(args);
+            }
 ~~~
 
-ce que nous abrègerons en écrivant
+qui risque de prendre des proportions déraisonnables si on en fait un
+enchevêtrement de `if strcmp` avec les actions
+
+## Découpage en fonctions
+
+Donc on va définir 
+
+- des fonctions `action_exit`, `action_help`, `action_cd` pour chaque
+commande,
+- une table de correspondance entre les noms de commandes internes et
+  ces fonctions,
+- remplacer les lignes ci-dessus par le code qui fait ceci :
 
 ~~~
-créer tuyau (sortie_tuyau, entree_tuyau)
+chercher la fonction qui correspond à args[0]
+si elle existe :
+    la lancer avec les arguments
+sinon:
+    exécuter la commande externe avec les arguments
+~~~
+ 
+Apparemment il y aura un petit problème avec `action_exit` : quand on
+l'exécutera elle devra faire arrêter la boucle de
+lecture-exécution. Ce que faisait `break`, quand on était dans le
+`main`.
+
+Une solution c'est que la fonction `action_exit` et les autres actions
+agisses sur une structure qui contient le "contexte d'exécution", avec
+notamment un indicateur qui sert à contrôler l'exécution de la boucle
+:
+
+~~~C
+struct Context {
+   bool running;
+   ....
+}
+
+void action_exit(struct Context *c, char **args) 
+{
+    c->running = false;
+}
+
+
+int main() 
+{
+  struct Context context = { .running = true };
+  
+  while (context.running) {
+     ....
+	 
+  }
+}
 ~~~
 
-Une autre variable nous servira à désigner le descripteur
-utilisé en lecture par le prochain processus.
-
-Au départ c'est l'entrée standard
-
-
-
-~~~
-entree = entree_standard
-
-créer tuyau (sortie_tuyau, entree_tuyau) 
-lancer processus fils:
-    fermer entree_tuyau
-	exécuter A, qui 
-	- lit sur entree
-	- écrit dans sortie_tuyau
-fermer sortie_tuyau et entree
-
-~~~
-
-
-Le code pour les processus B et C n'est pas très différent. 
-
-
-~~~
-entree = entree_tuyau
-
-créer tuyau (sortie_tuyau, entree_tuyau) 
-lancer processus fils:
-    fermer entree_tuyau
-	exécuter B, qui 
-	- lit sur entree
-	- écrit dans sortie_tuyau
-fermer sortie_tuyau et entree
-
-entree = entree_tuyau
-
-créer tuyau (sortie_tuyau, entree_tuyau) 
-lancer processus fils:
-    fermer entree_tuyau
-	exécuter C, qui 
-	- lit sur entree
-	- écrit dans sortie_tuyau
-fermer sortie_tuyau et entree
-~~~
-
-
-Quelques changements pour le dernier
-
-~~~
-entree = entree_tuyau
-
-lancer processus fils:
-    fermer entree_tuyau
-	exécuter C, qui 
-	- lit sur entree
-	- écrit dans sortie_standard
-fermer entree
-~~~
 
