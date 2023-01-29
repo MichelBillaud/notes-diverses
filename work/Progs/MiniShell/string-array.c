@@ -1,19 +1,19 @@
-// stringarray.c
+// string-array.c
 
 #include <stdlib.h>
-
 #include <memory.h>
-#include "stringarray.h"
 
-#ifndef STRINGARRAY_MIN_CAPACITY
-    #define STRINGARRAY_MIN_CAPACITY 8
+#include "string-array.h"
+
+#ifndef STRING_ARRAY_MIN_CAPACITY
+    #define STRING_ARRAY_MIN_CAPACITY 8
 #endif
 
 struct string_array sa_new() {
     return (struct string_array) {
         .size = 0,
-        .capacity = STRINGARRAY_MIN_CAPACITY,
-        .array = malloc(STRINGARRAY_MIN_CAPACITY
+        .capacity = STRING_ARRAY_MIN_CAPACITY,
+        .array = malloc(STRING_ARRAY_MIN_CAPACITY
                         * sizeof(char *))
     };
 }

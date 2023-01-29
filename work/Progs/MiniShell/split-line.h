@@ -1,7 +1,9 @@
+// split-line.h
+
 #ifndef SPLIT_LINE_H
 #define SPLIT_LINE_H
 
-#include "stringarray.h"
+#include "string-array.h"
 
 struct split_line_result {
     struct string_array string_array;

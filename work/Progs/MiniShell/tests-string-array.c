@@ -1,9 +1,9 @@
-// tests-stringarray.c
+// tests-string-array.c
 
 #include <stdio.h>
 #include <assert.h>
 
-#include "stringarray.h"
+#include "string-array.h"
 
 void test_1()
 {

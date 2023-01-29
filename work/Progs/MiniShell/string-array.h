@@ -1,7 +1,7 @@
-// stringarray.h 
+// string-array.h 
 
-#ifndef STRINGARRAY_H
-#define STRINGARRAY_H
+#ifndef STRING_ARRAY_H
+#define STRING_ARRAY_H
 
 #include <stddef.h>
 

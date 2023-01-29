@@ -5,7 +5,7 @@
 
 #include <assert.h>
 
-#include "stringarray.h"
+#include "string-array.h"
 #include "split-line.h"
 
 void test_empty(const char line[])

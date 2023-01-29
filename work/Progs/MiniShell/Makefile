@@ -6,10 +6,10 @@ CFLAGS += -g
 
 VALGRIND_OPTIONS = -s -q --leak-check=full
 
-TESTS = tests-stringarray 
+TESTS = tests-string-array 
 TESTS += tests-split-line
 
-EXECS = 
+EXECS = mini-shell
 
 
 all : tests execs
@@ -23,11 +23,18 @@ execs : $(EXECS)
 	
 
 
-# dépendances supplémentaires
-tests-stringarray: stringarray.o
-tests-split-line: split-line.o stringarray.o
+# composition des exécutables
+
+tests-string-array: string-array.o
+tests-split-line: split-line.o string-array.o
+
+mini-shell: split-line.o string-array.o
+
+# dépendances automatiques
 
 -include $(wildcard *.d)
+
+# utilitaires
 
 clean:
 	$(RM) *~ *.o *.d
