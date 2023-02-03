@@ -3,16 +3,15 @@
 #ifndef SPLIT_LINE_H
 #define SPLIT_LINE_H
 
-#include "string-array.h"
+#include "ptr-array.h"
 
 struct split_line_result {
-    struct string_array string_array;
+    struct ptr_array strings;
     const char *error_message;
     size_t error_position;
 };
 
 struct split_line_result split_line(const char line[]);
 void split_line_result_delete(struct split_line_result *r);
-
 
 #endif

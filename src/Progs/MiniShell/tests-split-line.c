@@ -5,7 +5,6 @@
 
 #include <assert.h>
 
-#include "string-array.h"
 #include "split-line.h"
 
 void test_empty(const char line[])
@@ -13,30 +12,30 @@ void test_empty(const char line[])
     struct split_line_result r = split_line(line);
 
     assert("empty line has no words" &&
-           sa_size(& r.string_array) == 0);
+           pa_size(& r.strings) == 0);
     split_line_result_delete(& r);
 }
 
-void test_1()
+void basic_test()
 {
-    printf("- test_1()\n");
+    printf("- basic_test()\n");
     char line[] = "  one  two three";
     struct split_line_result r = split_line(line);
     assert("example size is 3"
-           && sa_size(&r.string_array) == 3);
+           && pa_size(&r.strings) == 3);
     assert("first word is 'one'" &&
-            strcmp(sa_get(&r.string_array, 0), "one") == 0);
+            strcmp(pa_get(&r.strings, 0), "one") == 0);
     assert("second word is 'two'" &&
-            strcmp(sa_get(&r.string_array, 1), "two") == 0);
+            strcmp(pa_get(&r.strings, 1), "two") == 0);
     assert("third word is 'three'" &&
-            strcmp(sa_get(&r.string_array, 2), "three") == 0);
+            strcmp(pa_get(&r.strings, 2), "three") == 0);
     split_line_result_delete(& r);
 
 }
 
 void test_empty_lines()
 {
-    printf("- tests empty_lines\n");
+    printf("- test_empty_lines()\n");
     test_empty("");
     test_empty("\n");
     test_empty("    \n");
@@ -46,6 +45,6 @@ int main()
 {
     printf("# tests split-line\n");
     test_empty_lines();
-    test_1();
+    basic_test();
     printf("Ok\n");
 }

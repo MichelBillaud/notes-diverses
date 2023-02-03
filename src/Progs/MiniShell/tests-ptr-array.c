@@ -1,17 +1,17 @@
-// tests-string-array.c
+// tests-ptr-array.c
 
 #include <stdio.h>
 #include <assert.h>
 
-#include "string-array.h"
+#include "ptr-array.h"
 
-void test_1()
+void basic_test()
 {
-	printf("- test_1()\n");
-    struct string_array sa = sa_new();
+	printf("- basic_test()\n");
+    struct ptr_array sa = pa_new();
 
-    assert("new StringArray size is zero" &&
-           sa_size(&sa) == 0);
+    assert("new PtrArray size is zero" &&
+           pa_size(&sa) == 0);
 
     char *s[21] = {
         "zero", "one", "two", "three", "four",
@@ -22,25 +22,25 @@ void test_1()
     };
 
     for (size_t i = 0; i < 21; i++) {
-        sa_add(&sa, s[i]);
+        pa_add(&sa, s[i]);
         assert("adding increases size"
-               && sa_size(&sa) == i+1);
+               && pa_size(&sa) == i+1);
         assert("data is present at end"
-               && sa_get(&sa, i) == s[i]);
+               && pa_get(&sa, i) == s[i]);
     }
 
     for (size_t i = 0; i < 21; i++) {
         assert("all added data is there"
-               && sa_get(&sa, i) == s[i]);
+               && pa_get(&sa, i) == s[i]);
     }
 
-    sa_delete(&sa);
+    pa_delete(&sa);
 
 }
 
 int main()
 {
-    printf("# Tests StringArray\n");
-    test_1();
+    printf("# Tests ptr_array\n");
+    basic_test();
     printf("Ok\n");
 }

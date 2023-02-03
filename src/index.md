@@ -14,6 +14,18 @@ Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France]
 - Les notes sont publiées dans  <https://www.mbillaud.fr/notes/>
 - Sources dans <https://github.com/MichelBillaud/notes-diverses>
 
+# Un mini-shell en C
+
+Début de réalisation d'un shell très rudimentaire en C, capable de
+lancer des commandes externes et quelques commandes internes.
+
+L'accent est mis sur le découpage du programme en modules,
+l'utilisation de tests unitaires, etc.
+
+
+Document : [mini-shell](mini-shell.html)
+
+
 #  Réalisation d'un pipeline en C
 
 La réalisation d'un mini-*shell* (interprète de commandes) est un

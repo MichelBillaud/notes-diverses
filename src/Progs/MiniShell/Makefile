@@ -6,11 +6,11 @@ CFLAGS += -g
 
 VALGRIND_OPTIONS = -s -q --leak-check=full
 
-TESTS = tests-string-array 
+TESTS = tests-ptr-array 
 TESTS += tests-split-line
 
-EXECS = mini-shell
-
+# EXECS = demo-boucle
+EXECS += mini-shell
 
 all : tests execs
 
@@ -20,15 +20,15 @@ tests : $(TESTS)
 
 execs : $(EXECS)
 	for p in $(EXECS) ; do ./$$p ; done
-	
 
 
 # composition des exécutables
 
+tests-ptr-array: ptr-array.o
 tests-string-array: string-array.o
-tests-split-line: split-line.o string-array.o
+tests-split-line: split-line.o ptr-array.o
 
-mini-shell: split-line.o string-array.o
+mini-shell: split-line.o ptr-array.o
 
 # dépendances automatiques
 
