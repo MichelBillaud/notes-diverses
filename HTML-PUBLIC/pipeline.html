@@ -16,6 +16,7 @@
     pre > code.sourceCode { white-space: pre; position: relative; }
     pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
     pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
     code.sourceCode > span { color: inherit; text-decoration: inherit; }
     div.sourceCode { margin: 1em 0; }
     pre.sourceCode { margin: 0; }
@@ -50,7 +51,7 @@
     code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
     code span.at { color: #7d9029; } /* Attribute */
     code span.bn { color: #40a070; } /* BaseN */
-    code span.bu { } /* BuiltIn */
+    code span.bu { color: #008000; } /* BuiltIn */
     code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
     code span.ch { color: #4070a0; } /* Char */
     code span.cn { color: #880000; } /* Constant */
@@ -63,7 +64,7 @@
     code span.ex { } /* Extension */
     code span.fl { color: #40a070; } /* Float */
     code span.fu { color: #06287e; } /* Function */
-    code span.im { } /* Import */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
     code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
     code span.kw { color: #007020; font-weight: bold; } /* Keyword */
     code span.op { color: #666666; } /* Operator */
@@ -326,44 +327,67 @@ padding: 0.5em;
 <header id="title-block-header">
 <h1 class="title">Réalisation d’un pipeline en C</h1>
 <p class="author">Michel Billaud (michel.billaud@laposte.net)</p>
-<p class="date">15 janvier 2023</p>
+<p class="date">27 septembre 2023</p>
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
-<li><a href="#objectif"><span class="toc-section-number">1</span> Objectif</a></li>
-<li><a href="#rappels"><span class="toc-section-number">2</span> Rappels</a>
+<li><a href="#objectif"><span class="toc-section-number">1</span>
+Objectif</a></li>
+<li><a href="#rappels"><span class="toc-section-number">2</span>
+Rappels</a>
 <ul>
-<li><a href="#exécuter-une-commande-execv"><span class="toc-section-number">2.1</span> Exécuter une commande : <code>execv</code></a>
+<li><a href="#exécuter-une-commande-execv"><span class="toc-section-number">2.1</span> Exécuter une commande :
+<code>execv</code></a>
 <ul>
-<li><a href="#succès-de-execv"><span class="toc-section-number">2.1.1</span> Succès de <code>execv()</code></a></li>
-<li><a href="#échec-de-execv"><span class="toc-section-number">2.1.2</span> Échec de `execv()</a></li>
+<li><a href="#succès-de-execv"><span class="toc-section-number">2.1.1</span> Succès de
+<code>execv()</code></a></li>
+<li><a href="#échec-de-execv"><span class="toc-section-number">2.1.2</span> Échec de
+<code>execv()</code></a></li>
 </ul></li>
-<li><a href="#remarques"><span class="toc-section-number">2.2</span> Remarques</a></li>
-<li><a href="#redirection-dup2"><span class="toc-section-number">2.3</span> Redirection : <code>dup2</code></a></li>
-<li><a href="#lancer-un-processus-fork-waitpid"><span class="toc-section-number">2.4</span> Lancer un processus : <code>fork</code> + <code>waitpid</code></a></li>
-<li><a href="#faire-communiquer-deux-commandes-par-pipe"><span class="toc-section-number">2.5</span> Faire communiquer deux commandes par <code>pipe</code></a>
+<li><a href="#remarques"><span class="toc-section-number">2.2</span>
+Remarques</a></li>
+<li><a href="#redirection-dup2"><span class="toc-section-number">2.3</span> Redirection :
+<code>dup2</code></a></li>
+<li><a href="#lancer-un-processus-fork-waitpid"><span class="toc-section-number">2.4</span> Lancer un processus :
+<code>fork</code> + <code>waitpid</code></a></li>
+<li><a href="#faire-communiquer-deux-commandes-par-pipe"><span class="toc-section-number">2.5</span> Faire communiquer deux commandes
+par <code>pipe</code></a>
 <ul>
-<li><a href="#résumé-les-mécanismes-unix-utilisés"><span class="toc-section-number">2.5.1</span> Résumé : les mécanismes Unix utilisés</a></li>
+<li><a href="#résumé-les-mécanismes-unix-utilisés"><span class="toc-section-number">2.5.1</span> Résumé : les mécanismes Unix
+utilisés</a></li>
 </ul></li>
 </ul></li>
-<li><a href="#pipeline-analyse-sur-un-exemple"><span class="toc-section-number">3</span> Pipeline : analyse sur un exemple</a>
+<li><a href="#pipeline-analyse-sur-un-exemple"><span class="toc-section-number">3</span> Pipeline : analyse sur un
+exemple</a>
 <ul>
-<li><a href="#idée-de-base-4-processus-fils-3-tuyaux"><span class="toc-section-number">3.1</span> Idée de base : 4 processus fils, 3 tuyaux</a></li>
-<li><a href="#créer-et-fermer-les-descripteurs"><span class="toc-section-number">3.2</span> Créer et fermer les descripteurs</a></li>
+<li><a href="#idée-de-base-4-processus-fils-3-tuyaux"><span class="toc-section-number">3.1</span> Idée de base : 4 processus fils, 3
+tuyaux</a></li>
+<li><a href="#créer-et-fermer-les-descripteurs"><span class="toc-section-number">3.2</span> Créer et fermer les
+descripteurs</a></li>
 <li><a href="#en-termes-de-descripteurs"><span class="toc-section-number">3.3</span> En termes de descripteurs</a></li>
-<li><a href="#programmation-de-lexemple-en-c"><span class="toc-section-number">3.4</span> Programmation de l’exemple en C</a></li>
+<li><a href="#programmation-de-lexemple-en-c"><span class="toc-section-number">3.4</span> Programmation de l’exemple en
+C</a></li>
 </ul></li>
 <li><a href="#pipeline-cas-général"><span class="toc-section-number">4</span> Pipeline : cas général</a>
 <ul>
-<li><a href="#principe"><span class="toc-section-number">4.1</span> Principe</a></li>
+<li><a href="#principe"><span class="toc-section-number">4.1</span>
+Principe</a></li>
 <li><a href="#un-code-plus-général"><span class="toc-section-number">4.2</span> Un code plus général</a></li>
 </ul></li>
-<li><a href="#exercice-une-solution-récursive"><span class="toc-section-number">5</span> Exercice : une solution récursive</a></li>
+<li><a href="#exercice-une-solution-récursive"><span class="toc-section-number">5</span> Exercice : une solution
+récursive</a></li>
 <li><a href="#remarques-finales"><span class="toc-section-number">6</span> Remarques finales</a></li>
 </ul>
 </nav>
+<p><strong>Historique</strong></p>
+<ul>
+<li>2023-09-27 Correction <code>demo-exec-dup.c</code> + typos (merci
+Damien Simler !)</li>
+<li>2023-01-15 Version initiale.</li>
+</ul>
 <h1 data-number="1" id="objectif"><span class="header-section-number">1</span> Objectif</h1>
-<p>La réalisation d’un mini-<em>shell</em> (interprète de commandes) est un projet classique de programmation système en C.</p>
+<p>La réalisation d’un mini-<em>shell</em> (interprète de commandes) est
+un projet classique de programmation système en C.</p>
 <p>Dans sa version la plus simpliste, un shell est une boucle qui</p>
 <ul>
 <li>affiche une chaîne d’invite (<em>prompt</em>),</li>
@@ -371,102 +395,168 @@ padding: 0.5em;
 <li>lance son exécution,</li>
 <li>et recommence.</li>
 </ul>
-<p>Les commandes sont des suites de mots : en général le chemin d’accès d’un programme (exécutable), suivi par des options, des arguments…</p>
+<p>Les commandes sont des suites de mots : en général le chemin d’accès
+d’un programme (exécutable), suivi par des options, des arguments…</p>
 <p>La réalisation d’un tel programme n’est pas très compliquée.</p>
-<p>Là où ça se complique un peu, c’est si on demande que le shell permette d’exécuter des “pipelines” de commandes, c’est-à-dire de lancer plusieurs commandes en redirigeant la sortie de l’une vers l’autre, comme dans</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="fu">ls</span> -l <span class="kw">|</span> <span class="fu">grep</span> -v ^d <span class="kw">|</span> <span class="fu">more</span></span></code></pre></div>
-<p>La difficulté est essentiellement d’utiliser correctement les <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math> tuyaux qui interviennent dans un “pipeline” de <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> commandes.</p>
-<p>Nous allons voir après quelques rappels.</p>
-<p><strong>Attention</strong> : pour simplifier la présentation, dans le code ci-dessous on ne vérifie jamais que les appels systèmes ont réussi. Par exemple <code>fork</code>, <code>pipe</code> etc. peuvent théoriquement échouer, et retourner -1 dans ce cas. En vrai, il faudrait vérifier.</p>
+<p>Là où ça se complique un peu, c’est si on veut que le shell permette
+d’exécuter des “pipelines” de commandes, c’est-à-dire de lancer
+plusieurs commandes en redirigeant la sortie de l’une vers l’autre,
+comme dans</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ls</span> <span class="at">-l</span> <span class="kw">|</span> <span class="fu">grep</span> <span class="at">-v</span> ^d <span class="kw">|</span> <span class="fu">more</span></span></code></pre></div>
+<p>La difficulté est essentiellement d’utiliser correctement les
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math>
+tuyaux qui interviennent dans un “pipeline” de
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+commandes.</p>
+<p>Nous allons voir ça après quelques rappels.</p>
+<p><strong>Attention</strong> : pour simplifier la présentation, dans le
+code ci-dessous on ne vérifie jamais que les appels systèmes ont réussi.
+Par exemple <code>fork</code>, <code>pipe</code> etc. peuvent
+théoriquement échouer, et retourner -1 dans ce cas. En vrai, il faudrait
+vérifier.</p>
 <h1 data-number="2" id="rappels"><span class="header-section-number">2</span> Rappels</h1>
-<h2 data-number="2.1" id="exécuter-une-commande-execv"><span class="header-section-number">2.1</span> Exécuter une commande : <code>execv</code></h2>
+<h2 data-number="2.1" id="exécuter-une-commande-execv"><span class="header-section-number">2.1</span> Exécuter une commande :
+<code>execv</code></h2>
 <p>Le programme suivant</p>
 <ul>
 <li>affiche un message</li>
-<li>fait exécuter la commande <code>ls /tmp</code> au moyen de <code>execv</code>.</li>
+<li>fait exécuter la commande <code>ls /tmp</code> au moyen de
+<code>execv</code>.</li>
 </ul>
-<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">// demo-exec.c</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
-<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
-<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;unistd.h&gt;</span></span>
-<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a></span>
-<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a><span class="dt">int</span> main()</span>
-<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a>{</span>
-<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a>    printf(<span class="st">&quot;# lancement &quot;</span> __FILE__ <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
-<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a></span>
-<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a>    <span class="dt">char</span> *path        = <span class="st">&quot;/bin/ls&quot;</span>;</span>
-<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a>    <span class="dt">char</span> *arguments[] = { <span class="st">&quot;ls&quot;</span>, <span class="st">&quot;/tmp&quot;</span>, NULL};</span>
-<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a></span>
-<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a>    execv(path, arguments);</span>
-<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a></span>
-<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a>    perror(<span class="st">&quot;échec lancement&quot;</span>);</span>
-<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a>    exit(EXIT_FAILURE);</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// demo-exec.c</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;unistd.h&gt;</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">&quot;# lancement &quot;</span> __FILE__ <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> <span class="op">*</span>path        <span class="op">=</span> <span class="st">&quot;/bin/ls&quot;</span><span class="op">;</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> <span class="op">*</span>arguments<span class="op">[]</span> <span class="op">=</span> <span class="op">{</span> <span class="st">&quot;ls&quot;</span><span class="op">,</span> <span class="st">&quot;/tmp&quot;</span><span class="op">,</span> NULL<span class="op">};</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>    execv<span class="op">(</span>path<span class="op">,</span> arguments<span class="op">);</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>    perror<span class="op">(</span><span class="st">&quot;échec lancement&quot;</span><span class="op">);</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    exit<span class="op">(</span>EXIT_FAILURE<span class="op">);</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>La fonction <code>execv</code> prend comme paramètres</p>
 <ul>
 <li>le chemin d’accès d’un fichier exécutable,</li>
-<li>une liste de paramètres terminée par le pointeur <code>NULL</code>.</li>
+<li>une liste de paramètres terminée par le pointeur
+<code>NULL</code>.</li>
 </ul>
-<p>Il existe des variantes de cette fonction, notamment <code>execvp</code> qui recherche l’exécutable indiqué en premier paramètre dans les répertoires qui figurent dans la variable d’environnement <code>PATH</code>. Lire la page de manuel.</p>
-<h3 data-number="2.1.1" id="succès-de-execv"><span class="header-section-number">2.1.1</span> Succès de <code>execv()</code></h3>
-<p>Normalement le fichier indiqué (<code>/bin/ls</code>) sera chargé dans la mémoire du processus en remplacement du code de <code>demo-exec</code>, et sa fonction <code>main</code>, qui a comme prototype <code>int main(int argc, char **argv)</code> sera appelée avec</p>
+<p>Il existe des variantes de cette fonction, notamment
+<code>execvp</code> qui recherche l’exécutable indiqué en premier
+paramètre dans les répertoires qui figurent dans la variable
+d’environnement <code>PATH</code>. Lire la page de manuel.</p>
+<h3 data-number="2.1.1" id="succès-de-execv"><span class="header-section-number">2.1.1</span> Succès de
+<code>execv()</code></h3>
+<p>Normalement le fichier indiqué (<code>/bin/ls</code>) sera chargé
+dans la mémoire du processus en remplacement du code de
+<code>demo-exec</code>, et sa fonction <code>main</code>, qui a comme
+prototype <code>int main(int argc, char **argv)</code> sera appelée
+avec</p>
 <ul>
-<li>l’adresse du tableau d’arguments dans <code>argv</code> (argument values)</li>
+<li>l’adresse du tableau d’arguments dans <code>argv</code> (argument
+values)</li>
 <li>la valeur 2 dans <code>argc</code> (argument count)</li>
 </ul>
-<p>Le code qui s’exécute ayant été remplacé, la fin de l’exécution de <code>/bin/ls</code> termine le processus : on ne revient pas de <code>execv</code>.</p>
-<h3 data-number="2.1.2" id="échec-de-execv"><span class="header-section-number">2.1.2</span> Échec de `execv()</h3>
-<p>Si le fichier indiqué en premier paramètre est absent, pas accessible, pas exécutable etc. l’appel à <code>execv</code> retourne, et les instructions suivantes sont exécutées.</p>
-<p>C’est l’occasion d’afficher un message d’erreur.</p>
+<p>Le code qui s’exécute ayant été remplacé, la fin de l’exécution de
+<code>/bin/ls</code> termine le processus : on ne revient pas de
+<code>execv</code>.</p>
+<h3 data-number="2.1.2" id="échec-de-execv"><span class="header-section-number">2.1.2</span> Échec de
+<code>execv()</code></h3>
+<p>Si le fichier indiqué en premier paramètre est absent, pas
+accessible, pas exécutable etc. l’appel à <code>execv</code> retourne,
+et les instructions qui suivent sont exécutées.</p>
+<p>Après l’appel à <code>execv</code>, on trouve donc le code qui gère
+cet échec.</p>
 <h2 data-number="2.2" id="remarques"><span class="header-section-number">2.2</span> Remarques</h2>
 <ul>
-<li>La valeur retournée par <code>execv</code> est <code>-1</code>, mais peu importe : on sait que si on est ressorti d’<code>execv</code> c’est que le lancement du programme n’a pas pu se faire.</li>
-<li>ne pas confondre “le lancement a échoué” (dans ce cas <code>execv</code> retourne), et “l’exécution du programme lancé a échoué” (le programme lancé s’est effectivement exécuté, et s’est terminé par <code>exit</code> en retournant un code non nul).</li>
+<li>La valeur retournée par <code>execv</code> en cas d’échec est
+<code>-1</code>, mais peu importe : ce n’est pas la peine de la tester :
+si on est ressorti d’<code>execv</code> c’est que le lancement du
+programme n’a pas pu se faire.</li>
+<li>ne pas confondre “le lancement a échoué” (dans ce cas
+<code>execv</code> retourne), et “l’exécution du programme lancé a
+échoué” (le programme lancé s’est effectivement exécuté, et s’est
+terminé par <code>exit</code> en retournant un code non nul).</li>
 </ul>
-<h2 data-number="2.3" id="redirection-dup2"><span class="header-section-number">2.3</span> Redirection : <code>dup2</code></h2>
+<h2 data-number="2.3" id="redirection-dup2"><span class="header-section-number">2.3</span> Redirection :
+<code>dup2</code></h2>
 <p>La plupart des commandes</p>
 <ul>
-<li>lisent des données sur leur entrée standard, qui a le descripteur 0 (constante <code>STDIN_FILENO</code>),</li>
-<li>écrivent des résultats sur la sortie standard (descripteur <code>STDOUT_FILENO</code> = 1),</li>
-<li>affichent des messages sur la sortie d’erreur (<code>STDERR_FILENO</code> = 2). 2).</li>
+<li>lisent des données sur leur entrée standard, qui a le descripteur 0
+(constante <code>STDIN_FILENO</code>),</li>
+<li>écrivent des résultats sur la sortie standard (descripteur
+<code>STDOUT_FILENO</code> = 1),</li>
+<li>affichent des messages sur la sortie d’erreur
+(<code>STDERR_FILENO</code> = 2). 2).</li>
 </ul>
-<p>L’exemple ci-dessous utilise l’appel <code>dup2</code> pour que la commande <code>tr</code> (avec les paramètres pour convertir les minuscules en majuscules), s’exécute avec son entrée standard redirigée vers un fichier :</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="co">// demo-exec-dup.c</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;unistd.h&gt;</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;sys/types.h&gt;</span></span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;sys/stat.h&gt;</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;fcntl.h&gt;</span></span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a><span class="dt">int</span> main()</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a>{</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a>    printf(<span class="st">&quot;# lancement &quot;</span> __FILE__ <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a>    <span class="dt">int</span> file_fd = open(<span class="st">&quot;demo-exec-dup.c&quot;</span>, O_RDONLY);</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a>    dup2(file_fd, STDOUT_FILENO);</span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a>    close(file_fd);</span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true"></a>    </span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true"></a>    execv(<span class="st">&quot;/bin/tr&quot;</span>, (<span class="dt">char</span> *[]){ <span class="st">&quot;tr&quot;</span>, <span class="st">&quot;a-z&quot;</span>, <span class="st">&quot;A-Z&quot;</span>,  NULL} );</span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true"></a></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true"></a>    perror(<span class="st">&quot;échec lancement&quot;</span>);</span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true"></a>    exit(EXIT_FAILURE);</span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true"></a></span>
-<span id="cb3-24"><a href="#cb3-24" aria-hidden="true"></a>}</span></code></pre></div>
-<p>Remarque : Dans <code>execv(&quot;/bin/tr&quot;, (char *[]){&quot;tr&quot;, &quot;a-z&quot;, &quot;A-Z&quot;, NULL});</code> on utilise un “tableau anonyme” en C. Le contenu (entre accolades) est précédé par le type du tableau (entre parenthèses). Ici, c’est dans le but de résumer l’appel d’<code>execv</code> à une seule ligne, sans botter en touche sur des constantes, pour rendre plus visible la gestion des descripteurs (<code>dup2</code>, <code>close</code>).</p>
+<p>L’exemple ci-dessous<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> utilise l’appel <code>dup2</code>
+pour que la commande <code>tr</code> (avec les paramètres pour convertir
+les minuscules en majuscules), s’exécute avec son entrée standard
+redirigée vers un fichier :</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// demo-exec-dup.c</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;unistd.h&gt;</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;sys/types.h&gt;</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;sys/stat.h&gt;</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;fcntl.h&gt;</span></span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">&quot;# lancement &quot;</span> __FILE__ <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> file_fd <span class="op">=</span> open<span class="op">(</span><span class="st">&quot;demo-exec-dup.c&quot;</span><span class="op">,</span> O_RDONLY<span class="op">);</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>    dup2<span class="op">(</span>file_fd<span class="op">,</span> STDIN_FILENO<span class="op">);</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>    close<span class="op">(</span>file_fd<span class="op">);</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    execv<span class="op">(</span><span class="st">&quot;/bin/tr&quot;</span><span class="op">,</span> <span class="op">(</span><span class="dt">char</span> <span class="op">*[]){</span> <span class="st">&quot;tr&quot;</span><span class="op">,</span> <span class="st">&quot;a-z&quot;</span><span class="op">,</span> <span class="st">&quot;A-Z&quot;</span><span class="op">,</span>  NULL<span class="op">}</span> <span class="op">);</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>    perror<span class="op">(</span><span class="st">&quot;échec lancement&quot;</span><span class="op">);</span></span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    exit<span class="op">(</span>EXIT_FAILURE<span class="op">);</span></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>Remarque : Dans
+<code>execv(&quot;/bin/tr&quot;, (char *[]){&quot;tr&quot;, &quot;a-z&quot;, &quot;A-Z&quot;, NULL});</code> on
+utilise un <strong>tableau anonyme</strong> en C.</p>
+<ul>
+<li>Syntaxe du tableau anonyme : le contenu (entre accolades) est
+précédé par le type du tableau (entre parenthèses).</li>
+<li>But : ici c’est pour exprimer l’appel d’<code>execv</code> en une
+seule ligne, sans botter en touche sur des constantes, pour rendre plus
+visible la gestion des descripteurs (<code>dup2</code>,
+<code>close</code>).</li>
+</ul>
 <p><strong>Explications :</strong></p>
 <ul>
-<li>L’appel à la fonction <code>open</code> ouvre le fichier en lecture,</li>
-<li>Pour chaque fichier ouvert, il y a une structure de données qui contient un tampon, une indication de l’endroit où on est de la lecture ou de l’écriture, etc.</li>
-<li>Cette structure de données est identifiée par un numéro, le <strong>descripteur de fichier</strong> ouvert. En général le plus petit numéro non utilisé, sans doute 3 ici.</li>
-<li>L’appel <code>dup2(file_fd, STDIN_FILENO)</code> fait en sorte que le descripteur 0 conduise au même fichier que le 3 (le descripteur 0 est fermé préalablement).</li>
-<li>Les descripteurs ouverts le restent lors de l’appel de <code>execv</code> : la commande <code>tr</code> s’exécute donc avec son entrée standard reliée au fichier de données.</li>
-<li>Préalablement, un <code>close</code> de <code>file_fd</code> évite une <strong>fuite de descripteur</strong> : on ne veut transmettre que les descripteurs 0, 1 et 2.</li>
+<li>L’appel à la fonction <code>open</code> ouvre le fichier en
+lecture,</li>
+<li>Pour chaque fichier ouvert, il y a une structure de données qui
+contient un tampon, une indication de l’endroit où on est de la lecture
+ou de l’écriture, etc.</li>
+<li>Cette structure de données est identifiée par un numéro, le
+<strong>descripteur de fichier</strong> ouvert. En général le plus petit
+numéro non utilisé, sans doute 3 ici.</li>
+<li>L’appel <code>dup2(file_fd, STDIN_FILENO)</code> fait en sorte que
+le descripteur <code>0</code> conduise au même fichier que le
+<code>3</code> (le descripteur <code>0</code> est fermé
+préalablement).</li>
+<li>Les descripteurs qui sont ouverts le restent lors de l’appel de
+<code>execv</code> : la commande <code>tr</code> s’exécute donc avec son
+entrée standard reliée au fichier de données.</li>
+<li>Préalablement, un <code>close</code> de <code>file_fd</code> évite
+une <strong>fuite de descripteur</strong> : on ne veut transmettre que
+les descripteurs <code>0</code>, <code>1</code> et <code>2</code>.</li>
 </ul>
-<p>Ce problème de fuite de descripteur va compliquer la réalisation d’un pipeline.</p>
+<p>Ce problème de fuite de descripteur va compliquer la réalisation d’un
+pipeline.</p>
 <p><strong>Exécution</strong> :</p>
 <p>Le programme affiche le code source en majuscules :</p>
 <pre><code># lancement demo-exec-dup.c
@@ -478,60 +568,64 @@ padding: 0.5em;
     EXIT(EXIT_FAILURE);
 
 }</code></pre>
-<h2 data-number="2.4" id="lancer-un-processus-fork-waitpid"><span class="header-section-number">2.4</span> Lancer un processus : <code>fork</code> + <code>waitpid</code></h2>
-<p>Comme l’exécution d’une commande par <code>execv</code> termine le processus en cours, on va avoir un problème si on veut faire exécuter <em>plusieurs</em> commandes.</p>
-<p>La solution est de faire exécuter chaque commande par un processus créé à cet effet.</p>
-<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="co">// demo-fork.c</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;unistd.h&gt;</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdbool.h&gt;</span></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;assert.h&gt;</span></span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true"></a></span>
-<span id="cb5-9"><a href="#cb5-9" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;sys/types.h&gt;</span></span>
-<span id="cb5-10"><a href="#cb5-10" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;sys/stat.h&gt;</span></span>
-<span id="cb5-11"><a href="#cb5-11" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;sys/wait.h&gt;</span></span>
-<span id="cb5-12"><a href="#cb5-12" aria-hidden="true"></a></span>
-<span id="cb5-13"><a href="#cb5-13" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;fcntl.h&gt;</span></span>
-<span id="cb5-14"><a href="#cb5-14" aria-hidden="true"></a></span>
-<span id="cb5-15"><a href="#cb5-15" aria-hidden="true"></a><span class="dt">void</span> execute_task()</span>
-<span id="cb5-16"><a href="#cb5-16" aria-hidden="true"></a>{</span>
-<span id="cb5-17"><a href="#cb5-17" aria-hidden="true"></a>    <span class="dt">int</span> fd = open(<span class="st">&quot;demo-fork.c&quot;</span>, O_RDONLY);</span>
-<span id="cb5-18"><a href="#cb5-18" aria-hidden="true"></a>    dup2(fd, STDOUT_FILENO);</span>
-<span id="cb5-19"><a href="#cb5-19" aria-hidden="true"></a>    close(fd);</span>
-<span id="cb5-20"><a href="#cb5-20" aria-hidden="true"></a>    </span>
-<span id="cb5-21"><a href="#cb5-21" aria-hidden="true"></a>    execv(<span class="st">&quot;/bin/tr&quot;</span>, (<span class="dt">char</span> *[]){ <span class="st">&quot;tr&quot;</span>, <span class="st">&quot;a-z&quot;</span>, <span class="st">&quot;A-Z&quot;</span>,  NULL} );</span>
-<span id="cb5-22"><a href="#cb5-22" aria-hidden="true"></a>    <span class="co">// en cas de problème pour lancer tr</span></span>
-<span id="cb5-23"><a href="#cb5-23" aria-hidden="true"></a>    perror(<span class="st">&quot;erreur lancement commande tr&quot;</span>);</span>
-<span id="cb5-24"><a href="#cb5-24" aria-hidden="true"></a>    exit(EXIT_FAILURE);</span>
-<span id="cb5-25"><a href="#cb5-25" aria-hidden="true"></a>}</span>
-<span id="cb5-26"><a href="#cb5-26" aria-hidden="true"></a></span>
-<span id="cb5-27"><a href="#cb5-27" aria-hidden="true"></a><span class="dt">void</span> explain_status(<span class="dt">int</span> child_status)</span>
-<span id="cb5-28"><a href="#cb5-28" aria-hidden="true"></a>{</span>
-<span id="cb5-29"><a href="#cb5-29" aria-hidden="true"></a>    printf(<span class="st">&quot;# La commande s&#39;est terminée &quot;</span>);</span>
-<span id="cb5-30"><a href="#cb5-30" aria-hidden="true"></a>    <span class="cf">if</span> (WIFEXITED(child_status)) {</span>
-<span id="cb5-31"><a href="#cb5-31" aria-hidden="true"></a>        printf(<span class="st">&quot;par exit(%d)</span><span class="sc">\n</span><span class="st">&quot;</span>, WEXITSTATUS(child_status));</span>
-<span id="cb5-32"><a href="#cb5-32" aria-hidden="true"></a>    } <span class="cf">else</span> <span class="cf">if</span> (WIFSIGNALED(child_status)) {</span>
-<span id="cb5-33"><a href="#cb5-33" aria-hidden="true"></a>        printf(<span class="st">&quot;par la réception du signal %d</span><span class="sc">\n</span><span class="st">&quot;</span>, WTERMSIG(child_status));</span>
-<span id="cb5-34"><a href="#cb5-34" aria-hidden="true"></a>    } <span class="cf">else</span> {</span>
-<span id="cb5-35"><a href="#cb5-35" aria-hidden="true"></a>        printf(<span class="st">&quot;pour une raison x ou y.</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
-<span id="cb5-36"><a href="#cb5-36" aria-hidden="true"></a>    }</span>
-<span id="cb5-37"><a href="#cb5-37" aria-hidden="true"></a>}</span>
-<span id="cb5-38"><a href="#cb5-38" aria-hidden="true"></a></span>
-<span id="cb5-39"><a href="#cb5-39" aria-hidden="true"></a><span class="dt">int</span> main(<span class="dt">int</span> argc, <span class="dt">char</span> *argv[])</span>
-<span id="cb5-40"><a href="#cb5-40" aria-hidden="true"></a>{</span>
-<span id="cb5-41"><a href="#cb5-41" aria-hidden="true"></a>    pid_t child_pid = fork();</span>
-<span id="cb5-42"><a href="#cb5-42" aria-hidden="true"></a>    <span class="cf">if</span> (child_pid == <span class="dv">0</span>) {</span>
-<span id="cb5-43"><a href="#cb5-43" aria-hidden="true"></a>        execute_task();</span>
-<span id="cb5-44"><a href="#cb5-44" aria-hidden="true"></a>        assert(<span class="st">&quot;on ne revient jamais ici&quot;</span> &amp;&amp; false);</span>
-<span id="cb5-45"><a href="#cb5-45" aria-hidden="true"></a>    }</span>
-<span id="cb5-46"><a href="#cb5-46" aria-hidden="true"></a>    <span class="dt">int</span> child_status;</span>
-<span id="cb5-47"><a href="#cb5-47" aria-hidden="true"></a>    waitpid(child_pid, &amp;child_status, <span class="dv">0</span>);</span>
-<span id="cb5-48"><a href="#cb5-48" aria-hidden="true"></a></span>
-<span id="cb5-49"><a href="#cb5-49" aria-hidden="true"></a>    explain_status(child_status);</span>
-<span id="cb5-50"><a href="#cb5-50" aria-hidden="true"></a>    exit(EXIT_SUCCESS);</span>
-<span id="cb5-51"><a href="#cb5-51" aria-hidden="true"></a>}</span></code></pre></div>
+<h2 data-number="2.4" id="lancer-un-processus-fork-waitpid"><span class="header-section-number">2.4</span> Lancer un processus :
+<code>fork</code> + <code>waitpid</code></h2>
+<p>Comme l’exécution d’une commande par <code>execv</code> termine le
+processus en cours, on va avoir un problème si on veut faire exécuter
+<em>plusieurs</em> commandes.</p>
+<p>La solution est de faire exécuter chaque commande par un processus
+créé à cet effet.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co">// demo-fork.c</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;unistd.h&gt;</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdbool.h&gt;</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;assert.h&gt;</span></span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;sys/types.h&gt;</span></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;sys/stat.h&gt;</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;sys/wait.h&gt;</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;fcntl.h&gt;</span></span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> execute_task<span class="op">()</span></span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> fd <span class="op">=</span> open<span class="op">(</span><span class="st">&quot;demo-fork.c&quot;</span><span class="op">,</span> O_RDONLY<span class="op">);</span></span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    dup2<span class="op">(</span>fd<span class="op">,</span> STDOUT_FILENO<span class="op">);</span></span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    close<span class="op">(</span>fd<span class="op">);</span></span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    execv<span class="op">(</span><span class="st">&quot;/bin/tr&quot;</span><span class="op">,</span> <span class="op">(</span><span class="dt">char</span> <span class="op">*[]){</span> <span class="st">&quot;tr&quot;</span><span class="op">,</span> <span class="st">&quot;a-z&quot;</span><span class="op">,</span> <span class="st">&quot;A-Z&quot;</span><span class="op">,</span>  NULL<span class="op">}</span> <span class="op">);</span></span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">// en cas de problème pour lancer tr</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    perror<span class="op">(</span><span class="st">&quot;erreur lancement commande tr&quot;</span><span class="op">);</span></span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    exit<span class="op">(</span>EXIT_FAILURE<span class="op">);</span></span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> explain_status<span class="op">(</span><span class="dt">int</span> child_status<span class="op">)</span></span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">&quot;# La commande s&#39;est terminée &quot;</span><span class="op">);</span></span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>WIFEXITED<span class="op">(</span>child_status<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>        printf<span class="op">(</span><span class="st">&quot;par exit(%d)</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">,</span> WEXITSTATUS<span class="op">(</span>child_status<span class="op">));</span></span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="cf">if</span> <span class="op">(</span>WIFSIGNALED<span class="op">(</span>child_status<span class="op">))</span> <span class="op">{</span></span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>        printf<span class="op">(</span><span class="st">&quot;par la réception du signal %d</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">,</span> WTERMSIG<span class="op">(</span>child_status<span class="op">));</span></span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span> <span class="cf">else</span> <span class="op">{</span></span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>        printf<span class="op">(</span><span class="st">&quot;pour une raison x ou y.</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span> <span class="op">*</span>argv<span class="op">[])</span></span>
+<span id="cb5-40"><a href="#cb5-40" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb5-41"><a href="#cb5-41" aria-hidden="true" tabindex="-1"></a>    pid_t child_pid <span class="op">=</span> fork<span class="op">();</span></span>
+<span id="cb5-42"><a href="#cb5-42" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>child_pid <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb5-43"><a href="#cb5-43" aria-hidden="true" tabindex="-1"></a>        execute_task<span class="op">();</span></span>
+<span id="cb5-44"><a href="#cb5-44" aria-hidden="true" tabindex="-1"></a>        assert<span class="op">(</span><span class="st">&quot;on ne revient jamais ici&quot;</span> <span class="op">&amp;&amp;</span> false<span class="op">);</span></span>
+<span id="cb5-45"><a href="#cb5-45" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb5-46"><a href="#cb5-46" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> child_status<span class="op">;</span></span>
+<span id="cb5-47"><a href="#cb5-47" aria-hidden="true" tabindex="-1"></a>    waitpid<span class="op">(</span>child_pid<span class="op">,</span> <span class="op">&amp;</span>child_status<span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb5-48"><a href="#cb5-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-49"><a href="#cb5-49" aria-hidden="true" tabindex="-1"></a>    explain_status<span class="op">(</span>child_status<span class="op">);</span></span>
+<span id="cb5-50"><a href="#cb5-50" aria-hidden="true" tabindex="-1"></a>    exit<span class="op">(</span>EXIT_SUCCESS<span class="op">);</span></span>
+<span id="cb5-51"><a href="#cb5-51" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p>L’exécution montre ceci :</p>
 <pre><code>// DEMO-FORK.C
 
@@ -542,100 +636,139 @@ padding: 0.5em;
     EXIT(EXIT_SUCCESS);
 }
 # La commande s&#39;est terminée par exit(0)</code></pre>
-<p><strong>Explications</strong> brèves (qui ne remplacent pas un cours)</p>
+<p><strong>Explications</strong> brèves (qui ne remplacent pas un
+cours)</p>
 <ol type="1">
-<li>L’appel à <code>fork()</code> démarre un nouveau processus (dit “fils”) qui est une copie du processus en cours d’exécution (son “père”).
+<li>L’appel à <code>fork()</code> démarre un nouveau processus (dit
+“fils”) qui est une copie du processus en cours d’exécution (son
+“père”).
 <ul>
-<li>les deux processus partagent les ressources (descripteurs de fichiers),</li>
-<li><code>fork()</code> retourne au père l’identifiant du processus fils, et 0 à celui-ci.</li>
+<li>les deux processus partagent les ressources (descripteurs de
+fichiers),</li>
+<li><code>fork()</code> retourne au père l’identifiant du processus
+fils, et 0 à celui-ci.</li>
 </ul></li>
 </ol>
-<p>Le processus fils appelle donc la fonction <code>execute_task()</code>, tandis que le processus père qui a reçu l’identifiant non nul de son fils ne rentre pas dans le corps du <code>if</code>.</p>
+<p>Le processus fils appelle donc la fonction
+<code>execute_task()</code>, tandis que le processus père qui a reçu
+l’identifiant non nul de son fils ne rentre pas dans le corps du
+<code>if</code>.</p>
 <ol start="2" type="1">
-<li><p>La fonction <code>execute_task()</code> - exécutée par le fils - lance la commande <code>/bin/tr</code> comme dans l’exemple précédent. On ne revient jamais de cette fonction qui lance <code>/bin/tr</code> par <code>execv</code>, ou <code>exit(EXIT_FAILURE)</code> en cas d’échec.</p></li>
+<li><p>La fonction <code>execute_task()</code> - exécutée par le fils -
+lance la commande <code>/bin/tr</code> comme dans l’exemple précédent.
+On ne revient jamais de cette fonction qui lance <code>/bin/tr</code>
+par <code>execv</code>, ou <code>exit(EXIT_FAILURE)</code> en cas
+d’échec.</p></li>
 <li><p>En même temps (à peu près) le processus père</p></li>
 </ol>
 <ul>
-<li>exécute <code>waitpid</code> qui le bloque en attendant la fin de l’exécution du fils,</li>
+<li>exécute <code>waitpid</code> qui le bloque en attendant la fin de
+l’exécution du fils,</li>
 <li>affiche ensuite des messages et se termine.</li>
 </ul>
 <ol start="4" type="1">
-<li>Le second paramètre de <code>waitpid</code> est l’adresse d’un entier qui contiendra les informations sur la fin du processus fils. Dans <code>explain_child_status</code>, diverses macros permettent
+<li>Le second paramètre de <code>waitpid</code> est l’adresse d’un
+entier qui contiendra les informations sur la fin du processus fils.
+Dans <code>explain_child_status</code>, diverses macros permettent
 <ul>
-<li>de savoir si il s’est terminé par <code>exit()</code> ou en recevant un signal qui a provoqué sa fin,</li>
-<li>de connaître le code de retour dans le premier cas, ou le numéro du signal.</li>
+<li>de savoir si il s’est terminé par <code>exit()</code> ou en recevant
+un signal qui a provoqué sa fin,</li>
+<li>de connaître le code de retour dans le premier cas, ou le numéro du
+signal.</li>
 </ul></li>
 </ol>
-<h2 data-number="2.5" id="faire-communiquer-deux-commandes-par-pipe"><span class="header-section-number">2.5</span> Faire communiquer deux commandes par <code>pipe</code></h2>
-<p>Un “tuyau” est un pseudo-fichier géré par le système d’exploitation. C’est un tampon en mémoire dans lequel on peut écrire et lire. Il sert à la communication entre processus issus d’un même père. Les données sont lues dans l’ordre où elles ont été écrites dans le tuyau.</p>
-<p>Un tuyau a une capacité limitée. Un processus qui veut écrire plus de données dans le tuyau qu’il ne peut en contenir sera bloqué en attendant qu’il y ait suffisamment de place.</p>
-<p>Le tuyau est créé par un appel à la commande <code>pipe</code> qui retourne - dans un tableau donné en paramètre - deux descripteurs : celui qui sert à lire dans le tuyau, et celui qui sert à y écrire.</p>
-<p>Plusieurs processus peuvent lire et/ou écrire dans un même tuyau, pourvu qu’ils disposent d’un descripteur ouvert qui permet l’opération.</p>
-<p><strong>Important</strong> : En lecture, on atteint la “<strong>fin de fichier</strong>” quand il n’y a plus de données disponibles dans le tuyau, <strong>et que tous les descripteurs d’écriture ont été fermés</strong>.</p>
-<p>Pour chaque processus, il faudra donc faire très attention à bien refermer tous les descripteurs (surtout d’écriture) dont on ne se sert pas. Sinon un processus en lecture pourra rester bloqué indéfiniment, en attente de données que personne ne lui enverra.</p>
-<p><strong>L’exemple</strong> qui suit équivaut au lancement de la commande shell :</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="fu">date</span> <span class="kw">|</span> <span class="fu">wc</span> a-z A-Z</span></code></pre></div>
+<h2 data-number="2.5" id="faire-communiquer-deux-commandes-par-pipe"><span class="header-section-number">2.5</span> Faire communiquer deux
+commandes par <code>pipe</code></h2>
+<p>Un “tuyau” est un pseudo-fichier géré par le système d’exploitation.
+C’est un tampon en mémoire dans lequel on peut écrire et lire. Il sert à
+la communication entre processus issus d’un même père. Les données sont
+lues dans l’ordre où elles ont été écrites dans le tuyau.</p>
+<p>Un tuyau a une capacité limitée. Un processus qui veut écrire plus de
+données dans le tuyau qu’il ne peut en contenir sera bloqué en attendant
+qu’il y ait suffisamment de place.</p>
+<p>Le tuyau est créé par un appel à la commande <code>pipe</code> qui
+retourne - dans un tableau donné en paramètre - deux descripteurs :
+celui qui sert à lire dans le tuyau, et celui qui sert à y écrire.</p>
+<p>Plusieurs processus peuvent lire et/ou écrire dans un même tuyau,
+pourvu qu’ils disposent d’un descripteur ouvert qui permet
+l’opération.</p>
+<p><strong>Important</strong> : En lecture, on atteint la “<strong>fin
+de fichier</strong>” quand il n’y a plus de données disponibles dans le
+tuyau, <strong>et que tous les descripteurs d’écriture ont été
+fermés</strong>.</p>
+<p>Pour chaque processus, il faudra donc faire très attention à bien
+refermer tous les descripteurs (surtout d’écriture) dont on ne se sert
+pas. Sinon un processus en lecture pourra rester bloqué indéfiniment, en
+attente de données que personne ne lui enverra.</p>
+<p><strong>L’exemple</strong> qui suit est equivalent au lancement de la
+commande shell :</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">date</span> <span class="kw">|</span> <span class="fu">tr</span> a-z A-Z</span></code></pre></div>
 <p>qui affiche la date mise en majuscules</p>
 <pre><code>SAM. 14 JANV. 2023 18:50:22 CET</code></pre>
 <p>Voici le source :</p>
-<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true"></a><span class="co">// demo-pipe.c</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true"></a><span class="co">// demo-pipe.c</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true"></a></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;unistd.h&gt;</span></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true"></a></span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;sys/types.h&gt;</span></span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;sys/stat.h&gt;</span></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;sys/wait.h&gt;</span></span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true"></a></span>
-<span id="cb9-12"><a href="#cb9-12" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;fcntl.h&gt;</span></span>
-<span id="cb9-13"><a href="#cb9-13" aria-hidden="true"></a></span>
-<span id="cb9-14"><a href="#cb9-14" aria-hidden="true"></a><span class="dt">int</span> main(<span class="dt">int</span> argc, <span class="dt">char</span> *argv[])</span>
-<span id="cb9-15"><a href="#cb9-15" aria-hidden="true"></a>{</span>
-<span id="cb9-16"><a href="#cb9-16" aria-hidden="true"></a>    <span class="dt">int</span> pipe_fd[<span class="dv">2</span>];</span>
-<span id="cb9-17"><a href="#cb9-17" aria-hidden="true"></a>    </span>
-<span id="cb9-18"><a href="#cb9-18" aria-hidden="true"></a>    pipe(pipe_fd);</span>
-<span id="cb9-19"><a href="#cb9-19" aria-hidden="true"></a></span>
-<span id="cb9-20"><a href="#cb9-20" aria-hidden="true"></a>    pid_t date_pid = fork();</span>
-<span id="cb9-21"><a href="#cb9-21" aria-hidden="true"></a>    <span class="cf">if</span> (date_pid == <span class="dv">0</span>) {</span>
-<span id="cb9-22"><a href="#cb9-22" aria-hidden="true"></a>        dup2(pipe_fd[<span class="dv">1</span>], STDOUT_FILENO);</span>
-<span id="cb9-23"><a href="#cb9-23" aria-hidden="true"></a>        close(pipe_fd[<span class="dv">0</span>]);</span>
-<span id="cb9-24"><a href="#cb9-24" aria-hidden="true"></a>        close(pipe_fd[<span class="dv">1</span>]);</span>
-<span id="cb9-25"><a href="#cb9-25" aria-hidden="true"></a>        execv(<span class="st">&quot;/bin/date&quot;</span>, (<span class="dt">char</span> *[]){<span class="st">&quot;date&quot;</span>, NULL}); </span>
-<span id="cb9-26"><a href="#cb9-26" aria-hidden="true"></a>        perror(<span class="st">&quot;échec lancement de date&quot;</span>);</span>
-<span id="cb9-27"><a href="#cb9-27" aria-hidden="true"></a>        exit(EXIT_FAILURE);</span>
-<span id="cb9-28"><a href="#cb9-28" aria-hidden="true"></a>    }</span>
-<span id="cb9-29"><a href="#cb9-29" aria-hidden="true"></a>    </span>
-<span id="cb9-30"><a href="#cb9-30" aria-hidden="true"></a>    pid_t tr_pid = fork();</span>
-<span id="cb9-31"><a href="#cb9-31" aria-hidden="true"></a>    <span class="cf">if</span> (tr_pid == <span class="dv">0</span>) {</span>
-<span id="cb9-32"><a href="#cb9-32" aria-hidden="true"></a>        dup2(pipe_fd[<span class="dv">0</span>], STDIN_FILENO);</span>
-<span id="cb9-33"><a href="#cb9-33" aria-hidden="true"></a>        close(pipe_fd[<span class="dv">0</span>]);</span>
-<span id="cb9-34"><a href="#cb9-34" aria-hidden="true"></a>        close(pipe_fd[<span class="dv">1</span>]);</span>
-<span id="cb9-35"><a href="#cb9-35" aria-hidden="true"></a>        execv(<span class="st">&quot;/bin/tr&quot;</span>, (<span class="dt">char</span> *[]){<span class="st">&quot;tr&quot;</span>, <span class="st">&quot;a-z&quot;</span>, <span class="st">&quot;A-Z&quot;</span>, NULL}); </span>
-<span id="cb9-36"><a href="#cb9-36" aria-hidden="true"></a>        perror(<span class="st">&quot;échec lancement de tr&quot;</span>);</span>
-<span id="cb9-37"><a href="#cb9-37" aria-hidden="true"></a>        exit(EXIT_FAILURE);</span>
-<span id="cb9-38"><a href="#cb9-38" aria-hidden="true"></a>    }</span>
-<span id="cb9-39"><a href="#cb9-39" aria-hidden="true"></a></span>
-<span id="cb9-40"><a href="#cb9-40" aria-hidden="true"></a>    close(pipe_fd[<span class="dv">0</span>]);</span>
-<span id="cb9-41"><a href="#cb9-41" aria-hidden="true"></a>    close(pipe_fd[<span class="dv">1</span>]);</span>
-<span id="cb9-42"><a href="#cb9-42" aria-hidden="true"></a>    waitpid(date_pid, NULL, <span class="dv">0</span>);</span>
-<span id="cb9-43"><a href="#cb9-43" aria-hidden="true"></a>    waitpid(tr_pid, NULL, <span class="dv">0</span>);</span>
-<span id="cb9-44"><a href="#cb9-44" aria-hidden="true"></a>    </span>
-<span id="cb9-45"><a href="#cb9-45" aria-hidden="true"></a>    exit(EXIT_SUCCESS);</span>
-<span id="cb9-46"><a href="#cb9-46" aria-hidden="true"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">// demo-pipe.c</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">// demo-pipe.c</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;unistd.h&gt;</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;sys/types.h&gt;</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;sys/stat.h&gt;</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;sys/wait.h&gt;</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;fcntl.h&gt;</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">(</span><span class="dt">int</span> argc<span class="op">,</span> <span class="dt">char</span> <span class="op">*</span>argv<span class="op">[])</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> pipe_fd<span class="op">[</span><span class="dv">2</span><span class="op">];</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    pipe<span class="op">(</span>pipe_fd<span class="op">);</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>    pid_t date_pid <span class="op">=</span> fork<span class="op">();</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>date_pid <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>        <span class="co">// code exécuté par le premier processus fils (date)</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>        dup2<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">1</span><span class="op">],</span> STDOUT_FILENO<span class="op">);</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>        close<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">0</span><span class="op">]);</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>        close<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">1</span><span class="op">]);</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a>        execv<span class="op">(</span><span class="st">&quot;/bin/date&quot;</span><span class="op">,</span> <span class="op">(</span><span class="dt">char</span> <span class="op">*[]){</span><span class="st">&quot;date&quot;</span><span class="op">,</span> NULL<span class="op">});</span> </span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>        perror<span class="op">(</span><span class="st">&quot;échec lancement de date&quot;</span><span class="op">);</span></span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>        exit<span class="op">(</span>EXIT_FAILURE<span class="op">);</span></span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    pid_t tr_pid <span class="op">=</span> fork<span class="op">();</span></span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>tr_pid <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>        <span class="co">// code exécuté par le second processus fils (tr)</span></span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>        dup2<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">0</span><span class="op">],</span> STDIN_FILENO<span class="op">);</span></span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>        close<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">0</span><span class="op">]);</span></span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>        close<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">1</span><span class="op">]);</span></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>        execv<span class="op">(</span><span class="st">&quot;/bin/tr&quot;</span><span class="op">,</span> <span class="op">(</span><span class="dt">char</span> <span class="op">*[]){</span><span class="st">&quot;tr&quot;</span><span class="op">,</span> <span class="st">&quot;a-z&quot;</span><span class="op">,</span> <span class="st">&quot;A-Z&quot;</span><span class="op">,</span> NULL<span class="op">});</span> </span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>        perror<span class="op">(</span><span class="st">&quot;échec lancement de tr&quot;</span><span class="op">);</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>        exit<span class="op">(</span>EXIT_FAILURE<span class="op">);</span></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>    close<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">0</span><span class="op">]);</span></span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>    close<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">1</span><span class="op">]);</span></span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a>    waitpid<span class="op">(</span>date_pid<span class="op">,</span> NULL<span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>    waitpid<span class="op">(</span>tr_pid<span class="op">,</span> NULL<span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a>    exit<span class="op">(</span>EXIT_SUCCESS<span class="op">);</span></span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <p><strong>Explications</strong> :</p>
 <ul>
-<li>l’appel système <code>pipe(pipe_fd)</code> crée un tuyau et place les descripteurs dans le tableau</li>
-<li>le premier fils hérite des deux descripteurs
+<li>L’appel système <code>pipe(pipe_fd)</code> crée un tuyau et place
+les descripteurs dans le tableau.</li>
+<li>Le premier fils hérite des deux descripteurs
 <ul>
-<li>il duplique le descripteur d’écriture, pour que la sortie de la commande <code>date</code> se fasse dans le tuyau ;</li>
+<li>il duplique le descripteur d’écriture, pour que la sortie de la
+commande <code>date</code> se fasse dans le tuyau ;</li>
 <li>il ferme ensuite les descripteurs du tuyau.</li>
 </ul></li>
-<li>le premier fils hérite aussi des deux descripteurs
+<li>Le second fils hérite aussi des deux descripteurs
 <ul>
-<li>il duplique le descripteur de lecture, pour que la commande <code>tr</code> prenne son entrée dans le tuyau</li>
-<li>il ferme ensuite les descripteurs du tuyau</li>
+<li>il duplique le descripteur de lecture, pour que la commande
+<code>tr</code> prenne son entrée dans le tuyau ;</li>
+<li>il ferme ensuite les descripteurs du tuyau.</li>
 </ul></li>
 <li>une fois les fils lancés, le processus père
 <ul>
@@ -643,31 +776,59 @@ padding: 0.5em;
 <li>attend la fin de l’exécution des deux fils.</li>
 </ul></li>
 </ul>
-<p><strong>Remarque :</strong> Comme le descripteur d’écriture <code>pipe_fd[1]</code> n’est utilisé que par le premier processus fils, le processus père pourrait le refermer immédiatement après le lancement du premier fils, ce qui dispenserait d’avoir à le faire dans aussi le code du second. Mais on a privilégié ici la simplicité du code.</p>
-<h3 data-number="2.5.1" id="résumé-les-mécanismes-unix-utilisés"><span class="header-section-number">2.5.1</span> Résumé : les mécanismes Unix utilisés</h3>
+<p><strong>Remarque :</strong> Comme le descripteur d’écriture
+<code>pipe_fd[1]</code> n’est utilisé que par le premier processus fils,
+le processus père pourrait le refermer immédiatement après le lancement
+du premier fils, ce qui dispenserait d’avoir à le faire dans aussi le
+code du second. Mais on a privilégié ici la simplicité du code.</p>
+<h3 data-number="2.5.1" id="résumé-les-mécanismes-unix-utilisés"><span class="header-section-number">2.5.1</span> Résumé : les mécanismes Unix
+utilisés</h3>
 <ul>
-<li><code>fork()</code> crée un processus “fils” qui est une copie de celui qui l’appelle (= père). Il retourne 0 au fils, et le numéro du fils au père. Les descripteurs ouverts sont partagés.</li>
+<li><code>fork()</code> crée un processus “fils” qui est une copie de
+celui qui l’appelle (= père). Il retourne 0 au fils, et le numéro du
+fils au père. Les descripteurs ouverts sont partagés.</li>
 <li><code>exit()</code> termine le processus qui l’appelle.</li>
-<li><code>waitpid()</code> bloque un processus en attente de la fin d’un autre dont on donne le numéro.</li>
-<li><code>pipe()</code> crée un tuyau, et retourne dans un tableau une paire de descripteurs vers les extrémités qui servent à y lire et y écrire.</li>
-<li><code>dup2()</code> duplique un descripteur, ce qui permet de rediriger une entrée ou une sortie vers un fichier ou un pipe.</li>
+<li><code>waitpid()</code> bloque un processus en attente de la fin d’un
+autre dont on donne le numéro.</li>
+<li><code>pipe()</code> crée un tuyau, et retourne dans un tableau une
+paire de descripteurs vers les extrémités qui servent à y lire et y
+écrire.</li>
+<li><code>dup2()</code> duplique un descripteur, ce qui permet de
+rediriger une entrée ou une sortie vers un fichier ou un pipe.</li>
 <li><code>close()</code> ferme un descripteur.</li>
-<li><code>execv()</code> remplace le processus courant par l’exécution d’un programme en lui transmettant des arguments, et en partageant les descripteurs ouverts. L’exit du programme terminera le processus. En cas d’échec de lancement (fichier absent, non exécutable, etc) l’appelant continue.</li>
+<li><code>execv()</code> remplace le processus courant par l’exécution
+d’un programme en lui transmettant des arguments, et en partageant les
+descripteurs ouverts. L’exit du programme terminera le processus. En cas
+d’échec de lancement (fichier absent, non exécutable, etc) l’appelant
+continue.</li>
 </ul>
-<h1 data-number="3" id="pipeline-analyse-sur-un-exemple"><span class="header-section-number">3</span> Pipeline : analyse sur un exemple</h1>
-<p>Quand on aborde un problème un peu compliqué, il est conseillé de commencer par regarder un exemple concret, petit mais significatif. À partir de là, on pourra plus facilement construire une solution générale.</p>
-<p>Considérons donc un exemple de pipeline qui met en oeuvre 4 programmes :</p>
+<h1 data-number="3" id="pipeline-analyse-sur-un-exemple"><span class="header-section-number">3</span> Pipeline : analyse sur un
+exemple</h1>
+<p>Quand on aborde un problème un peu compliqué, il est conseillé de
+commencer par regarder un exemple concret, petit mais significatif. À
+partir de là, on pourra construire plus facilement une solution
+générale.</p>
+<p>Considérons donc un exemple de pipeline qui met en oeuvre 4
+programmes :</p>
 <blockquote>
 <p><code>A | B | C | D</code></p>
 </blockquote>
 <p>pourquoi 4 ?</p>
 <ul>
-<li>parce que pour évoquer un pipeline, il faut au moins considérer 2 commandes ;</li>
-<li>parce que la première et la dernière commandes sont des cas particuliers qui respectivement lisent dans l’entrée standard, et écrivent sur la sortie standard, alors que les autres opérations se font sur un pipe.</li>
-<li>avec 2 commandes “intermédiaires” B et C, on aura des chances d’inférer ce qu’il faut faire avec un nombre <em>quelconque</em> de commandes intermédiaires.</li>
+<li>parce que pour évoquer un pipeline, il faut au moins considérer 2
+commandes ;</li>
+<li>parce que la première et la dernière commandes sont des cas
+particuliers qui respectivement lisent dans l’entrée standard, et
+écrivent sur la sortie standard, alors que les autres opérations se font
+sur un pipe.</li>
+<li>avec 2 commandes “intermédiaires” B et C, on aura des chances
+d’inférer ce qu’il faut faire avec un nombre <em>quelconque</em> de
+commandes intermédiaires.</li>
 </ul>
-<h2 data-number="3.1" id="idée-de-base-4-processus-fils-3-tuyaux"><span class="header-section-number">3.1</span> Idée de base : 4 processus fils, 3 tuyaux</h2>
-<p>L’idée de base sera de lancer un processus pour chaque commande, et d’utiliser trois tuyaux T1, T2, T3 pour les faire communiquer</p>
+<h2 data-number="3.1" id="idée-de-base-4-processus-fils-3-tuyaux"><span class="header-section-number">3.1</span> Idée de base : 4 processus
+fils, 3 tuyaux</h2>
+<p>L’idée de base sera de lancer un processus pour chaque commande, et
+d’utiliser trois tuyaux T1, T2, T3 pour les faire communiquer</p>
 <pre><code>lancer processus fils:
     exécuter A, qui 
     - lit sur l&#39;entrée standard
@@ -689,12 +850,16 @@ lancer processus fils:
     - écrit sur la sortie standard
 
 attendre la fin des processus fils.</code></pre>
-<h2 data-number="3.2" id="créer-et-fermer-les-descripteurs"><span class="header-section-number">3.2</span> Créer et fermer les descripteurs</h2>
+<h2 data-number="3.2" id="créer-et-fermer-les-descripteurs"><span class="header-section-number">3.2</span> Créer et fermer les
+descripteurs</h2>
 <p>Détaillons le <strong>lancement du premier</strong> :</p>
 <ol type="1">
-<li>Le tuyau T1 doit exister avant le lancement du premier processus fils , puisque le tuyau doit être visible par le second processus.</li>
-<li>Le processus A ne lit pas dans T1, le processus fils peut fermer le bout qui sert à l’écriture.</li>
-<li>les autres processus ne doivent pas écrire dans ce tuyau : une fois le fils lancé, on ferme le bout qui sert l’écriture dans le tuyau.</li>
+<li>Le tuyau T1 doit exister avant le lancement du premier processus
+fils , puisque le tuyau doit être visible par le second processus.</li>
+<li>Le processus A ne lit pas dans T1, le processus fils peut fermer le
+bout qui sert à l’écriture.</li>
+<li>les autres processus ne doivent pas écrire dans ce tuyau : une fois
+le fils lancé, on ferme le bout qui sert l’écriture dans le tuyau.</li>
 </ol>
 <pre><code>créer tuyau T1                         // 1
 lancer processus fils:
@@ -706,8 +871,10 @@ fermer T1[1] et entrée standard</code></pre>
 <p>Le second processus doit lire dans T1 et écrire dans T2.</p>
 <ol type="1">
 <li>Il faut donc créer T2 avant de lancer la commande B,</li>
-<li>la commande B2 ne lit pas dans T2, le processus fils ferme cette extrémité</li>
-<li>les processus suivants ne lisent pas dans T1, et n’écrivent pas dans T2.</li>
+<li>la commande B2 ne lit pas dans T2, le processus fils ferme cette
+extrémité</li>
+<li>les processus suivants ne lisent pas dans T1, et n’écrivent pas dans
+T2.</li>
 </ol>
 <pre><code>créer tuyau T2                         // 1
 lancer processus fils:
@@ -724,17 +891,21 @@ lancer processus fils:
     - lit sur T2[0]
     - écrit dans T3[1]
 fermer T2[0] et T3[1]                  // 3</code></pre>
-<p>pour la dernière commande, on ne crée pas de tuyau puisqu’on écrit sur la sortie standard.</p>
+<p>pour la dernière commande, on ne crée pas de tuyau puisqu’on écrit
+sur la sortie standard.</p>
 <pre><code>lancer processus fils:
     exécuter D, qui 
     - lit sur T3[0]
     - écrit sur la sortie standard
 fermer T3[0]</code></pre>
 <h2 data-number="3.3" id="en-termes-de-descripteurs"><span class="header-section-number">3.3</span> En termes de descripteurs</h2>
-<p>Nous allons nous intéresser aux descripteurs plutot qu’aux tableaux, en passant par des variables, on écrit la création d’une tuyau sous la forme</p>
-<pre><code>créer tuyau (sortie_tuyau, entrée_tuyau)</code></pre>
-<p>en indiquant les deux variables qui contiennent les descripteurs d’écriture et de lecture.</p>
-<p>Une autre variable nous servira à désigner le descripteur utilisé en lecture par le prochain processus.</p>
+<p>Nous allons nous intéresser aux descripteurs plutot qu’aux tableaux,
+en passant par des variables, on écrit la création d’un tuyau sous la
+forme <code>créer tuyau (sortie_tuyau, entrée_tuyau)</code> en indiquant
+les deux variables qui contiennent les descripteurs d’écriture et de
+lecture.</p>
+<p>Une autre variable désigne le descripteur utilisé en lecture par le
+prochain processus.</p>
 <p>Au départ, c’est l’entrée standard :</p>
 <pre><code>entrée = entrée_standard
 
@@ -745,7 +916,8 @@ lancer processus fils:
     - lit sur entrée
     - écrit dans sortie_tuyau
 fermer sortie_tuyau et entrée</code></pre>
-<p>Le pseudo-code pour les processus B et C n’est pas très différent.</p>
+<p>Le pseudo-code pour les processus B et C n’est pas très différent
+:</p>
 <pre><code>entrée = entrée_tuyau
 
 créer tuyau (sortie_tuyau, entrée_tuyau) 
@@ -774,229 +946,251 @@ lancer processus fils:
     - lit sur entrée
     - écrit dans sortie_standard
 fermer entrée</code></pre>
-<h2 data-number="3.4" id="programmation-de-lexemple-en-c"><span class="header-section-number">3.4</span> Programmation de l’exemple en C</h2>
+<h2 data-number="3.4" id="programmation-de-lexemple-en-c"><span class="header-section-number">3.4</span> Programmation de l’exemple en
+C</h2>
 <p>Ici on réalise le pipeline</p>
 <pre><code>ls -l | grep ^- | cat | wc -l</code></pre>
-<p>qui affiche le nombre de fichiers présents dans le répertoire courant. (Le <code>cat</code> est inutile, il sert juste à avoir 4 processus !).</p>
-<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true"></a><span class="co">// demo-pipeline.c</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true"></a></span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;stdbool.h&gt;</span></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;sys/types.h&gt;</span></span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;unistd.h&gt;</span></span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;sys/types.h&gt;</span></span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;sys/wait.h&gt;</span></span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true"></a><span class="pp">#include </span><span class="im">&lt;assert.h&gt;</span></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true"></a></span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true"></a><span class="dt">int</span> main()</span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true"></a>{</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true"></a>    printf(<span class="st">&quot;Exécution &quot;</span> __FILE__ <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true"></a>    printf(<span class="st">&quot;Nombre de fichiers dans le répertoire =</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true"></a></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true"></a>    <span class="dt">int</span> input_fd = STDIN_FILENO;</span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true"></a>    <span class="dt">int</span> pipe_fd[<span class="dv">2</span>];</span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true"></a>    </span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true"></a>    pipe(pipe_fd);                    <span class="co">// création pipe T1</span></span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true"></a></span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true"></a>    pid_t a_pid = fork();</span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true"></a>    <span class="cf">if</span> (a_pid == <span class="dv">0</span>) {</span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true"></a>        <span class="co">// le processus A écrit dans T1</span></span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true"></a>        dup2(pipe_fd[<span class="dv">1</span>], STDOUT_FILENO);</span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true"></a>        close(pipe_fd[<span class="dv">0</span>]);</span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true"></a>        close(pipe_fd[<span class="dv">1</span>]);</span>
-<span id="cb20-28"><a href="#cb20-28" aria-hidden="true"></a>        execv(<span class="st">&quot;/bin/ls&quot;</span>, (<span class="dt">char</span> *[]) {</span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true"></a>            <span class="st">&quot;ls&quot;</span>, <span class="st">&quot;-l&quot;</span>, NULL</span>
-<span id="cb20-30"><a href="#cb20-30" aria-hidden="true"></a>        });</span>
-<span id="cb20-31"><a href="#cb20-31" aria-hidden="true"></a>        assert(<span class="st">&quot;lancement premier fils&quot;</span> &amp;&amp; false);</span>
-<span id="cb20-32"><a href="#cb20-32" aria-hidden="true"></a>    }</span>
-<span id="cb20-33"><a href="#cb20-33" aria-hidden="true"></a>    close(pipe_fd[<span class="dv">1</span>]);          <span class="co">// fermeture desc. écriture de T1</span></span>
-<span id="cb20-34"><a href="#cb20-34" aria-hidden="true"></a></span>
-<span id="cb20-35"><a href="#cb20-35" aria-hidden="true"></a>    input_fd = pipe_fd[<span class="dv">0</span>];      <span class="co">// sauvegarde descripteur lecture T1</span></span>
-<span id="cb20-36"><a href="#cb20-36" aria-hidden="true"></a>    pipe(pipe_fd);              <span class="co">// création pipe T2</span></span>
-<span id="cb20-37"><a href="#cb20-37" aria-hidden="true"></a></span>
-<span id="cb20-38"><a href="#cb20-38" aria-hidden="true"></a>    pid_t b_pid = fork();</span>
-<span id="cb20-39"><a href="#cb20-39" aria-hidden="true"></a>    <span class="cf">if</span> (b_pid == <span class="dv">0</span>) {</span>
-<span id="cb20-40"><a href="#cb20-40" aria-hidden="true"></a>        <span class="co">// le processus B lit dans T1, écrit dans T2</span></span>
-<span id="cb20-41"><a href="#cb20-41" aria-hidden="true"></a>        dup2(input_fd, STDIN_FILENO);</span>
-<span id="cb20-42"><a href="#cb20-42" aria-hidden="true"></a>        dup2(pipe_fd[<span class="dv">1</span>], STDOUT_FILENO);</span>
-<span id="cb20-43"><a href="#cb20-43" aria-hidden="true"></a>        close(input_fd);</span>
-<span id="cb20-44"><a href="#cb20-44" aria-hidden="true"></a>        close(pipe_fd[<span class="dv">0</span>]);</span>
-<span id="cb20-45"><a href="#cb20-45" aria-hidden="true"></a>        close(pipe_fd[<span class="dv">1</span>]);</span>
-<span id="cb20-46"><a href="#cb20-46" aria-hidden="true"></a>        execv(<span class="st">&quot;/bin/grep&quot;</span>, (<span class="dt">char</span> *[]) {</span>
-<span id="cb20-47"><a href="#cb20-47" aria-hidden="true"></a>            <span class="st">&quot;grep&quot;</span>, <span class="st">&quot;^-&quot;</span>, NULL</span>
-<span id="cb20-48"><a href="#cb20-48" aria-hidden="true"></a>        });</span>
-<span id="cb20-49"><a href="#cb20-49" aria-hidden="true"></a>        assert(<span class="st">&quot;lancement second fils&quot;</span> &amp;&amp; false);</span>
-<span id="cb20-50"><a href="#cb20-50" aria-hidden="true"></a>    }</span>
-<span id="cb20-51"><a href="#cb20-51" aria-hidden="true"></a>    close(input_fd);             <span class="co">// descripteur lecture T1</span></span>
-<span id="cb20-52"><a href="#cb20-52" aria-hidden="true"></a>    close(pipe_fd[<span class="dv">1</span>]);           <span class="co">// descripteur écriture T2</span></span>
-<span id="cb20-53"><a href="#cb20-53" aria-hidden="true"></a></span>
-<span id="cb20-54"><a href="#cb20-54" aria-hidden="true"></a>    input_fd = pipe_fd[<span class="dv">0</span>];       <span class="co">// sauvegarde descripteur lecture T2</span></span>
-<span id="cb20-55"><a href="#cb20-55" aria-hidden="true"></a>    pipe(pipe_fd);               <span class="co">// création pipe T3</span></span>
-<span id="cb20-56"><a href="#cb20-56" aria-hidden="true"></a></span>
-<span id="cb20-57"><a href="#cb20-57" aria-hidden="true"></a>    pid_t c_pid = fork();</span>
-<span id="cb20-58"><a href="#cb20-58" aria-hidden="true"></a>    <span class="cf">if</span> (c_pid == <span class="dv">0</span>) {</span>
-<span id="cb20-59"><a href="#cb20-59" aria-hidden="true"></a>        <span class="co">// le processus C lit dans T2, écrit dans T3</span></span>
-<span id="cb20-60"><a href="#cb20-60" aria-hidden="true"></a>        dup2(input_fd, STDIN_FILENO);</span>
-<span id="cb20-61"><a href="#cb20-61" aria-hidden="true"></a>        dup2(pipe_fd[<span class="dv">1</span>], STDOUT_FILENO);</span>
-<span id="cb20-62"><a href="#cb20-62" aria-hidden="true"></a>        close(input_fd);         <span class="co">// desc lecture T2</span></span>
-<span id="cb20-63"><a href="#cb20-63" aria-hidden="true"></a>        close(pipe_fd[<span class="dv">0</span>]);       <span class="co">// desc lecture T3</span></span>
-<span id="cb20-64"><a href="#cb20-64" aria-hidden="true"></a>        close(pipe_fd[<span class="dv">1</span>]);       <span class="co">// desc écriture T3</span></span>
-<span id="cb20-65"><a href="#cb20-65" aria-hidden="true"></a>        execv(<span class="st">&quot;/bin/cat&quot;</span>, (<span class="dt">char</span> *[]) {</span>
-<span id="cb20-66"><a href="#cb20-66" aria-hidden="true"></a>            <span class="st">&quot;cat&quot;</span>, NULL</span>
-<span id="cb20-67"><a href="#cb20-67" aria-hidden="true"></a>        });</span>
-<span id="cb20-68"><a href="#cb20-68" aria-hidden="true"></a>        assert(<span class="st">&quot;lancement troisième fils&quot;</span> &amp;&amp; false);</span>
-<span id="cb20-69"><a href="#cb20-69" aria-hidden="true"></a>    }</span>
-<span id="cb20-70"><a href="#cb20-70" aria-hidden="true"></a>    close(input_fd);        <span class="co">// desc lecture  T2</span></span>
-<span id="cb20-71"><a href="#cb20-71" aria-hidden="true"></a>    close(pipe_fd[<span class="dv">1</span>]);      <span class="co">// desc écriture T3</span></span>
-<span id="cb20-72"><a href="#cb20-72" aria-hidden="true"></a></span>
-<span id="cb20-73"><a href="#cb20-73" aria-hidden="true"></a>    input_fd = pipe_fd[<span class="dv">0</span>];  <span class="co">// sauvegarde descripteur lecture T3</span></span>
-<span id="cb20-74"><a href="#cb20-74" aria-hidden="true"></a></span>
-<span id="cb20-75"><a href="#cb20-75" aria-hidden="true"></a></span>
-<span id="cb20-76"><a href="#cb20-76" aria-hidden="true"></a>    pid_t d_pid = fork();</span>
-<span id="cb20-77"><a href="#cb20-77" aria-hidden="true"></a>    <span class="cf">if</span> (d_pid == <span class="dv">0</span>) {</span>
-<span id="cb20-78"><a href="#cb20-78" aria-hidden="true"></a>        <span class="co">// le processus C lit dans T3 </span></span>
-<span id="cb20-79"><a href="#cb20-79" aria-hidden="true"></a>        dup2(input_fd, STDIN_FILENO);</span>
-<span id="cb20-80"><a href="#cb20-80" aria-hidden="true"></a>        close(input_fd);         <span class="co">// desc lecture T3</span></span>
-<span id="cb20-81"><a href="#cb20-81" aria-hidden="true"></a>        execv(<span class="st">&quot;/bin/wc&quot;</span>, (<span class="dt">char</span> *[]) {</span>
-<span id="cb20-82"><a href="#cb20-82" aria-hidden="true"></a>            <span class="st">&quot;wc&quot;</span>, <span class="st">&quot;-l&quot;</span>, NULL</span>
-<span id="cb20-83"><a href="#cb20-83" aria-hidden="true"></a>        });</span>
-<span id="cb20-84"><a href="#cb20-84" aria-hidden="true"></a>        assert(<span class="st">&quot;lancement quatrième fils&quot;</span> &amp;&amp; false);</span>
-<span id="cb20-85"><a href="#cb20-85" aria-hidden="true"></a>    }</span>
-<span id="cb20-86"><a href="#cb20-86" aria-hidden="true"></a></span>
-<span id="cb20-87"><a href="#cb20-87" aria-hidden="true"></a>    close(input_fd);</span>
-<span id="cb20-88"><a href="#cb20-88" aria-hidden="true"></a></span>
-<span id="cb20-89"><a href="#cb20-89" aria-hidden="true"></a>    waitpid(a_pid, NULL, <span class="dv">0</span>);</span>
-<span id="cb20-90"><a href="#cb20-90" aria-hidden="true"></a>    waitpid(b_pid, NULL, <span class="dv">0</span>);</span>
-<span id="cb20-91"><a href="#cb20-91" aria-hidden="true"></a>    waitpid(c_pid, NULL, <span class="dv">0</span>);</span>
-<span id="cb20-92"><a href="#cb20-92" aria-hidden="true"></a>    waitpid(d_pid, NULL, <span class="dv">0</span>);</span>
-<span id="cb20-93"><a href="#cb20-93" aria-hidden="true"></a></span>
-<span id="cb20-94"><a href="#cb20-94" aria-hidden="true"></a>    printf(<span class="st">&quot;# fin</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
-<span id="cb20-95"><a href="#cb20-95" aria-hidden="true"></a>    <span class="cf">return</span> EXIT_SUCCESS;</span>
-<span id="cb20-96"><a href="#cb20-96" aria-hidden="true"></a>}</span></code></pre></div>
+<p>qui affiche le nombre de fichiers présents dans le répertoire
+courant. (Le <code>cat</code> est inutile, il sert juste à avoir 4
+processus !).</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">// demo-pipeline.c</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdlib.h&gt;</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdbool.h&gt;</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;sys/types.h&gt;</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;unistd.h&gt;</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;sys/types.h&gt;</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;sys/wait.h&gt;</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;assert.h&gt;</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">&quot;Exécution &quot;</span> __FILE__ <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">&quot;Nombre de fichiers dans le répertoire =</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> input_fd <span class="op">=</span> STDIN_FILENO<span class="op">;</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> pipe_fd<span class="op">[</span><span class="dv">2</span><span class="op">];</span></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>    pipe<span class="op">(</span>pipe_fd<span class="op">);</span>                    <span class="co">// création pipe T1</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>    pid_t a_pid <span class="op">=</span> fork<span class="op">();</span></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>a_pid <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a>        <span class="co">// le processus A écrit dans T1</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a>        dup2<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">1</span><span class="op">],</span> STDOUT_FILENO<span class="op">);</span></span>
+<span id="cb19-26"><a href="#cb19-26" aria-hidden="true" tabindex="-1"></a>        close<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">0</span><span class="op">]);</span></span>
+<span id="cb19-27"><a href="#cb19-27" aria-hidden="true" tabindex="-1"></a>        close<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">1</span><span class="op">]);</span></span>
+<span id="cb19-28"><a href="#cb19-28" aria-hidden="true" tabindex="-1"></a>        execv<span class="op">(</span><span class="st">&quot;/bin/ls&quot;</span><span class="op">,</span> <span class="op">(</span><span class="dt">char</span> <span class="op">*[])</span> <span class="op">{</span></span>
+<span id="cb19-29"><a href="#cb19-29" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;ls&quot;</span><span class="op">,</span> <span class="st">&quot;-l&quot;</span><span class="op">,</span> NULL</span>
+<span id="cb19-30"><a href="#cb19-30" aria-hidden="true" tabindex="-1"></a>        <span class="op">});</span></span>
+<span id="cb19-31"><a href="#cb19-31" aria-hidden="true" tabindex="-1"></a>        assert<span class="op">(</span><span class="st">&quot;lancement premier fils&quot;</span> <span class="op">&amp;&amp;</span> false<span class="op">);</span></span>
+<span id="cb19-32"><a href="#cb19-32" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb19-33"><a href="#cb19-33" aria-hidden="true" tabindex="-1"></a>    close<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">1</span><span class="op">]);</span>          <span class="co">// fermeture desc. écriture de T1</span></span>
+<span id="cb19-34"><a href="#cb19-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-35"><a href="#cb19-35" aria-hidden="true" tabindex="-1"></a>    input_fd <span class="op">=</span> pipe_fd<span class="op">[</span><span class="dv">0</span><span class="op">];</span>      <span class="co">// sauvegarde descripteur lecture T1</span></span>
+<span id="cb19-36"><a href="#cb19-36" aria-hidden="true" tabindex="-1"></a>    pipe<span class="op">(</span>pipe_fd<span class="op">);</span>              <span class="co">// création pipe T2</span></span>
+<span id="cb19-37"><a href="#cb19-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-38"><a href="#cb19-38" aria-hidden="true" tabindex="-1"></a>    pid_t b_pid <span class="op">=</span> fork<span class="op">();</span></span>
+<span id="cb19-39"><a href="#cb19-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>b_pid <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb19-40"><a href="#cb19-40" aria-hidden="true" tabindex="-1"></a>        <span class="co">// le processus B lit dans T1, écrit dans T2</span></span>
+<span id="cb19-41"><a href="#cb19-41" aria-hidden="true" tabindex="-1"></a>        dup2<span class="op">(</span>input_fd<span class="op">,</span> STDIN_FILENO<span class="op">);</span></span>
+<span id="cb19-42"><a href="#cb19-42" aria-hidden="true" tabindex="-1"></a>        dup2<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">1</span><span class="op">],</span> STDOUT_FILENO<span class="op">);</span></span>
+<span id="cb19-43"><a href="#cb19-43" aria-hidden="true" tabindex="-1"></a>        close<span class="op">(</span>input_fd<span class="op">);</span></span>
+<span id="cb19-44"><a href="#cb19-44" aria-hidden="true" tabindex="-1"></a>        close<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">0</span><span class="op">]);</span></span>
+<span id="cb19-45"><a href="#cb19-45" aria-hidden="true" tabindex="-1"></a>        close<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">1</span><span class="op">]);</span></span>
+<span id="cb19-46"><a href="#cb19-46" aria-hidden="true" tabindex="-1"></a>        execv<span class="op">(</span><span class="st">&quot;/bin/grep&quot;</span><span class="op">,</span> <span class="op">(</span><span class="dt">char</span> <span class="op">*[])</span> <span class="op">{</span></span>
+<span id="cb19-47"><a href="#cb19-47" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;grep&quot;</span><span class="op">,</span> <span class="st">&quot;^-&quot;</span><span class="op">,</span> NULL</span>
+<span id="cb19-48"><a href="#cb19-48" aria-hidden="true" tabindex="-1"></a>        <span class="op">});</span></span>
+<span id="cb19-49"><a href="#cb19-49" aria-hidden="true" tabindex="-1"></a>        assert<span class="op">(</span><span class="st">&quot;lancement second fils&quot;</span> <span class="op">&amp;&amp;</span> false<span class="op">);</span></span>
+<span id="cb19-50"><a href="#cb19-50" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb19-51"><a href="#cb19-51" aria-hidden="true" tabindex="-1"></a>    close<span class="op">(</span>input_fd<span class="op">);</span>             <span class="co">// descripteur lecture T1</span></span>
+<span id="cb19-52"><a href="#cb19-52" aria-hidden="true" tabindex="-1"></a>    close<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">1</span><span class="op">]);</span>           <span class="co">// descripteur écriture T2</span></span>
+<span id="cb19-53"><a href="#cb19-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-54"><a href="#cb19-54" aria-hidden="true" tabindex="-1"></a>    input_fd <span class="op">=</span> pipe_fd<span class="op">[</span><span class="dv">0</span><span class="op">];</span>       <span class="co">// sauvegarde descripteur lecture T2</span></span>
+<span id="cb19-55"><a href="#cb19-55" aria-hidden="true" tabindex="-1"></a>    pipe<span class="op">(</span>pipe_fd<span class="op">);</span>               <span class="co">// création pipe T3</span></span>
+<span id="cb19-56"><a href="#cb19-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-57"><a href="#cb19-57" aria-hidden="true" tabindex="-1"></a>    pid_t c_pid <span class="op">=</span> fork<span class="op">();</span></span>
+<span id="cb19-58"><a href="#cb19-58" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>c_pid <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb19-59"><a href="#cb19-59" aria-hidden="true" tabindex="-1"></a>        <span class="co">// le processus C lit dans T2, écrit dans T3</span></span>
+<span id="cb19-60"><a href="#cb19-60" aria-hidden="true" tabindex="-1"></a>        dup2<span class="op">(</span>input_fd<span class="op">,</span> STDIN_FILENO<span class="op">);</span></span>
+<span id="cb19-61"><a href="#cb19-61" aria-hidden="true" tabindex="-1"></a>        dup2<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">1</span><span class="op">],</span> STDOUT_FILENO<span class="op">);</span></span>
+<span id="cb19-62"><a href="#cb19-62" aria-hidden="true" tabindex="-1"></a>        close<span class="op">(</span>input_fd<span class="op">);</span>         <span class="co">// desc lecture T2</span></span>
+<span id="cb19-63"><a href="#cb19-63" aria-hidden="true" tabindex="-1"></a>        close<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">0</span><span class="op">]);</span>       <span class="co">// desc lecture T3</span></span>
+<span id="cb19-64"><a href="#cb19-64" aria-hidden="true" tabindex="-1"></a>        close<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">1</span><span class="op">]);</span>       <span class="co">// desc écriture T3</span></span>
+<span id="cb19-65"><a href="#cb19-65" aria-hidden="true" tabindex="-1"></a>        execv<span class="op">(</span><span class="st">&quot;/bin/cat&quot;</span><span class="op">,</span> <span class="op">(</span><span class="dt">char</span> <span class="op">*[])</span> <span class="op">{</span></span>
+<span id="cb19-66"><a href="#cb19-66" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;cat&quot;</span><span class="op">,</span> NULL</span>
+<span id="cb19-67"><a href="#cb19-67" aria-hidden="true" tabindex="-1"></a>        <span class="op">});</span></span>
+<span id="cb19-68"><a href="#cb19-68" aria-hidden="true" tabindex="-1"></a>        assert<span class="op">(</span><span class="st">&quot;lancement troisième fils&quot;</span> <span class="op">&amp;&amp;</span> false<span class="op">);</span></span>
+<span id="cb19-69"><a href="#cb19-69" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb19-70"><a href="#cb19-70" aria-hidden="true" tabindex="-1"></a>    close<span class="op">(</span>input_fd<span class="op">);</span>        <span class="co">// desc lecture  T2</span></span>
+<span id="cb19-71"><a href="#cb19-71" aria-hidden="true" tabindex="-1"></a>    close<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">1</span><span class="op">]);</span>      <span class="co">// desc écriture T3</span></span>
+<span id="cb19-72"><a href="#cb19-72" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-73"><a href="#cb19-73" aria-hidden="true" tabindex="-1"></a>    input_fd <span class="op">=</span> pipe_fd<span class="op">[</span><span class="dv">0</span><span class="op">];</span>  <span class="co">// sauvegarde descripteur lecture T3</span></span>
+<span id="cb19-74"><a href="#cb19-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-75"><a href="#cb19-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-76"><a href="#cb19-76" aria-hidden="true" tabindex="-1"></a>    pid_t d_pid <span class="op">=</span> fork<span class="op">();</span></span>
+<span id="cb19-77"><a href="#cb19-77" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> <span class="op">(</span>d_pid <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb19-78"><a href="#cb19-78" aria-hidden="true" tabindex="-1"></a>        <span class="co">// le processus C lit dans T3 </span></span>
+<span id="cb19-79"><a href="#cb19-79" aria-hidden="true" tabindex="-1"></a>        dup2<span class="op">(</span>input_fd<span class="op">,</span> STDIN_FILENO<span class="op">);</span></span>
+<span id="cb19-80"><a href="#cb19-80" aria-hidden="true" tabindex="-1"></a>        close<span class="op">(</span>input_fd<span class="op">);</span>         <span class="co">// desc lecture T3</span></span>
+<span id="cb19-81"><a href="#cb19-81" aria-hidden="true" tabindex="-1"></a>        execv<span class="op">(</span><span class="st">&quot;/bin/wc&quot;</span><span class="op">,</span> <span class="op">(</span><span class="dt">char</span> <span class="op">*[])</span> <span class="op">{</span></span>
+<span id="cb19-82"><a href="#cb19-82" aria-hidden="true" tabindex="-1"></a>            <span class="st">&quot;wc&quot;</span><span class="op">,</span> <span class="st">&quot;-l&quot;</span><span class="op">,</span> NULL</span>
+<span id="cb19-83"><a href="#cb19-83" aria-hidden="true" tabindex="-1"></a>        <span class="op">});</span></span>
+<span id="cb19-84"><a href="#cb19-84" aria-hidden="true" tabindex="-1"></a>        assert<span class="op">(</span><span class="st">&quot;lancement quatrième fils&quot;</span> <span class="op">&amp;&amp;</span> false<span class="op">);</span></span>
+<span id="cb19-85"><a href="#cb19-85" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb19-86"><a href="#cb19-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-87"><a href="#cb19-87" aria-hidden="true" tabindex="-1"></a>    close<span class="op">(</span>input_fd<span class="op">);</span></span>
+<span id="cb19-88"><a href="#cb19-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-89"><a href="#cb19-89" aria-hidden="true" tabindex="-1"></a>    waitpid<span class="op">(</span>a_pid<span class="op">,</span> NULL<span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb19-90"><a href="#cb19-90" aria-hidden="true" tabindex="-1"></a>    waitpid<span class="op">(</span>b_pid<span class="op">,</span> NULL<span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb19-91"><a href="#cb19-91" aria-hidden="true" tabindex="-1"></a>    waitpid<span class="op">(</span>c_pid<span class="op">,</span> NULL<span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb19-92"><a href="#cb19-92" aria-hidden="true" tabindex="-1"></a>    waitpid<span class="op">(</span>d_pid<span class="op">,</span> NULL<span class="op">,</span> <span class="dv">0</span><span class="op">);</span></span>
+<span id="cb19-93"><a href="#cb19-93" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-94"><a href="#cb19-94" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">&quot;# fin</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb19-95"><a href="#cb19-95" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> EXIT_SUCCESS<span class="op">;</span></span>
+<span id="cb19-96"><a href="#cb19-96" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
 <h1 data-number="4" id="pipeline-cas-général"><span class="header-section-number">4</span> Pipeline : cas général</h1>
 <h2 data-number="4.1" id="principe"><span class="header-section-number">4.1</span> Principe</h2>
-<p>L’exemple ci-dessus nous permet de voir les actions à effectuer pour chacun des processus fils, avec les particularités du premier et du dernier.</p>
+<p>L’exemple ci-dessus nous permet de voir les actions à effectuer pour
+chacun des processus fils, avec les particularités du premier et du
+dernier.</p>
 <p>Le processus père :</p>
 <ol type="1">
-<li>Avant de créer un processus fils (sauf le dernier), le processus père réserve un tuyau pour communiquer avec le processus suivant.</li>
-<li>Après avoir lancé un processus fils (sauf le premier), ferme <code>input_fd</code>.</li>
+<li>Avant de créer un processus fils (sauf le dernier), le processus
+père réserve un tuyau pour communiquer avec le processus suivant.</li>
+<li>Après avoir lancé un processus fils (sauf le premier), ferme
+<code>input_fd</code>.</li>
 <li>Après avoir lancé un processus fils (sauf le dernier) :
 <ul>
 <li>ferme le descripteur d’écriture du tuyau</li>
-<li>sauve le descripteur de lecture du tuyau dans <code>input_fd</code></li>
+<li>sauve le descripteur de lecture du tuyau dans
+<code>input_fd</code></li>
 </ul></li>
 </ol>
 <p>Chaque processus fils :</p>
 <ol type="1">
-<li>redirige (sauf le premier) son entrée vers <code>input_fd</code>, et ferme <code>input_fd</code></li>
-<li>redirige sa sortie (sauf le dernier) vers le tuyau, et ferme les deux descripteurs du pipe.</li>
+<li>redirige (sauf le premier) son entrée vers <code>input_fd</code>, et
+ferme <code>input_fd</code></li>
+<li>redirige sa sortie (sauf le dernier) vers le tuyau, et ferme les
+deux descripteurs du pipe.</li>
 </ol>
-<p>Il est assez facile de vérifier que ces règles fonctionnent même si il n’y a qu’un seul processus fils (le premier est aussi le dernier) ou deux (pas de processus intermédiaires).</p>
+<p>Il est assez facile de vérifier que ces règles fonctionnent même si
+il n’y a qu’un seul processus fils (le premier est aussi le dernier) ou
+deux (pas de processus intermédiaires).</p>
 <h2 data-number="4.2" id="un-code-plus-général"><span class="header-section-number">4.2</span> Un code plus général</h2>
-<p>Pour avoir un traitement plus général, nous allons définir une fonction</p>
-<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true"></a><span class="dt">void</span> execute_pipeline(<span class="kw">struct</span> Pipeline *pipeline);</span></code></pre></div>
-<p>qui agit sur une structure qui représente un pipeline constitué d’étapes</p>
-<div class="sourceCode" id="cb22"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true"></a><span class="kw">struct</span> Step {</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true"></a>    <span class="dt">char</span> *pathname;</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true"></a>    <span class="dt">char</span> **argv;</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true"></a>};</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true"></a></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true"></a><span class="kw">struct</span> Pipeline {</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true"></a>    <span class="dt">int</span> nb_steps;</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true"></a>    <span class="kw">struct</span> Step *steps;</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true"></a>};</span></code></pre></div>
-<p>La fonction <code>main</code> de l’exemple précédent se ramènerait à</p>
-<div class="sourceCode" id="cb23"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true"></a><span class="dt">int</span> main()</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true"></a>{</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true"></a>    <span class="kw">struct</span> Pipeline pipeline = {</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true"></a>        .nb_steps = <span class="dv">4</span>,</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true"></a>        .steps = (<span class="kw">struct</span> Step [])</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true"></a>        {</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true"></a>            {</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true"></a>                .pathname = <span class="st">&quot;/bin/ls&quot;</span>,</span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true"></a>                .argv = (<span class="dt">char</span> *[]) {</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true"></a>                    <span class="st">&quot;ls&quot;</span>, <span class="st">&quot;-l&quot;</span>, NULL</span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true"></a>                }</span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true"></a>            }, {</span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true"></a>                .pathname = <span class="st">&quot;/bin/grep&quot;</span>,</span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true"></a>                .argv = (<span class="dt">char</span> *[])</span>
-<span id="cb23-15"><a href="#cb23-15" aria-hidden="true"></a>                {</span>
-<span id="cb23-16"><a href="#cb23-16" aria-hidden="true"></a>                    <span class="st">&quot;grep&quot;</span>, <span class="st">&quot;^-&quot;</span>, NULL</span>
-<span id="cb23-17"><a href="#cb23-17" aria-hidden="true"></a>                }</span>
-<span id="cb23-18"><a href="#cb23-18" aria-hidden="true"></a>            }, {</span>
-<span id="cb23-19"><a href="#cb23-19" aria-hidden="true"></a>                .pathname = <span class="st">&quot;/bin/cat&quot;</span>,</span>
-<span id="cb23-20"><a href="#cb23-20" aria-hidden="true"></a>                .argv = (<span class="dt">char</span> *[])</span>
-<span id="cb23-21"><a href="#cb23-21" aria-hidden="true"></a>                {</span>
-<span id="cb23-22"><a href="#cb23-22" aria-hidden="true"></a>                    <span class="st">&quot;cat&quot;</span>, NULL</span>
-<span id="cb23-23"><a href="#cb23-23" aria-hidden="true"></a>                }</span>
-<span id="cb23-24"><a href="#cb23-24" aria-hidden="true"></a>            }, {</span>
-<span id="cb23-25"><a href="#cb23-25" aria-hidden="true"></a>                .pathname = <span class="st">&quot;/bin/wc&quot;</span>,</span>
-<span id="cb23-26"><a href="#cb23-26" aria-hidden="true"></a>                .argv = (<span class="dt">char</span> *[])</span>
-<span id="cb23-27"><a href="#cb23-27" aria-hidden="true"></a>                {</span>
-<span id="cb23-28"><a href="#cb23-28" aria-hidden="true"></a>                    <span class="st">&quot;wc&quot;</span>, <span class="st">&quot;-l&quot;</span>, NULL</span>
-<span id="cb23-29"><a href="#cb23-29" aria-hidden="true"></a>                }</span>
-<span id="cb23-30"><a href="#cb23-30" aria-hidden="true"></a>            },</span>
-<span id="cb23-31"><a href="#cb23-31" aria-hidden="true"></a>        }</span>
-<span id="cb23-32"><a href="#cb23-32" aria-hidden="true"></a>    };</span>
-<span id="cb23-33"><a href="#cb23-33" aria-hidden="true"></a></span>
-<span id="cb23-34"><a href="#cb23-34" aria-hidden="true"></a>    printf(<span class="st">&quot;Exécution &quot;</span> __FILE__ <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
-<span id="cb23-35"><a href="#cb23-35" aria-hidden="true"></a>    printf(<span class="st">&quot;Nombre de fichiers dans le répertoire =</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
-<span id="cb23-36"><a href="#cb23-36" aria-hidden="true"></a>    </span>
-<span id="cb23-37"><a href="#cb23-37" aria-hidden="true"></a>    execute_pipeline(&amp; pipeline);</span>
-<span id="cb23-38"><a href="#cb23-38" aria-hidden="true"></a>    </span>
-<span id="cb23-39"><a href="#cb23-39" aria-hidden="true"></a>    printf(<span class="st">&quot;# fin</span><span class="sc">\n</span><span class="st">&quot;</span>);</span>
-<span id="cb23-40"><a href="#cb23-40" aria-hidden="true"></a>    <span class="cf">return</span> EXIT_SUCCESS;</span>
-<span id="cb23-41"><a href="#cb23-41" aria-hidden="true"></a>}</span></code></pre></div>
-<p>La fonction <code>execute_pipeline</code> boucle sur les éléments du pipeline, en tenant compte des cas particuliers du premier et du dernier :</p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true"></a><span class="dt">void</span> execute_pipeline(<span class="dt">const</span> <span class="kw">struct</span> Pipeline *pipeline)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true"></a>{</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true"></a>    <span class="dt">const</span> <span class="dt">int</span> first = <span class="dv">0</span>,</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true"></a>              last = pipeline-&gt;nb_steps - <span class="dv">1</span>;</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true"></a></span>
-<span id="cb24-6"><a href="#cb24-6" aria-hidden="true"></a>    <span class="dt">int</span> input_fd = STDIN_FILENO;</span>
-<span id="cb24-7"><a href="#cb24-7" aria-hidden="true"></a></span>
-<span id="cb24-8"><a href="#cb24-8" aria-hidden="true"></a>    <span class="cf">for</span> (<span class="dt">int</span> i = first; i &lt;= last; i++) {</span>
-<span id="cb24-9"><a href="#cb24-9" aria-hidden="true"></a>        <span class="dt">int</span> pipe_fd[<span class="dv">2</span>];</span>
-<span id="cb24-10"><a href="#cb24-10" aria-hidden="true"></a>        <span class="cf">if</span> (i != last) {</span>
-<span id="cb24-11"><a href="#cb24-11" aria-hidden="true"></a>            pipe(pipe_fd);</span>
-<span id="cb24-12"><a href="#cb24-12" aria-hidden="true"></a>        }</span>
-<span id="cb24-13"><a href="#cb24-13" aria-hidden="true"></a>        <span class="cf">if</span> (fork() == <span class="dv">0</span>) {</span>
-<span id="cb24-14"><a href="#cb24-14" aria-hidden="true"></a>            <span class="co">// exécution d&#39;un processus fils</span></span>
-<span id="cb24-15"><a href="#cb24-15" aria-hidden="true"></a>            <span class="cf">if</span> (i != first) {</span>
-<span id="cb24-16"><a href="#cb24-16" aria-hidden="true"></a>                dup2(input_fd, STDIN_FILENO);</span>
-<span id="cb24-17"><a href="#cb24-17" aria-hidden="true"></a>                close(input_fd);</span>
-<span id="cb24-18"><a href="#cb24-18" aria-hidden="true"></a>            }</span>
-<span id="cb24-19"><a href="#cb24-19" aria-hidden="true"></a>            <span class="cf">if</span> (i != last) {</span>
-<span id="cb24-20"><a href="#cb24-20" aria-hidden="true"></a>                dup2(pipe_fd[<span class="dv">1</span>], STDOUT_FILENO);</span>
-<span id="cb24-21"><a href="#cb24-21" aria-hidden="true"></a>                close(pipe_fd[<span class="dv">0</span>]);</span>
-<span id="cb24-22"><a href="#cb24-22" aria-hidden="true"></a>                close(pipe_fd[<span class="dv">1</span>]);</span>
-<span id="cb24-23"><a href="#cb24-23" aria-hidden="true"></a>            }</span>
-<span id="cb24-24"><a href="#cb24-24" aria-hidden="true"></a>            execv(pipeline-&gt;steps[i].pathname,</span>
-<span id="cb24-25"><a href="#cb24-25" aria-hidden="true"></a>                  pipeline-&gt;steps[i].argv);</span>
-<span id="cb24-26"><a href="#cb24-26" aria-hidden="true"></a>            assert(<span class="st">&quot;lancement fils&quot;</span> &amp;&amp; false);</span>
-<span id="cb24-27"><a href="#cb24-27" aria-hidden="true"></a>        }</span>
-<span id="cb24-28"><a href="#cb24-28" aria-hidden="true"></a>        <span class="cf">if</span> (i != first) {</span>
-<span id="cb24-29"><a href="#cb24-29" aria-hidden="true"></a>            close(input_fd);</span>
-<span id="cb24-30"><a href="#cb24-30" aria-hidden="true"></a>        }</span>
-<span id="cb24-31"><a href="#cb24-31" aria-hidden="true"></a>        <span class="cf">if</span> (i != last) {</span>
-<span id="cb24-32"><a href="#cb24-32" aria-hidden="true"></a>            close(pipe_fd[<span class="dv">1</span>]);</span>
-<span id="cb24-33"><a href="#cb24-33" aria-hidden="true"></a>            input_fd = pipe_fd[<span class="dv">0</span>];</span>
-<span id="cb24-34"><a href="#cb24-34" aria-hidden="true"></a>        }</span>
-<span id="cb24-35"><a href="#cb24-35" aria-hidden="true"></a>    }</span>
-<span id="cb24-36"><a href="#cb24-36" aria-hidden="true"></a></span>
-<span id="cb24-37"><a href="#cb24-37" aria-hidden="true"></a>    <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt;= last; i++) {</span>
-<span id="cb24-38"><a href="#cb24-38" aria-hidden="true"></a>        wait(NULL);</span>
-<span id="cb24-39"><a href="#cb24-39" aria-hidden="true"></a>    }</span>
-<span id="cb24-40"><a href="#cb24-40" aria-hidden="true"></a>}</span></code></pre></div>
-<p>A la fin, à la place de <code>waitpid</code>, on emploie <code>wait</code> qui attend la fin d’un processus fils quelconque, sans devoir préciser son identifiant.</p>
-<h1 data-number="5" id="exercice-une-solution-récursive"><span class="header-section-number">5</span> Exercice : une solution récursive</h1>
+<p>Pour avoir un traitement plus général, nous allons définir une
+fonction</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> execute_pipeline<span class="op">(</span><span class="kw">struct</span> Pipeline <span class="op">*</span>pipeline<span class="op">);</span></span></code></pre></div>
+<p>qui agit sur une structure qui représente un pipeline constitué
+d’étapes</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Step <span class="op">{</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> <span class="op">*</span>pathname<span class="op">;</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">char</span> <span class="op">**</span>argv<span class="op">;</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="kw">struct</span> Pipeline <span class="op">{</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> nb_steps<span class="op">;</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>    <span class="kw">struct</span> Step <span class="op">*</span>steps<span class="op">;</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="op">};</span></span></code></pre></div>
+<p>La fonction <code>main</code> de l’exemple précédent se ramènerait
+à</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="dt">int</span> main<span class="op">()</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="kw">struct</span> Pipeline pipeline <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>nb_steps <span class="op">=</span> <span class="dv">4</span><span class="op">,</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>        <span class="op">.</span>steps <span class="op">=</span> <span class="op">(</span><span class="kw">struct</span> Step <span class="op">[])</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>        <span class="op">{</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>            <span class="op">{</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span>pathname <span class="op">=</span> <span class="st">&quot;/bin/ls&quot;</span><span class="op">,</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span>argv <span class="op">=</span> <span class="op">(</span><span class="dt">char</span> <span class="op">*[])</span> <span class="op">{</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;ls&quot;</span><span class="op">,</span> <span class="st">&quot;-l&quot;</span><span class="op">,</span> NULL</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>                <span class="op">}</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>            <span class="op">},</span> <span class="op">{</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span>pathname <span class="op">=</span> <span class="st">&quot;/bin/grep&quot;</span><span class="op">,</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span>argv <span class="op">=</span> <span class="op">(</span><span class="dt">char</span> <span class="op">*[])</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>                <span class="op">{</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;grep&quot;</span><span class="op">,</span> <span class="st">&quot;^-&quot;</span><span class="op">,</span> NULL</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>                <span class="op">}</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>            <span class="op">},</span> <span class="op">{</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span>pathname <span class="op">=</span> <span class="st">&quot;/bin/cat&quot;</span><span class="op">,</span></span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span>argv <span class="op">=</span> <span class="op">(</span><span class="dt">char</span> <span class="op">*[])</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>                <span class="op">{</span></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;cat&quot;</span><span class="op">,</span> NULL</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>                <span class="op">}</span></span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>            <span class="op">},</span> <span class="op">{</span></span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span>pathname <span class="op">=</span> <span class="st">&quot;/bin/wc&quot;</span><span class="op">,</span></span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>                <span class="op">.</span>argv <span class="op">=</span> <span class="op">(</span><span class="dt">char</span> <span class="op">*[])</span></span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>                <span class="op">{</span></span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a>                    <span class="st">&quot;wc&quot;</span><span class="op">,</span> <span class="st">&quot;-l&quot;</span><span class="op">,</span> NULL</span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>                <span class="op">}</span></span>
+<span id="cb22-30"><a href="#cb22-30" aria-hidden="true" tabindex="-1"></a>            <span class="op">},</span></span>
+<span id="cb22-31"><a href="#cb22-31" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb22-32"><a href="#cb22-32" aria-hidden="true" tabindex="-1"></a>    <span class="op">};</span></span>
+<span id="cb22-33"><a href="#cb22-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-34"><a href="#cb22-34" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">&quot;Exécution &quot;</span> __FILE__ <span class="st">&quot;</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb22-35"><a href="#cb22-35" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">&quot;Nombre de fichiers dans le répertoire =</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb22-36"><a href="#cb22-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb22-37"><a href="#cb22-37" aria-hidden="true" tabindex="-1"></a>    execute_pipeline<span class="op">(&amp;</span> pipeline<span class="op">);</span></span>
+<span id="cb22-38"><a href="#cb22-38" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb22-39"><a href="#cb22-39" aria-hidden="true" tabindex="-1"></a>    printf<span class="op">(</span><span class="st">&quot;# fin</span><span class="sc">\n</span><span class="st">&quot;</span><span class="op">);</span></span>
+<span id="cb22-40"><a href="#cb22-40" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> EXIT_SUCCESS<span class="op">;</span></span>
+<span id="cb22-41"><a href="#cb22-41" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>La fonction <code>execute_pipeline</code> boucle sur les éléments du
+pipeline, en tenant compte des cas particuliers du premier et du dernier
+:</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="dt">void</span> execute_pipeline<span class="op">(</span><span class="dt">const</span> <span class="kw">struct</span> Pipeline <span class="op">*</span>pipeline<span class="op">)</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="op">{</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="dt">const</span> <span class="dt">int</span> first <span class="op">=</span> <span class="dv">0</span><span class="op">,</span></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>              last <span class="op">=</span> pipeline<span class="op">-&gt;</span>nb_steps <span class="op">-</span> <span class="dv">1</span><span class="op">;</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    <span class="dt">int</span> input_fd <span class="op">=</span> STDIN_FILENO<span class="op">;</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> first<span class="op">;</span> i <span class="op">&lt;=</span> last<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>        <span class="dt">int</span> pipe_fd<span class="op">[</span><span class="dv">2</span><span class="op">];</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>i <span class="op">!=</span> last<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>            pipe<span class="op">(</span>pipe_fd<span class="op">);</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>fork<span class="op">()</span> <span class="op">==</span> <span class="dv">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>            <span class="co">// exécution d&#39;un processus fils</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>i <span class="op">!=</span> first<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>                dup2<span class="op">(</span>input_fd<span class="op">,</span> STDIN_FILENO<span class="op">);</span></span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>                close<span class="op">(</span>input_fd<span class="op">);</span></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>            <span class="cf">if</span> <span class="op">(</span>i <span class="op">!=</span> last<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>                dup2<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">1</span><span class="op">],</span> STDOUT_FILENO<span class="op">);</span></span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>                close<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">0</span><span class="op">]);</span></span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>                close<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">1</span><span class="op">]);</span></span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>            <span class="op">}</span></span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>            execv<span class="op">(</span>pipeline<span class="op">-&gt;</span>steps<span class="op">[</span>i<span class="op">].</span>pathname<span class="op">,</span></span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>                  pipeline<span class="op">-&gt;</span>steps<span class="op">[</span>i<span class="op">].</span>argv<span class="op">);</span></span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>            assert<span class="op">(</span><span class="st">&quot;lancement fils&quot;</span> <span class="op">&amp;&amp;</span> false<span class="op">);</span></span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>i <span class="op">!=</span> first<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>            close<span class="op">(</span>input_fd<span class="op">);</span></span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="op">(</span>i <span class="op">!=</span> last<span class="op">)</span> <span class="op">{</span></span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>            close<span class="op">(</span>pipe_fd<span class="op">[</span><span class="dv">1</span><span class="op">]);</span></span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>            input_fd <span class="op">=</span> pipe_fd<span class="op">[</span><span class="dv">0</span><span class="op">];</span></span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>        <span class="op">}</span></span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> <span class="op">(</span><span class="dt">int</span> i <span class="op">=</span> <span class="dv">0</span><span class="op">;</span> i <span class="op">&lt;=</span> last<span class="op">;</span> i<span class="op">++)</span> <span class="op">{</span></span>
+<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a>        wait<span class="op">(</span>NULL<span class="op">);</span></span>
+<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a>    <span class="op">}</span></span>
+<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a><span class="op">}</span></span></code></pre></div>
+<p>A la fin, à la place de <code>waitpid</code>, on emploie
+<code>wait</code> qui attend la fin d’un processus fils quelconque, sans
+devoir préciser son identifiant.</p>
+<h1 data-number="5" id="exercice-une-solution-récursive"><span class="header-section-number">5</span> Exercice : une solution
+récursive</h1>
 <p>On peut remarquer qu’un pipeline est composé</p>
 <ul>
-<li>soit d’une commande seule</li>
-<li>soit d’une commande qui envoie sa sortie standard dans un pipe qui est lu par le pipeline des commandes suivantes.</li>
+<li>soit d’une commande seule,</li>
+<li>soit d’une commande qui envoie sa sortie standard dans un pipe qui
+est lu par le pipeline des commandes suivantes.</li>
 </ul>
-<p>Ca peut donner l’idée d’une solution récursive, une fonction qui prend comme paramètres :</p>
+<p>Ca peut donner l’idée d’une solution récursive, une fonction qui
+prend comme paramètres :</p>
 <ul>
 <li>une liste de commandes,</li>
 <li>des descripteurs pour l’entrée et la sortie du pipeline.</li>
@@ -1015,12 +1209,40 @@ fermer entrée</code></pre>
         rediriger l&#39;entrée vers le tuyau
         exécuter le reste des commandes
         attendre la fin de la première commande</code></pre>
-<p>Comme souvent, la version récursive est plus simple que la version itérative !</p>
+<p>Comme souvent, la version récursive est plus simple que la version
+itérative !</p>
 <h1 data-number="6" id="remarques-finales"><span class="header-section-number">6</span> Remarques finales</h1>
-<p>Faire fonctionner un pipeline de commandes n’est pas un problème très compliqué, mais dont la solution comporte pas mal de détails techniques à manipuler avec précision.</p>
-<p>Pour ajouter des pipelines dans un interprète de commandes (shell), il est donc fortement recommandé d’étudier <strong>à part</strong> la manière de programmer leur exécution. Sinon, on va combiner les problèmes d’exécution du pipeline aux autres qui se posent déjà dans le projet (analyse syntaxique des commandes, par exemple), et ça ne fera pas gagner de temps.</p>
-<p>Cette remarque vaut évidemment pour tous les projets : séparer autant que possible les problèmes pour les étudier, avant d’essayer de les intégrer dans le projet.</p>
-<p>Un autre point : avant de se lancer dans la réalisation d’un mécanisme général (ici exécution d’un pipeline de N commandes quelconques), <strong>regarder en détail un ou plusieurs cas concrets</strong> (ici le pipeline de 4 commandes) pour bien voir les problèmes qui se posent. C’est comme ça qu’on acquiert les éléments de compréhension que l’on peut <strong>appliquer ensuite à la recherche d’une solution dans le cas général</strong>.</p>
-<p>Enfin : l’utilisation de pseudo-code permet de fixer sur papier (ou dans un fichier) les grandes lignes du code qu’on envisage d’écrire. Et donc de se concentrer ensuite sur les divers détails, sans perdre la vue d’ensemble qu’on n’arrivera pas à garder en mémoire dès qu’il y en un certain nombre, ou qu’ils requièrent une forte attention (limite de la charge cognitive).</p>
+<p>Faire fonctionner un pipeline de commandes n’est pas un problème très
+compliqué, mais dont la solution comporte pas mal de détails techniques
+à manipuler avec précision.</p>
+<p>Pour ajouter des pipelines dans un interprète de commandes (shell),
+il est donc fortement recommandé d’étudier <strong>à part</strong> la
+manière de programmer leur exécution. Sinon, on va combiner les
+problèmes d’exécution du pipeline aux autres qui se posent déjà dans le
+projet (analyse syntaxique des commandes, par exemple), et ça ne fera
+pas gagner de temps.</p>
+<p>Cette remarque vaut évidemment pour tous les projets : séparer autant
+que possible les problèmes pour les étudier, avant d’essayer de les
+intégrer dans le projet.</p>
+<p>Un autre point, la méthode de travail : avant de se lancer dans la
+réalisation d’un mécanisme général (ici exécution d’un pipeline de N
+commandes quelconques), <strong>regarder en détail un ou plusieurs cas
+concrets</strong> (ici le pipeline de 4 commandes) pour bien voir les
+problèmes qui se posent. C’est comme ça qu’on acquiert les éléments de
+compréhension que l’on peut <strong>appliquer ensuite à la recherche
+d’une solution dans le cas général</strong>.</p>
+<p>Enfin : l’utilisation de pseudo-code permet de fixer sur papier (ou
+dans un fichier) les grandes lignes du code qu’on envisage d’écrire. Et
+donc de se concentrer ensuite sur les divers détails, sans perdre la vue
+d’ensemble qu’on n’arrivera pas à garder en mémoire dès qu’il y en un
+certain nombre, ou qu’ils requièrent une forte attention (limite de la
+charge cognitive).</p>
+<section class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1" role="doc-endnote"><p>correction appel <code>dup2()</code>
+27 sept 2023 (merci Damien Simler)<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 </body>
 </html>

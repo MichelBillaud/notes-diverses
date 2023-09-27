@@ -1,7 +1,12 @@
 % Réalisation d'un pipeline en C
 % Michel Billaud (michel.billaud@laposte.net)
-% 15 janvier 2023
- 
+% 27 septembre 2023
+
+**Historique**
+
+- 2023-09-27 Correction `demo-exec-dup.c` + typos (merci Damien Simler !)
+- 2023-01-15 Version initiale.
+
 # Objectif
 
 La réalisation d'un mini-*shell* (interprète de commandes) est un
@@ -19,7 +24,7 @@ d'un programme (exécutable), suivi par des options, des arguments...
 
 La réalisation d'un tel programme n'est pas très compliquée.
 
-Là où ça se complique un peu, c'est si on demande que le shell
+Là où ça se complique un peu, c'est si on veut que le shell
 permette d'exécuter des "pipelines" de commandes, c'est-à-dire de
 lancer plusieurs commandes en redirigeant la sortie de l'une vers
 l'autre, comme dans
@@ -31,7 +36,7 @@ ls -l | grep -v ^d | more
 La difficulté est essentiellement d'utiliser correctement les
 $n-1$ tuyaux qui interviennent dans un "pipeline" de $n$ commandes.
 
-Nous allons voir après quelques rappels.
+Nous allons voir ça après quelques rappels.
 
 
 **Attention** : pour simplifier la présentation, dans le code
@@ -95,19 +100,19 @@ fonction `main`, qui a comme prototype `int main(int argc, char
 Le code qui s'exécute ayant été remplacé, la fin de l'exécution de
 `/bin/ls` termine le processus : on ne revient pas de `execv`.
 
-### Échec de `execv()
+### Échec de `execv()`
 
 Si le fichier indiqué en premier paramètre est absent, pas accessible,
 pas exécutable etc. l'appel à `execv` retourne, et les instructions
-suivantes sont exécutées.
+qui suivent sont exécutées.
 
-C'est l'occasion d'afficher un message d'erreur.
+Après l'appel à `execv`, on trouve donc le code qui gère cet échec.
 
 ## Remarques
 
-- La valeur retournée par `execv` est `-1`, mais peu importe : on sait
-que si on est ressorti d'`execv` c'est que le lancement du programme
-n'a pas pu se faire.
+- La valeur retournée par `execv` en cas d'échec est `-1`, mais peu
+importe : ce n'est pas la peine de la tester : si on est ressorti
+d'`execv` c'est que le lancement du programme n'a pas pu se faire.
 - ne pas confondre "le lancement a échoué" (dans ce cas `execv`
 retourne), et "l'exécution du programme lancé a échoué" (le programme
 lancé s'est effectivement exécuté, et s'est terminé par `exit` en
@@ -125,10 +130,11 @@ La plupart des commandes
 - affichent des messages sur la sortie d'erreur (`STDERR_FILENO` = 2).
   2).
 
-L'exemple ci-dessous utilise l'appel `dup2` pour que la commande `tr`
+L'exemple ci-dessous[^1] utilise l'appel `dup2` pour que la commande `tr`
 (avec les paramètres pour convertir les minuscules en majuscules),
 s'exécute avec son entrée standard redirigée vers un fichier  :
 
+[^1]: correction appel `dup2()` 27 sept 2023 (merci Damien Simler)
 
 ~~~C
 // demo-exec-dup.c
@@ -146,7 +152,7 @@ int main()
     printf("# lancement " __FILE__ "\n");
 
     int file_fd = open("demo-exec-dup.c", O_RDONLY);
-    dup2(file_fd, STDOUT_FILENO);
+    dup2(file_fd, STDIN_FILENO);
     close(file_fd);
     
     execv("/bin/tr", (char *[]){ "tr", "a-z", "A-Z",  NULL} );
@@ -158,9 +164,12 @@ int main()
 ~~~
 
 Remarque : Dans `execv("/bin/tr", (char *[]){"tr", "a-z", "A-Z",
-NULL});` on utilise un "tableau anonyme" en C. Le contenu (entre
+NULL});` on utilise un **tableau anonyme** en C. 
+
+- Syntaxe du tableau anonyme : le contenu (entre
 accolades) est précédé par le type du tableau (entre
-parenthèses). Ici, c'est dans le but de résumer l'appel d'`execv` à
+parenthèses). 
+- But : ici c'est pour exprimer l'appel d'`execv` en
 une seule ligne, sans botter en touche sur des constantes, pour rendre
 plus visible la gestion des descripteurs (`dup2`, `close`).
 
@@ -175,13 +184,14 @@ lecture ou de l'écriture, etc.
   **descripteur de fichier** ouvert. En général le plus petit numéro non
   utilisé, sans doute 3 ici.
 - L'appel `dup2(file_fd, STDIN_FILENO)` fait en sorte que le
-descripteur 0 conduise au même fichier que le 3 (le descripteur 0 est
-fermé préalablement).
-- Les descripteurs ouverts le restent lors de l'appel de `execv` : la
-commande `tr` s'exécute donc avec son entrée standard  reliée au
-fichier de données.
+descripteur `0` conduise au même fichier que le `3` (le descripteur
+`0` est fermé préalablement).
+- Les descripteurs qui sont ouverts le restent lors de l'appel de
+`execv` : la commande `tr` s'exécute donc avec son entrée standard
+reliée au fichier de données.
 - Préalablement, un `close` de `file_fd` évite une **fuite de
-descripteur** : on ne veut transmettre que les descripteurs 0, 1 et 2.
+descripteur** : on ne veut transmettre que les descripteurs `0`, `1`
+et `2`.
 
 Ce problème de fuite de descripteur va compliquer la
 réalisation d'un pipeline.
@@ -348,10 +358,10 @@ en attente de données que personne ne lui enverra.
 
 
 
-**L'exemple** qui suit équivaut au lancement de la commande shell :
+**L'exemple** qui suit est equivalent au lancement de la commande shell :
 
 ~~~bash
-date | wc a-z A-Z
+date | tr a-z A-Z
 ~~~
 
 qui affiche la date mise en majuscules
@@ -384,6 +394,7 @@ int main(int argc, char *argv[])
 
     pid_t date_pid = fork();
     if (date_pid == 0) {
+	    // code exécuté par le premier processus fils (date)
         dup2(pipe_fd[1], STDOUT_FILENO);
         close(pipe_fd[0]);
         close(pipe_fd[1]);
@@ -394,6 +405,7 @@ int main(int argc, char *argv[])
     
     pid_t tr_pid = fork();
     if (tr_pid == 0) {
+	    // code exécuté par le second processus fils (tr)
         dup2(pipe_fd[0], STDIN_FILENO);
         close(pipe_fd[0]);
         close(pipe_fd[1]);
@@ -413,16 +425,16 @@ int main(int argc, char *argv[])
 
 **Explications** :
 
-- l'appel système `pipe(pipe_fd)` crée un tuyau et place les descripteurs
-dans le tableau
-- le premier fils hérite des deux descripteurs 
+- L'appel système `pipe(pipe_fd)` crée un tuyau et place les descripteurs
+dans le tableau.
+- Le premier fils hérite des deux descripteurs 
 	- il duplique le descripteur d'écriture, pour que la sortie de la
       commande `date` se fasse dans le tuyau ;
 	- il ferme ensuite les descripteurs du tuyau.
-- le premier fils hérite aussi des deux descripteurs 
+- Le second fils hérite aussi des deux descripteurs 
 	- il duplique le descripteur de lecture, pour que la commande `tr`
-	prenne son entrée dans le tuyau
-	-  il ferme ensuite les descripteurs du tuyau
+	prenne son entrée dans le tuyau ;
+	-  il ferme ensuite les descripteurs du tuyau.
 - une fois les fils lancés, le processus père 
   - ferme les descripteurs du tuyau (il n'en n'a plus l'usage),
   - attend la fin de l'exécution des deux fils.
@@ -460,8 +472,8 @@ l'appelant continue.
 # Pipeline : analyse sur un exemple
 
 Quand on aborde un problème un peu compliqué, il est conseillé de
-commencer par regarder un exemple concret, petit mais significatif.  À
-partir de là, on pourra plus facilement construire une solution
+commencer par regarder un exemple concret, petit mais significatif. 
+À partir de là, on pourra construire plus facilement  une solution
 générale.
 
 Considérons donc un exemple de pipeline qui met en oeuvre 4
@@ -581,17 +593,12 @@ fermer T3[0]
 
 
 Nous allons nous intéresser aux descripteurs plutot qu'aux tableaux,
-en passant par des variables, on écrit la création d'une tuyau sous la
-forme
-
-~~~
-créer tuyau (sortie_tuyau, entrée_tuyau)
-~~~
-
+en passant par des variables, on écrit la création d'un tuyau sous la
+forme `créer tuyau (sortie_tuyau, entrée_tuyau)`
 en indiquant les deux variables qui contiennent les descripteurs
 d'écriture et de lecture.
 
-Une autre variable nous servira à désigner le descripteur
+Une autre variable désigne le descripteur
 utilisé en lecture par le prochain processus.
 
 Au départ, c'est l'entrée standard :
@@ -609,7 +616,7 @@ fermer sortie_tuyau et entrée
 ~~~
 
 
-Le pseudo-code pour les processus B et C n'est pas très différent. 
+Le pseudo-code pour les processus B et C n'est pas très différent : 
 
 
 ~~~
@@ -919,7 +926,7 @@ d'un processus fils quelconque, sans devoir préciser son  identifiant.
 
 On peut remarquer qu'un pipeline est composé
 
-- soit d'une commande seule
+- soit d'une commande seule,
 - soit d'une commande qui envoie sa sortie standard dans un pipe qui
   est lu par le pipeline des commandes suivantes.
 
@@ -953,7 +960,6 @@ la version itérative !
 
 # Remarques finales
 
-
 Faire fonctionner un pipeline de commandes n'est pas un problème très
 compliqué, mais dont la solution comporte pas mal de détails
 techniques à manipuler avec précision.
@@ -970,13 +976,13 @@ autant que possible les problèmes pour les étudier,   avant
 d'essayer de les intégrer dans le projet.
 
 
-Un autre point : avant de se lancer dans la réalisation d'un mécanisme
-général (ici exécution d'un pipeline de N commandes quelconques),
-**regarder en détail un ou plusieurs cas concrets** (ici le pipeline
-de 4 commandes) pour bien voir les problèmes qui se posent. C'est
-comme ça qu'on acquiert les éléments de compréhension que l'on peut
-**appliquer ensuite à la recherche d'une solution dans le cas
-général**.
+Un autre point, la méthode de travail : avant de se lancer dans la
+réalisation d'un mécanisme général (ici exécution d'un pipeline de N
+commandes quelconques), **regarder en détail un ou plusieurs cas
+concrets** (ici le pipeline de 4 commandes) pour bien voir les
+problèmes qui se posent. C'est comme ça qu'on acquiert les éléments de
+compréhension que l'on peut **appliquer ensuite à la recherche d'une
+solution dans le cas général**.
 
 Enfin : l'utilisation de pseudo-code permet de fixer sur papier (ou
 dans un fichier) les grandes lignes du code qu'on envisage d'écrire.

@@ -307,13 +307,52 @@ padding: 0.5em;
 </ul>
 <p><strong>Historique</strong></p>
 <ul>
-<li>Ajout présentation informelle le 20 octobre 2022</li>
-<li>Version initiale 21 juillet 2020</li>
+<li>2022-07-21 Version initiale</li>
+<li>2022-10-20 Ajout présentation informelle</li>
+<li>2023-02-26 Ajout message groupe <code>comp.theory</code> de 1993.</li>
 </ul>
 <h1 data-number="1" id="introduction"><span class="header-section-number">1</span> Introduction</h1>
 <h2 data-number="1.1" id="il-y-a-très-longtemps"><span class="header-section-number">1.1</span> Il y a très longtemps</h2>
 <p>Vers 1988, je m’étais posé un petit problème, que je n’ai pas réussi à résoudre. Rien d’étonnant, c’était pas dans mon domaine, et je n’y ai travaillé que mollement. Donc j’ai laissé tomber rapidement, mais après avoir appelé à l’aide sur Usenet, qui ne manque pas de gens plus compétents.</p>
-<p>On en retrouve des traces dans le newsgroup <code>comp.theory</code> en 1993, mais j’avais dû déjà poser la question en 1988, puisque je me rappelle très bien (pour une fois) en avoir discuté avec Gilberto Filè dont je partageais le bureau, avant le STACS 1988 (j’ai une copie de son manuscript, écrite à la main, quelque part !).</p>
+<p>On en retrouve des traces dans le newsgroup <code>comp.theory</code> en 1993, <a href="https://groups.google.com/g/comp.theory/c/V_xDDtoR9a4/m/zgcM4We0CisJ" class="uri">https://groups.google.com/g/comp.theory/c/V_xDDtoR9a4/m/zgcM4We0CisJ</a> mais j’avais dû déjà poser la question en 1988, puisque je me rappelle très bien (pour une fois) en avoir discuté avec Gilberto Filè dont je partageais le bureau, avant le STACS 1988 (j’ai une copie de son manuscrit, écrite à la main, quelque part !).</p>
+<pre><code>Michel BILLAUD
+5 févr. 1993, 17:56:34
+
+
+NOTATIONS. Let A={a,b,c...} be a finite alphabet, A* the set of words over
+A, equipped with the concatenation &quot;.&quot; (omitted unless necessary) and the
+empty word denoted by 1.
+
+Every f: A -&gt; A* defines a morphism (also named f) from A* to A*,
+the image of a word w being the concatenation of the images by f
+of its letters.
+For example, if f(a)=ab and f(b)=aa,
+then f(abba)=f(a).f(b).f(b).f(a)=abaaaaab
+
+For any letter x in A, delta_x is the morphism which deletes all
+occurrences of the letter x, and keeps all others, that is:
+delta_x (y) = 1 if x=y, otherwise y
+
+DEFINITION. A word w is &quot;simple&quot; if for every morphism f
+f(w)=w implies f(x)=x for each letter x in w
+
+EXAMPLES of &quot;simple&quot; words : a,aa,aaa, abba, aabb, abcbac ...
+non-simple words: ab, abab (take f(a)=ab and f(b)=1)
+abcbca ( f(a)=a, f(b)=bc, f(c)=1 )
+
+QUESTION. For every non-empty &quot;simple&quot; word w, does there always
+exist a letter x in w such that delta_x(w) is also simple ?
+
+EXAMPLE: for w=abcbac, take x=c, then delta_c(abcbac)=abba is simple.
+
+Couldn&#39;t find a proof, or a counter-example... Help appreciated !
+
+-- 
+Michel BILLAUD : billaud@geocub.greco-prog.fr
+Departement d&#39;Informatique : phone W: 56.84.57.92 // 56.84.69.22
+IUT &quot;A&quot;, Universite Bordeaux I : &quot;Personne n&#39;est exempt de dire des sottises.
+33405 Talence (FRANCE) : Le malheur est de les dire curieusement&quot;</code></pre>
+<p>D’où la conjecture :</p>
 <blockquote>
 <p>Given a word <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>w</mi><annotation encoding="application/x-tex">w</annotation></semantics></math>, if for each letter <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math> occurring in <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>w</mi><annotation encoding="application/x-tex">w</annotation></semantics></math>, there exists non-trivial morphism <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mi>x</mi></msub><annotation encoding="application/x-tex">f_x</annotation></semantics></math> such that the word obtained by erasing all the occurrences of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math> in <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math> is a fixed point of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mi>x</mi></msub><annotation encoding="application/x-tex">f_x</annotation></semantics></math>, then there exists a non-trivial morphism <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math> such that <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>w</mi><annotation encoding="application/x-tex">w</annotation></semantics></math> is a fixed point of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>.</p>
 </blockquote>
@@ -338,7 +377,7 @@ padding: 0.5em;
 <li>soit <code>&quot;a&quot;</code> et <code>&quot;b&quot;</code> (morphisme identité sur les lettres du mot).</li>
 </ul>
 <ol start="4" type="1">
-<li><p>On s’intéresse aux mots qio ne sont des points fixes <strong>seulement par l’identité</strong> identité. Exemples <code>&quot;aaaa&quot;</code>, <code>&quot;abba&quot;</code>, <code>&quot;abcacb&quot;</code>, … qu’on va appeler, pour faire court mots “primitifs”.</p></li>
+<li><p>On s’intéresse aux mots qio ne sont des points fixes <strong>seulement par l’identité</strong> identité. Exemples <code>&quot;aaaa&quot;</code>, <code>&quot;abba&quot;</code>, <code>&quot;abcacb&quot;</code>, … qu’on va appeler, pour faire court, mots “primitifs”.</p></li>
 <li><p>Regardez <code>&quot;abcacb&quot;</code>, construit sur 3 lettres :</p></li>
 </ol>
 <ul>
@@ -456,7 +495,9 @@ padding: 0.5em;
 </ul>
 <h2 data-number="4.6" id="t.-kociumaka-j.-radoszewski-w.-rytter-t.-waleń-2015"><span class="header-section-number">4.6</span> T. Kociumaka, J. Radoszewski, W. Rytter, T. Waleń, (2015)</h2>
 <p>T. Kociumaka, J. Radoszewski, W. Rytter, T. Waleń, Linear-time version of Holub’s algorithm for morphic imprimitivity testing, Theoretical Computer Science, Volume 602, 2015, Pages 7-21, ISSN 0304-3975, <a href="https://doi.org/10.1016/j.tcs.2015.07.055" class="uri">https://doi.org/10.1016/j.tcs.2015.07.055</a></p>
-<p>&lt;- https://www.sciencedirect.com/science/article/pii/S0304397515007112&gt;</p>
+<ul>
+<li><a href="https://www.sciencedirect.com/science/article/pii/S0304397515007112" class="uri">https://www.sciencedirect.com/science/article/pii/S0304397515007112</a></li>
+</ul>
 <p>Abstract: Stepan Holub (Discr. Math., 2009) gave the first polynomial-time algorithm deciding whether a given word is a nontrivial fixed point of a morphism. His algorithm works in quadratic time for large alphabets. We improve the algorithm to work in linear time. Our improvement starts with a careful choice of a subset of rules used in Holub’s algorithm that is necessary to grant correctness of the algorithm. Afterwards we show how to choose the order of applying the rules that allows to avoid unnecessary operations on sets. We obtain linear time using efficient data structures for implementation of the rules. Holub’s algorithm maintains connected components of a graph corresponding to specially marked positions in a word. This graph is of quadratic size for large alphabet. In our algorithm only a linear number of edges of this conceptual graph is processed. A preliminary version of this paper appeared at LATA 2013 conference.</p>
 <h2 data-number="4.7" id="filè-g.-1989"><span class="header-section-number">4.7</span> Filè, G. (1989)</h2>
 <p>Filè, G.: The relation of two patterns with comparable languages patterns. RAIRO - Theoretical Informatics and Applications - Informatique Théorique et Applications 23(1), 45–57 (1989)</p>

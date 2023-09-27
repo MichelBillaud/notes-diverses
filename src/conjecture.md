@@ -17,8 +17,10 @@ France](http://creativecommons.org/licenses/by-nc-sa/2.0/fr/).
 
 **Historique**
 
-- Ajout présentation informelle le 20 octobre 2022
-- Version initiale 21 juillet 2020
+
+-  2022-07-21 Version initiale 
+- 2022-10-20 Ajout présentation informelle
+-  2023-02-26 Ajout message groupe `comp.theory` de 1993.
 
 
 # Introduction 
@@ -32,13 +34,54 @@ tomber rapidement, mais après avoir appelé à l'aide sur Usenet, qui ne
 manque pas de gens plus compétents.
 
 On en retrouve des traces dans le newsgroup `comp.theory` en 1993,
+<https://groups.google.com/g/comp.theory/c/V_xDDtoR9a4/m/zgcM4We0CisJ>
 mais j'avais dû déjà poser la question en 1988, puisque je me rappelle
 très bien (pour une fois) en avoir discuté avec Gilberto Filè dont je
-partageais le bureau, avant le STACS 1988 (j'ai une copie de
-son manuscript, écrite à la main, quelque part !).
+partageais le bureau, avant le STACS 1988 (j'ai une copie de son
+manuscrit, écrite à la main, quelque part !).
+
+~~~
+Michel BILLAUD
+5 févr. 1993, 17:56:34
 
 
+NOTATIONS. Let A={a,b,c...} be a finite alphabet, A* the set of words over
+A, equipped with the concatenation "." (omitted unless necessary) and the
+empty word denoted by 1.
 
+Every f: A -> A* defines a morphism (also named f) from A* to A*,
+the image of a word w being the concatenation of the images by f
+of its letters.
+For example, if f(a)=ab and f(b)=aa,
+then f(abba)=f(a).f(b).f(b).f(a)=abaaaaab
+
+For any letter x in A, delta_x is the morphism which deletes all
+occurrences of the letter x, and keeps all others, that is:
+delta_x (y) = 1 if x=y, otherwise y
+
+DEFINITION. A word w is "simple" if for every morphism f
+f(w)=w implies f(x)=x for each letter x in w
+
+EXAMPLES of "simple" words : a,aa,aaa, abba, aabb, abcbac ...
+non-simple words: ab, abab (take f(a)=ab and f(b)=1)
+abcbca ( f(a)=a, f(b)=bc, f(c)=1 )
+
+QUESTION. For every non-empty "simple" word w, does there always
+exist a letter x in w such that delta_x(w) is also simple ?
+
+EXAMPLE: for w=abcbac, take x=c, then delta_c(abcbac)=abba is simple.
+
+Couldn't find a proof, or a counter-example... Help appreciated !
+
+-- 
+Michel BILLAUD : billaud@geocub.greco-prog.fr
+Departement d'Informatique : phone W: 56.84.57.92 // 56.84.69.22
+IUT "A", Universite Bordeaux I : "Personne n'est exempt de dire des sottises.
+33405 Talence (FRANCE) : Le malheur est de les dire curieusement"
+~~~
+
+
+D'où la conjecture :
 
 > Given a word $w$, if for each letter $x$ occurring in $w$, there 
 > exists non-trivial morphism $f_x$ such that the word obtained by erasing
@@ -78,7 +121,7 @@ de `'a'` et `'b'` sont respectivement
 4. On s'intéresse aux mots qio ne sont des points fixes 
 **seulement par l'identité**
    identité. Exemples `"aaaa"`, `"abba"`, `"abcacb"`, ... qu'on va
-   appeler, pour faire court mots "primitifs".
+   appeler, pour faire court, mots "primitifs".
 
 5. Regardez  `"abcacb"`, construit sur 3 lettres :
 
@@ -88,7 +131,6 @@ de `'a'` et `'b'` sont respectivement
 
 
 ## Voila la question 
-
 
 
 - si j'ai un mot primitif (construit sur au moins deux lettres
@@ -247,6 +289,7 @@ contre-exemple, et on conjecture que oui.
 
 Mais la preuve reste à faire.
 
+
 # Bibliographie
 
 Dans un ordre aléatoire, en cours de construction.
@@ -371,7 +414,7 @@ Pages 7-21,
 ISSN 0304-3975,
 <https://doi.org/10.1016/j.tcs.2015.07.055>
 
-<- https://www.sciencedirect.com/science/article/pii/S0304397515007112>
+- <https://www.sciencedirect.com/science/article/pii/S0304397515007112>
 
 Abstract: Stepan Holub (Discr. Math., 2009) gave the first
 polynomial-time algorithm deciding whether a given word is a

@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Michel Billaud (michel.billaud@laposte.net)" />
+  <title>Faire clignoter l’Arduino (manipulation explicite du temps)</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">a.sourceLine {
+display: inline-block;
+line-height: 1.25;
+}
+a.sourceLine {
+pointer-events: none;
+color: inherit;
+text-decoration: inherit;
+}
+a.sourceLine:empty {
+height: 1.2em;
+}
+.sourceCode {
+overflow: visible;
+}
+code.sourceCode {
+white-space: pre;
+position: relative;
+}
+div.sourceCode {
+margin: 1em 0;
+}
+pre.sourceCode {
+margin: 0;
+}
+@media screen {
+div.sourceCode {
+overflow: auto;
+}
+}
+@media print {
+code.sourceCode {
+white-space: pre-wrap;
+}
+a.sourceLine {
+text-indent: -1em;
+padding-left: 1em;
+}
+}
+pre.numberSource a.sourceLine {
+position: relative;
+left: -4em;
+}
+pre.numberSource a.sourceLine::before {
+content: attr(title);
+position: relative;
+left: -1em;
+text-align: right;
+vertical-align: baseline;
+border: none;
+pointer-events: all;
+display: inline-block;
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
+padding: 0 4px;
+width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource {
+margin-left: 3em;
+border-left: 1px solid #aaaaaa;
+padding-left: 4px;
+}
+div.sourceCode {}
+@media screen {
+a.sourceLine::before {
+text-decoration: underline;
+}
+}
+code span.al {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.an {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.at {
+color: #7d9029;
+}
+
+code span.bn {
+color: #40a070;
+}
+
+code span.bu {}
+
+code span.cf {
+color: #007020;
+font-weight: bold;
+}
+
+code span.ch {
+color: #4070a0;
+}
+
+code span.cn {
+color: #880000;
+}
+
+code span.co {
+color: #60a0b0;
+font-style: italic;
+}
+
+code span.cv {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.do {
+color: #ba2121;
+font-style: italic;
+}
+
+code span.dt {
+color: #902000;
+}
+
+code span.dv {
+color: #40a070;
+}
+
+code span.er {
+color: #ff0000;
+font-weight: bold;
+}
+
+code span.ex {}
+
+code span.fl {
+color: #40a070;
+}
+
+code span.fu {
+color: #06287e;
+}
+
+code span.im {}
+
+code span.in {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+code span.kw {
+color: #007020;
+font-weight: bold;
+}
+
+code span.op {
+color: #666666;
+}
+
+code span.ot {
+color: #007020;
+}
+
+code span.pp {
+color: #bc7a00;
+}
+
+code span.sc {
+color: #4070a0;
+}
+
+code span.ss {
+color: #bb6688;
+}
+
+code span.st {
+color: #4070a0;
+}
+
+code span.va {
+color: #19177c;
+}
+
+code span.vs {
+color: #4070a0;
+}
+
+code span.wa {
+color: #60a0b0;
+font-weight: bold;
+font-style: italic;
+}
+
+
+:root {
+--title-color: #202080;
+--source-bg-color: rgb(240, 240, 255);
+}
+h1, h2, h3, h4, h5, h6 {
+border-bottom: solid 1px silver;
+color: var(--title-color);
+}
+body {
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+div.sourceCode {
+background-color: var(--source-bg-color);
+padding: 1em;
+}
+#TOC {
+padding: 0.5em;
+border: solid 1px silver;
+}
+#TOC ul {
+list-style-type: none;
+padding-left: 1em;
+}
+nav:before {
+text-indent: 2em;
+content: "Sommaire";
+color: var(--title-color);
+font-weight: bold;
+font-size: large;
+}
+#TOC a {
+text-decoration: none;
+}
+header {
+text-align: center;
+}
+.title {
+}
+.author, .date {
+font-style: italic;
+}
+table, th, td {
+border-collapse: collapse;
+border: solid black 1px;
+padding: 0.5em;
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">Faire clignoter l’Arduino (manipulation explicite du temps)</h1>
+<p class="author">Michel Billaud (<code>michel.billaud@laposte.net</code>)</p>
+<p class="date">11 juin 2023</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#motivation"><span class="toc-section-number">1</span> Motivation</a></li>
+<li><a href="#le-clignotement-avec-delay"><span class="toc-section-number">2</span> Le clignotement avec <code>delay()</code></a></li>
+<li><a href="#tester-le-bouton-et-faire-clignoter-10-fois-mauvaise-solution"><span class="toc-section-number">3</span> Tester le bouton et faire clignoter 10 fois (mauvaise solution)</a></li>
+<li><a href="#clignotement-simple-avec-gestion-du-temps"><span class="toc-section-number">4</span> Clignotement simple avec gestion du temps</a></li>
+<li><a href="#clignoter-pendant-un-temps-limité"><span class="toc-section-number">5</span> Clignoter pendant un temps limité</a></li>
+<li><a href="#prise-en-compte-du-bouton"><span class="toc-section-number">6</span> Prise en compte du bouton</a></li>
+</ul>
+</nav>
+<p><img src="data:image/png;base64,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" /></p>
+<p>Ce texte fait partie d’une petite <a href="index.html">collection de notes</a> mise à disposition selon les termes de la <a href="http://creativecommons.org/licenses/by-nc-sa/2.0/fr/">Licence Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 2.0 France</a>.</p>
+<ul>
+<li>Les notes sont publiées dans <a href="https://www.mbillaud.fr/notes/" class="uri">https://www.mbillaud.fr/notes/</a></li>
+<li>Sources dans <a href="https://github.com/MichelBillaud/notes-diverses" class="uri">https://github.com/MichelBillaud/notes-diverses</a></li>
+</ul>
+<h1 data-number="1" id="motivation"><span class="header-section-number">1</span> Motivation</h1>
+<p>Dans les forums consacrés à la programmation, on trouve souvent des appels à l’aide de débutants qui n’arrivent pas à réaliser des programmes qui leur paraissent pourtant simple comme</p>
+<blockquote>
+<p>quand on appuie sur le bouton, la LED doit clignoter pendant 5 secondes</p>
+</blockquote>
+<p>Pourtant ils ont vu des tutoriels leur expliquant</p>
+<ul>
+<li>comment faire clignoter une LED avec <code>delay()</code> et <code>digitalWrite()</code> ;</li>
+<li>comment tester l’état du bouton avec <code>digitalRead()</code> ;</li>
+</ul>
+<p>mais ces exemples ne peuvent pas être combinés si, par exemple</p>
+<ul>
+<li>on veut gèrer plusieurs boutons et plusieurs LEDs en parallèle</li>
+<li>on veut que clignotement dure un certain temps <strong>après</strong> le dernier appui du bouton (l’appui repousse la fin du clignotement).</li>
+</ul>
+<p>La raison est simple : pendant que l’arduino fait un <code>delay()</code>, il ne peut pas exécuter du code qui regarde l’état du bouton.</p>
+<p>Donc il faudra s’y prendre autrement.</p>
+<h1 data-number="2" id="le-clignotement-avec-delay"><span class="header-section-number">2</span> Le clignotement avec <code>delay()</code></h1>
+<p>Pour mémoire, voila le genre de code qui est montré aux débutants pour faire clignoter indéfiniment une diode.</p>
+<p>Ici on utilise la LED intégrée d’un Arduino UNO, reliée à la broche 13.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode c++"><code class="sourceCode cpp"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a><span class="co">/*</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="co"> * Blinking using delay</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="co"> */</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true"></a><span class="at">const</span> byte LED_PIN = <span class="dv">13</span>;</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true"></a></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true"></a><span class="at">const</span> <span class="dt">unsigned</span> <span class="dt">long</span> BLINK_DELAY = <span class="dv">200</span>; <span class="co">// ms</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true"></a><span class="dt">void</span> setup() </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true"></a>{</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true"></a>  pinMode(LED_PIN, OUTPUT);</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true"></a>}</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true"></a><span class="dt">void</span> loop() </span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true"></a>{</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true"></a>  digitalWrite(LED_PIN, HIGH);</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true"></a>  delay(BLINK_DELAY);</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true"></a>  digitalWrite(LED_PIN, LOW);</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true"></a>  delay(BLINK_DELAY);</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true"></a>}</span></code></pre></div>
+<p>La constante indique la demi-période du clignotement : la LED est allumée 200 ms, puis éteinte 200 ms, etc.</p>
+<p>Rappel : la fonction <code>loop()</code> est rappelée en boucle automatiquement. On s’occupe donc de gérer une seule période.</p>
+<h1 data-number="3" id="tester-le-bouton-et-faire-clignoter-10-fois-mauvaise-solution"><span class="header-section-number">3</span> Tester le bouton et faire clignoter 10 fois (mauvaise solution)</h1>
+<p>Si on demande de prendre en compte un bouton (ici on a utilisé un simple interrupteur entre GND et la broche 2 configurée en “pull-up”), et que ça déclenche le clignotement pendant un certaine durée, l’exemple précédent conduit généralement à ce genre de “solution” :</p>
+<ul>
+<li>Dans <code>loop()</code> on teste l’état du bouton</li>
+<li>si il est appuyé (état <code>LOW</code> dans notre montage), on se lance dans une boucle de clignotement.</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode c++"><code class="sourceCode cpp"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="co">/*</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a><span class="co"> * Blinking using delay</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a><span class="co"> * and button</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true"></a><span class="co"> * The LED blinks 10 times after the button is pressed</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true"></a><span class="co"> * Warning: the button is not checked during when the LED blinks</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true"></a><span class="co"> */</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true"></a><span class="at">const</span> byte LED_PIN    = <span class="dv">13</span>;</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true"></a><span class="at">const</span> byte BUTTON_PIN = <span class="dv">2</span>;</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true"></a><span class="at">const</span> <span class="dt">unsigned</span> <span class="dt">long</span> BLINK_DELAY   = <span class="dv">200</span>; <span class="co">// ms</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true"></a><span class="at">const</span> <span class="dt">int</span>           BLINK_PERIODS = <span class="dv">10</span>;</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true"></a><span class="dt">void</span> setup() </span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true"></a>{</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true"></a>  pinMode(LED_PIN,    OUTPUT);</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true"></a>  pinMode(BUTTON_PIN, INPUT_PULLUP);</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true"></a></span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true"></a>  digitalWrite(LED_PIN, LOW);</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true"></a>}</span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true"></a><span class="dt">void</span> loop() </span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true"></a>{</span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true"></a>  <span class="cf">if</span> (digitalRead(BUTTON_PIN) == LOW) {</span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true"></a>    <span class="cf">for</span> (<span class="dt">int</span> i = <span class="dv">0</span>; i &lt; BLINK_PERIODS; i++) {</span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true"></a>      digitalWrite(LED_PIN, HIGH);</span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true"></a>      delay(BLINK_DELAY);</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true"></a>      digitalWrite(LED_PIN, LOW);</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true"></a>      delay(BLINK_DELAY);</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true"></a>    }</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true"></a>  }</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true"></a>}</span></code></pre></div>
+<p>Le hic, c’est que pendant la boucle <code>for</code>, l’état du bouton n’est pas testé. C’est comme une minuterie d’escalier avec laquelle il faudrait attendre que la lumière soit éteinte pour pouvoir rallumer.</p>
+<p>Ce n’est pas une bonne solution.</p>
+<h1 data-number="4" id="clignotement-simple-avec-gestion-du-temps"><span class="header-section-number">4</span> Clignotement simple avec gestion du temps</h1>
+<p>Ici on regarde une autre façon de faire, qui se base sur la fonction <code>millis()</code>, qui indique l’heure qu’il est, ou plus exactement le nombre de millisecondes écoulées depuis le démarrage de l’arduino.</p>
+<p>Le principe</p>
+<ul>
+<li>dans <code>loop()</code>, on regarde combien de temps s’est écoulé,</li>
+<li>à partir de cette durée, on calcule dans quelle demi-période de clignotement on est,</li>
+<li>si c’est la première (numero 0) : la LED doit être allumée, si 1 éteinte, si 2 allumée, etc : on se base sur la parité.</li>
+</ul>
+<div class="sourceCode" id="cb3"><pre class="sourceCode c++"><code class="sourceCode cpp"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="at">const</span> byte LED_PIN = <span class="dv">13</span>;</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a><span class="at">const</span> <span class="dt">unsigned</span> <span class="dt">long</span> BLINK_DELAY = <span class="dv">200</span>; <span class="co">// ms</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a><span class="at">const</span> <span class="dt">unsigned</span>  START_MILLIS = millis();</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a><span class="dt">void</span> setup() {</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>  pinMode(LED_PIN, OUTPUT);</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>  digitalWrite(LED_PIN, LOW);</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>}</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a><span class="dt">void</span> loop() {</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a>  <span class="dt">unsigned</span> <span class="dt">long</span> elapsed_millis = millis() - START_MILLIS;</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a>  <span class="dt">unsigned</span> <span class="dt">long</span> elapsed_half_periods   = elapsed_millis / BLINK_DELAY;</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a>  <span class="cf">if</span> (elapsed_half_periods % <span class="dv">2</span> == <span class="dv">0</span>) {</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a>    digitalWrite(LED_PIN, HIGH);  <span class="co">// even =&gt; Led ON</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a>  } <span class="cf">else</span> {</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true"></a>    digitalWrite(LED_PIN, LOW);   <span class="co">// odd =&gt;  Led OFF</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true"></a>  }</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true"></a> </span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true"></a>}</span></code></pre></div>
+<p>On peut préférer la variante ci-dessous, avec une variable qui mémorise l’état de la LED, et ne fait de <code>digitalWrite</code> que quand il y a besoin de changer réellement l’état</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode c++"><code class="sourceCode cpp"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true"></a><span class="co">/*</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true"></a><span class="co"> * Blinking using millis()</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true"></a><span class="co"> */</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true"></a><span class="at">const</span> byte LED_PIN = <span class="dv">13</span>;</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true"></a></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true"></a><span class="at">const</span> <span class="dt">unsigned</span> <span class="dt">long</span> BLINK_DELAY = <span class="dv">200</span>; <span class="co">// ms</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true"></a></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true"></a><span class="at">const</span> <span class="dt">unsigned</span>  START_MILLIS = millis();</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true"></a></span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true"></a></span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true"></a><span class="dt">int</span> led_state = LOW;</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true"></a></span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true"></a><span class="dt">void</span> setup() {</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true"></a>  pinMode(LED_PIN, OUTPUT);</span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true"></a>  digitalWrite(LED_PIN, led_state);</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true"></a>}</span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true"></a> </span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true"></a> <span class="dt">void</span> loop() {</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true"></a>  <span class="dt">unsigned</span> <span class="dt">long</span> elapsed_millis       = millis() - START_MILLIS;</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true"></a>  <span class="dt">unsigned</span> <span class="dt">long</span> elapsed_half_periods = elapsed_millis / BLINK_DELAY;</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true"></a></span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true"></a>  <span class="dt">int</span> new_led_state = elapsed_half_periods % <span class="dv">2</span> == <span class="dv">0</span> </span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true"></a>                        ? HIGH </span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true"></a>                        : LOW;</span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true"></a>  </span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true"></a>  <span class="cf">if</span> (led_state != new_led_state) {    </span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true"></a>    led_state = new_led_state;</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true"></a>    digitalWrite(LED_PIN, led_state);</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true"></a>  }</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true"></a></span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true"></a>}</span></code></pre></div>
+<h1 data-number="5" id="clignoter-pendant-un-temps-limité"><span class="header-section-number">5</span> Clignoter pendant un temps limité</h1>
+<p>Pour limiter le temps de clignotement à 5 secondes par exemple, on peut définir une constante</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode c++"><code class="sourceCode cpp"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true"></a><span class="at">const</span> <span class="dt">unsigned</span> <span class="dt">long</span> BLINK_LIMIT = <span class="dv">5000</span>;</span></code></pre></div>
+<p>et modifier très légèrement l’expression conditionnelle qui, dans <code>loop()</code>, établit le nouvel état de la LED</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode c++"><code class="sourceCode cpp"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true"></a>  <span class="dt">int</span> new_led_state =   elapsed_millis &gt; BLINK_LIMIT  ? LOW</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true"></a>                      : elapsed_half_periods % <span class="dv">2</span> == <span class="dv">0</span> ? HIGH</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true"></a>                      : LOW;</span></code></pre></div>
+<h1 data-number="6" id="prise-en-compte-du-bouton"><span class="header-section-number">6</span> Prise en compte du bouton</h1>
+<p>Si on veut maintenant que</p>
+<blockquote>
+<p>la led clignote si et seulement si le dernier bouton a été appuyé il y a moins de 5 secondes</p>
+</blockquote>
+<p>une solution simple est de dire que chaque appui sur le bouton définit “l’heure de fin du clignotement”, variable <code>blink_end_millis</code> dans le code qui suit.</p>
+<p>Pour avoir un clignotement sans “sauts” quand on on réappuie, une variable <code>blink_start_millis</code> remplace <code>START_MILLIS</code>, elle contient l’heure de démarrage (premier appui) de la séquence de clignotement en cours (et 0 si le clignotement n’est pas en route).</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode c++"><code class="sourceCode cpp"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true"></a><span class="co">/*</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true"></a><span class="co"> * Blinking using millis()</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true"></a><span class="co"> */</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true"></a><span class="at">const</span> byte LED_PIN = <span class="dv">13</span>;</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true"></a><span class="at">const</span> byte BUTTON_PIN = <span class="dv">2</span>;     <span class="co">// used in pullup mode</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true"></a><span class="at">const</span> <span class="dt">unsigned</span> <span class="dt">long</span> BLINK_DELAY = <span class="dv">200</span>; <span class="co">// ms</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true"></a><span class="at">const</span> <span class="dt">unsigned</span> <span class="dt">long</span> BLINK_LIMIT = <span class="dv">5000</span>;</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true"></a></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true"></a><span class="dt">unsigned</span> <span class="dt">long</span>  blink_start_millis = <span class="dv">0</span>;</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true"></a><span class="dt">unsigned</span> <span class="dt">long</span>  blink_end_millis = <span class="dv">0</span>;</span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true"></a></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true"></a></span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true"></a><span class="dt">int</span> led_state = LOW;</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true"></a></span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true"></a><span class="dt">void</span> setup() {</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true"></a>  pinMode(LED_PIN,    OUTPUT);</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true"></a>  pinMode(BUTTON_PIN, INPUT_PULLUP);</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true"></a>  </span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true"></a>  digitalWrite(LED_PIN, led_state);</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true"></a>}</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true"></a></span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true"></a><span class="dt">void</span> loop() {</span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true"></a>  <span class="dt">unsigned</span> <span class="dt">long</span> current_millis = millis();</span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true"></a>  <span class="cf">if</span> (digitalRead(BUTTON_PIN) == LOW) {  <span class="co">// pressed</span></span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true"></a>    <span class="cf">if</span> (blink_start_millis == <span class="dv">0</span>) {</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true"></a>      blink_start_millis = current_millis;</span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true"></a>    }</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true"></a>    blink_end_millis = current_millis + BLINK_LIMIT;</span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true"></a>  } </span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true"></a>  </span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true"></a>  <span class="dt">unsigned</span> <span class="dt">long</span> elapsed_millis = current_millis - blink_start_millis;</span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true"></a>  </span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true"></a>  <span class="dt">int</span> new_led_state = LOW;</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true"></a>  <span class="cf">if</span> (current_millis &gt; blink_end_millis) {</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true"></a>    blink_start_millis = <span class="dv">0</span>;</span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true"></a>  } <span class="cf">else</span> {</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true"></a>      <span class="dt">unsigned</span> <span class="dt">long</span> elapsed_half_periods = elapsed_millis / BLINK_DELAY;</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true"></a>      new_led_state = elapsed_half_periods % <span class="dv">2</span> == <span class="dv">0</span> ? HIGH</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true"></a>                      : LOW;</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true"></a>  }</span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true"></a>  <span class="cf">if</span> (led_state != new_led_state) {    </span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true"></a>    led_state = new_led_state;</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true"></a>    digitalWrite(LED_PIN, led_state);</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true"></a>  }</span>
+<span id="cb7-46"><a href="#cb7-46" aria-hidden="true"></a></span>
+<span id="cb7-47"><a href="#cb7-47" aria-hidden="true"></a>}</span></code></pre></div>
+</body>
+</html>
