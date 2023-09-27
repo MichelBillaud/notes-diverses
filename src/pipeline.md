@@ -123,15 +123,15 @@ retournant un code non nul).
 
 La plupart des commandes
 
-- lisent des données sur leur entrée standard, qui a le
+- lisent des données sur leur **entrée standard**, qui a le
   descripteur 0 (constante `STDIN_FILENO`),
-- écrivent des résultats sur la sortie standard (descripteur
+- écrivent des résultats sur la **sortie standard** (descripteur
   `STDOUT_FILENO` = 1),
-- affichent des messages sur la sortie d'erreur (`STDERR_FILENO` = 2).
-  2).
+- affichent des messages sur la **sortie d'erreur** (`STDERR_FILENO` = 2).
+
 
 L'exemple ci-dessous[^1] utilise l'appel `dup2` pour que la commande `tr`
-(avec les paramètres pour convertir les minuscules en majuscules),
+(lancée avec les paramètres pour convertir les minuscules en majuscules),
 s'exécute avec son entrée standard redirigée vers un fichier  :
 
 [^1]: correction appel `dup2()` 27 sept 2023 (merci Damien Simler)

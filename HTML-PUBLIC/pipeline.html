@@ -488,17 +488,17 @@ terminé par <code>exit</code> en retournant un code non nul).</li>
 <code>dup2</code></h2>
 <p>La plupart des commandes</p>
 <ul>
-<li>lisent des données sur leur entrée standard, qui a le descripteur 0
-(constante <code>STDIN_FILENO</code>),</li>
-<li>écrivent des résultats sur la sortie standard (descripteur
-<code>STDOUT_FILENO</code> = 1),</li>
-<li>affichent des messages sur la sortie d’erreur
-(<code>STDERR_FILENO</code> = 2). 2).</li>
+<li>lisent des données sur leur <strong>entrée standard</strong>, qui a
+le descripteur 0 (constante <code>STDIN_FILENO</code>),</li>
+<li>écrivent des résultats sur la <strong>sortie standard</strong>
+(descripteur <code>STDOUT_FILENO</code> = 1),</li>
+<li>affichent des messages sur la <strong>sortie d’erreur</strong>
+(<code>STDERR_FILENO</code> = 2).</li>
 </ul>
 <p>L’exemple ci-dessous<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> utilise l’appel <code>dup2</code>
-pour que la commande <code>tr</code> (avec les paramètres pour convertir
-les minuscules en majuscules), s’exécute avec son entrée standard
-redirigée vers un fichier :</p>
+pour que la commande <code>tr</code> (lancée avec les paramètres pour
+convertir les minuscules en majuscules), s’exécute avec son entrée
+standard redirigée vers un fichier :</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode c"><code class="sourceCode c"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// demo-exec-dup.c</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="pp">#include </span><span class="im">&lt;stdio.h&gt;</span></span>
